@@ -15,9 +15,9 @@ testGetCodeForDummyVariable <- function() {
     print(actualCode)
     print('Expected Code: ')
     print(expectedCode)
-    stop('Incorrect generated dummy variable code')
+    stop('getCodeForDummyVariable: Incorrect generated dummy variable code')
   } else {
-    print('Correct genereated dummy variable code')
+    print('getCodeForDummyVariable: Correctly genereated dummy variable code')
   }
 }
 
