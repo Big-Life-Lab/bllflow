@@ -10,9 +10,9 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   dummyVariableCode <- ''
   for (i in 1:nrow(categoricalVariableRows)) {
     variableNameSplitWithUnderscore <- strsplit(categoricalVariableRows[i, VariableNameColumName], '_')[[1]]
-    variableNameWithoutSpecialTokens <- variableNameSplitWithUnderscore[[1]]
+    # Cast to numeric since it has a NA value in it
     numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
-    currentDummyVariableCode <- getCodeForDummyVariable(variableNameWithoutSpecialTokens, numberOfCategories)
+    currentDummyVariableCode <- getCodeForDummyVariable(variableNameSplitWithUnderscore[[1]], numberOfCategories)
     dummyVariableCode <- paste(dummyVariableCode, currentDummyVariableCode, sep = '')
   }
   if (dir.exists(projectFolderPath) == FALSE) {
