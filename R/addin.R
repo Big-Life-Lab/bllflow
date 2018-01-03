@@ -1,6 +1,6 @@
 library('rstudioapi')
 library('glue')
-source(file.path(getwd(), 'project-builder.R'))
+source(file.path(getwd(), 'R/project-builder.R'))
 
 rProjectBuilderAddin <- function() {
   webSpecCsvFilePath <- rstudioapi::getActiveDocumentContext()$path

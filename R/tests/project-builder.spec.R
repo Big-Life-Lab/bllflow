@@ -1,5 +1,5 @@
-source(file.path(getwd(), 'project-builder.R'))
-source(file.path(getwd(), 'dummy-variable.R'))
+source(file.path(getwd(), 'R/project-builder.R'))
+source(file.path(getwd(), 'R/dummy-variable.R'))
 
 testBuildProjectFiles <- function() {
   webSpecCsvFilePath <- file.path(getwd(), 'test-assets/web-specifications.csv')

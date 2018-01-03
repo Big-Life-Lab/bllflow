@@ -1,4 +1,4 @@
-source(file.path(getwd(), 'dummy-variable.R'))
+source(file.path(getwd(), 'R/dummy-variable.R'))
 
 library(glue)
 
