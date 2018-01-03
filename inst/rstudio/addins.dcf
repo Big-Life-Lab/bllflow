@@ -1,4 +1,4 @@
-Name: PMML Local Transformations
+Name: R Project Builder
 Description: Makes PMML local transformations for the current R file
 Binding: rProjectBuilderAddin
 Interactive: false
