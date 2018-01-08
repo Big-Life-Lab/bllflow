@@ -13,7 +13,14 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
     # Cast to numeric since it has a NA value in it
     numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
     currentDummyVariableCode <- getCodeForDummyVariable(categoricalVariableRows[i, VariableNameColumName], numberOfCategories)
-    dummyVariableCode <- paste(dummyVariableCode, currentDummyVariableCode, sep = '')
+    
+    if(i == 1) {
+      dummyVariableCode <- glue::glue(dummyVariableCode, currentDummyVariableCode)
+    } else {
+      dummyVariableCode <- glue::glue('{dummyVariableCode}\n\n{currentDummyVariableCode}')
+    }
+    
+    
   }
   if (dir.exists(projectFolderPath) == FALSE) {
     dir.create(projectFolderPath)

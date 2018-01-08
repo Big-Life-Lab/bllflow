@@ -13,9 +13,10 @@ testBuildProjectFiles <- function() {
   }
   print('buildProjectFiles: dummy variables file created')
   
-  actualDummyVariableFileContents <- readChar(dummyVariablesFilePath, file.info(dummyVariablesFilePath)$size)
+  actualDummyVariableFileContents <- glue::glue(readChar(dummyVariablesFilePath, file.info(dummyVariablesFilePath)$size))
   
   expectedDummyVariableFileContents <- getCodeForDummyVariable('BB6_cat5', 5)
+  expectedDummyVariableFileContents <- glue::glue('{expectedDummyVariableFileContents}\n\n{getCodeForDummyVariable("JA1_cat2", 2)}')
   
   if(actualDummyVariableFileContents != expectedDummyVariableFileContents) {
     print('Actual File Content')
