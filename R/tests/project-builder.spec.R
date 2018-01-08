@@ -15,7 +15,7 @@ testBuildProjectFiles <- function() {
   
   actualDummyVariableFileContents <- readChar(dummyVariablesFilePath, file.info(dummyVariablesFilePath)$size)
   
-  expectedDummyVariableFileContents <- getCodeForDummyVariable('BB6', 5)
+  expectedDummyVariableFileContents <- getCodeForDummyVariable('BB6_cat5', 5)
   
   if(actualDummyVariableFileContents != expectedDummyVariableFileContents) {
     print('Actual File Content')
