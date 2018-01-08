@@ -8,7 +8,7 @@ testGetCodeForDummyVariable <- function() {
   
   actualCode <- getCodeForDummyVariable(dummyVariableName, numberOfCategories)
   
-  expectedCode <- glue::glue('BB6_cat1 <- ifelse(BB6 == 1, 1, 0)BB6_cat2 <- ifelse(BB6 == 2, 1, 0)')
+  expectedCode <- glue::glue('BB6_0 <- ifelse(BB6 == 1, 1, 0)BB6_1 <- ifelse(BB6 == 2, 1, 0)')
   
   if (actualCode != expectedCode) {
     print('Actual Code: ')
