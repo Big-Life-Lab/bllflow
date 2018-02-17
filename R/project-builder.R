@@ -1,4 +1,5 @@
 source(file.path(getwd(), 'R/dummy-variable.R'))
+source(file.path(getwd(), 'R/centered-variable.R'))
 
 VariableNameColumName <- 'Variable_Name'
 
@@ -19,11 +20,26 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
     } else {
       dummyVariableCode <- glue::glue('{dummyVariableCode}\n\n{currentDummyVariableCode}')
     }
-    
-    
   }
+  
+  centeredVariableCode <- ''
+  for (i in 1:nrow(webSpecCsv)) {
+    if (grepl('cat', webSpecCsv[i, VariableNameColumName])) {
+      variableNameSplitWithUnderscore <- strsplit(categoricalVariableRows[i, VariableNameColumName], '_')[[1]]
+      # Cast to numeric since it has a NA value in it
+      numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
+      
+      for (j in 1:numberOfCategories) {
+        centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(glue::glue('{variableNameSplitWithUnderscore[[1]]}_{j}_c')), sep = '\n')
+      }
+    } else {
+      centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(glue::glue('{webSpecCsv[i, VariableNameColumName]}_c')), sep = '\n')
+    } 
+  }
+  
   if (dir.exists(projectFolderPath) == FALSE) {
     dir.create(projectFolderPath)
   }
   cat(dummyVariableCode, file = paste(projectFolderPath, '/dummy-variables.R', sep = ''))
+  cat(centeredVariableCode, file = paste(projectFolderPath, '/centered-variables.R', sep = ''))
 }
