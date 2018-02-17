@@ -25,7 +25,7 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   centeredVariableCode <- ''
   for (i in 1:nrow(webSpecCsv)) {
     if (grepl('cat', webSpecCsv[i, VariableNameColumName])) {
-      variableNameSplitWithUnderscore <- strsplit(categoricalVariableRows[i, VariableNameColumName], '_')[[1]]
+      variableNameSplitWithUnderscore <- strsplit(webSpecCsv[i, VariableNameColumName], '_')[[1]]
       # Cast to numeric since it has a NA value in it
       numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
       
