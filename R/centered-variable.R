@@ -1,5 +1,5 @@
 library(glue)
 
-getCodeForCenteredVariable <- function(centeredVariableName) {
-  return(glue::glue('{centeredVariableName} <- {centeredVariableName} - means[means$variableName="{centeredVariableName}", ]$Means'))
+getCodeForCenteredVariable <- function(uncenteredVariableName, centeredVariableName) {
+  return(glue::glue('{centeredVariableName} <- {uncenteredVariableName} - means[means$variableName="{centeredVariableName}", ]$Means'))
 }
