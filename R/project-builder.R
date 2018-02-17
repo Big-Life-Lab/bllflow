@@ -30,7 +30,7 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
       numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
       
       for (j in 1:numberOfCategories) {
-        centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(glue::glue('{webSpecCsv[i, VariableNameColumName]}_{j-1}'), glue::glue('{webSpecCsv[i, VariableNameColumName]}_{j-1}_c')), sep = '\n')
+        centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(glue::glue('{webSpecCsv[i, VariableNameColumName]}_{j}'), glue::glue('{webSpecCsv[i, VariableNameColumName]}_{j}_c')), sep = '\n')
       }
     } else {
       centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(glue::glue('{webSpecCsv[i, VariableNameColumName]}'), glue::glue('{webSpecCsv[i, VariableNameColumName]}_c')), sep = '\n')
