@@ -1,4 +1,8 @@
-Data_Holding_Name,Data_Holding,Data_Holding_Categories,Variable_Name,Label_Long,Label,Type,Variable_Name_Categories,Algorithm,Column10,Column11,Column12
-BB6,RAI-HC,9,BB6_cat5,Education,Education,Demographic,"(0,4)",RESPECT-EOL_V1,,,
-JA1,RAI-HC,9,JA1_cat2,Education,Education,Demographic,"(0,4)",RESPECT-EOL_V1,,,
-Age,RPDB,Num,age_rcs4,Age Restricted Cubic Four Knot Spline,Age Spline,Demographic,Continious,RESPECT-EOL_V1,,,
+Data_Holding_Name,Data_Holding,Data_Holding_Categories,Variable_Name,Label_Long,Label,Type,Variable_Name_Categories,Algorithm
+BB6,RAI-HC,9,BB6_cat5,Education,Education,Demographic,"(0,4)",RESPECT-EOL_V1
+JA1,RAI-HC,9,JA1_cat2,Education,Education,Demographic,"(0,4)",RESPECT-EOL_V1
+Age,RPDB,Num,age_rcs4,Age Restricted Cubic Four Knot Spline,Age Spline,Demographic,Continious,RESPECT-EOL_V1
+,,,AgeC_cont,,,,Continious,
+,,,ActiveCancerC_cat,,,,,
+,,,AgeCXActiveCancerC_int,,,,,
+,,,AgeC_cont,,,,,
