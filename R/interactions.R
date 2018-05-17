@@ -46,5 +46,5 @@ getCodeForInteraction <- function(varOne, varTwo) {
   formattedVarOne <- formatInteractionVariable(varOne)
   formattedVarTwo <- formatInteractionVariable(varTwo)
   
-  return(glue::glue('{formattedVarOne}X{formattedVarTwo} <- Interact.fun({varOne}, {varTwo})'))
+  return(glue::glue('{formattedVarOne}X{formattedVarTwo}_int <- Interact.fun({varOne}, {varTwo})'))
 }
