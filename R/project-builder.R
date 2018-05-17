@@ -10,16 +10,18 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   
   categoricalVariableRows <- webSpecCsv[which(grepl('_cat\\d', webSpecCsv[, VariableNameColumName])), ]
   dummyVariableCode <- ''
-  for (i in 1:nrow(categoricalVariableRows)) {
-    variableNameSplitWithUnderscore <- strsplit(categoricalVariableRows[i, VariableNameColumName], '_')[[1]]
-    # Cast to numeric since it has a NA value in it
-    numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
-    currentDummyVariableCode <- getCodeForDummyVariable(categoricalVariableRows[i, VariableNameColumName], numberOfCategories)
-    
-    if(i == 1) {
-      dummyVariableCode <- glue::glue(dummyVariableCode, currentDummyVariableCode)
-    } else {
-      dummyVariableCode <- glue::glue('{dummyVariableCode}\n\n{currentDummyVariableCode}')
+  if(nrow(categoricalVariableRows) != 0) {
+    for (i in 1:nrow(categoricalVariableRows)) {
+      variableNameSplitWithUnderscore <- strsplit(categoricalVariableRows[i, VariableNameColumName], '_')[[1]]
+      # Cast to numeric since it has a NA value in it
+      numberOfCategories <- as.numeric(strsplit(variableNameSplitWithUnderscore[[2]], 'cat')[[1]])[2]
+      currentDummyVariableCode <- getCodeForDummyVariable(categoricalVariableRows[i, VariableNameColumName], numberOfCategories)
+      
+      if(i == 1) {
+        dummyVariableCode <- glue::glue(dummyVariableCode, currentDummyVariableCode)
+      } else {
+        dummyVariableCode <- glue::glue('{dummyVariableCode}\n\n{currentDummyVariableCode}')
+      }
     }
   }
   
@@ -40,26 +42,46 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
       } 
     }
   } else {
-    centeredVariables <- webSpecCsv[which(grepl('C_', webSpecCsv[, VariableNameColumName])), ]
+    centeredVariables <- webSpecCsv[which(grepl('C_', webSpecCsv[, VariableNameColumName]) & grepl('_rcs1', webSpecCsv[, VariableNameColumName]) == FALSE), ]
     # Don't center rcs variables
-    centeredVariables <- webSpecCsv[which(grepl('_rcs1', webSpecCsv[, VariableNameColumName])), ]
-    for(i in nrow(centeredVariables)) {
+    centeredVariables <- centeredVariables[which(grepl('_rcs1', centeredVariables[, VariableNameColumName]) == FALSE), ]
+
+    for(i in 1:nrow(centeredVariables)) {
       unCenteredVariableName <- gsub('C_', '_', centeredVariables[i, VariableNameColumName])
       
-      centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(unCenteredVariableName, centeredVariables[i, VariableNameColumName]))
+      centeredVariableCode <- paste(centeredVariableCode, getCodeForCenteredVariable(unCenteredVariableName, centeredVariables[i, VariableNameColumName]), sep='\n')
+    }
+  }
+  
+  # Rcs Code
+  rcsCode <- ''
+  if(isPortWebSpecFile(webSpecCsv)) {
+    rcsRows <- webSpecCsv[which(grepl('_rcs1', webSpecCsv[,  VariableNameColumName])), ]
+    nonRcsRows <- webSpecCsv[which(grepl('_rcs1', webSpecCsv[, VariableNameColumName]) == FALSE), ]
+    
+    for(i in 1:nrow(rcsRows)) {
+      variableNameWithoutRcs1 <- strsplit(rcsRows[i, VariableNameColumName], '_rcs1')[[1]][[1]]
+      variableForRcsRow <- nonRcsRows[which(grepl(variableNameWithoutRcs1, nonRcsRows[, VariableNameColumName])), ]
+
+      if(nrow(variableForRcsRow) == 0) {
+        stop(glue::glue('No variable for rcs {rcsRows[i, VariableNameColumnName]}'))
+      }
+      
+      rcsCodeForRcsRow <- glue::glue('{rcsRows[i, VariableNameColumName]} <- {variableForRcsRow[1, VariableNameColumName]}')
+
+      rcsCode <- paste(rcsCode, rcsCodeForRcsRow, sep='\n')
     }
   }
   
   # Interactions code
   interactionsCode <- ''
-  interactionVariableRows <- webSpecCsv[which(grepl('_int', webSpecCsv[, VariableNameColumName])), ]
-  nonInteractionVariableRows <- webSpecCsv[which(grepl('_int', webSpecCsv[, VariableNameColumName]) == FALSE), ];
-  
-  nonInteractionVariables <- nonInteractionVariableRows[[VariableNameColumName]]
-  class(nonInteractionVariables) 
-  
-  for(i in 1:nrow(interactionVariableRows)) {
-    interactionsCode <- glue::glue('{interactionsCode}', '{getCodeForInteraction(interactionVariableRows[i, VariableNameColumName], nonInteractionVariables)}', sep='\n')
+  interactionVariableRows <- webSpecCsv[which(webSpecCsv[, 'Interactions'] != ''), ]
+  interactionsList <- buildInteractionsList(interactionVariableRows)
+
+  for(i in 1:length(interactionsList)) {
+    codeForCurrentInteraction <- getCodeForInteraction(interactionsList[[i]][[1]], interactionsList[[i]][[2]])
+    
+    interactionsCode <- paste(interactionsCode, codeForCurrentInteraction, sep='\n')
   }
   
   if (dir.exists(projectFolderPath) == FALSE) {
@@ -68,6 +90,7 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   cat(dummyVariableCode, file = paste(projectFolderPath, '/dummy-variables.R', sep = ''))
   cat(centeredVariableCode, file = paste(projectFolderPath, '/centered-variables.R', sep = ''))
   cat(interactionsCode, file = paste(projectFolderPath, '/interactions.R', sep = ''))
+  cat(rcsCode, file = paste(projectFolderPath, '/rcs.R', sep = ''))
 }
 
 isPortWebSpecFile <- function(webSpecs) {

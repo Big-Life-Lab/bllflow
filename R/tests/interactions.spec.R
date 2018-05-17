@@ -20,7 +20,3 @@ testGetCodeForInteractions <- function() {
     print('getCodeForInteraction: Correctly genereated interaction code')
   }
 }
-
-testDummyVariableFunctions <- function() {
-  testGetCodeForDummyVariable()
-}
