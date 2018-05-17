@@ -41,6 +41,8 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
     }
   } else {
     centeredVariables <- webSpecCsv[which(grepl('C_', webSpecCsv[, VariableNameColumName])), ]
+    # Don't center rcs variables
+    centeredVariables <- webSpecCsv[which(grepl('_rcs1', webSpecCsv[, VariableNameColumName])), ]
     for(i in nrow(centeredVariables)) {
       unCenteredVariableName <- gsub('C_', '_', centeredVariables[i, VariableNameColumName])
       
