@@ -5,6 +5,7 @@ source(file.path(getwd(), 'R/interactions.R'))
 VariableNameColumName <- 'variableName'
 CategoriesColumnName <- 'categories'
 CenterColumnName <- 'centre'
+DummyFlagColumnName <- 'dummy'
 CsvYesValue <- 'yes'
 
 #' Builds several R files from the web spec csv file located at the path 
@@ -24,13 +25,13 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   
   # Gets all the categorical variable rows from the web spec. Categorical
   # variable rows are ones whose VariableNameColumName ends with _cat<number>
-  categoricalVariableRows <- getCategoryVariables(webSpecCsv)
+  variablesToDummy <- getVariablesToDummy(webSpecCsv)
   # Will have all the dummying code
   dummyVariableCode <- ''
-  if(nrow(categoricalVariableRows) != 0) {
-    for (i in 1:nrow(categoricalVariableRows)) {
-      numberOfCategories <- as.numeric(categoricalVariableRows[i, CategoriesColumnName])
-      currentDummyVariableCode <- getCodeForDummyVariable(categoricalVariableRows[i, VariableNameColumName], numberOfCategories)
+  if(nrow(variablesToDummy) != 0) {
+    for (i in 1:nrow(variablesToDummy)) {
+      numberOfCategories <- as.numeric(variablesToDummy[i, CategoriesColumnName])
+      currentDummyVariableCode <- getCodeForDummyVariable(variablesToDummy[i, VariableNameColumName], numberOfCategories)
       
       # If this is the first categorical var for whom we are generating
       # dummying code we just append it to the entire dummying code
@@ -52,8 +53,8 @@ buildProjectFiles <- function(webSpecCsvFilePath, projectFolderPath) {
   for (i in 1:nrow(variablesToCenter)) {
     variableName <- variablesToCenter[i, VariableNameColumName]
     
-    # If the current row is a categorical variable
-    if (is.na(variablesToCenter[i, CategoriesColumnName])==FALSE) {
+    # If the current row is one we have to dummy
+    if (variablesToCenter[i, DummyFlagColumnName]==CsvYesValue) {
       # Cast to numeric since it has a NA value in it
       numberOfCategories <- as.numeric(variablesToCenter[i, CategoriesColumnName])
       
@@ -103,6 +104,12 @@ getCategoryVariables <- function(webSpec) {
   return(webSpec[which(is.na(webSpec[, CategoriesColumnName])==FALSE), ])
 }
 
+getVariablesToDummy <- function(webSpec) {
+  return(webSpec[which(webSpec[, DummyFlagColumnName]==CsvYesValue), ])
+}
+
 getVariablesToCenter <- function(webSpec) {
   return(webSpec[which(webSpec[, CenterColumnName] == CsvYesValue), ])
 }
+
+buildProjectFiles(file.path(getwd(), 'test-assets/respect-web-spec.csv'), file.path(getwd(), 'generated-project'))
