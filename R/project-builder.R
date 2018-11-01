@@ -111,5 +111,3 @@ getVariablesToDummy <- function(webSpec) {
 getVariablesToCenter <- function(webSpec) {
   return(webSpec[which(webSpec[, CenterColumnName] == CsvYesValue), ])
 }
-
-buildProjectFiles(file.path(getwd(), 'test-assets/respect-web-spec.csv'), file.path(getwd(), 'generated-project'))
