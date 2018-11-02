@@ -1,0 +1,94 @@
+variableName,dummy,labelLong,label,reference
+BB6_cat5,BB6_cat5_0,Grade 11 or Lower,Grade 11 or Lower,Yes
+BB6_cat5,BB6_cat5_1,High School,High School,No
+BB6_cat5,BB6_cat5_2,Technical/Trade School,Technical/Trade School,No
+BB6_cat5,BB6_cat5_3,Some College/University,Some College/University,No
+BB6_cat5,BB6_cat5_4,Unknown,Unknown,No
+IADL_cat7,IADL_cat7_0,No difficulty in any of the 3 IADLs ,No ADL difficulty,Yes
+IADL_cat7,IADL_cat7_1,Some difficulty in one IADLs but no difficulty in the other two,One IADL - some difficulty,No
+IADL_cat7,IADL_cat7_2,Some difficulty in two IADLs but no difficulty in the other one,Two IADLs - some difficulty,No
+IADL_cat7,IADL_cat7_3,Some difficulty in all three IADLs,All three IADLs - some difficulty,No
+IADL_cat7,IADL_cat7_4,Great difficulty in one IADL but less than great difficulty in the other two,One IADL - great difficuty,No
+IADL_cat7,IADL_cat7_5,Great difficulty in two IADLs but less than great difficulty in the other one,Two IADLs - great difficulty,No
+IADL_cat7,IADL_cat7_6,Great Difficulty in all three IADLs,Three IADLs - great difficulty,No
+ADL_cat7,ADL_cat7_0,Independent,Independent,Yes
+ADL_cat7,ADL_cat7_1,Supervision Required,Supervision Required,No
+ADL_cat7,ADL_cat7_2,Limited Impairment,Limited Impairment,No
+ADL_cat7,ADL_cat7_3,Extensive Assistance Required (I),Extensive Assistance Required (I),No
+ADL_cat7,ADL_cat7_4,Extensive Assistance Required (II),Extensive Assistance Required (II),No
+ADL_cat7,ADL_cat7_5,Dependent,Dependent,No
+ADL_cat7,ADL_cat7_6,Total Dependence,Total Dependence,No
+P4A_cat4,P4A_cat4_0,No Visits,No Visits,Yes
+P4A_cat4,P4A_cat4_1,One Visit,One Visit,No
+P4A_cat4,P4A_cat4_2,Two Visits,Two Visits,No
+P4A_cat4,P4A_cat4_3,Greater than Two Visits,Greater than Two Visits,No
+P4B_cat4,P4B_cat4_0,No Visits,No Visits,Yes
+P4B_cat4,P4B_cat4_1,One Visit,One Visit,No
+P4B_cat4,P4B_cat4_2,Two Visits,Two Visits,No
+P4B_cat4,P4B_cat4_3,Greater Than Two Visits,Greater Than Two Visits,No
+Renal_cat4,Renal_cat4_0,No Renal Failure/ Dialysis Not Applicable,No Renal Failure,Yes
+Renal_cat4,Renal_cat4_1,Renal Failure /Dialysis Not Applicable,Renal Failure /No Dialysis,No
+Renal_cat4,Renal_cat4_2,Renal Failure/Dialysis Scheduled Not Recieved,Renal Failure/Dialysis Scheduled Not Recieved,No
+Renal_cat4,Renal_cat4_3,Renal Failure/Dialysis Scheduled Recieved,Renal Failure/Dialysis Scheduled Recieved,No
+Oxygen_cat6,Oxygen_cat6_0,No COPD/Emphysema/Asthma/Oxygen Not Applicable,No COPD and Oxygen Not Applicable,Yes
+Oxygen_cat6,Oxygen_cat6_1,No COPD/Emphysema/Asthma/Oxygen Scheduled Not Recieved,No COPD and Oxygen Scheduled but Not Recieved,No
+Oxygen_cat6,Oxygen_cat6_2,No COPD/Emphysema/Asthma/Oxygen Scheduled Recieved,No COPD and Oxygen Recieved,No
+Oxygen_cat6,Oxygen_cat6_3,COPD/Emphysema/Asthma/Oxygen Not Applicable,COPD and Oxygen Not Applicable,No
+Oxygen_cat6,Oxygen_cat6_4,COPD/Emphysema/Asthma/Oxygen Scheduled Not Recieved,COPD and Oxygen Scheduled but Not Recieved,No
+Oxygen_cat6,Oxygen_cat6_5,COPD/Emphysema/Asthma/Oxygen Scheduled Recieved,COPD and Oxygen Recieved,No
+Cancer_cat6,Cancer_cat6_0,No Cancer/Chemotherapy Not Applicable,No Cancer,Yes
+Cancer_cat6,Cancer_cat6_1,No Cancer/Chemotherapy Scheduled Not Recieved,No Cancer/Chemotherapy Scheduled Not Recieved,No
+Cancer_cat6,Cancer_cat6_2,No Cancer/Chemotherapy Scheduled Recieved,No Cancer/Chemotherapy Scheduled Recieved,No
+Cancer_cat6,Cancer_cat6_3,Cancer/Chemotherapy Scheduled Not Applicable,Cancer/Chemotherapy Scheduled Not Applicable,No
+Cancer_cat6,Cancer_cat6_4, Cancer/Chemotherapy Scheduled Not Recieved, Cancer/Chemotherapy Scheduled Not Recieved,No
+Cancer_cat6,Cancer_cat6_5, Cancer/Chemotherapy Scheduled Recieved, Cancer/Chemotherapy Scheduled Recieved,No
+A2_cat5,A2_cat5_0,Initial Assessment,Initial Assessment,Yes
+A2_cat5,A2_cat5_1,Follow-Up Assessment,Follow-Up Assessment,No
+A2_cat5,A2_cat5_2,Routine Assessment at Fixed Intervals,Routine Assessment at Fixed Intervals,No
+A2_cat5,A2_cat5_3,Review at Return From Hospital,Review at Return From Hospital,No
+A2_cat5,A2_cat5_4,Change in Status,Change in Status,No
+A1_cat7,A1_cat7_0,Assessment in 2007,2007,Yes
+A1_cat7,A1_cat7_1,Assessment in 2008,2008,No
+A1_cat7,A1_cat7_2,Assessment in 2009,2009,No
+A1_cat7,A1_cat7_3,Assessment in 2010,2010,No
+A1_cat7,A1_cat7_4,Assessment in 2011,2011,No
+A1_cat7,A1_cat7_5,Assessment in 2012,2012,No
+A1_cat7,A1_cat7_6,Assessment in 2013,2013,No
+J1DE_cat2,J1DE_cat2_0,Disease Diagnosis Dementia/Alzeihemers Not Present,No Dementia/Alzeihemers,Yes
+J1DE_cat2,J1DE_cat2_1,Disease Diagnosis Dementia/Alzeihemers Present, Dementia/Alzeihemers,No
+J1A_cat2,J1A_cat2_0,Disease Diagnosis Cerebrovbascular Accident (Stroke) Not Present,No Stroke,Yes
+J1A_cat2,J1A_cat2_1,Disease Diagnosis Cerebrovbascular Accident (Stroke) Present,Stroke,No
+J1B_cat2,J1B_cat2_0,Disease Diagnosis Congestive Heart Failure Not Present,No Congestive Heart Failure,Yes
+J1B_cat2,J1B_cat2_1,Disease Diagnosis Congestive Heart Failure Present,Congestive Heart Failure,No
+J1C_cat2,J1C_cat2_0,Disease Diagnosis Coronary Heart Disease Not Present,No Coronary Heart Diseases,Yes
+J1C_cat2,J1C_cat2_1,Disease Diagnosis Coronary Heart Disease Present,Coronary Heart Diseases,No
+J1D_cat2,J1D_cat2_0,Disease Diagnosis Hypertension Not Present,No Hypertension,Yes
+J1D_cat2,J1D_cat2_1,Disease Diagnosis Hypertension Present,Hypertension,No
+J1K_cat2,J1K_cat2_0,Disease Diagnosis Multiple Sclerosis Not Present,No Multiple Sclerosis,Yes
+J1K_cat2,J1K_cat2_1,Disease Diagnosis Multiple Sclerosis Present,Multiple Sclerosis,No
+J1L_cat2,J1L_cat2_0,Disease Diagnosis-Parkinsonism Not Present,No Parkinsons,Yes
+J1L_cat2,J1L_cat2_1,Disease Diagnosis-Parkinsonism Present,Parkinsons,No
+K2E_cat2,K2E_cat2_0,Problem Conditions Present on Two or More days Vomiting Not Present,No Vomiting,Yes
+K2E_cat2,K2E_cat2_1,Problem Conditions Present on Two or More days Vomiting Present,Vomiting,No
+K3D_cat2,K3D_cat2_0,Problem Conditions Edema Not Present,No Edema,Yes
+K3D_cat2,K3D_cat2_1,Problem Conditions Edema Present,Edema,No
+K3E_cat2,K3E_cat2_0,Problem  Conditions Shortness of Breath Not Present,No Shortness of Breath,Yes
+K3E_cat2,K3E_cat2_1,Problem  Conditions Shortness of Breath Present,Shortness of Breath,No
+L1A_cat2,L1A_cat2_0,Weight-Weight Loss Not Present,No Weight Loss,Yes
+L1A_cat2,L1A_cat2_1,Weight-Weight Loss Present,Weight Loss,No
+L2B_cat2,L2B_cat2_0,Consumption - Noticeable Decrease in Amount of Food or Fluids Consumed Not Present,No Decrease in Food and Fluid,Yes
+L2B_cat2,L2B_cat2_1,Consumption - Noticeable Decrease in Amount of Food or Fluids Consumed Present,Decrease in Food and Fluid,No
+L2C_cat2,L2C_cat2_0,Consumption-Insufficient Fluid Not Present,No Insufficient Fluid,Yes
+L2C_cat2,L2C_cat2_1,Consumption-Insufficient Fluid Present,Insufficient Fluid,No
+B2B_cat2,B2B_cat2_0,Cognitive Skills-Worsening Decision Making Not Present,No Worsening Decision Making,Yes
+B2B_cat2,B2B_cat2_1,Cognitive Skills-Worsening Decision Making Present,Worsening Decision Making,No
+H3_cat2,H3_cat2_0,ADL Decline Not Present,No ADL Decline,Yes
+H3_cat2,H3_cat2_1,ADL Decline Present,ADL Decline,No
+K8E_cat2,K8E_cat2_0,Health Status Indicators-Prognosis Status of less than Six Months to Live ,No Six Month Prognosis,Yes
+K8E_cat2,K8E_cat2_1,Health Status Indicators-Prognosis Status of less than Six Months to Live,Six Month Prognosis,No
+Sex_cat2,Sex_cat2_0,Female,Femle,Yes
+Sex_cat2,Sex_cat2_1,Male,Male,No
+Age_cont,Age_rcs5_1,Age Restricted Cubic Spline Knot 1,Age RCS 1,NA
+Age_cont,Age_rcs5_2,Age Restricted Cubic Spline Knot 2,Age RCS 2,NA
+Age_cont,Age_rcs5_3,Age Restricted Cubic Spline Knot 3,Age RCS 3,NA
+Age_cont,Age_rcs5_4,Age Restricted Cubic Spline Knot 4,Age RCS 4,NA
