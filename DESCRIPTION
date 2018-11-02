@@ -1,11 +1,15 @@
 Package: BLLFlow
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Big Life Lab Flow - a Workflow for Predictive Studies
+Description: An implementation of predictive algorithm studies.
+    Predictive Modelling Mark-up Language (PMML) is suported.
+    The workflow has three steps: data prepartation; model development, 
+    and; model deployment.
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author@R: person("Yulric","Sequeira", email = "ysequeira@ohri.ca", role = c("aut", "cre"))
+URL: https://github.com/Big-Life-Lab/BLLFlow
+BugReports: https://github.com/Big-Life-Lab/BLLFlow/issues
+Maintainer: Yulric Sequeira <ysequeira@ohri.ca>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
