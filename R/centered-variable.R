@@ -9,7 +9,9 @@ library(glue)
 #' @export
 #'
 #' @examples
-getCodeForCenteredVariable <- function(uncenteredVariableName, centeredVariableName) {
+getCodeForCenteredVariable <- function(variableNameToCenter) {
+  centeredVariableName <- glue::glue('{variableNameToCenter}_c')
+  
   # The final code looks like:
   # BB6_1_c <- BB6_1 - means[means$Name=="BB6_1_c", ]$Means
   # where uncenteredVariableName = BB6_1_c and centeredVariableName = BB6_1
@@ -18,5 +20,5 @@ getCodeForCenteredVariable <- function(uncenteredVariableName, centeredVariableN
   # 2. means is a dataframe with a Name and a Means column
   # 3. Name matches with the name of the centeredVariableName var and Means
   #    has the mean for it
-  return(glue::glue('{centeredVariableName} <- {uncenteredVariableName} - means[means$Name=="{centeredVariableName}", ]$Means'))
+  return(glue::glue('{centeredVariableName} <- {variableNameToCenter} - means[means$Name=="{centeredVariableName}", ]$Means'))
 }
