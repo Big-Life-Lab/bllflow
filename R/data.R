@@ -13,17 +13,19 @@
 #"diamonds"
 
 
+###### only for data in the data folder .rda format.
+
 #' 500 rows containing examples profiles for the RESPECT-EOL algorithm.
 #' 
 #' Data used to validate the calculation of predictive scores for the
 #' RESPECT-EOL algorithm
 
 #'
-#' @format A data frame with 5oo rows and XX variables:
+#' @format A data frame with 500 rows and XX variables:
 #' \describe{
 #'   \item{variableName}{Predictor name}
 #'   
 #'   
 #' }
 #' @source \url{TBA}
-"RESPECT-EOL_validation.csv"
+# "RESPECT-EOL_validation.csv"

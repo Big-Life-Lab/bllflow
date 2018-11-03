@@ -2,8 +2,7 @@ library(glue)
 
 #' Returns R code to center a variable
 #'
-#' @param uncenteredVariableName The name of the variable to center
-#' @param centeredVariableName The name of the variable after it has been centered
+#' @param variableNameToCenter The name of the variable to center
 #'
 #' @return string
 #' @export
