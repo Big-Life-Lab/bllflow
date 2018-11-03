@@ -1,4 +1,4 @@
-Package: BLLFlow
+Package: bllFlow
 Type: Package
 Title: Big Life Lab Flow - a Workflow for Predictive Studies
 Description: An implementation of predictive algorithm studies.
@@ -13,3 +13,4 @@ Maintainer: Yulric Sequeira <ysequeira@ohri.ca>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.0
