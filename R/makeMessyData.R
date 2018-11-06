@@ -32,7 +32,7 @@ library(tidyr)
 #' dirtydata
 #'  sink()
 #' 
-#' dirtybmifunc(originaldata,BMI, 0, 0.05, missiongData)
+#' dirtyData(originaldata,BMI, 0, 0.05, missiongData)
 #' sink("miss")
 #' missingdata
 #' sink()
@@ -100,14 +100,3 @@ dirtyData <-function (datasetname,
   assign(deparse(substitute(outdataset)), cbind(originaldata, datamessedup), envir=.GlobalEnv)
   
 }
-
-sink("mess")
-dirtydata
-sink()
-
-
-dirtyData(originaldata,BMI, 1, 0.05, missingdata)
-
-sink("miss")
-missingdata
-sink()
