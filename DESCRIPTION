@@ -1,6 +1,5 @@
 Package: bllFlow
 Type: Package
-Encoding: UTF-8
 Title: Big Life Lab Flow - a Workflow for Predictive Studies
 Description: An implementation of predictive algorithm studies.
     Predictive Modelling Mark-up Language (PMML) is suported.
@@ -18,6 +17,8 @@ Imports:
   rstudioapi,
   glue
 Suggests:
+    knitr,
+    rmarkdown
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
 Maintainer: Yulric Sequeira <ysequeira@ohri.ca>
@@ -25,3 +26,4 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.0
+VignetteBuilder: knitr

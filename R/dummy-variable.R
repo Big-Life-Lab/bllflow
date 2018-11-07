@@ -9,6 +9,7 @@ library(glue)
 #' @export
 #'
 #' @examples
+
 getCodeForDummyVariable <- function(dummyVariableName, numberOfCategories) {
   # Will hold the dummying code 
   code <- ''
