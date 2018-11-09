@@ -25,15 +25,19 @@ library(Hmisc) # for variable labels
 #'
 #' @examples
 #' ## Not run:
-#'
+#'df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
 #'
 #' ## End(Not run)
-#' df$ttEvent <- makeEventDate(df, df$risk, 1825)
 #' # each ovservation as event probablity of df$risk
-#' df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
+#' df$ttEvent <- makeEventDate(df, df$risk, 1825)
 #' # add variable labeles
+#' df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
+#' #check the label
+#' label(df$ttEvent)
+#'
 #' df$ttcensor <- makeEventDate(df, .01, 1825)
-makeEventDate <- function (df, eventProbability, followUpTime, eventLabel = "Time to event", eventUnit ) {
+#' #
+makeEventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
   #if !eventLabel = "Time to event"
   df$r <-
     runif(nrow(df))  # create temporary list of random probablities
@@ -45,15 +49,8 @@ makeEventDate <- function (df, eventProbability, followUpTime, eventLabel = "Tim
   )
 
   # Don't forget the label!
-  label(timeToEvent) =  eventLabel
+  label(timeToEvent) =  label
 
   return (timeToEvent)
 
 }
-# checks
-df <-
-  as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
-df$ttEvent <- makeEventDate(df, .01, 1825)
-label(df$ttEvent)
-df$ttEvent <- makeEventDate(df, .01, 1825, eventLable = "test")
-label(df$ttEvent)
