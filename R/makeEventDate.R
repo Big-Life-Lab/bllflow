@@ -1,3 +1,4 @@
+library(Hmisc) # for variable labels
 #' Add an event date, when you only have an event probability
 #'
 #' To create example data for algorithm development.
@@ -22,16 +23,37 @@
 #' @param probablityCompetingEvent (optional) Probablity the observation was a
 #' competing event.
 #'
-#' @example df$ttEvent <- makeEventDate(df, df$risk, 1825)
+#' @examples
+#' ## Not run:
+#'
+#'
+#' ## End(Not run)
+#' df$ttEvent <- makeEventDate(df, df$risk, 1825)
 #' # each ovservation as event probablity of df$risk
-#' @example df$ttcensor <- makeEventDate(df, .01, 1825)
-makeEventDate <- function (df, eventProbability, followUpTime) {
+#' df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
+#' # add variable labeles
+#' df$ttcensor <- makeEventDate(df, .01, 1825)
+makeEventDate <- function (df, eventProbability, followUpTime, eventLabel = "Time to event", eventUnit ) {
+  #if !eventLabel = "Time to event"
   df$r <-
     runif(nrow(df))  # create temporary list of random probablities
 
-  return (ifelse(
+  timeToEvent <- ifelse(
     df$r <= eventProbability,
-    as.integer(totalTime * df$r),
-    totalTime
-  ))
+    as.integer(followUpTime * df$r),
+    followUpTime
+  )
+
+  # Don't forget the label!
+  label(timeToEvent) =  eventLabel
+
+  return (timeToEvent)
+
 }
+# checks
+df <-
+  as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+df$ttEvent <- makeEventDate(df, .01, 1825)
+label(df$ttEvent)
+df$ttEvent <- makeEventDate(df, .01, 1825, eventLable = "test")
+label(df$ttEvent)
