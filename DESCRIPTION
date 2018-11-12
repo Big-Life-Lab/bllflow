@@ -15,10 +15,14 @@ Depends:
   R (>= 3.2)
 Imports:
   rstudioapi,
-  glue
+  glue,
+  Hmisc,
+  tableone,
+  tidyr,
+  dplyr
 Suggests:
-    knitr,
-    rmarkdown
+  knitr,
+  rmarkdown
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
 Maintainer: Yulric Sequeira <ysequeira@ohri.ca>

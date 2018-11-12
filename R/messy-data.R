@@ -1,5 +1,4 @@
 library(tidyr)
-
 #' Makes 'messy' data
 #' makes invalid and missing data to a dataset that has been previously 
 #' cleaned.
