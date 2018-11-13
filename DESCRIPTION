@@ -10,7 +10,8 @@ Date: 2018-11-02
 Authors@R: c( 
   person(given = "Yulric", family = "Sequeira", email = "ysequeira@ohri.ca", role = c("aut", "cre")),
   person(given = "Doug", family = "Manuel", email = "dmanuel@ohri.ca", role = c("aut"), comment = c(ORCiD = "0000-0003-0912-0845"))
-  )
+  ),
+  person(given = "Meltem", family = "Tuna", email = "mtuna@ohri.ca", role = c("aut"))
 Depends:
   R (>= 3.2)
 Imports:
