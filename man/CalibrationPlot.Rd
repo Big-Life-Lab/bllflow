@@ -37,14 +37,6 @@ library(curl)
 ##save plot
 #myPlot <- CalibrationPlot(data, 'observed', 'predicted', 'Female Risk Decile')
 
-##export as an image
-##image export will be saved in your working directory
-#Png <- plotly_IMAGE(myPlot, format=”png”, out_file = "Myplotl-test-image.png")
-#Jpeg <- plotly_IMAGE(myPlot, format = "jpeg", out_file = "Myplot-test-image.jpeg")
-#Svg <- plotly_IMAGE(myPlot, format = "svg",  out_file = "Myplot-test-image.svg")
-#Pdf <- plotly_IMAGE(myPlot, format = "pdf",  out_file = "Myplot-test-image.pdf")
-  
-  
 
 
 }
