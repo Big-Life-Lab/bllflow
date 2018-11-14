@@ -32,21 +32,14 @@ library(curl)
 
 
 ##check variables for appropriate observed and predicted variable names
-#head(data)
+#head(data, 2L)
 
 ##View plot
 #OvP(data,'observed','predicted', 'Observed vs Predicted for Female Risk Decile', 'Risk Decile')
 
 ##save plot
 #myPlot <- OvP(data,'observed','predicted', 'Observed vs Predicted for Female Risk Decile', 'Risk Decile')
-
-##export as an image
-##image export will be saved in your working directory
-#Png <- plotly_IMAGE(myPlot, format=”png”, out_file = "Myplotl-test-image.png")
-#Jpeg <- plotly_IMAGE(myPlot, format = "jpeg", out_file = "Myplot-test-image.jpeg")
-#Svg <- plotly_IMAGE(myPlot, format = "svg",  out_file = "Myplot-test-image.svg")
-#Pdf <- plotly_IMAGE(myPlot, format = "pdf",  out_file = "Myplot-test-image.pdf")
-  
+ 
 
 }
 
