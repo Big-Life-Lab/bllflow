@@ -1,31 +1,13 @@
-#' Prices of 50,000 round cut diamonds.
+#' 500 examples of RESPECT observation
 #'
-#' A dataset containing the prices and other attributes of almost 54,000
-#' diamonds.
-#'
-#' @format A data frame with 53940 rows and 10 variables:
-#' \describe{
-#'   \item{price}{price, in US dollars}
-#'   \item{carat}{weight of the diamond, in carats}
-#'   ...
-#' }
-#' @source \url{http://www.diamondse.info/}
-#"diamonds"
-
-
-###### only for data in the data folder .rda format.
-
-#' 500 rows containing examples profiles for the RESPECT-EOL algorithm.
-#' 
+#' A dataset containing all predictors and correct score values for RESPECT. 
 #' Data used to validate the calculation of predictive scores for the
 #' RESPECT-EOL algorithm
-
 #'
-#' @format A data frame with 500 rows and XX variables:
+#' @format A data frame with 500 rows and X? variables:
 #' \describe{
-#'   \item{variableName}{Predictor name}
-#'   
-#'   
+#'   \item{risk}{6-month risk of death from all causes}
+#'   ...
 #' }
 #' @source \url{TBA}
-# "RESPECT-EOL_validation.csv"
+# "RESPECT-EOL_validation"
