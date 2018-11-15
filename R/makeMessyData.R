@@ -23,8 +23,8 @@ library(tidyr)
 #' @export
 #'
 #' @examples 
-#' These are more like 'vingettes' TODO: make a vingett and change
-#' to simple function examples.
+#' # These are more like 'vingettes' TODO: make a vingett and change
+#' # to simple function examples.
 #' originaldata<-as.data.frame(read.csv('messyd.csv'))
 #' dirtyData(originaldata,BMI, 1, 0.05, dirtyData)
 #' 
