@@ -1,37 +1,34 @@
-#' Creates a calibration plot using plotly package. Returns an Observed(or actual) vs predicted plot. Used for model fit visualization
+#' Calibration Plot
+#' Creates a calibration plot using plotly package. Returns an actual vs predicted plot. Used for model fit visualization
 #'
 #' @usage   CalibrationPlot(data, observed, predicted, title)
 #'
 #'@param data   a data.frame
-#'@param observed variable of observed observation from data.frame
-#'@param predicted  variable of predicted observations from data.frame
-#'@param title    an overall title for the plot (use NA for no title)
+#'@param observed variable of observed observation from data.frame, object of class string
+#'@param predicted  variable of predicted observations from data.frame, object of class string
+#'@param title    an overall title for the plot (use NA for no title), object of class string
 #'
 #'@author Molly Campbell
 #'
 #'@examples
 #'
 #'	##Load packages
-#' library(plotly)
-##'library(curl)
+#'library(plotly)
+#'library(curl)
 #'
 #'	##Load Female risk decile data from Mortality Population Risk csv from GitHub
-#' data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
+#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
 #'
 #'	##check variables for appropriate observed and predicted variable names
-#' head(data, 2L)
+#'head(data, 2L)
 #'
 #'	##View plot - will retrun plot generated in plotly in R studio viewer
-#' CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
-#'
-#'	##save plot
-#'myPlot <- CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')
-#'@export
+#'CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
 
-##observed, predicted, and title arguments must be input as strings (ie. 'Plot Title')
+
+
 CalibrationPlot<- function(data, observed, predicted, title) {
 
-## Observed vs Predicted scatter plot
 trace1<-list(
              x= data[[observed]],
              y= data[[predicted]],
@@ -94,5 +91,5 @@ p <- layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layou
 return(p)
 }
 
-
+roxygen2::roxygenise()
 
