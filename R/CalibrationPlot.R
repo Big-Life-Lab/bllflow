@@ -1,40 +1,32 @@
-## Creates a calibration plot using plotly package. Returns an Observed(or actual) vs predicted plot. Used for model fit visualization
-##
-## @usage   CalibrationPlot(data, observed, predicted, title)
-##
-##@param data   a data.frame
-##@param observed variable of observed observation from data.frame
-##@param predicted  variable of predicted observations from data.frame
-##@param title    an overall title for the plot (use NA for no title)
-##
-##@author Molly Campbell
-##
-##@examples
-##
-##	##Load packages
-## library(plotly)
-## library(curl)
-##
-##	##Load Female risk decile data from Mortality Population Risk csv from GitHub
-## data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
-##
-##	##check variables for appropriate observed and predicted variable names
-## head(data)
-##
-##	##View plot - will retrun plot generated in plotly in R studio viewer
-## CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
-##
-##	##save plot
-## myPlot <- CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')
-##
-##	##export as an image
-##	##image export will be saved in your working directory
-## Png <- plotly_IMAGE(myPlot, format=”png”, out_file = "Myplot-image.png")
-## Jpeg <- plotly_IMAGE(myPlot, format = "jpeg", out_file = "Myplot-image.jpeg")
-## Svg <- plotly_IMAGE(myPlot, format = "svg",  out_file = "Myplot-image.svg")
-## Pdf <- plotly_IMAGE(myPlot, format = "pdf",  out_file = "Myplot-image.pdf")
-##
-##@export
+#' Creates a calibration plot using plotly package. Returns an Observed(or actual) vs predicted plot. Used for model fit visualization
+#'
+#' @usage   CalibrationPlot(data, observed, predicted, title)
+#'
+#'@param data   a data.frame
+#'@param observed variable of observed observation from data.frame
+#'@param predicted  variable of predicted observations from data.frame
+#'@param title    an overall title for the plot (use NA for no title)
+#'
+#'@author Molly Campbell
+#'
+#'@examples
+#'
+#'	##Load packages
+#' library(plotly)
+##'library(curl)
+#'
+#'	##Load Female risk decile data from Mortality Population Risk csv from GitHub
+#' data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
+#'
+#'	##check variables for appropriate observed and predicted variable names
+#' head(data, 2L)
+#'
+#'	##View plot - will retrun plot generated in plotly in R studio viewer
+#' CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
+#'
+#'	##save plot
+#'myPlot <- CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')
+#'@export
 
 ##observed, predicted, and title arguments must be input as strings (ie. 'Plot Title')
 CalibrationPlot<- function(data, observed, predicted, title) {
