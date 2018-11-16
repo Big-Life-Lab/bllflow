@@ -10,7 +10,7 @@
 #' @examples
 bll_flow <- function(x, label="Not Defined") {
   class(x) <- c('bll_flow', class(x))
-  attr(x, 'label') = label
+  attr(x, 'label') <- label
   
   invisible(x)
 }

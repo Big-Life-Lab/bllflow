@@ -26,7 +26,7 @@ center.bll_flow <- function(x, mean) {
   centered_x <- x - mean;
   
   # Make it an instance of the bll_flow class
-  bll_flow(centered_x);
+  bll_flow(centered_x, cat(attr(x, 'label'), 'Centered'));
   # Add an attribute indicating this is centered
   attr(centered_x, 'center') <- TRUE;
   
