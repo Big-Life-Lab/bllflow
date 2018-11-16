@@ -15,7 +15,7 @@ Depends:
   R (>= 3.2)
 Imports:
   rstudioapi,
-  glue
+  glue,
   tidyr
 Suggests:
     knitr,
