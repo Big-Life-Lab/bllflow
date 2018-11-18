@@ -1,32 +1,26 @@
+library(plotly)
 #' Observed vs Predicted Plot
 #'  Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.
 #'
-#' @usage   OvP(data, observed, predicted, title, ylab)
+#' @usage   OvPPlot(data, observed, predicted, title, ylab)
 #'
-#'@param data	        a data.frame
-#'@param observed	variable of observed observation from data.frame, object of class string
-#'@param predicted	variable of predicted observations from data.frame, object of class string
-#'@param title	        an overall title for the plot (use NA for no title), object of class string
-#'@param ylab	        a title for the y axis (use NA for no title), object of class string
+#'@param data	 a data.frame with observed events and predicted risk estimates
+#'@param observed	 variable of observed observation from data.frame, object of class string
+#'@param predicted	 variable of predicted observations from data.frame, object of class string
+#'@param title	 an overall title for the plot (use NA for no title), object of class string
+#'@param ylab	 a title for the y axis (use NA for no title), object of class string
 #'
 #'@author Molly Campbell
 #'
 #'@examples
-#'
 #'	##Load packages
 #' library(plotly)
-#' library(curl)
-#'	##Load Female risk decile data from Mortality Population Risk csv from GitHub
-#' data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkp##PvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
+#' #Load Female risk decile data from Mortality Population Risk csv from GitHub
+#' data <- data.frame(read.csv("inst/extdata/RiskDecile.csv")) 
 #'
-#'	##view plot - will return plot generated in plotly in R studio viewer
-#' OvP(data, 'observed', 'predicted', 'Observed vs Predicted for Female Risk Decile', ‘Risk Decile’)  
-
-
-
-
-
-OvP<- function(data, observed, predicted, title, ylab){
+#' #view plot - will return plot generated in plotly in R studio viewer
+#' OvPPlot(data, 'observed', 'predicted', 'Observed vs Predicted for Female Risk Decile', ‘Risk Decile’)  
+OvPPlot <- function(data, observed, predicted, title, ylab){
 
 data$NumObs <- 1:(nrow(data))
   
@@ -69,9 +63,9 @@ layout <- list(
   )
 )
 
-p <- plot_ly()
-p <- add_trace(p, x=trace1$x, y=trace1$y, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type, orientation=trace1$orientation)
-p <- add_trace(p, x=trace2$x, y=trace2$y, marker=trace2$marker, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type, name=trace2$name)
-p <- layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
+p <- plotly::plot_ly()
+p <- plotly::add_trace(p, x=trace1$x, y=trace1$y, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type, orientation=trace1$orientation)
+p <- plotly::add_trace(p, x=trace2$x, y=trace2$y, marker=trace2$marker, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type, name=trace2$name)
+p <- plotly::layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
 return(p)
 }
