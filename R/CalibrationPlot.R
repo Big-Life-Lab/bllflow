@@ -1,3 +1,4 @@
+library(plotly)
 #' Calibration Plot
 #' Creates a calibration plot using plotly package. Returns an actual vs predicted plot. Used for model fit visualization
 #'
@@ -11,22 +12,17 @@
 #'@author Molly Campbell
 #'
 #'@examples
-#'
 #'	##Load packages
-#'library(plotly)
-#'library(curl)
+#' library(plotly)
 #'
-#'	##Load Female risk decile data from Mortality Population Risk csv from GitHub
-#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
+#' #Load Female risk decile data from Mortality Population Risk csv
+#' data <- as.data.frame(read.csv("inst/extdata/RiskDecile.csv")) 
 #'
 #'	##check variables for appropriate observed and predicted variable names
-#'head(data, 2L)
+#' head(data, 2L)
 #'
 #'	##View plot - will retrun plot generated in plotly in R studio viewer
-#'CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
-
-
-
+#' CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
 CalibrationPlot<- function(data, observed, predicted, title) {
 
 trace1<-list(
@@ -83,13 +79,11 @@ layout<- list(
 )
 
 
-p <- plot_ly()
+p <- plotly::plot_ly()
 ## Combine all traces and layout options as defined above  
-p <- add_trace(p, x=trace1$x, y=trace1$y, error_x=trace1$error_x, error_y=trace1$error_y, marker=trace1$marker, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type)
-p <- add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type)
-p <- layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis)
+p <- plotly::add_trace(p, x=trace1$x, y=trace1$y, error_x=trace1$error_x, error_y=trace1$error_y, marker=trace1$marker, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type)
+p <- plotly::add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type)
+p <- plotly::layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis)
+
 return(p)
 }
-
-
-
