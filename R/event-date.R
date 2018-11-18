@@ -1,16 +1,18 @@
 library(Hmisc) # for variable labels
 #' Add an event date, when you only have an event probability
 #'
+#' @description 
 #' To create example data for algorithm development.
+#' 
 #' Use case: You have validation scoring data with event probablity but not
 #' event date or censoring date.
+#' 
 #' Use case: You have cohort data with only exposure variables and you would
 #' like to create a fictious event or censoring events.
-#'
 #' @param df (required) Data frame with event propobablity. Each row represents
 #'  an observation.
 #' @param eventProbability (required) Target event probablity. Event probability
-#' e.g. 5-year risk of death is 0.2 represents 20% proabality of dying over
+#' e.g. 5-year risk of death is 0.2 represents 20 \% proabality of dying over
 #' 5 years or 1825 days.
 #' @param followUpTime (required) Time period for event probablity
 #' @param eventLabel (optional) Name of event. If missing, default to 'Time to
@@ -20,22 +22,25 @@ library(Hmisc) # for variable labels
 #' follow-up prior to end of follow up (followUpTime)
 #' @param probablityCompetingEvent (optional) Probablity the observation was a
 #' competing event.
+#' @param label Internal function from Hmisc used for adding labels.
 #' #' @return List with event times. Returned list length = list length of df. Event
 #' date =  totalTime (censored), if no event.
+#' @keywords internal label
 #' @examples
 #' ## Not run:
-#'df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+#' # df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
 #'
 #' ## End(Not run)
 #' # each ovservation as event probablity of df$risk
-#' df$ttEvent <- makeEventDate(df, df$risk, 1825)
+#' # df$ttEvent <- makeEventDate(df, df$risk, 1825)
 #' # add variable labeles
-#' df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
+#' # df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
 #' #check the label
-#' label(df$ttEvent)
+#' # label(df$ttEvent)
 #'
-#' df$ttcensor <- makeEventDate(df, .01, 1825)
+#' # df$ttcensor <- makeEventDate(df, .01, 1825)
 #' #
+#' @export
 makeEventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
   #if !eventLabel = "Time to event"
   df$r <-
@@ -46,9 +51,9 @@ makeEventDate <- function (df, eventProbability, followUpTime, label = "Time to 
     as.integer(followUpTime * df$r),
     followUpTime
   )
-
+    
   # Don't forget the label!
-  label(timeToEvent) =  label
+  label(timeToEvent) <- label
 
   return (timeToEvent)
 }

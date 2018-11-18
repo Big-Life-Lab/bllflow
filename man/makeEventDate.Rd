@@ -12,10 +12,14 @@ makeEventDate(df, eventProbability, followUpTime,
 an observation.}
 
 \item{eventProbability}{(required) Target event probablity. Event probability
-e.g. 5-year risk of death is 0.2 represents 20% proabality of dying over
+e.g. 5-year risk of death is 0.2 represents 20 \% proabality of dying over
 5 years or 1825 days.}
 
 \item{followUpTime}{(required) Time period for event probablity}
+
+\item{label}{Internal function from Hmisc used for adding labels.
+#' @return List with event times. Returned list length = list length of df. Event
+date =  totalTime (censored), if no event.}
 
 \item{eventLabel}{(optional) Name of event. If missing, default to 'Time to
 event'.}
@@ -26,20 +30,20 @@ event'.}
 follow-up prior to end of follow up (followUpTime)}
 
 \item{probablityCompetingEvent}{(optional) Probablity the observation was a
-competing event.
-#' @return List with event times. Returned list length = list length of df. Event
-date =  totalTime (censored), if no event.}
+competing event.}
 }
 \description{
 To create example data for algorithm development.
+
 Use case: You have validation scoring data with event probablity but not
 event date or censoring date.
+
 Use case: You have cohort data with only exposure variables and you would
 like to create a fictious event or censoring events.
 }
 \examples{
 ## Not run:
-df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+# df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
 
 ## End(Not run)
 # each ovservation as event probablity of df$risk
@@ -52,3 +56,5 @@ label(df$ttEvent)
 df$ttcensor <- makeEventDate(df, .01, 1825)
 #
 }
+\keyword{internal}
+\keyword{label}
