@@ -27,21 +27,24 @@ library(Hmisc) # for variable labels
 #' date =  totalTime (censored), if no event.
 #' @keywords internal label
 #' @examples
-#' ## Not run:
-#' # df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
-#'
-#' ## End(Not run)
+#' # load the test data in the bllFlow package
+#' \dontrun{
+#'  df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+#'  
+#'  # or 
+#'  # df <- RESPECT-EOL_validation
+#'  
 #' # each ovservation as event probablity of df$risk
-#' # df$ttEvent <- makeEventDate(df, df$risk, 1825)
-#' # add variable labeles
-#' # df$ttEvent <- makeEventDate(df, df$risk, 1825, eventLabel = "time to death (all-cause)")
+#'  # df$ttEvent <- eventDate(df, df$risk, 1825)
+#'  add variable labeles
+#'  # df$ttEvent <- eventDate(df, df$risk, 1825, label = "time to death (all-cause)")
 #' #check the label
-#' # label(df$ttEvent)
+#'  # label(df$ttEvent)
 #'
-#' # df$ttcensor <- makeEventDate(df, .01, 1825)
-#' #
-#' @export
-makeEventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
+#'  # df$ttcensor <- eventDate(df, .01, 1825)
+#' }
+#' @export eventDate
+eventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
   #if !eventLabel = "Time to event"
   df$r <-
     runif(nrow(df))  # create temporary list of random probablities
@@ -53,7 +56,7 @@ makeEventDate <- function (df, eventProbability, followUpTime, label = "Time to 
   )
     
   # Don't forget the label!
-  label(timeToEvent) <- label
+  Hmisc::label(timeToEvent) <- label
 
   return (timeToEvent)
 }
