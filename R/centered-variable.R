@@ -19,5 +19,5 @@ getCodeForCenteredVariable <- function(variableNameToCenter) {
   # 2. means is a dataframe with a Name and a Means column
   # 3. Name matches with the name of the centeredVariableName var and Means
   #    has the mean for it
-  return(glue::glue('{centeredVariableName} <- {variableNameToCenter} - means[means$Name=="{centeredVariableName}", ]$Means'))
+  return(glue::glue('{centeredVariableName} <- bllFlow::center({variableNameToCenter}, means[means$Name=="{centeredVariableName}", ]$Means)'))
 }
