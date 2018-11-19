@@ -15,7 +15,8 @@ Depends:
   R (>= 3.2)
 Imports:
   rstudioapi,
-  glue
+  glue,
+  plotly
 Suggests:
     knitr,
     rmarkdown
