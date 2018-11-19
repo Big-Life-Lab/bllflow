@@ -46,12 +46,12 @@ library(Hmisc) # for variable labels
 #' @export eventDate
 eventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
   #if !eventLabel = "Time to event"
-  df$r <-
+  r <-
     runif(nrow(df))  # create temporary list of random probablities
 
   timeToEvent <- ifelse(
-    df$r <= eventProbability,
-    as.integer(followUpTime * df$r),
+    r <= eventProbability,
+    as.integer(followUpTime * r),
     followUpTime
   )
     
