@@ -11,15 +11,15 @@ library(Hmisc) # for variable labels
 #' like to create a fictious event or censoring events.
 #' @param df (required) Data frame with event propobablity. Each row represents
 #'  an observation.
-#' @param eventProbability (required) Target event probablity. Event probability
+#' @param eventprobability (required) Target event probablity. Event probability
 #' e.g. 5-year risk of death is 0.2 represents 20 \% proabality of dying over
 #' 5 years or 1825 days.
-#' @param followUpTime (required) Time period for event probablity
+#' @param followuptime (required) Time period for event probablity
 #' @param eventLabel (optional) Name of event. If missing, default to 'Time to
 #' event'.
 #' @param eventUnit (optional) Time unit for event. e.g. days
 #' @param probablityWithdraw (optional) Probablity the observation was lost to
-#' follow-up prior to end of follow up (followUpTime)
+#' follow-up prior to end of follow up (followuptime)
 #' @param probablityCompetingEvent (optional) Probablity the observation was a
 #' competing event.
 #' @param label Internal function from Hmisc used for adding labels.
@@ -35,28 +35,28 @@ library(Hmisc) # for variable labels
 #'  # df <- RESPECT-EOL_validation
 #'  
 #' # each ovservation as event probablity of df$risk
-#'  # df$ttEvent <- eventDate(df, df$risk, 1825)
+#'  # df$ttEvent <- eventdate(df, df$risk, 1825)
 #'  add variable labeles
-#'  # df$ttEvent <- eventDate(df, df$risk, 1825, label = "time to death (all-cause)")
+#'  # df$ttEvent <- eventdate(df, df$risk, 1825, label = "time to death (all-cause)")
 #' #check the label
 #'  # label(df$ttEvent)
 #'
-#'  # df$ttcensor <- eventDate(df, .01, 1825)
+#'  # df$ttcensor <- eventdate(df, .01, 1825)
 #' }
-#' @export eventDate
-eventDate <- function (df, eventProbability, followUpTime, label = "Time to event") {
+#' @export eventdate
+eventdate <- function (df, eventprobability, followuptime,
+                       label = "Time to event") {
   #if !eventLabel = "Time to event"
-  r <-
+  randomrisk <-
     runif(nrow(df))  # create temporary list of random probablities
 
-  timeToEvent <- ifelse(
-    r <= eventProbability,
-    as.integer(followUpTime * r),
-    followUpTime
+  timetoevent <- ifelse(
+    randomrisk <= eventprobability,
+    as.integer(followuptime * randomrisk),
+    followuptime
   )
-    
   # Don't forget the label!
-  Hmisc::label(timeToEvent) <- label
+  Hmisc::label(timetoevent) <- label
 
-  return (timeToEvent)
+  return (timetoevent)
 }
