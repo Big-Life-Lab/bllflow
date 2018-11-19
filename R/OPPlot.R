@@ -7,8 +7,8 @@ library(plotly)
 #'@param data	 a data.frame with observed events and predicted risk estimates
 #'@param observed	 variable of observed observation from data.frame, object of class string
 #'@param predicted	 variable of predicted observations from data.frame, object of class string
-#'@param title	 an overall title for the plot (use NA for no title), object of class string
-#'@param ylab	 a title for the y axis (use NA for no title), object of class string
+#'@param title	 an overall title for the plot (optional), object of class string
+#'@param ylab	 a title for the y axis (optional), object of class string
 #'
 #'@author Molly Campbell
 #'
@@ -19,8 +19,8 @@ library(plotly)
 #' data <- data.frame(read.csv("inst/extdata/RiskDecile.csv")) 
 #'
 #' #view plot - will return plot generated in plotly in R studio viewer
-#' OvPPlot(data, 'observed', 'predicted', 'Observed vs Predicted for Female Risk Decile', ‘Risk Decile’)  
-OvPPlot <- function(data, observed, predicted, title, ylab){
+#' OvPPlot(data, 'observed', 'predicted', 'Observed vs Predicted for Female Risk Decile', 'Risk Decile')  
+OvPPlot <- function(data, observed, predicted, title = NA, ylab = NA){
 
 data$NumObs <- 1:(nrow(data))
   
