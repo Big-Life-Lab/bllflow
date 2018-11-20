@@ -60,7 +60,7 @@ make_event_date <- function (df, event_probability, followup_time,
     as.integer(followup_time * random_risk),
     followup_time
   )
-  # Don't forget the label.
+  # Don't forget the label!
   Hmisc::label(time_to_event) <- label
   units(time_to_event) <- units
 
