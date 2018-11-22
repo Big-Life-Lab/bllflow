@@ -1,4 +1,4 @@
-library(Hmisc) # for variable labels
+library(Hmisc)  # for variable labels
 #' Add an event date, when you only have an event probability
 #'
 #' @description 
@@ -24,7 +24,7 @@ library(Hmisc) # for variable labels
 #' @examples
 #' # load the test data in the bllFlow package
 #' \dontrun{
-#'  df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+#'  df <- as.data.frame(read.csv('inst/extdata/RESPECT-EOL_validation.csv'))
 #'  
 #'  # or 
 #'  # df <- RESPECT-EOL_validation
@@ -49,20 +49,16 @@ library(Hmisc) # for variable labels
 #'   df$ttcensor <- make_event_date(df, .01, 1825)
 #' }
 #' @export make_event_date
-make_event_date <- function (df, event_probability, followup_time,
-                       label = "Time to event", units = NA) {
-  #if !event_label = "Time to event"
-  random_risk <-
-    runif(nrow(df))  # create temporary list of random probablities
-
-  time_to_event <- ifelse(
-    random_risk <= event_probability,
-    as.integer(followup_time * random_risk),
-    followup_time
-  )
+make_event_date <- function(df, event_probability, followup_time, label = "Time to event", 
+                            units = NA) {
+  # if !event_label = 'Time to event'
+  random_risk <- runif(nrow(df))  # create temporary list of random probablities
+  
+  time_to_event <- ifelse(random_risk <= event_probability, as.integer(followup_time * 
+                                                                         random_risk), followup_time)
   # Don't forget the label.
   Hmisc::label(time_to_event) <- label
   units(time_to_event) <- units
-
-  return (time_to_event)
+  
+  return(time_to_event)
 }
