@@ -1,12 +1,13 @@
-library(Hmisc) 
+library(Hmisc)
 #' Assign the earliest event, when there are multiple events
 #'
 #' @description 
 #' When there are multiple event dates, finds the earliest data and returns
 #' the event and date for that event.
-
-#' @param df (required) Data frame with event propobablity. Each row represents
-#'  an observation.
+#' 
+#' @param df (required) Data frame with time-to-event for different events
+#' such as main event, competing event or withdraw from study. 
+#' Each row represents an observation.
 #' @param main_event a list of  dates for main event.
 #' @param competing_event a list of dates for competing risk event.
 #' @param withdraw_event a list of dates for withdraw or end of study
@@ -14,9 +15,15 @@ library(Hmisc)
 #' @param main_label (optional) event labels.
 #' @param competing_label (optional) competiing risk labels.
 #' @param withdraw_label (optional) withdraw label.
-#' #' @return List with events. List of event dates. 
-#' Returned list length = list length of df. Event
-#' date =  totalTime (censored), if no event.
+#' #' @return data frame with: 
+#'      a) censor_events - factor with values 
+#'              1 = main event 
+#'              2 = competing event
+#'              3 = withdraw from study
+#'              4 = end of study
+#'      b) censor_time - time to event
+#' Returned list length = list length of original data.frame. 
+#' Event date =  totalTime (censored), if no event.
 #' @keywords make_data make_event_date
 #' @examples
 #' # load the test data in the bllFlow package
@@ -26,71 +33,42 @@ library(Hmisc)
 #'  # or 
 #'  # df <- RESPECT-EOL_validation
 #'  
-#' # each ovservation as event probablity of df$risk
-#'   df$tt_event <- make_event_date(df, df$risk, 1825, units = 'days')
+#' # create event ata
+#'   death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
+#'   censor   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
+#'   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
 #'   
-#'  # add variable labeles
-#'    
-#'   
-#' # check the label
-#'   label(df$tt_event)
-#'  
-#' # check to see if events have been added
-#'   table(df$tt_event)
-#'  
-#' # check to see if df$tt_event is about the same as df$risk
-#'   mean(df$risk)
-#'   nrow(df[df$tt_event < 1825,]) / nrow(df)
-#' 
-#' # make other event data like censoring or competing events
-#'   df$ttcensor <- make_event_date(df, .01, 1825)
+#' # now find with event occurred first and assign the follow-up time to that event.
+#' first_event <- assign_first_event(death, withdraw_event = withdraw, followup_time = 1855)
 #' }
 #' @export assign_first_event
-assign_first_event <- function (df, main_event, competing_event = NA, 
+assign_first_event <- function (main_event, competing_event = NA, 
                                 withdraw_event = NA, followup_time, 
                                 main_label = "main event",
                                 competing_label = "competing event",
-                                withdraw_label = "withdraw from study")
+                                withdraw_label = "withdraw from study",
+                                units = NA)
   {
+  event_data <- data.frame(main_event, competing_event, withdraw_event)
+  
+  # when did that first event happen
+   censor_time <- apply(event_data, 1, min, na.rm=TRUE)
   
   # which event came first
-  event_list <- c(main_event, competing_event, withdraw_event, followup_time)
-  censor <- which.min(event_list)
+   censor_event <- apply(event_data, 1, which.min)
   
-  # but check if main event was actually end-of-study
-  if (main_event == followup_time) {
-      censor = 3
-      }
+  # label
+  
+  # Hmisc::label(censor) <- switch(censor_event,
+  #                               main_label,
+  #                               competing_label,
+  #                               withdraw_label,
+  #                               "end of study"
+  #                               )
+  
+  #units(censor) <- units
+  
+  censor <- data.frame(censor_event, censor_time)
 
-  Hmisc::label(time_to_event) <- label
-  units(time_to_event) <- units
-  
-  # prc_cvd=0.25
-  # prc_death=0.7
-  # prc_overall=0.15
-  # 
-  # originaldata$r<-runif(nrow(originaldata))
-  # originaldata$rcvd<-runif(nrow(originaldata))
-  # originaldata$rdeath<-runif(nrow(originaldata))
-  # 
-  # originaldata$ttevent<-ifelse(originaldata$r<=prc_overall,as.integer(1825*originaldata$r), 1825)
-  # originaldata$censor<-ifelse(originaldata$ttevent==1825,0,
-  #                             ifelse(originaldata$rcvd<=prc_cvd,1,
-  #                                    ifelse(originaldata$rdeath<=prc_death,2,0)))
-  # 
-  # 
-  # Don't forget the label.
-  Hmisc::label(time_to_event) <- label
-  units(time_to_event) <- units
-  
-  return (time_to_event)
+  return (censor)
 }
-
-
-
-
-
-#' @param probablityWithdraw (optional) Probablity the observation was lost to
-#' follow-up prior to end of follow up (followUpTime)
-#' @param probablityCompetingEvent (optional) Probablity the observation was a
-#' competing event.
