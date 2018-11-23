@@ -1,4 +1,4 @@
-library(Hmisc)  # for variable labels
+library(Hmisc)  # for variable labels only
 #' Add an event date, when you only have an event probability
 #'
 #' @description 

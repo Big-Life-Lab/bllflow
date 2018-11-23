@@ -38,57 +38,53 @@ library(Hmisc)
 #'  
 #' # create event ata
 #'   death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
-#'   censor   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
+#'   competing   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
 #'   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
+#'   withdraw[1:3] <- NA
+#'   withdraw[2] <- 1
+#'   competing[1] <-1 
+#'   death[1] <- 50
 #'   
 #' # now find with event occurred first and assign the follow-up time to that event.
-#' assign_first_event(death, withdraw_event = withdraw, followup_time = 1855)
+#' censor1 <- assign_first_event(death, competing_event = NA, withdraw_event = withdraw, followup_time = 1855)
+#' censor2 <- assign_first_event(death, competing_event = competing, 
+#' withdraw_event = withdraw, followup_time = 1825, units = units(death))
 #' 
 #' }
 #' @export assign_first_event
-assign_first_event <- function (main_event, competing_event = NA, 
-                                withdraw_event = NA, followup_time, 
+assign_first_event <- function (main_event, 
+                                competing_event = NA, 
+                                withdraw_event = NA, 
+                                followup_time, 
                                 main_label = "main event",
                                 competing_label = "competing event",
                                 withdraw_label = "withdraw from study",
                                 units = NA)
   {
-  event_data <- data.frame(main_event, competing_event, withdraw_event)
   
+  withdraw_event[is.na(withdraw_event)] <- followup_time 
+  competing_event[is.na(competing_event)] <- followup_time 
+  
+  event_data <- data.frame(main_event, competing_event, withdraw_event)
+  print(head(event_data, 10))
   # when did that first event happen
   censor_time <- apply(event_data, 1, min, na.rm = TRUE)
-  censor_time <-
-    mapply(function(main_event,
-                    competing_event,
-                    withdraw_event) {
-      min(c(main_event, competing_event, withdraw_event), na.rm = TRUE)
-    },
-    main_event, competing_event, withdraw_event)
    
   # which event came first
-   censor_event <- apply(event_data, 1, which.min)
-   censor_time <-
-     mapply(function(main_event,
-                     competing_event,
-                     withdraw_event) {
-       which.min(c(main_event, competing_event, withdraw_event))
-     },
-     main_event, competing_event, withdraw_event)  
+ censor_event <- apply(event_data, 1, which.min)
  
-   
-  
-  # label
-  
-  # Hmisc::label(censor) <- switch(censor_event,
-  #                               main_label,
-  #                               competing_label,
-  #                               withdraw_label,
-  #                               "end of study"
-  #                               )
-  
-  #units(censor) <- units
+ addNA(censor_event)
+ censor_event[censor_time == followup_time] <- 4
+ censor_event <- factor(censor_event)
+ levels(censor_event) <- c(main_label, competing_label, withdraw_label, 'end of study')
+ 
+ # Don't forget the label.
+ Hmisc::label(censor_event) <- "censor event"
+ Hmisc::label(censor_time) <- "time to event"
+  units(censor_time) <- units
   
   censor <- data.frame(censor_event, censor_time)
-
+  print(head(censor, 10))
   return (censor)
+
 }
