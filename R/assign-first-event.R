@@ -33,13 +33,17 @@ library(Hmisc)
 #'  # or 
 #'  # df <- RESPECT-EOL_validation
 #'  
+#'  # if you don't have the bllFlow package loded.
+#'  source(file.path(getwd(), 'R/make-event-date.R'))
+#'  
 #' # create event ata
 #'   death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
 #'   censor   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
 #'   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
 #'   
 #' # now find with event occurred first and assign the follow-up time to that event.
-#' first_event <- assign_first_event(death, withdraw_event = withdraw, followup_time = 1855)
+#' assign_first_event(death, withdraw_event = withdraw, followup_time = 1855)
+#' 
 #' }
 #' @export assign_first_event
 assign_first_event <- function (main_event, competing_event = NA, 
@@ -52,10 +56,26 @@ assign_first_event <- function (main_event, competing_event = NA,
   event_data <- data.frame(main_event, competing_event, withdraw_event)
   
   # when did that first event happen
-   censor_time <- apply(event_data, 1, min, na.rm=TRUE)
-  
+  censor_time <- apply(event_data, 1, min, na.rm = TRUE)
+  censor_time <-
+    mapply(function(main_event,
+                    competing_event,
+                    withdraw_event) {
+      min(c(main_event, competing_event, withdraw_event), na.rm = TRUE)
+    },
+    main_event, competing_event, withdraw_event)
+   
   # which event came first
    censor_event <- apply(event_data, 1, which.min)
+   censor_time <-
+     mapply(function(main_event,
+                     competing_event,
+                     withdraw_event) {
+       which.min(c(main_event, competing_event, withdraw_event))
+     },
+     main_event, competing_event, withdraw_event)  
+ 
+   
   
   # label
   
