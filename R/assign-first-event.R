@@ -61,24 +61,23 @@ assign_first_event <- function (main_event,
                                 competing_label = "competing event",
                                 withdraw_label = "withdraw from study",
                                 units = NA)
-{
-  withdraw_event[is.na(withdraw_event)] <- followup_time
+{ withdraw_event[is.na(withdraw_event)] <- followup_time
   competing_event[is.na(competing_event)] <- followup_time
   
-  event_data <-
-    data.frame(main_event, competing_event, withdraw_event)
+  #temperary data.frame
+  event_data <- data.frame(main_event, competing_event, withdraw_event)
   print(head(event_data, 10))
-  # when did that first event happen
+  
+  # when did the first event happen
   censor_time <- apply(event_data, 1, min, na.rm = TRUE)
   
   # which event came first
   censor_event <- apply(event_data, 1, which.min)
   
-  addNA(censor_event)
+  addNA(censor_event) # just in case data
+  # add factor labels
   censor_event[censor_time == followup_time] <- 4
-  censor_event <- factor(censor_event)
-  levels(censor_event) <-
-    c(main_label, competing_label, withdraw_label, 'end of study')
+  censor_event <- factor(censor_event, levels=c(1,2,3,4), labels=c(main_label, competing_label, withdraw_label, 'end of study'))
   
   # Don't forget the label.
   Hmisc::label(censor_event) <- "censor event"
@@ -86,6 +85,7 @@ assign_first_event <- function (main_event,
   units(censor_time) <- units
   
   censor <- data.frame(censor_event, censor_time)
+  
   print(head(censor, 10))
   
   return (censor)
