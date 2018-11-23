@@ -69,3 +69,6 @@ p <- plotly::add_trace(p, x=trace2$x, y=trace2$y, marker=trace2$marker, mode=tra
 p <- plotly::layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
 return(p)
 }
+
+roxygen2::roxygenise()
+
