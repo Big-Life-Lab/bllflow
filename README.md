@@ -25,6 +25,16 @@ Currently, four transformations are supported:
 
 ![Rstudio add-in](Rstudio-addin.png)
 
+# Installatin
+
+## From a local version
+
+If you are not able to download the package from Github then use this method of installation
+
+1. Make sure you have the version of the package you wish to install on your computer
+2. Install the package into the project of your choice by running the command `install.packages(path_to_package_folder, repos = NULL, type="source")` in the project directory
+3. If everything goes well, the package should be installed and available for import through `library('bllFlow')`
+
 # How the package works
 
 The package requires a CSV file that identifies:
