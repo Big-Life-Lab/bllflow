@@ -4,6 +4,8 @@ library(Hmisc)
 #' @description
 #' Finds the earliest date and returns the event and date for that event. Use 
 #' when there are multiple events and dates. Each row represents an observation.
+#'  The output of this function creates a variable that is used for survival 
+#'  models and predictive algorithms.
 #' 
 #' Input are lists of event dates for the main event (outcome), competing event
 #' (optional) and withdraw event (optional). The maximum follow-up time must be 
@@ -26,7 +28,8 @@ library(Hmisc)
 #' @param withdraw_label (optional) Label for the withdraw event (default 
 #' "withdraw form study")
 #' #' @return data frame with two variables:
-#'      a) 'censor_events' - factor with levels and labels:
+#'      a) 'censor_event' - factor with levels and labels of the different 
+#'      potential first events:
 #'              1 = "main event"
 #'              2 = "competing event"
 #'              3 = "withdraw from study"
@@ -77,13 +80,17 @@ assign_first_event <- function (main_events,
                            competing_events_to_max, 
                            withdraw_events_to_max) 
   
-  # when did the first event happen
+  # identify the time period when the first event happened
   censor_time <- apply(event_data, 1, min, na.rm = TRUE)
   
-  # which event came first
+  # identify which event happened first. See @return censor_event for how this 
+  # variable is labeled. 
   censor_event <- apply(event_data, 1, which.min)
   
-  addNA(censor_event) # just in case data
+  # check to make sure censor_event was correctly gerated. If not correctly 
+  # generated, assign value of NA
+  addNA(censor_event) 
+  
   # add factor labels
   censor_event[censor_time == followup_time] <- 4
   censor_event <- factor(censor_event, levels=c(1,2,3,4), 
