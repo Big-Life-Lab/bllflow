@@ -9,8 +9,7 @@ library(Hmisc)  # for variable labels only
 #' 
 #' Use case: You have cohort data with only exposure variables and you would
 #' like to create a fictious event or censoring events.
-#' @param df (required) Data frame with event propobablity. Each row represents
-#'  an observation.
+
 #' @param event_probability (required) Target event probablity (number value
 #' from 0 to 1 representing the event probability.e.g. 5-year risk of death is 
 #' 0.2 represents 20 \% proabality of dying over 5 years or 1825 days.
@@ -58,14 +57,14 @@ make_event_date <- function(num_events,
                             followup_time, 
                             label = "time to event", 
                             units = NA) {
+# create temporary list of random probablities
+  random_risk <- runif(num_events) 
   
-  # if !event_label = 'Time to event'
-  random_risk <- runif(num_events)  # create temporary list of random probablities
-  
+# create time to event  
   time_to_event <- ifelse(random_risk <= event_probability, 
                           as.integer(followup_time * random_risk), 
                           followup_time)
-  # Don't forget the label.
+# Don't forget the label.
   Hmisc::label(time_to_event) <- label
   units(time_to_event) <- units
   

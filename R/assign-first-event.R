@@ -11,11 +11,11 @@ library(Hmisc)
 #' 
 #' The lists should be the same length but, if not, the return list is the same 
 #' length as the longest imput list.
-#' @param main_event The main outcome or event. A list of  numbers 
+#' @param main_events The main outcome or event. A list of  numbers 
 #' (typically integers) that represent a unit of time (typically days). 
-#' @param competing_event The competing event (optional). A list of  numbers 
+#' @param competing_events The competing event (optional). A list of  numbers 
 #' (typically integers) that represent a unit of time (typically days).
-#' @param withdraw_event The withdraw event (optional). A list of  numbers 
+#' @param withdraw_events The withdraw event (optional). A list of  numbers 
 #' (typically integers) that represent a unit of time (typically days).
 #' @param followup_time The follow-up time period (optinal). A number (typically 
 #' and integer). 'end of study' will be the assigned censor event if any event 
@@ -52,30 +52,30 @@ library(Hmisc)
 #'   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
 #'
 #' # now find with event occurred first and assign the follow-up time to that event.
-#'   censor2 <- assign_first_event(death, competing_event = competing,
-#'     withdraw_event = withdraw, followup_time = 1825, units = units(death))
+#'   censor2 <- assign_first_event(death, competing_events = competing,
+#'     withdraw_events = withdraw, followup_time = 1825, units = units(death))
 #' }
 #' @export assign_first_event
-assign_first_event <- function (main_event,
-                                competing_event = NA,
-                                withdraw_event = NA,
+assign_first_event <- function (main_events,
+                                competing_events = NA,
+                                withdraw_events = NA,
                                 followup_time,
                                 main_label = "main event",
                                 competing_label = "competing event",
                                 withdraw_label = "withdraw from study",
                                 units = NA) { 
   
-  competing_event_to_max <- ifelse(is.na(competing_event), 
+  competing_events_to_max <- ifelse(is.na(competing_events), 
                                   followup_time, 
-                                  competing_event) 
-  withdraw_event_to_max <- ifelse(is.na(withdraw_event), 
+                                  competing_events) 
+  withdraw_events_to_max <- ifelse(is.na(withdraw_events), 
                                   followup_time, 
-                                  withdraw_event)
+                                  withdraw_events)
    
   #temperary data.frame
-  event_data <- data.frame(main_event, 
-                           competing_event_to_max, 
-                           withdraw_event_to_max) 
+  event_data <- data.frame(main_events, 
+                           competing_events_to_max, 
+                           withdraw_events_to_max) 
   
   # when did the first event happen
   censor_time <- apply(event_data, 1, min, na.rm = TRUE)

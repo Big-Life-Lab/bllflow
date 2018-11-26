@@ -4,58 +4,72 @@
 \alias{assign_first_event}
 \title{Assign the earliest event, when there are multiple events}
 \usage{
-assign_first_event(main_event, competing_event = NA,
-  withdraw_event = NA, followup_time, main_label = "main event",
+assign_first_event(main_events, competing_events = NA,
+  withdraw_events = NA, followup_time, main_label = "main event",
   competing_label = "competing event",
   withdraw_label = "withdraw from study", units = NA)
 }
 \arguments{
-\item{main_event}{a list of  dates for main event.}
+\item{main_events}{The main outcome or event. A list of  numbers 
+(typically integers) that represent a unit of time (typically days).}
 
-\item{competing_event}{a list of dates for competing risk event.}
+\item{competing_events}{The competing event (optional). A list of  numbers 
+(typically integers) that represent a unit of time (typically days).}
 
-\item{withdraw_event}{a list of dates for withdraw or end of study}
+\item{withdraw_events}{The withdraw event (optional). A list of  numbers 
+(typically integers) that represent a unit of time (typically days).}
 
-\item{followup_time}{(optinal) Time period for event probablity.}
+\item{followup_time}{The follow-up time period (optinal). A number (typically 
+and integer). 'end of study' will be the assigned censor event if any event 
+(main, competing or withdraw events) has the value equal the followup_time.}
 
-\item{main_label}{(optional) event labels.}
+\item{main_label}{(optional) Label for the main event (default "main event").}
 
-\item{competing_label}{(optional) competiing risk labels.}
+\item{competing_label}{(optional) Label for the competing risk event (default
+"competing event").}
 
-\item{withdraw_label}{(optional) withdraw label.
-#' @return data frame with: 
-     a) censor_events - factor with values 
-             1 = main event 
-             2 = competing event
-             3 = withdraw from study
-             4 = end of study
-     b) censor_time - time to event
-Returned list length = list length of original data.frame. 
-Event date =  totalTime (censored), if no event.}
-
-\item{df}{(required) Data frame with time-to-event for different events
-such as main event, competing event or withdraw from study. 
-Each row represents an observation.}
+\item{withdraw_label}{(optional) Label for the withdraw event (default 
+"withdraw form study")
+#' @return data frame with two variables:
+     a) 'censor_events' - factor with levels and labels:
+             1 = "main event"
+             2 = "competing event"
+             3 = "withdraw from study"
+             4 = "end of study"
+     b) 'censor_time' - time to event. Number (usually an integer).
+Returned data.frame length = length of original lists. 
+Event date =  followup_tme (censored), if no event.}
 }
 \description{
-When there are multiple event dates, finds the earliest data and returns
-the event and date for that event.
+Finds the earliest date and returns the event and date for that event. Use 
+when there are multiple events and dates. Each row represents an observation.
+
+Input are lists of event dates for the main event (outcome), competing event
+(optional) and withdraw event (optional). The maximum follow-up time must be 
+specified (followup_time).
+
+The lists should be the same length but, if not, the return list is the same 
+length as the longest imput list.
 }
 \examples{
-# load the test data in the bllFlow package
 \dontrun{
- df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
- 
- # or 
- # df <- RESPECT-EOL_validation
- 
+#' # load the test data in the bllFlow package
+  df <- as.data.frame(read.csv("inst/extdata/RESPECT-EOL_validation.csv"))
+
+# or
+#  df <- RESPECT-EOL_validation
+
+# if you don't have the bllFlow package loded.
+ source(file.path(getwd(), 'R/make-event-date.R'))
+
 # create event ata
   death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
-  censor   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
+  competing   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
-  
+
 # now find with event occurred first and assign the follow-up time to that event.
-first_event <- assign_first_event(death, withdraw_event = withdraw, followup_time = 1855)
+  censor2 <- assign_first_event(death, competing_events = competing,
+    withdraw_events = withdraw, followup_time = 1825, units = units(death))
 }
 }
 \keyword{make_data}
