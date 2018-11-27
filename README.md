@@ -31,9 +31,9 @@ Currently, four transformations are supported:
 
 If you are not able to download the package from Github then use this method of installation
 
-1. Make sure you have the version of the package you wish to install on your computer
+1. Make sure you have the version of the package you wish to install on your computer. If you want the latest version then download the project from github otherwise download one of the releases available here https://github.com/Big-Life-Lab/bllFlow/releases
 2. Install the package into the project of your choice by running the command `install.packages(path_to_package_folder, repos = NULL, type="source")` in the project directory
-3. If everything goes well, the package should be installed and available for import through `library('bllFlow')`
+3. If everything goes well, the package should be installed and available for import through `library('bllFlow')`. Try running the command now to ensure the package was sucessfully installed.
 
 # How the package works
 
