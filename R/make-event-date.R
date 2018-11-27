@@ -1,5 +1,5 @@
 library(Hmisc) # for variable labels
-#' Add an event date, when you only have an event probability
+#' Add an event date, when you only have an event probability in the determined follow up time
 #'
 #' @description 
 #' To create example data for algorithm development.
@@ -8,13 +8,15 @@ library(Hmisc) # for variable labels
 #' event date or censoring date.
 #' 
 #' Use case: You have cohort data with only exposure variables and you would
-#' like to create a fictious event or censoring events.
-#' @param df (required) Data frame with event propobablity. Each row represents
+#' like to create a ficttiious event or censoring events.
+#' @param df (required) Data frame with event probability. Each row represents
 #'  an observation.
-#' @param event_probability (required) Target event probablity. Event probability.
-#' e.g. 5-year risk of death is 0.2 represents 20 \% proabality of dying over
+#' @param event_probability (required) Target event probability for the defined 
+#' follow up time. Event probability.
+#' e.g. 5-year risk of death is 0.2 represents 20% probability of dying over
 #' 5 years or 1825 days.
-#' @param followup_time (required) Time period for event probablity.
+#' @param followup_time (required) Time period for event probability in days
+#' e.g.5 years or 1825 days.
 #' @param label (optional) Name of event. If missing, default to 'Time to
 #' event'.
 #' @param units (optional) Time unit for event. e.g. days.
@@ -29,10 +31,10 @@ library(Hmisc) # for variable labels
 #'  # or 
 #'  # df <- RESPECT-EOL_validation
 #'  
-#' # each ovservation as event probablity of df$risk
+#' # each observation as event probability of df$risk
 #'   df$tt_event <- make_event_date(df, df$risk, 1825, units = 'days')
 #'   
-#'  # add variable labeles
+#'  # add variable labels
 #'    
 #'   
 #' # check the label
@@ -45,7 +47,7 @@ library(Hmisc) # for variable labels
 #'   mean(df$risk)
 #'   nrow(df[df$tt_event < 1825,]) / nrow(df)
 #' 
-#' # make other event data like censoring or competing events
+#' # make other event date like censoring or competing events
 #'   df$ttcensor <- make_event_date(df, .01, 1825)
 #' }
 #' @export make_event_date
