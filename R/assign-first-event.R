@@ -12,7 +12,7 @@ library(Hmisc)
 #' specified (followup_time).
 #' 
 #' The lists should be the same length but, if not, the return list is the same 
-#' length as the longest imput list.
+#' length as the longest input list.
 #' @param main_events The main outcome or event. A list of  numbers 
 #' (typically integers) that represent a unit of time (typically days). 
 #' @param competing_events The competing event (optional). A list of  numbers 
@@ -86,8 +86,8 @@ assign_first_event <- function (main_events,
   # identify which event happened first. See @return censor_event for how this 
   # variable is labeled. 
   censor_event <- apply(event_data, 1, which.min)
-  
-  # check to make sure censor_event was correctly gerated. If not correctly 
+
+  # check to make sure censor_event was correctly generated. If not correctly 
   # generated, assign value of NA
   addNA(censor_event) 
   
@@ -100,6 +100,7 @@ assign_first_event <- function (main_events,
                                   'end of study'))
   
   # Don't forget the label.
+  
   Hmisc::label(censor_event) <- "censor event"
   Hmisc::label(censor_time) <- "time to event"
   units(censor_time) <- units
