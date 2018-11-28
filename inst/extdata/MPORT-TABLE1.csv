@@ -13,12 +13,10 @@ agegrp14,70 to 74,age,Female,,6568,0.09309,0.09582,12.453,categorical,,,,Demogra
 agegrp14,75 to 79,age,Female,,5823,0.15252,0.15222,18.1376,categorical,,,,Demographic
 agegrp14,80 to 84,age,Female,,4309,0.21022,0.23377,18.403,categorical,,,,Demographic
 agegrp14,85+,age,Female,,2960,0.38507,0.39277,22.7162,categorical,,,,Demographic
-,,,,,,,,,,,,,
 smoking_cat4_,Current,smoking,Female,Smoking Status,20025,0.05095,0.04792,20.9467,categorical,,,,Health behaviour
 smoking_cat4_,Former ≤5 y,smoking,Female,,9026,0.04279,0.03929,7.985,categorical,,,,Health behaviour
 smoking_cat4_,Former >5 y,smoking,Female,,28410,0.05951,0.06116,34.5499,categorical,,,,Health behaviour
 smoking_cat4_,Non,smoking,Female,,37615,0.04797,0.04945,36.5185,categorical,,,,Health behaviour
-,,,,,,,,,,,,,
 DrinksLastWeek_,0,Drinks per week,Female,Number Drinks/Week,54338,0.06695,0.06645,74.4083,categorical,,,,Health behaviour
 DrinksLastWeek_,1,Drinks per week,Female,,9378,0.03506,0.03797,6.6799,categorical,,,,Health behaviour
 DrinksLastWeek_,2,Drinks per week,Female,,6781,0.02672,0.02632,3.716,categorical,,,,Health behaviour
