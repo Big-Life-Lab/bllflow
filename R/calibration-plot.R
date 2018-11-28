@@ -1,12 +1,15 @@
 #' Calibration Plot
 #' Creates a calibration plot using plotly package. Returns an actual vs predicted plot. Used for model fit visualization
 #'
-#' @usage   CalibrationPlot(data, observed, predicted, title)
+#' @usage   CalibrationPlot(data, observed, predicted, Group_By, error, title)
 #'
 #'@param data   a data.frame
 #'@param observed variable of observed observation from data.frame, object of class string
 #'@param predicted  variable of predicted observations from data.frame, object of class string
-#'@param title    an overall title for the plot (use NA for no title), object of class string
+#'@param Group_By  variable grouping of interest, object of class string 
+#'@param Group_By_2 a second grouping variable (optional), object of class string
+#'@param error percent error for error bars (optional)
+#'@param title an overall title for the plot (optional), object of class string
 #'
 #'@author Molly Campbell
 #'
@@ -16,52 +19,57 @@
 #'library(plotly)
 #'library(curl)
 #'
-#'	##Load Female risk decile data from Mortality Population Risk csv from GitHub
-#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/MPoRTv2/master/Development/Datasets/RiskDecile.csv%5C?token=ApmTWZ2LBGKyfkpPvTHUG9-f_w0D0Nb4ks5b5J1zwA%3D%3D"))
+#'	##Load data from Mortality Population Risk Tool from GitHub
+#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPORT-TABLE1.csv?token=ApmTWa9Df_Oqmw7mj7EZDPn5LAA9dKI2ks5cCDiLwA%3D%3D"))
 #'
 #'	##check variables for appropriate observed and predicted variable names
 #'head(data, 2L)
 #'
 #'	##View plot - will retrun plot generated in plotly in R studio viewer
-#'CalibrationPlot(data,'observed','predicted', 'Female Risk Decile')  
+#'CalibrationPlot(data,'observed','predicted','age',Group_By_2='Female',error=5,title='Female Age')  
 
 
 
-calibration_plot<- function(data, observed, predicted, title, Group_By, value) {
+calibration_plot<- function(data, observed, predicted, Group_By, Group_By_2=NA, error=0, title=NA) {
 
-subdat<-subset(data, data$GroupBy==Group_By)
+if (missing(Group_By_2)) {
+  sub<-subset(data, data$GroupBy==Group_By)
+} else {
+  sub<-subset(data, data$GroupBy==Group_By & data$GroupBy2 == Group_By_2)
+}
   
 trace1<-list(
-             x=subdat[[observed]],
-             y=subdat[[predicted]],
+             x=sub[[observed]],
+             y=sub[[predicted]],
              type="scatter",
              marker=list(size = 7),
              mode="markers",
              name="(O, P)",
              showlegend=FALSE,
-             error_x<-list(type="percent", value=value, color="FF7F0E"),
-             error_y<-list(type="percent", value=value, color="FF7F0E")
+             error_x=list(type="percent", value=error, color="000000"),
+             error_y=list(type="percent", value=error, color="000000")
 )
   
-max_x=max(subdat[[observed]], na.rm=TRUE)
-max_y=max(subdat[[predicted]], na.rm=TRUE)
+max_x=max(sub[[observed]], na.rm=TRUE)
+max_y=max(sub[[predicted]], na.rm=TRUE)
 max=ifelse(max_x>=max_y, max_x, max_y)
-min_x=min(subdat[[observed]], na.rm=TRUE)
-min_y=min(subdat[[predicted]], na.rm=TRUE)
+min_x=min(sub[[observed]], na.rm=TRUE)
+min_y=min(sub[[predicted]], na.rm=TRUE)
 minn=ifelse(min_x>=min_y, min_x, min_y)
 min=minn-(minn/8)
 
 trace2<-list(
   x =c(min, max), 
   y =c(min, max), 
-  line <- list(
-    color="rgba(127, 127, 127, 0.72)", 
+  line =list(
+    color="000000", 
     dash="dot", 
     width=2
   ), 
-  mode="line", 
+  mode="lines", 
   showlegend=FALSE, 
-  type="scatter"
+  type="scatter",
+  hoverinfo= "skip"
 )
   
 layout<- list(
@@ -87,8 +95,11 @@ layout<- list(
 
 p <- plot_ly()
 p <- add_trace(p, x=trace1$x, y=trace1$y, error_x=trace1$error_x, error_y=trace1$error_y, marker=trace1$marker, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type)
-p <- add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type)
+p <- add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type, hoverinfo= trace2$hoverinfo)
 p <- layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis)
 return(p)
 }
+
+
+
 
