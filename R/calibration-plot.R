@@ -6,8 +6,9 @@
 #'@param data   a data.frame
 #'@param observed variable of observed observation from data.frame, object of class string
 #'@param predicted  variable of predicted observations from data.frame, object of class string
-#'@param Group_By  variable grouping of interest, object of class string 
-#'@param Group_By_2 a second grouping variable (optional), object of class string
+#'@param group_by_sex  sex variable grouping of interest (optional), object of class string 
+#'@param group_by_1 a primary grouping variable (optional), object of class string
+#'@param group_by_2 a secondary grouping variable (optional), object of class string
 #'@param error percent error for error bars (optional)
 #'@param title an overall title for the plot (optional), object of class string
 #'
@@ -30,13 +31,27 @@
 
 
 
-calibration_plot<- function(data, observed, predicted, Group_By, Group_By_2=NA, error=0, title=NA) {
+calibration_plot<- function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA, error=0, title=NA) {
 
-if (missing(Group_By_2)) {
-  sub<-subset(data, data$GroupBy==Group_By)
-} else {
-  sub<-subset(data, data$GroupBy==Group_By & data$GroupBy2 == Group_By_2)
-}
+  if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
+    sub<-subset(data)
+  } 
+  else if (missing(group_by_1)& missing(group_by_2)) {
+    sub<-subset(data, data$group_by_sex==group_by_sex)
+  }
+  else if (missing(group_by_2)) {
+    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1)
+  }
+  else if (missing(group_by_sex) & missing(group_by_2)) {
+    sub<-subset(data, data$group_by==group_by_1)
+  }
+  else if (missing(group_by_sex)) {
+    sub<-subset(data, data$group_by==group_by_1 & data$group_by_2==group_by_2)
+  }
+  else {
+    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1 & data$group_by_2==group_by_2)
+  }
+  
   
 trace1<-list(
              x=sub[[observed]],

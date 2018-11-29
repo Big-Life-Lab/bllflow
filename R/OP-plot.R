@@ -7,8 +7,9 @@ library(plotly)
 #'@param data	 a data.frame with observed events and predicted risk estimates
 #'@param observed	 variable of observed observation from data.frame, object of class string
 #'@param predicted	 variable of predicted observations from data.frame, object of class string
-#'@param Group_By  variable grouping of interest, object of class string
-#'@param Group_By_2 a second grouping variable (optional), object of class string
+#'@param group_by_sex sex variable grouping of interest (optional), object of class string 
+#'@param group_by_1  a primary grouping variable (optional), object of class string
+#'@param group_by_2 a secondary grouping variable (optional), object of class string
 #'@param title	 an overall title for the plot (optional), object of class string
 #'@param xlab	 a title for the x axis (optional), object of class string
 #'
@@ -26,16 +27,29 @@ library(plotly)
 #'	##View plot - will retrun plot generated in plotly in R studio viewer
 #'CalibrationPlot(data,'observed','predicted','age', Group_By_2 ='female', title='Observed and Predicted for Age in Females' , xlab='Female Age')   
 
-op_plot<-function(data, observed, predicted, Group_By, Group_By_2=NA, title = NA, xlab = NA){
+op_plot<-function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA , title = NA, xlab = NA){
 
-if (missing(Group_By_2)) {
-    sub<-subset(data, data$GroupBy==Group_By)
-} else {
-    sub<-subset(data, data$GroupBy==Group_By & data$GroupBy2 == Group_By_2)
-}
+  if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
+    sub<-subset(data)
+  } 
+  else if (missing(group_by_1)& missing(group_by_2)) {
+    sub<-subset(data, data$group_by_sex==group_by_sex)
+  }
+  else if (missing(group_by_2)) {
+    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1)
+  }
+  else if (missing(group_by_sex) & missing(group_by_2)) {
+    sub<-subset(data, data$group_by==group_by_1)
+  }
+  else if (missing(group_by_sex)) {
+    sub<-subset(data, data$group_by==group_by_1 & data$group_by_2==group_by_2)
+  }
+  else {
+    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1 & data$group_by_2==group_by_2)
+  }
   
 trace1<-list(
-  x=sub$Categories,
+  x=sub$group_by_value_label,
   y=sub[[observed]],
   type="bar",
   name="Observed",
@@ -44,7 +58,7 @@ trace1<-list(
 )
 
 trace2<-list(
-  x=sub$Categories,
+  x=sub$group_by_value_label,
   y=sub[[predicted]],
   type="scatter",
   mode="markers",
@@ -76,6 +90,5 @@ p <-plotly::add_trace(p, x=trace2$x, y=trace2$y, marker=trace2$marker, mode=trac
 p <-plotly::layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
 return(p)
 }
-
 
 
