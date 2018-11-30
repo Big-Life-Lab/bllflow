@@ -1,41 +1,36 @@
+# bllFlow package
+
+bllFlow is an R package to support the Big Life Lab approach to
+develop predicitve algoirhtms. 
+
+## Installation
+```
+# Install from GitHub
+# 1) If not installed, install the devtools
+install.packages("devtools")
+
+# then, install the package
+devtools::install_github("Big-Life-Lab/bllFlow", auth_token="ce3c2922d1da6cd42eccbc239fa5e82db15b5b17",
+ref="master")
+```
+
+## Documentation
+
+1) Package documentation in pkgdown format is [here](https://big-life-lab.github.io/bllFlow/docs).
+See the [pkgdown README](pkgdown.md) for instructions about how to build and contribute to the 
+pkgdown document.
+
+2) You can see bllFlow in action [here](https://big-life-lab.github.io/bllFlow-bookdown/)
 There are two reasons to use this R package.
-
-1. To transform variables using a consistent approach.
-2. To generate R code that can be converted (transpiled) into Predictive Modelling Markup Language (PMML).
-
-Currently, four transformations are supported:
-
-- Centering
-- Interaction terms
-- Dummying
-- RCS Variables
-  This project is also available as an RStudio plugin and it's the recommended
-  way to use it
 
 # RStudio Plugin Installation
 
-1. Install the devtool in RStudio by running the command `install.packages("devtools")`
-2. Install the plugin by running the command `devtools::install_github("Big-Life-Lab/bllFlow")`
-   - If you have 2 factor authentication on your github account then you will need
-     to retreive your personal access token from github (https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
-     and use it to install the plugin by running the command `devtools::install_github("Big-Life-Lab/bllFlow", auth_token="<personal access token>")`
-3. Restart the IDE
-4. If the plugin was successfully installed there should be a new entry in the
+1. Restart the IDE
+1. If the plugin was successfully installed there should be a new entry in the
    Addins menu at the top of the IDE called "R Project Builder"
 
-![Rstudio add-in](Rstudio-addin.png)
+![Rstudio add-in](images/Rstudio-addin.png)
 
-# Installatin
-
-## From a local version
-
-If you are not able to download the package from Github then use this method of installation
-
-1. Make sure you have the version of the package you wish to install on your computer. If you want the latest version then download the project from github otherwise download one of the releases available here https://github.com/Big-Life-Lab/bllFlow/releases
-2. Install the package into the project of your choice by running the command `install.packages(path_to_package_folder, repos = NULL, type="source")` in the project directory
-3. If everything goes well, the package should be installed and available for import through `library('bllFlow')`. Try running the command now to ensure the package was sucessfully installed.
-
-# How the package works
 
 The package requires a CSV file that identifies:
 
