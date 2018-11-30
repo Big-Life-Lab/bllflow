@@ -63,7 +63,7 @@ library(dplyr)
 #' # censor$censor_event and censor$censor_time
 #' summary(censor)
 #' 
-#' # you can add the new variables to the original data
+#' # you can add (mutate) the new variables to the original data
 #' df <- df %>% bind_cols(censor)
 #'     
 #' }
