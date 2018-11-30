@@ -1,4 +1,4 @@
-ColumnName,Description,Example,table_1,model_description,summary_stat,validation_data,variable_transformation,Notes
+column_name,description,example,table_1,model_description,summary_stat,validation_data,variable_transformation,notes
 exposure,exposure,age,yes,yes,,,,a predicted risk or variable
 group_by_<group level>,variable this grouping level is for,age_cat5,yes,,,,,
 group_by_label_<group_level>,description of the group variable,Age in 5 categories,yes,,,,,
