@@ -18,10 +18,9 @@
 #'
 #'	##Load packages
 #'library(plotly)
-#'library(curl)
 #'
 #'	##Load data from Mortality Population Risk Tool from GitHub
-#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPORT-TABLE1.csv?token=ApmTWa9Df_Oqmw7mj7EZDPn5LAA9dKI2ks5cCDiLwA%3D%3D"))
+#'data<-read.csv("inst/extdata/MPORT-TABLE1.csv")
 #'
 #'	##check variables for appropriate observed and predicted variable names
 #'head(data, 2L)
