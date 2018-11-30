@@ -1,35 +1,36 @@
+library(plotly)
 #' Calibration Plot
-#' Creates a calibration plot using plotly package. Returns an actual vs predicted plot. Used for model fit visualization
+#' Creates a calibration plot using plotly package. Returns an actual vs 
+#' predicted plot. Used for model fit visualization
 #'
 #' @usage   CalibrationPlot(data, observed, predicted, Group_By, error, title)
 #'
 #'@param data   a data.frame
-#'@param observed variable of observed observation from data.frame, object of class string
-#'@param predicted  variable of predicted observations from data.frame, object of class string
-#'@param group_by_sex  sex variable grouping of interest (optional), object of class string 
-#'@param group_by_1 a primary grouping variable (optional), object of class string
-#'@param group_by_2 a secondary grouping variable (optional), object of class string
+#'@param observed variable of observed observation from data.frame, object of 
+#'class string
+#'@param predicted  variable of predicted observations from data.frame, object 
+#'of class string
+#'@param group_by_sex  sex variable grouping of interest (optional), object of 
+#'class string 
+#'@param group_by_1 a primary grouping variable (optional), object of class 
+#'string
+#'@param group_by_2 a secondary grouping variable (optional), object of class 
+#'string
 #'@param error percent error for error bars (optional)
 #'@param title an overall title for the plot (optional), object of class string
 #'
 #'@author Molly Campbell
 #'
 #'@examples
+#' # load data from Mortality Population Risk Tool from GitHub
+#'  data<-read.csv("inst/extdata/MPORT-TABLE1.csv")
 #'
-#'	##Load packages
-#'library(plotly)
+#' # check variables for appropriate observed and predicted variable names
+#'  head(data, 2L)
 #'
-#'	##Load data from Mortality Population Risk Tool from GitHub
-#'data<-read.csv("inst/extdata/MPORT-TABLE1.csv")
-#'
-#'	##check variables for appropriate observed and predicted variable names
-#'head(data, 2L)
-#'
-#'	##View plot - will retrun plot generated in plotly in R studio viewer
-#'CalibrationPlot(data,'observed','predicted','age',Group_By_2='Female',error=5,title='Female Age')  
-
-
-
+#' # view plot - will retrun plot generated in plotly in R studio viewer
+#'  CalibrationPlot(data,'observed','predicted','age',Group_By_2='Female',
+#'  error=5,title='Female Age')
 calibration_plot<- function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA, error=0, title=NA) {
 
   if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
