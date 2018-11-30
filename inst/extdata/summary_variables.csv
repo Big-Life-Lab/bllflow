@@ -1,6 +1,6 @@
 ColumnName,Description,Example,Use,Notes
 exposure,exposure,age,misc,a predicted risk or variable
-group_by_<group level>,Variable this grouping level is for.,age_cat5,table1,
+group_by_<group level>,Variable this grouping level is for,age_cat5,table1,
 group_by_label_<group level>,Description of the group variable,Age in 5 categories,table1,
 group_by_value_<group level>,Value of the variable we are grouping by,"1,2,3,4,5",table1,
 group_by_value_label_<group_level>,"If the group is a categorical variable, then the description of the category in the group_by_value column. Otherwise NA",[10 -19) years,table1,
