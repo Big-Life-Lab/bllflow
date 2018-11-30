@@ -14,6 +14,12 @@ library(dplyr)
 #' 
 #' The lists should be the same length but, if not, the return list is the same 
 #' length as the longest input list.
+#' 
+#' Note: if making events using `make_event_date`. The`make_event_date` function
+#'  randomly assigns event dates and therefore there will be withdraw events 
+#'  that 'occur' before 'main events'. This means that the main event rate will
+#'  be lower than the original starting data. 
+#'  
 #' @param main_events The main outcome or event. A list of  numbers 
 #' (typically integers) that represent a unit of time (typically days). 
 #' @param competing_events The competing event (optional). A list of  numbers 
