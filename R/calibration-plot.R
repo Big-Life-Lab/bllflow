@@ -29,8 +29,8 @@ library(plotly)
 #'  head(data, 2L)
 #'
 #' # view plot - will retrun plot generated in plotly in R studio viewer
-#'  CalibrationPlot(data,'observed','predicted','age',Group_By_2='Female',
-#'  error=5,title='Female Age')
+#'  calibration_plot(data, observed, predicted,
+#'  error = 5, title = 'Female Age')
 calibration_plot<- function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA, error=0, title=NA) {
 
   if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
