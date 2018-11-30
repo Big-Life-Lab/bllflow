@@ -20,7 +20,6 @@ min,minumum observation value,,summaryStat,
 median,median observation value,,summaryStat,
 <percentile_number>_percentile,"Percentile observation value where the percentile_number is for eg. 2_5 for 2.5th percentile, 75 for 75th percentile etc.",,summaryStat,
 variable_xBeta,X beta score,AgeC_rcs1_xBeta,validationData,
-PredictedRisk_1year,1-year predicted risk,1YearPredictiveRisk,validationData,
 PredictedRisk_1year_95CI,1-year predicted risk 95% CI,,validationData,
 sumXbeta,sum of Xbetas,sumXbeta,validationData,
 variable_cont,continuous,Age_cont,variableTransformation,for continuous variables which does not have any other components such as splines
