@@ -47,8 +47,7 @@ dirtyData <-function (datasetname,
   # create a dataset with one variable only 
   datatomessup<<-as.data.frame(var)
   
-  # calculate the standard deviation
-  sd_v <<- sd(var)
+
   
   # mess up or change with missing
   
@@ -59,6 +58,9 @@ dirtyData <-function (datasetname,
     # 15 an 6 are random and can be changed
     
   {
+    
+    # calculate the standard deviation
+    sd_v <<- sd(var)
     
     # replacement calculation
     hv<<-datatomessup$var+15*sd_v
@@ -96,6 +98,6 @@ dirtyData <-function (datasetname,
   
   
   # combine original dataset with messy one
-  assign(deparse(substitute(outdataset)), cbind(originaldata, datamessedup), envir=.GlobalEnv)
+  assign(deparse(substitute(outdataset)), cbind(datasetname, datamessedup), envir=.GlobalEnv)
   
 }
