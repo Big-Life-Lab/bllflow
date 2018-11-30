@@ -31,8 +31,6 @@ There are two reasons to use this R package.
 
 ![Rstudio add-in](images/Rstudio-addin.png)
 
-# How the package works -- 
-*sections below will be moved to the pkgdown and bookdown documents.*
 
 The package requires a CSV file that identifies:
 
