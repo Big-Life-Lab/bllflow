@@ -1,4 +1,5 @@
 library(Hmisc)
+library(dplyr)
 #' Assign the earliest event, when there are multiple events
 #'
 #' @description
@@ -47,16 +48,24 @@ library(Hmisc)
 #' #  df <- RESPECT-EOL_validation
 #'
 #' # if you don't have the bllFlow package loded.
-#'  source(file.path(getwd(), 'R/make-event-date.R'))
+#'  source(file.path(getwd(), 'R/make-event-dates.R'))
 #'
-#' # create event ata
-#'   death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
-#'   competing   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
-#'   withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
+#' # create event data. Each new variable is a list of events that is the same
+#' # length, nrow(df), as the orginial data, df.
+#'   death    <- make_event_date(nrow(df), df$risk, 1825, label = 'death', units = 'days')
+#'   competing   <- make_event_date(nrow(df), 0.2, 1825, label = 'censor', units = 'days')
+#'   withdraw <- make_event_date(nrow(df), 0.40, 1825, label = 'withdraw', units = 'days')
 #'
 #' # now find with event occurred first and assign the follow-up time to that event.
-#'   censor2 <- assign_first_event(death, competing_events = competing,
+#'   censor <- assign_first_event(death, competing_events = competing,
 #'     withdraw_events = withdraw, followup_time = 1825, units = units(death))
+#' # the return is a data.frame (censor) with two new variables:
+#' # censor$censor_event and censor$censor_time
+#' summary(censor)
+#' 
+#' # you can add the new variables to the original data
+#' df <- df %>% bind_cols(censor)
+#'     
 #' }
 #' @export assign_first_event
 assign_first_event <- function (main_events,
