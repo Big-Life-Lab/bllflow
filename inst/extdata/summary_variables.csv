@@ -1,4 +1,4 @@
-ColumnName,Description,Example,use,Notes
+ColumnName,Description,Example,Use,Notes
 exposure,exposure,age,misc,a predicted risk or variable
 group_by_<group level>,Variable this grouping level is for.,age_cat5,table1,
 group_by_label_<group level>,Description of the group variable,Age in 5 categories,table1,
