@@ -3,59 +3,27 @@ library(plotly)
 #' Creates a calibration plot using plotly package. Returns an actual vs 
 #' predicted plot. Used for model fit visualization
 #'
-#' @usage   CalibrationPlot(data, observed, predicted, Group_By, error, title)
+#' @usage   CalibrationPlot(data, observed, predicted, error=0, title=NA)
 #'
 #'@param data   a data.frame
 #'@param observed variable of observed observation from data.frame, object of 
 #'class string
 #'@param predicted  variable of predicted observations from data.frame, object 
 #'of class string
-#'@param group_by_sex  sex variable grouping of interest (optional), object of 
-#'class string 
-#'@param group_by_1 a primary grouping variable (optional), object of class 
-#'string
-#'@param group_by_2 a secondary grouping variable (optional), object of class 
-#'string
 #'@param error percent error for error bars (optional)
 #'@param title an overall title for the plot (optional), object of class string
 #'
 #'@author Molly Campbell
 #'
 #'@examples
-#' # load data from Mortality Population Risk Tool from GitHub
-#'  data<-read.csv("inst/extdata/MPORT-TABLE1.csv")
-#'
-#' # check variables for appropriate observed and predicted variable names
-#'  head(data, 2L)
-#'
-#' # view plot - will retrun plot generated in plotly in R studio viewer
-#'  calibration_plot(data, observed, predicted,
-#'  error = 5, title = 'Female Age')
-calibration_plot<- function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA, error=0, title=NA) {
 
-  if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
-    sub<-subset(data)
-  } 
-  else if (missing(group_by_1)& missing(group_by_2)) {
-    sub<-subset(data, data$group_by_sex==group_by_sex)
-  }
-  else if (missing(group_by_2)) {
-    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1)
-  }
-  else if (missing(group_by_sex) & missing(group_by_2)) {
-    sub<-subset(data, data$group_by==group_by_1)
-  }
-  else if (missing(group_by_sex)) {
-    sub<-subset(data, data$group_by==group_by_1 & data$group_by_2==group_by_2)
-  }
-  else {
-    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1 & data$group_by_2==group_by_2)
-  }
-  
+
+
+calibration_plot<- function(data, observed, predicted, error=0, title=NA) {
   
 trace1<-list(
-             x=sub[[observed]],
-             y=sub[[predicted]],
+             x=data[[observed]],
+             y=data[[predicted]],
              type="scatter",
              marker=list(size = 7),
              mode="markers",
@@ -65,13 +33,13 @@ trace1<-list(
              error_y=list(type="percent", value=error, color="000000")
 )
   
-max_x=max(sub[[observed]], na.rm=TRUE)
-max_y=max(sub[[predicted]], na.rm=TRUE)
+max_x=max(data[[observed]], na.rm=TRUE)
+max_y=max(data[[predicted]], na.rm=TRUE)
 max=ifelse(max_x>=max_y, max_x, max_y)
-min_x=min(sub[[observed]], na.rm=TRUE)
-min_y=min(sub[[predicted]], na.rm=TRUE)
-minn=ifelse(min_x>=min_y, min_x, min_y)
-min=minn-(minn/8)
+min_x=min(data[[observed]], na.rm=TRUE)
+min_y=min(data[[predicted]], na.rm=TRUE)
+min_xy=ifelse(min_x>=min_y, min_x, min_y)
+min=min_xy-(min_xy/8)
 
 trace2<-list(
   x =c(min, max), 

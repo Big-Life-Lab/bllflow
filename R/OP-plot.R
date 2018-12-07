@@ -2,55 +2,25 @@ library(plotly)
 #' Observed vs Predicted Plot
 #'  Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.
 #'
-#' @usage   op_plot(data, observed, predicted, Group_By, Group_By_2=NA, title=NA, xlab= NA)
+#' @usage   op_plot(data, observed, predicted, title=NA, xlab= NA)
 #'
 #'@param data	 a data.frame with observed events and predicted risk estimates
 #'@param observed	 variable of observed observation from data.frame, object of class string
 #'@param predicted	 variable of predicted observations from data.frame, object of class string
-#'@param group_by_sex sex variable grouping of interest (optional), object of class string 
-#'@param group_by_1  a primary grouping variable (optional), object of class string
-#'@param group_by_2 a secondary grouping variable (optional), object of class string
 #'@param title	 an overall title for the plot (optional), object of class string
 #'@param xlab	 a title for the x axis (optional), object of class string
 #'
 #'@author Molly Campbell
 #'
 #'@examples
-#'	##Load packages
-#' library(plotly)
-#'	##Load data from Mortality Population Risk Tool from GitHub
-#'data<-read.csv(curl("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPORT-TABLE1.csv?token=ApmTWa9Df_Oqmw7mj7EZDPn5LAA9dKI2ks5cCDiLwA%3D%3D"))
-#'
-#'	##check variables for appropriate observed and predicted variable names
-#'head(data, 2L)
-#'
-#'	##View plot - will retrun plot generated in plotly in R studio viewer
-#'CalibrationPlot(data,'observed','predicted','age', Group_By_2 ='female', title='Observed and Predicted for Age in Females' , xlab='Female Age')   
 
-op_plot<-function(data, observed, predicted, group_by_sex=NA, group_by_1=NA, group_by_2=NA , title = NA, xlab = NA){
 
-  if (missing(group_by_sex)&missing(group_by_1)&missing(group_by_2)) {
-    sub<-subset(data)
-  } 
-  else if (missing(group_by_1)& missing(group_by_2)) {
-    sub<-subset(data, data$group_by_sex==group_by_sex)
-  }
-  else if (missing(group_by_2)) {
-    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1)
-  }
-  else if (missing(group_by_sex) & missing(group_by_2)) {
-    sub<-subset(data, data$group_by==group_by_1)
-  }
-  else if (missing(group_by_sex)) {
-    sub<-subset(data, data$group_by==group_by_1 & data$group_by_2==group_by_2)
-  }
-  else {
-    sub<-subset(data, data$group_by_sex==group_by_sex & data$group_by==group_by_1 & data$group_by_2==group_by_2)
-  }
+op_plot<-function(data, observed, predicted, title = NA, xlab = NA){
+
   
 trace1<-list(
-  x=sub$group_by_value_label,
-  y=sub[[observed]],
+  x=data$group_by_value_label,
+  y=data[[observed]],
   type="bar",
   name="Observed",
   orientation="v",
@@ -58,8 +28,8 @@ trace1<-list(
 )
 
 trace2<-list(
-  x=sub$group_by_value_label,
-  y=sub[[predicted]],
+  x=data$group_by_value_label,
+  y=data[[predicted]],
   type="scatter",
   mode="markers",
   name="Predicted",
