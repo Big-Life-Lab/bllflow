@@ -19,7 +19,7 @@ op_plot<-function(data, observed, predicted, title = NA, xlab = NA){
 
   
 trace1<-list(
-  x=data$group_by_value_label,
+  x=data$group_by_value_label_1,
   y=data[[observed]],
   type="bar",
   name="Observed",
@@ -28,7 +28,7 @@ trace1<-list(
 )
 
 trace2<-list(
-  x=data$group_by_value_label,
+  x=data$group_by_value_label_1,
   y=data[[predicted]],
   type="scatter",
   mode="markers",
