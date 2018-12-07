@@ -1,5 +1,4 @@
 library(Hmisc)
-library(dplyr)
 #' Assign the earliest event, when there are multiple events
 #'
 #' @description
@@ -70,6 +69,7 @@ library(dplyr)
 #' summary(censor)
 #' 
 #' # you can add (mutate) the new variables to the original data
+#' library(dplyr)
 #' df <- df %>% bind_cols(censor)
 #'     
 #' }
@@ -108,8 +108,8 @@ assign_first_event <- function (main_events,
   
   # add factor labels
   censor_event[censor_time == followup_time] <- 4
-  censor_event <- factor(censor_event, levels=c(1,2,3,4), 
-                         labels=c(main_label, 
+  censor_event <- factor(censor_event, levels = c(1,2,3,4), 
+                         labels = c(main_label, 
                                   competing_label, 
                                   withdraw_label, 
                                   'end of study'))
@@ -120,5 +120,5 @@ assign_first_event <- function (main_events,
   Hmisc::label(censor_time) <- "time to event"
   units(censor_time) <- units
   
-  return (data.frame(censor_event, censor_time))
+  return(data.frame(censor_event, censor_time))
 }
