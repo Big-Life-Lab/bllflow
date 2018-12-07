@@ -16,6 +16,16 @@ library(plotly)
 #'@author Molly Campbell
 #'
 #'@examples
+#' #upload MPorT table one data set
+#' mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
+#' 
+#' #create character vector of columns needed for visualizations
+#' col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
+#' 
+#' #create new data frame using filter_table_1 helper function 
+#'data<-filter_table_1(mport, col, groupby_sex="Female", groupby_1="age")
+#'
+#'calibration_plot(data, "observed_risk_1_year", "predicted_risk_1_year", title="Observed vs Predicted for Female age")
 
 
 
@@ -82,7 +92,6 @@ p <- add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, sh
 p <- layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis)
 return(p)
 }
-
 
 
 

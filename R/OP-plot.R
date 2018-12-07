@@ -13,6 +13,16 @@ library(plotly)
 #'@author Molly Campbell
 #'
 #'@examples
+#' #upload MPorT table one data set
+#' mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
+#' 
+#' #create character vector of columns needed for visualizations
+#' col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
+#' 
+#' #create new data frame using filter_table_1 helper function 
+#'data<-filter_table_1(mport, col, groupby_sex="Male", groupby_1 ="Drinks per week")
+#' 
+#'op_plot(data, "observed_risk_1_year", "predicted_risk_1_year", title="Observed vs Predicted for Male Drinks per Week" , xlab="Drinks per Week")
 
 
 op_plot<-function(data, observed, predicted, title = NA, xlab = NA){
@@ -60,5 +70,4 @@ p <-plotly::add_trace(p, x=trace2$x, y=trace2$y, marker=trace2$marker, mode=trac
 p <-plotly::layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
 return(p)
 }
-
 
