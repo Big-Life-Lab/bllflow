@@ -12,7 +12,7 @@
 #'@author Molly Campbell
 #'
 #'@examples
-#' Upload MPorT table one data set
+#' #upload MPorT table one data set
 #' mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
 #' 
 #' #create character vector of columns needed for visualizations

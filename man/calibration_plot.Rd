@@ -2,8 +2,9 @@
 % Please edit documentation in R/calibration-plot.R
 \name{calibration_plot}
 \alias{calibration_plot}
-\title{Calibration Plot
-Creates a calibration plot using plotly package. Returns an actual vs 
+\title{Calibration Plot}
+\description
+{Creates a calibration plot using plotly package. Returns an actual vs 
 predicted plot. Used for model fit visualization}
 \usage{
 CalibrationPlot(data, observed, predicted, error=0, title=NA)

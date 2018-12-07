@@ -2,8 +2,8 @@
 % Please edit documentation in R/filter_table_1.R
 \name{filter_table_1}
 \alias{filter_table_1}
-\title{Filter_table_1
-Helper function to filter table 1 data to fit specifc row and column grouping for subsequent data visualizations (ie. calibration plots)}
+\title{Filter_table_1}
+\description {Helper function to filter table 1 data to fit specifc row and column grouping for subsequent data visualizations (ie. calibration plots)}
 \usage{
 filter_table_1(data, vars, groupby_sex=NA, groupby_1=NA, groupby_2=NA)
 }

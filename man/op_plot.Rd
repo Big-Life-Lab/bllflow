@@ -2,8 +2,9 @@
 % Please edit documentation in R/OP-plot.R
 \name{op_plot}
 \alias{op_plot}
-\title{Observed vs Predicted Plot
- Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.}
+\title{Observed vs Predicted Plot}
+\description
+ {Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.}
 \usage{
 op_plot(data, observed, predicted, title=NA, xlab= NA)
 }
