@@ -23,13 +23,16 @@ assign_first_event(main_events, competing_events = NA,
 and integer). 'end of study' will be the assigned censor event if any event 
 (main, competing or withdraw events) has the value equal the followup_time.}
 
-\item{main_label}{(optional) Label for the main event (default "main event").}
+\item{main_label}{(optional) Label for the main event (default = 
+"main event").}
 
 \item{competing_label}{(optional) Label for the competing risk event (default
-"competing event").}
+= "competing event").}
 
-\item{withdraw_label}{(optional) Label for the withdraw event (default 
-"withdraw form study")
+\item{withdraw_label}{(optional) Label for the withdraw event (default =
+"withdraw form study")}
+
+\item{units}{(optional) Time unit (e.g. "days", default = NA)
 #' @return data frame with two variables:
      a) 'censor_events' - factor with levels and labels:
              1 = "main event"

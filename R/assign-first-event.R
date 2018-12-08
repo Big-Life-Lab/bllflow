@@ -28,11 +28,13 @@ library(Hmisc)
 #' @param followup_time The follow-up time period (optinal). A number (typically 
 #' and integer). 'end of study' will be the assigned censor event if any event 
 #' (main, competing or withdraw events) has the value equal the followup_time.
-#' @param main_label (optional) Label for the main event (default "main event").
+#' @param main_label (optional) Label for the main event (default = 
+#' "main event").
 #' @param competing_label (optional) Label for the competing risk event (default
-#'  "competing event").
-#' @param withdraw_label (optional) Label for the withdraw event (default 
+#' = "competing event").
+#' @param withdraw_label (optional) Label for the withdraw event (default =
 #' "withdraw form study")
+#' @param units (optional) Time unit (e.g. "days", default = NA)
 #' #' @return data frame with two variables:
 #'      a) 'censor_event' - factor with levels and labels of the different 
 #'      potential first events:
@@ -118,7 +120,7 @@ assign_first_event <- function (main_events,
   
   Hmisc::label(censor_event) <- "censor event"
   Hmisc::label(censor_time) <- "time to event"
-  units(censor_time) <- units
+  Hmisc::units(censor_time) <- units
   
   return(data.frame(censor_event, censor_time))
 }
