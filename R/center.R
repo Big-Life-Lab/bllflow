@@ -1,23 +1,10 @@
-#' Generic center function. Should not be modified
-#'
-#' @param x 
-#' @param ... 
-#'
-#' @return
-#' @export
-#'
-#' @examples
-center <- function(x, ...) {
-  UseMethod("center", x)
-}
-
-#' Centers the x arg using the provided mean arg and returns a new bll_flow 
+#' Centers the x argument using the provided mean argument and returns a new bll_flow 
 #' variable
 #' 
 #' @param x numeric,bll_flow The bll_flow variable to center
 #' @param mean numeric The mean to center the x arg on
 #'
-#' @return numeric,bll_flow The centered object
+#' @return numeric,bll_flow The centered object with attribute (attr) = center and 'label' = 'Centered'
 #' @export
 #'
 #' @examples
