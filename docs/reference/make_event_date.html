@@ -36,6 +36,14 @@
 Use case: You have validation scoring data with event probablity but not
 event date or censoring date.
 Use case: You have cohort data with only exposure variables and you would
+<<<<<<< HEAD
+like to create a fictious event or censoring events.
+To create example data for algorithm development.
+Use case: You have validation scoring data with event probablity but not
+event date or censoring date.
+Use case: You have cohort data with only exposure variables and you would
+=======
+>>>>>>> develop
 like to create a fictious event or censoring events." />
 <meta name="twitter:card" content="summary" />
 
@@ -116,7 +124,11 @@ like to create a fictious event or censoring events." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Add an event date, when you only have an event probability</h1>
+<<<<<<< HEAD
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllFlow/blob/master/R/make-event-date.R'><code>R/make-event-date.R</code></a>, <a href='https://github.com/Big-Life-Lab/bllFlow/blob/master/R/make-event-dates.R'><code>R/make-event-dates.R</code></a></small>
+=======
     <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllFlow/blob/master/R/make-event-date.R'><code>R/make-event-date.R</code></a></small>
+>>>>>>> develop
     <div class="hidden name"><code>make_event_date.Rd</code></div>
     </div>
 
@@ -127,29 +139,42 @@ like to create a fictious event or censoring events." />
 event date or censoring date.</p>
 <p>Use case: You have cohort data with only exposure variables and you would
 like to create a fictious event or censoring events.</p>
+<<<<<<< HEAD
+<p>To create example data for algorithm development.</p>
+<p>Use case: You have validation scoring data with event probablity but not
+event date or censoring date.</p>
+<p>Use case: You have cohort data with only exposure variables and you would
+like to create a fictious event or censoring events.</p>
+    
+    </div>
+
+    <pre class="usage"><span class='fu'>make_event_date</span>(<span class='no'>num_events</span>, <span class='no'>event_probability</span>, <span class='no'>followup_time</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"time to event"</span>, <span class='kw'>units</span> <span class='kw'>=</span> <span class='fl'>NA</span>)
+
+<span class='fu'>make_event_date</span>(<span class='no'>num_events</span>, <span class='no'>event_probability</span>, <span class='no'>followup_time</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"time to event"</span>, <span class='kw'>units</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+=======
     
     </div>
 
     <pre class="usage"><span class='fu'>make_event_date</span>(<span class='no'>df</span>, <span class='no'>event_probability</span>, <span class='no'>followup_time</span>,
   <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"Time to event"</span>, <span class='kw'>units</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+>>>>>>> develop
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>(required) Data frame with event propobablity. Each row represents
-an observation.</p></td>
-    </tr>
-    <tr>
+<<<<<<< HEAD
       <th>event_probability</th>
-      <td><p>(required) Target event probablity. Event probability.
-e.g. 5-year risk of death is 0.2 represents 20 % proabality of dying over
-5 years or 1825 days.</p></td>
+      <td><p>(required) Target event probablity (number value
+from 0 to 1 representing the event probability.e.g. 5-year risk of death is 
+0.2 represents 20 % proabality of dying over 5 years or 1825 days.</p></td>
     </tr>
     <tr>
       <th>followup_time</th>
-      <td><p>(required) Time period for event probablity.</p></td>
+      <td><p>(required) Time period for event probablity (number, 
+usually an integer).</p></td>
     </tr>
     <tr>
       <th>label</th>
@@ -159,14 +184,118 @@ event'.</p></td>
     <tr>
       <th>units</th>
       <td><p>(optional) Time unit for event. e.g. days.
+#' @return List with event times (integers) Returned list length = 
+list length of df. Event date =  totalTime (censored), if no event.</p></td>
+    </tr>
+    <tr>
+=======
+>>>>>>> develop
+      <th>df</th>
+      <td><p>(required) Data frame with event propobablity. Each row represents
+an observation.</p></td>
+    </tr>
+    <tr>
+      <th>event_probability</th>
+<<<<<<< HEAD
+      <td><p>(required) Target event probablity (number value
+from 0 to 1 representing the event probability.e.g. 5-year risk of death is 
+0.2 represents 20 % proabality of dying over 5 years or 1825 days.</p></td>
+    </tr>
+    <tr>
+      <th>followup_time</th>
+      <td><p>(required) Time period for event probablity (number, 
+usually an integer).</p></td>
+=======
+      <td><p>(required) Target event probablity. Event probability.
+e.g. 5-year risk of death is 0.2 represents 20 % proabality of dying over
+5 years or 1825 days.</p></td>
+    </tr>
+    <tr>
+      <th>followup_time</th>
+      <td><p>(required) Time period for event probablity.</p></td>
+>>>>>>> develop
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>(optional) Name of event. If missing, default to 'Time to
+event'.</p></td>
+    </tr>
+    <tr>
+      <th>units</th>
+      <td><p>(optional) Time unit for event. e.g. days.
+<<<<<<< HEAD
+#' @return List with event times (integers) Returned list length = 
+list length of df. Event date =  totalTime (censored), if no event.</p></td>
+=======
 #' @return List with event times. Returned list length = list length of df. Event
 date =  totalTime (censored), if no event.</p></td>
+>>>>>>> develop
     </tr>
     </table>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'># load the test data in the bllFlow package
+<<<<<<< HEAD
+</div># NOT RUN {
+#loaod and example data.frame of observations which includes a calculation of
+ risk estimate (risk for death at end-of-life).
+ df <- as.data.frame(read.csv('inst/extdata/RESPECT-EOL_validation.csv'))
+ # or 
+ # df <- RESPECT-EOL_validation
+ df_length <- nrow(df)
+ 
+# each ovservation as event probablity of df$risk
+  df$tt_event <- make_event_date(df_length, df$risk, 1825, units = 'days')
+  
+ # add variable labeles
+   df$tt_event <- make_event_date(df_length, df$risk, 1825, 
+   label = "end-of-life", units = 'days')
+  
+# check the label
+  label(df$tt_event)
+ 
+# check to see if events have been added
+  table(df$tt_event)
+ 
+# check to see if df$tt_event is about the same as df$risk
+  mean(df$risk)
+  nrow(df[df$tt_event < 1825,]) / nrow(df)
+
+# make other event data like censoring or competing events
+  df$ttcensor <- make_event_date(df_length, .01, 1825)
+# }
+<div class='input'># load the test data in the bllFlow package
+</div># NOT RUN {
+#loaod and example data.frame of observations which includes a calculation of
+ risk estimate (risk for death at end-of-life).
+ df <- as.data.frame(read.csv('inst/extdata/RESPECT-EOL_validation.csv'))
+ # or 
+ # df <- RESPECT-EOL_validation
+ df_length <- nrow(df)
+ 
+# each ovservation as event probablity of df$risk
+  df$tt_event <- make_event_date(df_length, df$risk, 1825, units = 'days')
+  
+ # add variable labeles
+   df$tt_event <- make_event_date(df_length, df$risk, 1825, 
+   label = "end-of-life", units = 'days')
+  
+# check the label
+  label(df$tt_event)
+ 
+# check to see if events have been added
+  table(df$tt_event)
+ 
+# check to see if df$tt_event is about the same as df$risk
+  mean(df$risk)
+  nrow(df[df$tt_event < 1825,]) / nrow(df)
+
+# make other event data like censoring or competing events
+  df$ttcensor <- make_event_date(df_length, .01, 1825)
+# }
+</pre>
+=======
 </div><span class='co'># NOT RUN {</span>
  <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/as.data.frame'>as.data.frame</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"inst/extdata/RESPECT-EOL_validation.csv"</span>))
 
@@ -192,6 +321,7 @@ date =  totalTime (censored), if no event.</p></td>
 <span class='co'># make other event data like censoring or competing events</span>
   <span class='no'>df</span>$<span class='no'>ttcensor</span> <span class='kw'>&lt;-</span> <span class='fu'>make_event_date</span>(<span class='no'>df</span>, <span class='fl'>.01</span>, <span class='fl'>1825</span>)
 <span class='co'># }</span></pre>
+>>>>>>> develop
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

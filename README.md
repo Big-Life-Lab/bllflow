@@ -1,31 +1,36 @@
+# bllFlow package
+
+bllFlow is an R package to support the Big Life Lab approach to
+develop predicitve algoirhtms. 
+
+## Installation
+```
+# Install from GitHub
+# 1) If not installed, install the devtools
+install.packages("devtools")
+
+# then, install the package
+devtools::install_github("Big-Life-Lab/bllFlow", auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
+ref="master")
+```
+
+## Documentation
+
+1) Package documentation in pkgdown format is [here](https://big-life-lab.github.io/bllFlow/docs).
+See the [pkgdown README](pkgdown.md) for instructions about how to build and contribute to the 
+pkgdown document.
+
+2) You can see bllFlow in action [here](https://big-life-lab.github.io/bllFlow-bookdown/)
 There are two reasons to use this R package.
-
-1. To transform variables using a consistent approach.
-2. To generate R code that can be converted (transpiled) into Predictive Modelling Markup Language (PMML).
-
-Currently, four transformations are supported:
-
-- Centering
-- Interaction terms
-- Dummying
-- RCS Variables
-  This project is also available as an RStudio plugin and it's the recommended
-  way to use it
 
 # RStudio Plugin Installation
 
-1. Install the devtool in RStudio by running the command `install.packages("devtools")`
-2. Install the plugin by running the command `devtools::install_github("Big-Life-Lab/bllFlow")`
-   - If you have 2 factor authentication on your github account then you will need
-     to retreive your personal access token from github (https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
-     and use it to install the plugin by running the command `devtools::install_github("Big-Life-Lab/bllFlow", auth_token="<personal access token>")`
-3. Restart the IDE
-4. If the plugin was successfully installed there should be a new entry in the
+1. Restart the IDE
+1. If the plugin was successfully installed there should be a new entry in the
    Addins menu at the top of the IDE called "R Project Builder"
 
-![Rstudio add-in](Rstudio-addin.png)
+![Rstudio add-in](images/Rstudio-addin.png)
 
-# How the package works
 
 The package requires a CSV file that identifies:
 

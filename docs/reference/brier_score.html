@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • bllFlow</title>
+<title>Scaled Brier Score — brier_score • bllFlow</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,7 +30,11 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Scaled Brier Score — brier_score" />
+
+<meta property="og:description" content="Calculates the scaled brier score, as well as unscaled and max brier score
+for survival models, output as a dataframe" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -47,7 +51,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -106,135 +110,53 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Scaled Brier Score</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllFlow/blob/master/R/brier-score.R'><code>R/brier-score.R</code></a></small>
+    <div class="hidden name"><code>brier_score.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    
+    <p>Calculates the scaled brier score, as well as unscaled and max brier score
+for survival models, output as a dataframe</p>
+    
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
-
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-<<<<<<< HEAD
-          <p><code><a href="assign_first_event.html">assign_first_event()</a></code> </p>
-        </td>
-        <td><p>Assign the earliest event, when there are multiple events</p></td>
-      </tr><tr>
-        
-        <td>
-=======
->>>>>>> develop
-          <p><code><a href="bll_flow.html">bll_flow()</a></code> </p>
-        </td>
-        <td><p>Makes an object an instance of bll_flow and returns it. This function should
-be run on all the variables in the initial data set</p></td>
-      </tr><tr>
-        
-        <td>
-<<<<<<< HEAD
-          <p><code><a href="brier_score.html">brier_score()</a></code> </p>
-        </td>
-        <td><p>Scaled Brier Score</p></td>
-      </tr><tr>
-        
-        <td>
-=======
->>>>>>> develop
-          <p><code><a href="buildInteractionsList.html">buildInteractionsList()</a></code> </p>
-        </td>
-        <td><p>Builds the interactions list for the provided rows</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="buildProjectFiles.html">buildProjectFiles()</a></code> </p>
-        </td>
-        <td><p>Builds several R files from the web spec csv file located at the path 
-specified by the webSpecCsvFilePath argument. The R files are written to the folder whose path
-is specified in the projectFolderPath arg</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="center.html">center()</a></code> </p>
-        </td>
-        <td><p>Generic center function. Should not be modified</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="center.bll_flow.html">center(<i>&lt;bll_flow&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Centers the x arg using the provided mean arg and returns a new bll_flow 
-variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="formatInteractionVariable.html">formatInteractionVariable()</a></code> </p>
-        </td>
-        <td><p>Formats a variable name for interaction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForCenteredVariable.html">getCodeForCenteredVariable()</a></code> </p>
-        </td>
-        <td><p>Returns R code to center a variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForDummyVariable.html">getCodeForDummyVariable()</a></code> </p>
-        </td>
-        <td><p>Returns variable which contains dummying code for a categorical variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForInteraction.html">getCodeForInteraction()</a></code> </p>
-        </td>
-        <td><p>Returns code for an interaction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="isInInteractionsList.html">isInInteractionsList()</a></code> </p>
-        </td>
-        <td><p>Checks whether an interactions is already present in the interactionsList arg</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="isPortWebSpecFile.html">isPortWebSpecFile()</a></code> </p>
-        </td>
-        <td><p>Checks whether a web spec file is for a PORT algorithm or for a RESPECT
-algorithm</p></td>
-      </tr><tr>
-        
-        <td>
-<<<<<<< HEAD
-          <p><code><a href="make_event_date.html">make_event_date()</a></code> <code><a href="make_event_date.html">make_event_date()</a></code> </p>
-=======
-          <p><code><a href="make_event_date.html">make_event_date()</a></code> </p>
->>>>>>> develop
-        </td>
-        <td><p>Add an event date, when you only have an event probability</p></td>
-      </tr>
-    </tbody>
+    <pre class="usage"><span class='fu'>brier_score</span>(<span class='no'>event</span>, <span class='no'>followup</span>, <span class='no'>toe</span>, <span class='no'>predrisk</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>event</th>
+      <td><p>A variable indicating the event of interst, where event
+occurance is indicated by 1, and no event as 0</p></td>
+    </tr>
+    <tr>
+      <th>followup</th>
+      <td><p>A variable indicating follow-up time</p></td>
+    </tr>
+    <tr>
+      <th>toe</th>
+      <td><p>Time of interest</p></td>
+    </tr>
+    <tr>
+      <th>predrisk</th>
+      <td><p>A variable indicating the individual-level predicted risk at
+the time of interest</p></td>
+    </tr>
     </table>
-  </div>
+    
 
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
   </div>
 </div>
 
