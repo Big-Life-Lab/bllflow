@@ -1,3 +1,4 @@
+^README-pkgdown\.md$
 ^data-raw$
 ^.*\.Rproj$
 ^\.Rproj\.user$
