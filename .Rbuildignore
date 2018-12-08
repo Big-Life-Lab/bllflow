@@ -1,5 +1,11 @@
+^pkgdown\.md$
+^\.Last$
+^\.First$
+^\.env$
+^edfafaf$
 ^data-raw$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 BLLFlow.Rproj
-images
+^images$
+^docs$
