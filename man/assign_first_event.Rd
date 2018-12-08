@@ -34,7 +34,8 @@ and integer). 'end of study' will be the assigned censor event if any event
 
 \item{units}{(optional) Time unit (e.g. "days", default = NA)
 #' @return data frame with two variables:
-     a) 'censor_events' - factor with levels and labels:
+     a) 'censor_event' - factor with levels and labels of the different 
+     potential first events:
              1 = "main event"
              2 = "competing event"
              3 = "withdraw from study"
@@ -46,6 +47,8 @@ Event date =  followup_tme (censored), if no event.}
 \description{
 Finds the earliest date and returns the event and date for that event. Use 
 when there are multiple events and dates. Each row represents an observation.
+ The output of this function creates a variable that is used for survival 
+ models and predictive algorithms.
 
 Input are lists of event dates for the main event (outcome), competing event
 (optional) and withdraw event (optional). The maximum follow-up time must be 
