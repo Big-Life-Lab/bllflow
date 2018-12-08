@@ -5,7 +5,7 @@ Description: An implementation of predictive algorithm studies.
     Predictive Modelling Mark-up Language (PMML) is suported.
     The workflow has three steps: data prepartation; model development, 
     and; model deployment.
-Version: 0.1.0
+Version: 0.1.1
 Date: 2018-11-02
 Authors@R: c( 
   person(given = "Yulric", family = "Sequeira", 
