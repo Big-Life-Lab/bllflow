@@ -55,7 +55,12 @@ Input are lists of event dates for the main event (outcome), competing event
 specified (followup_time).
 
 The lists should be the same length but, if not, the return list is the same 
-length as the longest imput list.
+length as the longest input list.
+
+Note: if making events using `make_event_dates`. The`make_event_dates` function
+ randomly assigns event dates and therefore there will be withdraw events 
+ that 'occur' before 'main events'. This means that the main event rate will
+ be lower than the original starting data.
 }
 \examples{
 \dontrun{
@@ -66,16 +71,25 @@ length as the longest imput list.
 #  df <- RESPECT-EOL_validation
 
 # if you don't have the bllFlow package loded.
- source(file.path(getwd(), 'R/make-event-date.R'))
+ source(file.path(getwd(), 'R/make-event-dates.R'))
 
-# create event ata
-  death    <- make_event_date(df, df$risk, 1825, label = 'death', units = 'days')
-  competing   <- make_event_date(df, 0.2, 1825, label = 'censor', units = 'days')
-  withdraw <- make_event_date(df, 0.40, 1825, label = 'withdraw', units = 'days')
+# create event data. Each new variable is a list of events that is the same
+# length, nrow(df), as the orginial data, df.
+  death    <- make_event_date(nrow(df), df$risk, 1825, label = 'death', units = 'days')
+  competing   <- make_event_date(nrow(df), 0.2, 1825, label = 'censor', units = 'days')
+  withdraw <- make_event_date(nrow(df), 0.40, 1825, label = 'withdraw', units = 'days')
 
 # now find with event occurred first and assign the follow-up time to that event.
-  censor2 <- assign_first_event(death, competing_events = competing,
+  censor <- assign_first_event(death, competing_events = competing,
     withdraw_events = withdraw, followup_time = 1825, units = units(death))
+# the return is a data.frame (censor) with two new variables:
+# censor$censor_event and censor$censor_time
+summary(censor)
+
+# you can add (mutate) the new variables to the original data
+library(dplyr)
+df <- df \%>\% bind_cols(censor)
+    
 }
 }
 \keyword{make_data}
