@@ -10,7 +10,7 @@ develop predicitve algoirhtms.
 install.packages("devtools")
 
 # then, install the package
-devtools::install_github("Big-Life-Lab/bllFlow", auth_token="ce3c2922d1da6cd42eccbc239fa5e82db15b5b17",
+devtools::install_github("Big-Life-Lab/bllFlow", auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
 ref="master")
 ```
 
