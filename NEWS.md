@@ -7,16 +7,15 @@
 CMD check succeeded
 ```
 * Functions included - see [documentation](https://big-life-lab.github.io/bllFlow/docs/reference/index.html) for more details
-  - `assign_first_event`
-  - `bll_flow()`
-  - `buildInteractionsList()`
-  - `buildProjectFiles()`
-  - `center()`
-  - `center(<bll_flow>)`
-  - `formatInteractionVariable()`
-  - `getCodeForCenteredVariable()`
-  - `getCodeForDummyVariable()`
-  - `getCodeForInteraction()`
-  - `isInInteractionsList()`
-  - `isPortWebSpecFile()`
-  - `make_event_dates()`
+    - `assign_first_event()`
+    - `bll_flow()`
+    - `buildInteractionsList()`
+    - `buildProjectFiles()`
+    - `center.bll_flow()`
+    - `formatInteractionVariable()`
+    - `getCodeForCenteredVariable()`
+    - `getCodeForDummyVariable()`
+    - `getCodeForInteraction()`
+    - `isInInteractionsList()`
+    - `isPortWebSpecFile()`
+    - `make_event_dates()`
