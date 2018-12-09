@@ -16,8 +16,19 @@ knitr::opts_chunk$set(
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-bllFlow is an R package to support the Big Life Lab approach of
-developing predicitve algoirhtms. 
+bllFlow supports open and reproducible research for teams. There there are two 
+main features:
+
+- The Model Specification Worksheet (MSW) - CSV files that contain key 
+information (metadata) about the variables in your model.
+
+- Formatted output files, tables and figures - CSV files that contain results of your model that adhere to 
+reporting guidelines such as TRIPOD, STROBE, and RECORD.
+
+"Flow" refers to the process of using the Model Specification Worksheet to 
+perform rountine data cleaning and transformation, performance reporting, and
+model deployment. The imperitive for bllFlow is the development of predictive 
+models but key parts help research using routinely-collected data. 
 
 ## Installation
 ```
