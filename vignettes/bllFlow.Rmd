@@ -1,0 +1,45 @@
+---
+title: "Introduction to bllFlow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to pkgdown}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+There there are two 
+main features:
+
+- The Model Specification Worksheet (MSW) - CSV files that contain key 
+information (metadata) about the variables in your model.
+
+- Formatted output files, tables and figures - CSV files that contain results of your model that adhere to 
+reporting guidelines such as TRIPOD, STROBE, and RECORD.
+
+"Flow" refers to the process of using the Model Specification Worksheet to 
+perform rountine data cleaning and transformation, performance reporting, and
+model deployment. The imperitive for bllFlow is the development of predictive 
+models but key parts help research using routinely-collected data. 
+
+
+## RStudio Plugin Installation
+
+1. Restart the IDE
+1. If the plugin was successfully installed there should be a new entry in the
+   Addins menu at the top of the IDE called "R Project Builder"
+
+<img src="man/figures/Rstudio-addin.png"/>
+
+## Plugin Usage
+
+1. Open the project's 'Model Specification Worksheet (MSW)' (CSV file).
+2. Run the plugin.
+3. The generated project should be in a folder called "generated-project" within the folder
+   containing the web specifications file.
+   
+The package requires a MSW CSV file that identifies:
+
+1. Which variable you would like transformed.
+2. Which transformation you would like performed.
+
+`code example here to load and create a table output....`
