@@ -1,0 +1,8 @@
+url: https://big-life-lab.github.io/bllFlow/
+
+development:
+  mode: auto
+home:
+  links:
+  - text: Calculators at
+    href: https://projectbiglife.ca

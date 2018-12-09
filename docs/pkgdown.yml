@@ -3,4 +3,7 @@ pkgdown: 1.2.0
 pkgdown_sha: ~
 articles:
   makemessydatahowto: makemessydatahowto.html
+urls:
+  reference: https://big-life-lab.github.io/bllFlow//reference
+  article: https://big-life-lab.github.io/bllFlow//articles
 
