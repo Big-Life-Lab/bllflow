@@ -1,4 +1,20 @@
+---
+output: github_document
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/"
+)
+```
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+
 # bllFlow package <img src="man/figures/pbl-sticker.png" align="right" alt="" width="120" />
+
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
 bllFlow is an R package to support the Big Life Lab approach of
 developing predicitve algoirhtms. 
@@ -10,17 +26,18 @@ developing predicitve algoirhtms.
 install.packages("devtools")
 
 # then, install the package
-devtools::install_github("Big-Life-Lab/bllFlow", auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
-ref="master")
+devtools::install_github("Big-Life-Lab/bllFlow", 
+  auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
+  ref="master")
 ```
 
 ## Documentation
 
-1) Package documentation in pkgdown format is [here](https://big-life-lab.github.io/bllFlow/docs).
+1) Package documentation in pkgdown format is [here](https://big-life-lab.github.io/bllFlow/docs) (currently only accessible to BLL team).
 See the [pkgdown README](README-pkgdown.md) for instructions about how to build and contribute to the 
 pkgdown document.
 
-2) You can see bllFlow in action [here](https://big-life-lab.github.io/bllFlow-bookdown/)
+2) You can see bllFlow in action [here](https://big-life-lab.github.io/bllFlow-bookdown/).
 
 
 ## RStudio Plugin Installation
