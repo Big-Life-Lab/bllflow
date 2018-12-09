@@ -6,7 +6,7 @@ Description: An implementation of predictive algorithm studies.
     The workflow has three steps: data prepartation; model development, 
     and; model deployment.
 Version: 0.1.1
-Date: 2018-11-02
+Date: 2018-12-09
 Authors@R: c( 
   person(given = "Yulric", family = "Sequeira", 
     email = "ysequeira@ohri.ca", role = c("aut", "cre")),
