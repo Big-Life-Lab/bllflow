@@ -46,7 +46,13 @@
   </a>
 </li>
 <li>
+  <a href="articles/bllFlow.html">Get started</a>
+</li>
+<li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="DATA.html">Data</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -56,7 +62,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/makemessydatahowto.html">Introduction to `dirtyData` function</a>
+      <a href="articles/intro_how_to.html">Introduction to `some sort of` function</a>
     </li>
   </ul>
 </li>
@@ -88,7 +94,9 @@
 <a href="#bllflow-package" class="anchor"></a>bllFlow package <img src="reference/figures/pbl-sticker.png" align="right" alt="" width="120">
 </h1></div>
 
-<p>bllFlow is an R package to support the Big Life Lab approach of developing predicitve algoirhtms.</p>
+<p>bllFlow supports open, reproducible, efficient and robust research for teams.</p>
+<p>The package was originally developed for studies that develop predictive algoirthms using rountinely-collectec health data. However, bllFlow can support others studies that strive for pre-specified analyses, particularly when there are multiple people working together create an analysis plan.</p>
+<p>You can see bllFlow in action at <a href="https://big-life-lab.github.io/bllFlow-bookdown/" class="uri">https://big-life-lab.github.io/bllFlow-bookdown/</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -100,38 +108,6 @@ install.packages("devtools")
 devtools::install_github("Big-Life-Lab/bllFlow", 
   auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
   ref="master")</a></code></pre>
-</div>
-<div id="documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
-<ol style="list-style-type: decimal">
-<li><p>Package documentation in pkgdown format is <a href="https://big-life-lab.github.io/bllFlow/docs">here</a> (currently only accessible to BLL team). See the <a href="README-pkgdown.html">pkgdown README</a> for instructions about how to build and contribute to the pkgdown document.</p></li>
-<li><p>You can see bllFlow in action <a href="https://big-life-lab.github.io/bllFlow-bookdown/">here</a>.</p></li>
-</ol>
-</div>
-<div id="rstudio-plugin-installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#rstudio-plugin-installation" class="anchor"></a>RStudio Plugin Installation</h2>
-<ol style="list-style-type: decimal">
-<li>Restart the IDE</li>
-<li>If the plugin was successfully installed there should be a new entry in the Addins menu at the top of the IDE called “R Project Builder”</li>
-</ol>
-<p><img src="reference/figures/Rstudio-addin.png"></p>
-</div>
-<div id="plugin-usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plugin-usage" class="anchor"></a>Plugin Usage</h2>
-<ol style="list-style-type: decimal">
-<li>Open the project’s ‘Model Specification Worksheet (MSW)’ (CSV file).</li>
-<li>Run the plugin.</li>
-<li>The generated project should be in a folder called “generated-project” within the folder containing the web specifications file.</li>
-</ol>
-<p>The package requires a MSW CSV file that identifies:</p>
-<ol style="list-style-type: decimal">
-<li>Which variable you would like transformed.</li>
-<li>Which transformation you would like performed.</li>
-</ol>
-<p><code>code example here to load and create a table output....</code></p>
 </div>
 </div>
   </div>

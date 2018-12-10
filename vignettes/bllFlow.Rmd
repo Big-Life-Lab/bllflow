@@ -28,7 +28,7 @@ models but key parts help research using routinely-collected data.
 1. If the plugin was successfully installed there should be a new entry in the
    Addins menu at the top of the IDE called "R Project Builder"
 
-<img src="man/figures/Rstudio-addin.png"/>
+<img src="../man/figures/Rstudio-addin.png"/>
 
 ## Plugin Usage
 

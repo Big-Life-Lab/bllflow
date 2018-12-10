@@ -1,0 +1,67 @@
+url: https://big-life-lab.github.io/bllFlow/
+
+development:
+  mode: auto
+  
+home:
+  links:
+  - text: Calculators at
+    href: https://projectbiglife.ca
+  
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - data
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    intro:
+      text: Get started
+      href: articles/bllFlow.html
+    articles:
+      text: Articles
+      menu:
+      - text: Introduction to `some sort of` function
+        href: articles/intro_how_to.html
+    data:
+      text: Data
+      href: DATA.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/Big-Life-Lab/bllFlow
+
+# use 'template_reference()' to generate a template with all package functions
+# and then place the functions in the different section headings
+reference:
+- title: "Clean and tranfrom variables"
+  desc: Functions for cleaning and transforming variables
+  contents:
+  - '`bll_flow`'
+  - '`buildInteractionsList`'
+  - '`buildProjectFiles`'
+  - '`center.bll_flow`'
+  - '`formatInteractionVariable`'
+  - '`getCodeForCenteredVariable`'
+  - '`getCodeForDummyVariable`'
+  - '`getCodeForInteraction`'
+  - '`isInInteractionsList`'
+  - '`isPortWebSpecFile`'
+- title: "Making test data"
+  desc: A bllFlow ....
+  contents:
+  - '`assign_first_event`'
+  - '`make_event_dates`'
