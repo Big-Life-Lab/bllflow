@@ -7,7 +7,8 @@ home:
   links:
   - text: Calculators at
     href: https://projectbiglife.ca
-  
+
+# modified from 'template_navbar()' to add the 'data' tab
 navbar:
   structure:
     left:
