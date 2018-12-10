@@ -1,12 +1,11 @@
 # About the pkgdown document
 *pkgdown* builds website using R package documentation (the .RD files).
 
-The documentation website is [https://big-life-lab.github.io/bllFlow/docs](https://big-life-lab.github.io/bllFlow/docs)
+The documentation website is [https://big-life-lab.github.io/bllFlow/](https://big-life-lab.github.io/bllFlow/). That site is rendered from the `master` branch and may not be UTD if `pkgdown` branch has not been merged.
 
-Or local at: bllFlow/docs/index.html
+You can view the most recent rendering from Rstudio local file at: bllFlow/docs/index.html
 
 Contribute to and build the pkgdown document.
-
 ```
 # Install release version
 install.packages("pkgdown")
