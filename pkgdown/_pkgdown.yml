@@ -1,5 +1,12 @@
 url: https://big-life-lab.github.io/bllFlow/
 
+template:
+  params:
+    bootswatch: cosmo
+    docsearch:
+      api_key: 7277d80fe94c128628bf7b3251cf7a5d
+      index_name: bllFlow
+
 development:
   mode: auto
   
@@ -11,33 +18,20 @@ home:
 # modified from 'template_navbar()' to add the 'data' tab
 navbar:
   structure:
-    left:
-    - home
-    - intro
-    - reference
-    - data
-    - articles
-    - tutorials
-    - news
+    left: [home, intro, articles, reference, data, news]
     right: github
   components:
     home:
       icon: fa-home fa-lg
       href: index.html
+    articles:
+      text: Workflow
     reference:
       text: Reference
       href: reference/index.html
     intro:
       text: Get started
       href: articles/bllFlow.html
-    articles:
-      text: Articles
-      menu:
-      - text: Introduction to `some sort of` function
-        href: articles/intro_how_to.html
-    data:
-      text: Data
-      href: DATA.html
     news:
       text: Changelog
       href: news/index.html
@@ -47,6 +41,7 @@ navbar:
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings
+
 reference:
 - title: "Clean and tranfrom variables"
   desc: Functions for cleaning and transforming variables
