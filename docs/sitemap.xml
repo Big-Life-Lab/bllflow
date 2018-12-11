@@ -40,9 +40,15 @@
     <loc>https://big-life-lab.github.io/bllFlow//reference/make_event_dates.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/bllFlow.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/0_workflow.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/intro_how_to.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/1_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/2_data_clean.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/bllFlow.html</loc>
   </url>
 </urlset>

@@ -2,8 +2,10 @@ pandoc: 1.19.2.1
 pkgdown: 1.2.0
 pkgdown_sha: ~
 articles:
+  0_workflow: 0_workflow.html
+  1_data: 1_data.html
+  2_data_clean: 2_data_clean.html
   bllFlow: bllFlow.html
-  intro_how_to: intro_how_to.html
 urls:
   reference: https://big-life-lab.github.io/bllFlow//reference
   article: https://big-life-lab.github.io/bllFlow//articles
