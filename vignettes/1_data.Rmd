@@ -13,8 +13,8 @@ knitr::opts_chunk$set(
 
 **bllFlow** uses consistent labels and metadata throughout the workflow. We explain why in our accompanying [document]. tl;dr [Nature Videos](https://youtu.be/j7K3s_vi_1Y)
 
-## `cat-met-labels`
-`cat-met-labels` (short for _category and metrics labels_) is the data file that describes labels and metadata in bblFlow. Add to your own `cat-met-labels` or make a [pull request](https://github.com/big-Life-Lab/bllflow/pulls). 
+## `labels-metadata`
+`variable-metadata` is the data file that describes labels and metadata in bblFlow. Add to your own `cat-met-labels` or make a [pull request](https://github.com/big-Life-Lab/bllflow/pulls). 
 
 Labels and metadata are used in five key areas of research reporting:
 
