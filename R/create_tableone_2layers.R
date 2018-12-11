@@ -1,4 +1,3 @@
-
 library(tidyr)
 library(Hmisc)
 library(dplyr) # for data manipulation
@@ -16,7 +15,7 @@ library(knitr) # for printing tables
 #' @param CovariateName1  The name of the original variable that stats (mean/stdev etc) will be calculated for
 #' @param GroupByName1  variable name for the first layer
 #' @param GroupByName2 variable for the second layer of the table
-#' 
+#'
 #' 
 #' Messed up variable has the same name with "dirty" prefix
 #'
@@ -63,9 +62,10 @@ library(knitr) # for printing tables
   
   #create columns for variable labels
 
- 
-  partialtable$groupby2_label<- deparse(substitute(GroupByName2))
-
+   partialtable$GroupBy1_label<- sub('.*\\$', "",deparse(substitute(GroupByName1)))
+  
+  partialtable$GroupBy2_label<- sub('.*\\$', "",deparse(substitute(GroupByName2)))
+  
   covariate1_att<-deparse(substitute(CovariateName1))
   
   #rename columns
@@ -90,9 +90,10 @@ library(knitr) # for printing tables
 
   names(size)[3]<-'prevalence (n)'
  
-  bbk<-cbind(partialtable, prevalence[3], size[3])
+ tableone_part1<-cbind(partialtable, prevalence[3], size[3])
 
-  return(bbk)
+  return(tableone_part1)
   }
 
+  
 
