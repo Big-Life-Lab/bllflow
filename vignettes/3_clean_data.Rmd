@@ -1,0 +1,13 @@
+---
+title: "2 - Data cleaning and transformation"
+output: rmarkdown::html_vignette
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
