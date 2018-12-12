@@ -1,9 +1,9 @@
 ---
-  title: "5 - Helper and utility functions"
+title: "Helper and utility functions"
 output: rmarkdown::html_vignette
 ---
   
-  ```{r setup, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -12,3 +12,39 @@ knitr::opts_chunk$set(
 **bllFlow** supports pre-specifying model development as described by Harrell 
 and others.[ref]
 
+
+## Make an event date
+Our teams often work with health data in secure environments where privacy is 
+paramount. This means we cannot share data. ...
+```{r make event date}
+library(bllFlow)
+library(survival)
+library(dplyr)
+library(magrittr)
+library(Hmisc)
+
+df <- system.file("extdata", "RESPECT-EOL_validation.csv", package = "bllFlow") %>%
+  read.csv %>%
+  as.data.frame
+
+df_length <- nrow(df)
+
+# make events
+# df$tt_event <- make_event_dates(df_length, df$risk, 1825, label = "FollowUp", units = 'days')
+# label(df$tt_event) #check label
+# 
+# # check to see if events have been added
+# table(df$tt_event)
+# 
+# # check to see if df$tt_event is about the same as df$risk
+# mean(df$risk)
+# nrow(df[df$tt_event < 1825,]) / nrow(df)
+# 
+#  # create event variable
+# df$event <- ifelse(df$tt_event < 1825, 1, 0)
+# 
+# # Pick an available survial time less than 1825 for evaluation
+# # (This is only neccessary due to current limitations of the test dataset)
+# a <- sort(df$tt_event) %>% unique
+# toe <- tail(a, 2)[-2]
+```
