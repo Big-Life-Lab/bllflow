@@ -2,10 +2,10 @@
 % Please edit documentation in R/center.R
 \name{center.bll_flow}
 \alias{center.bll_flow}
-\title{Centers the x arg using the provided mean arg and returns a new bll_flow 
+\title{Centers the x argument using the provided mean argument and returns a new bll_flow 
 variable}
 \usage{
-\method{center}{bll_flow}(x, mean)
+center.bll_flow(x, mean)
 }
 \arguments{
 \item{x}{numeric,bll_flow The bll_flow variable to center}
@@ -13,9 +13,9 @@ variable}
 \item{mean}{numeric The mean to center the x arg on}
 }
 \value{
-numeric,bll_flow The centered object
+numeric,bll_flow The centered object with attribute (attr) = center and 'label' = 'Centered'
 }
 \description{
-Centers the x arg using the provided mean arg and returns a new bll_flow 
+Centers the x argument using the provided mean argument and returns a new bll_flow 
 variable
 }
