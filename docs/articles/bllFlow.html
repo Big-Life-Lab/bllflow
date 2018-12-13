@@ -60,7 +60,25 @@
       <a href="../articles/1_data.html">1 - Data templates and examples</a>
     </li>
     <li>
-      <a href="../articles/2_data_clean.html">2 - Data cleaning and transformation</a>
+      <a href="../articles/2_describe_data.html">2 - Data cleaning and transformation</a>
+    </li>
+    <li>
+      <a href="../articles/3_clean_data.html">2 - Data cleaning and transformation</a>
+    </li>
+    <li>
+      <a href="../articles/4_model_development.html">4 - Developing a (predictive) model</a>
+    </li>
+    <li>
+      <a href="../articles/5_model_performance.html">5 - Reporting the performance of a model</a>
+    </li>
+    <li>
+      <a href="../articles/6_model_description.html">6 - Describing a model</a>
+    </li>
+    <li>
+      <a href="../articles/7_model_deployment.html">7 - (predictive) Model deployment</a>
+    </li>
+    <li>
+      <a href="../articles/8_helper_functions.html">Helper and utility functions</a>
     </li>
   </ul>
 </li>
@@ -106,47 +124,17 @@
 
     
     
-<p>There there are two main features:</p>
+<p>There there are two distictive features of <strong>bllFlow</strong> to facilitate open, reproducible and efficient research.</p>
 <ul>
 <li><p>The Model Specification Worksheet (MSW) - CSV files that contain key information (metadata) about the variables in your model.</p></li>
 <li><p>Formatted output files, tables and figures - CSV files that contain results of your model that adhere to reporting guidelines such as TRIPOD, STROBE, and RECORD.</p></li>
 </ul>
 <p>“Flow” refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. The imperitive for bllFlow is the development of predictive models but key parts help research using routinely-collected data.</p>
-<div id="rstudio-plugin-installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#rstudio-plugin-installation" class="anchor"></a>RStudio Plugin Installation</h2>
-<ol style="list-style-type: decimal">
-<li>Restart the IDE</li>
-<li>If the plugin was successfully installed there should be a new entry in the Addins menu at the top of the IDE called “R Project Builder”</li>
-</ol>
-<p><img src="../man/figures/Rstudio-addin.png"></p>
-</div>
-<div id="plugin-usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plugin-usage" class="anchor"></a>Plugin Usage</h2>
-<ol style="list-style-type: decimal">
-<li>Open the project’s ‘Model Specification Worksheet (MSW)’ (CSV file).</li>
-<li>Run the plugin.</li>
-<li>The generated project should be in a folder called “generated-project” within the folder containing the web specifications file.</li>
-</ol>
-<p>The package requires a MSW CSV file that identifies:</p>
-<ol style="list-style-type: decimal">
-<li>Which variable you would like transformed.</li>
-<li>Which transformation you would like performed.</li>
-</ol>
-<p><code>code example here to load and create a table output....</code></p>
-</div>
+<p>At any point of your analyses you can: - create a complete codebook. - always have labels for variables and categories. - always know (using variable attributes) how your data has been cleaned and transformed.</p>
+<p>The workflow describes 7 steps: …</p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#rstudio-plugin-installation">RStudio Plugin Installation</a></li>
-      <li><a href="#plugin-usage">Plugin Usage</a></li>
-      </ul>
-</div>
       </div>
 
 </div>

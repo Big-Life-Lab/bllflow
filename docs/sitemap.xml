@@ -46,7 +46,25 @@
     <loc>https://big-life-lab.github.io/bllFlow//articles/1_data.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/2_data_clean.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/2_describe_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/3_clean_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/4_model_development.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/5_model_performance.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/6_model_description.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/7_model_deployment.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/8_helper_functions.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllFlow//articles/bllFlow.html</loc>
