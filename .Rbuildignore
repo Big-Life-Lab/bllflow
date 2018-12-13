@@ -1,4 +1,6 @@
-^pkgdown-README\.md$
+^DATA\.md$
+^pkgdown$
+^README\.Rmd$
 ^\.Last$
 ^\.First$
 ^\.env$

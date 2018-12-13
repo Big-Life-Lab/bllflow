@@ -1,0 +1,14 @@
+---
+title: "5 - Reporting the performance of a model"
+output: rmarkdown::html_vignette
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+**bllFlow** supports pre-specifying model development as described by Harrell 
+and others.[ref]
+
