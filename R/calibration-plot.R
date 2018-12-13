@@ -30,7 +30,8 @@ library(plotly)
 
 
 calibration_plot<- function(data, observed, predicted, error=0, title=NA) {
-  
+  data[[predicted]]<- as.numeric(data[[predicted]])
+  data[[observed]]<- as.numeric(data[[observed]])  
 trace1<-list(
              x=data[[observed]],
              y=data[[predicted]],
@@ -92,6 +93,5 @@ p <- add_trace(p, x=trace2$x, y=trace2$y, line=trace2$line, mode=trace2$mode, sh
 p <- layout(p, hovermode=layout$hovermode,autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis)
 return(p)
 }
-
 
 
