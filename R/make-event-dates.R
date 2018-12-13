@@ -34,10 +34,10 @@ library(Hmisc)  # for variable labels only
 #'  df_length <- nrow(df)
 #'  
 #' # each ovservation as event probablity of df$risk
-#'   df$tt_event <- make_event_date(df_length, df$risk, 1825, units = 'days')
+#'   df$tt_event <- make_event_dates(df_length, df$risk, 1825, units = 'days')
 #'   
 #'  # add variable labeles
-#'    df$tt_event <- make_event_date(df_length, df$risk, 1825, 
+#'    df$tt_event <- make_event_dates(df_length, df$risk, 1825, 
 #'    label = "end-of-life", units = 'days')
 #'   
 #' # check the label
