@@ -1,6 +1,10 @@
 ---
-title: "1 - Data templates and examples"
+title: "Reference files - variable labels and metadata"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Reference files - variable labels and metadataa}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -9,8 +13,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-## Introduction
 
+## Introduction
+Data 
+and models are meaningless without good metadata.  Metadata should be 
+independently understandable; machine actionable; discoverable, dynamic, 
+interactive. 
 **bllFlow** uses consistent labels and metadata throughout the workflow. We explain why in our accompanying [document]. tl;dr [Nature Videos](https://youtu.be/j7K3s_vi_1Y)
 
 ## `variable-metadata`
@@ -32,29 +40,3 @@ library(DT)
 dt <- read.csv(system.file("extdata", "summary_variables.csv", package = "bllFlow"))
 datatable(dt, options = list(pageLength = 5))
 ```
-
-
-## Data templates
-**bblFlow** has three Model Specfication Worksheets (MSW):
-
-1) `MSW-variables` --- for all model variables (features).
-1) `MSW-categories` --- for all category (factor) levels.
-
-Include in each worksheet is metadata for specifying the model, including:
-
-- variable labels
-- data cleaning
-- tranfromation rules
-
-The 
-
-We typically create a family of algorithms that consist of different outcomes 
-using the same development cohort. We create "master" worksheets that contain 
-variables used in any algorithm wtih a family of algorithms. As well as 
-algorithm specific worksheets with data cleaning and transformation rules, such 
-as max-min rules, that are specfic for each algorithm. 
-
-
-
-
-

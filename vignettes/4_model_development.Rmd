@@ -1,6 +1,10 @@
 ---
 title: "4 - Developing a (predictive) model"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{4 - Developing a (predictive) model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}

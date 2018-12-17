@@ -1,6 +1,10 @@
 ---
 title: "5 - Reporting the performance of a model"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{5 - Reporting the performance of a model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
