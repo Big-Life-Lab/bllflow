@@ -1,10 +1,12 @@
 ---
 title: "Workflow overview"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Workflow overview}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: 
+  rmarkdown::html_document:
+    toc: true 
+    toc_depth: 3
+    number_sections: false  
+pkgdown:
+  as_is: true
 ---
 
 ```{r setup, include = FALSE}
@@ -19,9 +21,6 @@ emphasize a _pre-specified_ approach following Harrell, Styerberg and others.
 _Pre-specified_ means the predictive model is specified prior to examining the 
 relationship between predictors (also known as risk factors or features) and the 
 outcome (target). 
-
-## Seven steps
-The seven steps to model development are sequential. 
 
 ### Step 1 - Specifying your model
 The model specifications are recorded within the Model Specification Worksheet 
@@ -65,7 +64,7 @@ This step is short and breif for **bllFlow**. **bllFlow**
  generation. For example, dummy variables can be created, but using different 
  naming conventions.
  
- ### Step 5 - Reporting the performance of a model
+### Step 5 - Reporting the performance of a model
  
 ### Reference files - Variable types, labels and metadata
 **bllFlow** uses consistent labels and metadata throughout the workflow. The 

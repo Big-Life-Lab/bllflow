@@ -1,12 +1,16 @@
 # bllFlow (development version)
 
 # bllFlow 0.1.1
+2018-12-14
 
-```diff
-+ 0 errors ✔ | 0 warnings ✔ | 0 notes ✔ R 
-CMD check succeeded
-```
-* Functions included - see [documentation](https://big-life-lab.github.io/bllFlow/docs/reference/index.html) for more details
+<span style="color:green">0 errors ✔ </span> | 
+<span style="color:green">0 warnings ✔ </span> | 
+<span style="color:green">0 notes ✔ </span> 
+ `R CMD check succeeded`
+
+### Functions included
+See [documentation](https://big-life-lab.github.io/bllFlow/docs/reference/index.html) for more details.
+
     - `assign_first_event()`
     - `bll_flow()`
     - `buildInteractionsList()`
