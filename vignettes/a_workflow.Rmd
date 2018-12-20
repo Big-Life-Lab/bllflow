@@ -38,10 +38,9 @@ and thesis committee.
 
 ### Step 2 - Describing the study cohort
 Research studies tyipically include a "Table 1" that describe the study cohort 
-or population. This step creates a CSV file with the all infomation required for 
-Table 1 and also similar descriptive tables and codebooks. **bllFlow** follows 
-the [Data Documentation Intitiatve](https://www.ddialliance.org) concept of "one 
-document, many uses."
+or population. This step creates a CSV file, `aggregated-results`, with the all 
+infomation required for Table 1 and also similar descriptive tables and 
+codebooks. **bllFlow** follows the [Data Documentation Intitiatve](https://www.ddialliance.org) concept of "one document, many uses."
 
 **bllFlow** steps are sequential, but there is room a small amount if iteration, 
 particularly for Step 2. For example, most research reporting guidelines 
@@ -65,10 +64,27 @@ This step is short and breif for **bllFlow**. **bllFlow**
  
  A challenge when using different modelling packages and software programs 
  are different approaches to variable transformation that occurres within model 
- generation. For example, dummy variables can be created, but using different 
- naming conventions.
+ generation. For example, dummy variables are created in different packages 
+ during function call and then exported, but using different naming conventions. 
+ In bllFlow, dummy variables are generated prior to function call.
  
 ### Step 5 - Reporting the performance of a model
+This section shows main approaches to reporting the performance of predictive 
+algorithms -- and much of this section will not be helpful if are performing 
+other types of studies. We add onto popular packages such as Hmisc in three ways. 
+First, we modify a few functions for competing risk algorithms, since these 
+functions are underdeveloped. Second, **bllFlow** have versions of calibration
+ plots and other visualizations. Third plots are designed to replication on 
+ many subgroups, using information from the `aggregated-results` data frame.
+ 
+### Step 6 - 6 - Describing a model
+**bllFlow** creates a consistent structure for reporting models. The same as 
+other steps, a structured data frame, `model-description` is created to 
+facilitate export as a CSV file or other document format. Critically, the model 
+description is translated to Predictive Model Modelling Language (PMML) for 
+deployment in various settings. PMML can be imported into Tensor Flow deployment 
+engines (with future plans for export to Tensor Flow Graph). `model-description`
+ is also used for manuscript-ready exhibits.
  
 ### Reference files - Variable types, labels and metadata
 **bllFlow** uses consistent labels and metadata throughout the workflow. The 
