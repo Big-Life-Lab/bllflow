@@ -6,7 +6,7 @@ group_by_value_<group_level>,value of the variable we are grouping by,"1,2,3,4,5
 group_by_value_label_<group_level>,"if the group is a categorical variable, then the description of the category in the group_by_value column. Otherwise NA",[10 -19) years,yes,,,,,
 group_by_sex,"what sex this row is grouped under. Allowed values are, ""male"", ""female"" and ""NA"" for not grouped under a sex",,yes,,,,,
 h0t1Year,H0t for 1 year,,,yes,,,,
-rcs1Knot,predictor spline knots,AgeC_rcs1_knot,,yes,,,,
+rcs<knot>_knot,predictor spline knots,AgeC_rcs1_knot,,yes,,,,
 mean,mean,,yes,,yes,,,
 SD,standard deviation ,,yes,,yes,,,
 prevalence,prevalence,,yes,,yes,,,
