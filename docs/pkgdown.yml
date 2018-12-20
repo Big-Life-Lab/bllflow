@@ -4,7 +4,13 @@ pkgdown_sha: ~
 articles:
   0_workflow: 0_workflow.html
   1_data: 1_data.html
-  2_data_clean: 2_data_clean.html
+  2_describe_data: 2_describe_data.html
+  3_clean_data: 3_clean_data.html
+  4_model_development: 4_model_development.html
+  5_model_performance: 5_model_performance.html
+  6_model_description: 6_model_description.html
+  7_model_deployment: 7_model_deployment.html
+  8_helper_functions: 8_helper_functions.html
   bllFlow: bllFlow.html
 urls:
   reference: https://big-life-lab.github.io/bllFlow//reference
