@@ -43,10 +43,10 @@
     <loc>https://big-life-lab.github.io/bllFlow//articles/0_workflow.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/1_data.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/1_model_specification.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/2_describe_data.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/2_describing_data.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllFlow//articles/3_clean_data.html</loc>
@@ -64,7 +64,10 @@
     <loc>https://big-life-lab.github.io/bllFlow//articles/7_model_deployment.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllFlow//articles/8_helper_functions.html</loc>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/9_1_reference_files.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllFlow//articles/9_2_helper_functions.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllFlow//articles/bllFlow.html</loc>
