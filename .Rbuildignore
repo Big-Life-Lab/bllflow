@@ -10,4 +10,5 @@
 ^\.Rproj\.user$
 BLLFlow.Rproj
 ^images$
-^docs$
+docs$
+vignettes

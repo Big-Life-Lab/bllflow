@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Reference files - variable labels and metadataa}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  % \VignetteDepends{DT}
 ---
 
 ```{r setup, include = FALSE}

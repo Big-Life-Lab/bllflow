@@ -4,7 +4,11 @@ output:
   rmarkdown::html_document:
     toc: true 
     toc_depth: 3
-    number_sections: false  
+    number_sections: false
+vignette: >
+  %\VignetteIndexEntry{1 - Specifying your model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 pkgdown:
   as_is: true
 ---
