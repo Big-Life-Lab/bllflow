@@ -1,6 +1,10 @@
 ---
-title: "2 - Data cleaning and transformation"
+title: "3 - Data cleaning and variable transformation"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{3 - Data cleaning and variable transformation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
@@ -9,8 +13,14 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+In **bllFlow**, data cleaning defined as mutating observations. Variable 
+transformation is defined as mutating variables. While not perfect rules, they 
+serve a purpose ... tl;dr ...
 
 
+An imperitive for **bllFlow** is the requirment that all data cleaning and 
+variable transformation steps must be reproduced during 
+  
 ## RStudio Plugin Installation
 
 1. Restart the IDE

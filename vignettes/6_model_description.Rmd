@@ -1,6 +1,10 @@
 ---
 title: "6 - Describing a model"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{6 - Describing a model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}

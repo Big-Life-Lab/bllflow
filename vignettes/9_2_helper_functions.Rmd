@@ -1,6 +1,10 @@
 ---
 title: "Helper and utility functions"
 output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Healper and utility functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
   
 ```{r setup, include = FALSE}
