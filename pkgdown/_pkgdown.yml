@@ -18,7 +18,7 @@ home:
 # modified from 'template_navbar()' to add the 'data' tab
 navbar:
   structure:
-    left: [home, intro, articles, reference, data, news]
+    left: [home, intro, articles, reference, news]
     right: github
   components:
     home:
