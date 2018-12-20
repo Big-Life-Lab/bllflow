@@ -3,7 +3,7 @@ library(plotly)
 #' Creates a calibration plot using plotly package. Returns an actual vs 
 #' predicted plot. Used for model fit visualization
 #'
-#' @usage   CalibrationPlot(data, observed, predicted, error=0, title=NA)
+#' @usage   calibration_plot(data, observed, predicted, error=0, title=NA)
 #'
 #'@param data   a data.frame
 #'@param observed variable of observed observation from data.frame, object of 
