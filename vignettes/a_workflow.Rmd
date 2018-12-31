@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 ## Introduction
 **bllFlow** uses seven steps to develop predictive algorithms. The steps 
 emphasize a _pre-specified_ approach following Harrell, Styerberg and others. 
-_Pre-specified_ means the predictive model is specified prior to examining the 
+Pre-specified means the predictive model is specified prior to examining the 
 relationship between predictors (also known as risk factors or features) and the 
 outcome (target). 
 
@@ -44,9 +44,9 @@ codebooks. **bllFlow** follows the [Data Documentation Intitiatve](https://www.d
 
 **bllFlow** steps are sequential, but there is room a small amount if iteration, 
 particularly for Step 2. For example, most research reporting guidelines 
-recommended a description of the study cohort before any data cleaning to 
-disclose and communicate data quality (amount of missing data, etc.). It is 
-helpful to also description of your study data after data cleaning, 
+recommended a description of the study cohort before any data cleaning -- thereby 
+disclosing and communicating data quality (amount of missing data, etc.). It is 
+helpful to also describe of your study data after data cleaning, 
 and variable transformation (Step 3).
 
 ### Step 3 - Data cleaning and variable transformation
@@ -66,19 +66,19 @@ This step is short and breif for **bllFlow**. **bllFlow**
  are different approaches to variable transformation that occurres within model 
  generation. For example, dummy variables are created in different packages 
  during function call and then exported, but using different naming conventions. 
- In bllFlow, dummy variables are generated prior to function call.
+ In **bllFlow**, dummy variables are generated prior to function call.
  
 ### Step 5 - Reporting the performance of a model
-This section shows main approaches to reporting the performance of predictive 
+This section generates performance reports for predictive 
 algorithms -- and much of this section will not be helpful if are performing 
 other types of studies. We add onto popular packages such as Hmisc in three ways. 
 First, we modify a few functions for competing risk algorithms, since these 
 functions are underdeveloped. Second, **bllFlow** have versions of calibration
- plots and other visualizations. Third plots are designed to replication on 
+ plots and other visualizations. Third, plots are designed to replication on 
  many subgroups, using information from the `aggregated-results` data frame.
  
 ### Step 6 - 6 - Describing a model
-**bllFlow** creates a consistent structure for reporting models. The same as 
+**bllFlow** creates a consistent structure for descdribing models. The same as 
 other steps, a structured data frame, `model-description` is created to 
 facilitate export as a CSV file or other document format. Critically, the model 
 description is translated to Predictive Model Modelling Language (PMML) for 
@@ -87,11 +87,16 @@ engines (with future plans for export to Tensor Flow Graph). `model-description`
  is also used for manuscript-ready exhibits.
  
 ### Reference files - Variable types, labels and metadata
-**bllFlow** uses consistent labels and metadata throughout the workflow. The 
-`variable-metadata` file is a table that identifies all variable types used. For 
-example, `mean`  refers to the mean value of an exposure. All variable types are 
-defined to ensure consistent, understandable and machine-actionable across 
-software libraries.
+**bllFlow** uses consistent labels and metadata throughout the workflow. 
+**bllFlow** metadata is alligned with two documentation initiatives: the 
+[Data Documentaiton Initiative (DDI)](https://www.ddialliance.org) and 
+[PMML](http://dmg.org). The `variable-metadata` file is a table that identifies 
+all variable types used. For example, `mean`  refers to the mean value of an 
+exposure. All variable types are defined to ensure consistent, understandable and machine-actionable across software libraries. 
 
 ### Helper and utility functions
-
+Miscellaneous functions to support your workflow. For example, we perform 
+research in secure data environments using personal health information. These 
+data cannot be publicly shared. Instead, we generate fake data that allow us to 
+demonstrate the analyses plan and also to validate deployment of the algorithm. 
+Utility and helper functions are used to make these data. 

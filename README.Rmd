@@ -16,11 +16,11 @@ knitr::opts_chunk$set(
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-bllFlow supports open, reproducible, efficient and robust research for teams. 
+bllFlow supports open, reproducible, efficient research. 
 
 The package was originally developed for studies that develop predictive 
-algoirthms using rountinely-collectec health data. However, bllFlow can support 
-others studies that strive for pre-specified analyses, particularly when there 
+algoirthms using rountinely-collected health data. However, bllFlow can support 
+others studies pre-specified analyses, particularly when there 
 are multiple people working together create an analysis plan.
 
 You can see bllFlow in action at [https://big-life-lab.github.io/bllFlow-bookdown/](https://big-life-lab.github.io/bllFlow-bookdown/).
