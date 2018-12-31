@@ -57,7 +57,8 @@ reference:
   - '`isInInteractionsList`'
   - '`isPortWebSpecFile`'
 - title: "Making test data"
-  desc: A bllFlow ....
+  desc: 'Functions to help make fake data to demostrate the approach to create 
+  predictive algorithms and/or validate the algorithm deployment.'
   contents:
   - '`assign_first_event`'
   - '`make_event_dates`'
