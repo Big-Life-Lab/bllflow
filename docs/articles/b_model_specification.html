@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Introduction to bllFlow • bllFlow</title>
+<title>1 - Specifying your model • bllFlow</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Introduction to bllFlow">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="1 - Specifying your model">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -118,32 +118,50 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Introduction to bllFlow</h1>
+      <h1>1 - Specifying your model</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/bllFlow/blob/master/vignettes/bllFlow.Rmd"><code>vignettes/bllFlow.Rmd</code></a></small>
-      <div class="hidden name"><code>bllFlow.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/bllFlow/blob/master/vignettes/b_model_specification.Rmd"><code>vignettes/b_model_specification.Rmd</code></a></small>
+      <div class="hidden name"><code>b_model_specification.Rmd</code></div>
 
     </div>
 
     
     
-<p>The <code>Workflow</code> menu describes seven common analyses steps when performing research using observational data. You can pick and choose to use any steps that fit your workflow.</p>
-<p>There there are two distictive features of <strong>bllFlow</strong> to facilitate open, reproducible and efficient research.</p>
-<ul>
-<li><p>The Model Specification Worksheet (MSW) - CSV files that contain key information (metadata) about the variables in your model.</p></li>
-<li><p>Formatted output files, tables and figures - CSV files that contain results of your model that adhere to reporting guidelines such as TRIPOD, STROBE, and RECORD.</p></li>
-</ul>
-<p>“Flow” refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. The imperitive for bllFlow is the development of predictive models but key parts help research using routinely-collected data.</p>
-<p>At any point of your analyses you:</p>
-<ul>
-<li>have a complete codebook.</li>
-<li>always have labels for variables and categories.</li>
-<li>always know (using variable attributes) how your data has been cleaned and transformed.</li>
-</ul>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 </div>
+<div id="data-templates" class="section level2">
+<h2 class="hasAnchor">
+<a href="#data-templates" class="anchor"></a>Data templates</h2>
+<p><strong>bblFlow</strong> has three Model Specfication Worksheets (MSW):</p>
+<ol style="list-style-type: decimal">
+<li>
+<code>MSW-variables</code> — for all model variables (features).</li>
+<li>
+<code>MSW-categories</code> — for all category (factor) levels.</li>
+</ol>
+<p>Include in each worksheet is metadata for specifying the model, including:</p>
+<ul>
+<li>variable labels</li>
+<li>data cleaning</li>
+<li>tranfromation rules</li>
+</ul>
+<p>The</p>
+<p>We typically create a family of algorithms that consist of different outcomes using the same development cohort. We create “master” worksheets that contain variables used in any algorithm wtih a family of algorithms. As well as algorithm specific worksheets with data cleaning and transformation rules, such as max-min rules, that are specfic for each algorithm.</p>
+</div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#data-templates">Data templates</a></li>
+      </ul>
+</div>
       </div>
 
 </div>
