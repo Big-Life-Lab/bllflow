@@ -27,7 +27,10 @@ Imports:
   dplyr
 Suggests:
   knitr,
-  rmarkdown
+  rmarkdown,
+  DT,
+  magrittr,
+  survival
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
 Maintainer: Yulric Sequeira <ysequeira@ohri.ca>

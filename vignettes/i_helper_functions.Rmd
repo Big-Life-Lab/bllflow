@@ -5,6 +5,10 @@ vignette: >
   %\VignetteIndexEntry{Healper and utility functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  % \VignetteDepends{survival}
+  % \VignetteDepends{dplyr}
+  % \VignetteDepends{magrittr}
+  
 ---
   
 ```{r setup, include = FALSE}
