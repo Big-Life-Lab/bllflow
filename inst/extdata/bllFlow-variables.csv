@@ -1,14 +1,14 @@
 column_name,description,example,table_1,model_description,summary_stat,validation_data,variable_transformation,notes
-exposure,exposure,age,yes,yes,,,,a predicted risk or variable
-group_by_<group level>,variable this grouping level is for,age_cat5,yes,,,,,
-group_by_label_<group_level>,description of the group variable,Age in 5 categories,yes,,,,,
+variable,a predicted risk or exposure that is used in either Table 1 or model,age,yes,yes,,,,a predicted risk or variable
+group_by_<group level>,a variable that is used to group (aggegrate),age_cat5,yes,,,,,e.g. group_by_1 with values of age_cat5 indicates aggregated data for age_cat5
+group_by_label_<group_level>,description of the group variable,age in 5 categories,yes,,,,,
 group_by_value_<group_level>,value of the variable we are grouping by,"1,2,3,4,5",yes,,,,,
 group_by_value_label_<group_level>,"if the group is a categorical variable, then the description of the category in the group_by_value column. Otherwise NA",[10 -19) years,yes,,,,,
 group_by_sex,"what sex this row is grouped under. Allowed values are, ""male"", ""female"" and ""NA"" for not grouped under a sex",,yes,,,,,
 h0t1Year,H0t for 1 year,,,yes,,,,
-rcs1Knot,predictor spline knots,AgeC_rcs1_knot,,yes,,,,
+rcs<knot>_knot,predictor spline knots,AgeC_rcs1_knot,,yes,,,,
 mean,mean,,yes,,yes,,,
-SD,standard deviation ,,yes,,yes,,,
+sd,standard deviation ,,yes,,yes,,,
 prevalence,prevalence,,yes,,yes,,,
 n,number of observations,,yes,,yes,,,
 observed_risk_<time>_year,observed risk for time period e.g. 1-year observed risk,,yes,,yes,,,
@@ -19,7 +19,7 @@ predicted_risk_<time>_year_<percentile_number>CI,predicted risk for time period 
 max,maximum observation value,,yes,,yes,,,
 min,minumum observation value,,yes,,yes,,,
 median,median observation value,,yes,,yes,,,
-<percentile_number>_percentile,"Percentile observation value where the percentile_number is for eg. 2_5 for 2.5th percentile, 75 for 75th percentile etc.",,yes,,yes,,,
+percentile_<percentile_number>,"percentile observation value where the percentile_number is for eg. 025 for 2.5th percentile, 750 for 75th percentile etc.",,yes,,yes,,,
 variable_xBeta,X beta score,AgeC_rcs1_xBeta,,,,yes,,
 sumXbeta,sum of Xbetas,sumXbeta,,,,yes,,
 variable_cont,continuous,Age_cont,,,,,yes,for continuous variables which does not have any other components such as splines

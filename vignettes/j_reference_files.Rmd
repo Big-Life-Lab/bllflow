@@ -33,7 +33,7 @@ Labels and metadata are used in five key areas of research reporting:
 1) **Summary statistics** -- metrics model performance.
 1) **Validation data** -- example dataset to verify algorithm scoring (for predictive models).
 
-`cat-met-labels`
+`bllFlow-variables`
 
 ```{r, echo=FALSE, results='asis'}
 library(DT)
