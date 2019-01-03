@@ -1,17 +1,18 @@
 pandoc: 1.19.2.1
-pkgdown: 1.2.0
+pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
-  0_workflow: 0_workflow.html
-  1_data: 1_data.html
-  2_describe_data: 2_describe_data.html
-  3_clean_data: 3_clean_data.html
-  4_model_development: 4_model_development.html
-  5_model_performance: 5_model_performance.html
-  6_model_description: 6_model_description.html
-  7_model_deployment: 7_model_deployment.html
-  8_helper_functions: 8_helper_functions.html
+  a_workflow: a_workflow.html
+  b_model_specification: b_model_specification.html
   bllFlow: bllFlow.html
+  c_describing_data: c_describing_data.html
+  d_clean_data: d_clean_data.html
+  e_model_development: e_model_development.html
+  f_model_performance: f_model_performance.html
+  g_model_description: g_model_description.html
+  h_model_deployment: h_model_deployment.html
+  i_helper_functions: i_helper_functions.html
+  j_reference_files: j_reference_files.html
 urls:
   reference: https://big-life-lab.github.io/bllFlow//reference
   article: https://big-life-lab.github.io/bllFlow//articles

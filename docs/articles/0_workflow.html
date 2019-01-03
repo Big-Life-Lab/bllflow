@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Workflow overview">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
@@ -57,13 +58,13 @@
       <a href="../articles/0_workflow.html">Workflow overview</a>
     </li>
     <li>
-      <a href="../articles/1_data.html">1 - Data templates and examples</a>
+      <a href="../articles/1_model_specification.html">1 - Specifying your model</a>
     </li>
     <li>
-      <a href="../articles/2_describe_data.html">2 - Data cleaning and transformation</a>
+      <a href="../articles/2_describing_data.html">2 - Describing the study cohort</a>
     </li>
     <li>
-      <a href="../articles/3_clean_data.html">2 - Data cleaning and transformation</a>
+      <a href="../articles/3_clean_data.html">3 - Data cleaning and variable transformation</a>
     </li>
     <li>
       <a href="../articles/4_model_development.html">4 - Developing a (predictive) model</a>
@@ -78,7 +79,10 @@
       <a href="../articles/7_model_deployment.html">7 - (predictive) Model deployment</a>
     </li>
     <li>
-      <a href="../articles/8_helper_functions.html">Helper and utility functions</a>
+      <a href="../articles/9_1_reference_files.html">Reference files - variable labels and metadata</a>
+    </li>
+    <li>
+      <a href="../articles/9_2_helper_functions.html">Helper and utility functions</a>
     </li>
   </ul>
 </li>
@@ -124,10 +128,67 @@
 
     
     
-<p>This is where we will present the different steps of using bllFlow …</p>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
+<p><strong>bllFlow</strong> uses seven steps to develop predictive algorithms. The steps emphasize a <em>pre-specified</em> approach following Harrell, Styerberg and others. <em>Pre-specified</em> means the predictive model is specified prior to examining the relationship between predictors (also known as risk factors or features) and the outcome (target).</p>
+<div id="step-1---specifying-your-model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-1---specifying-your-model" class="anchor"></a>Step 1 - Specifying your model</h3>
+<p>The model specifications are recorded within the Model Specification Worksheet (MSW). Each predictor in your model is a row in the MSW. Included are columns for variable labels, data cleaning, variable transformation rules and other instructions that can be rountinely-performed (Step 4).</p>
+<p>Creating the MSW invovles everyone on your team: analysts, methodologist and content experts. Trainees will want to review their MSW with their supervisor and thesis committee.</p>
+</div>
+<div id="step-2---describing-the-study-cohort" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-2---describing-the-study-cohort" class="anchor"></a>Step 2 - Describing the study cohort</h3>
+<p>Research studies tyipically include a “Table 1” that describe the study cohort or population. This step creates a CSV file with the all infomation required for Table 1 and also similar descriptive tables and codebooks. <strong>bllFlow</strong> follows the <a href="https://www.ddialliance.org">Data Documentation Intitiatve</a> concept of “one document, many uses.”</p>
+<p><strong>bllFlow</strong> steps are sequential, but there is room a small amount if iteration, particularly for Step 2. For example, most research reporting guidelines recommended a description of the study cohort before any data cleaning to disclose and communicate data quality (amount of missing data, etc.). It is helpful to also description of your study data after data cleaning, and variable transformation (Step 3).</p>
+</div>
+<div id="step-3---data-cleaning-and-variable-transformation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-3---data-cleaning-and-variable-transformation" class="anchor"></a>Step 3 - Data cleaning and variable transformation</h3>
+<p>Data cleaning and varible transformation is the most time consuming step of model development – and also a step that poorly communicated and difficult to reproduce. <strong>bllFlow</strong> strives to reduce the effort required in this step as much as possible, while also improving transparency and reproduciblity.</p>
+</div>
+<div id="step-4---developing-a-predicitve-model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-4---developing-a-predicitve-model" class="anchor"></a>Step 4 - Developing a predicitve model</h3>
+<p>This step is short and breif for <strong>bllFlow</strong>. <strong>bllFlow</strong> doesn’t contain any functions for actual statistical or machine learning models. Rather, <strong>bllFlow</strong> acts more like a wrapper around the model model derivation, by providing help prior to and following actual model development. You bring your own model functions.</p>
+<p>A challenge when using different modelling packages and software programs are different approaches to variable transformation that occurres within model generation. For example, dummy variables can be created, but using different naming conventions.</p>
+</div>
+<div id="step-5---reporting-the-performance-of-a-model" class="section level3">
+<h3 class="hasAnchor">
+<a href="#step-5---reporting-the-performance-of-a-model" class="anchor"></a>Step 5 - Reporting the performance of a model</h3>
+</div>
+<div id="reference-files---variable-types-labels-and-metadata" class="section level3">
+<h3 class="hasAnchor">
+<a href="#reference-files---variable-types-labels-and-metadata" class="anchor"></a>Reference files - Variable types, labels and metadata</h3>
+<p><strong>bllFlow</strong> uses consistent labels and metadata throughout the workflow. The <code>variable-metadata</code> file is a table that identifies all variable types used. For example, <code>mean</code> refers to the mean value of an exposure. All variable types are defined to ensure consistent, understandable and machine-actionable across software libraries.</p>
+</div>
+<div id="helper-and-utility-functions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#helper-and-utility-functions" class="anchor"></a>Helper and utility functions</h3>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li>
+<a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#step-1---specifying-your-model">Step 1 - Specifying your model</a></li>
+      <li><a href="#step-2---describing-the-study-cohort">Step 2 - Describing the study cohort</a></li>
+      <li><a href="#step-3---data-cleaning-and-variable-transformation">Step 3 - Data cleaning and variable transformation</a></li>
+      <li><a href="#step-4---developing-a-predicitve-model">Step 4 - Developing a predicitve model</a></li>
+      <li><a href="#step-5---reporting-the-performance-of-a-model">Step 5 - Reporting the performance of a model</a></li>
+      <li><a href="#reference-files---variable-types-labels-and-metadata">Reference files - Variable types, labels and metadata</a></li>
+      <li><a href="#helper-and-utility-functions">Helper and utility functions</a></li>
+      </ul>
+</li>
+      </ul>
+</div>
       </div>
 
 </div>
@@ -138,7 +199,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>
