@@ -36,24 +36,18 @@
 
 make_messy_data <-function (vartomess, 
                         messy0missing1,
-<<<<<<< HEAD:R/make_messy_data.R
                         prc
                       )
-{ r<-runif(nrow(as.data.frame(vartomess)))
+{
+r<-runif(nrow(as.data.frame(vartomess)))
+ 
 
-=======
-                        prc,
-                        outdataset
-)
-{ #convert string to variable name
-  var<-eval(substitute(variablename), datasetname)
+ #convert string to variable name
+  var<-eval(substitute(vartomess))
   
   # create a dataset with one variable only 
   datatomessup<<-as.data.frame(var)
   
-
-  
->>>>>>> messy-data:R/messy-data.R
   # mess up or change with missing
   
   # if messy0missing1 is 0 then mess it up!!!
@@ -91,12 +85,10 @@ make_messy_data <-function (vartomess,
 
   }
   # combine original dataset with messy one
-<<<<<<< HEAD:R/make_messy_data.R
+
 return(varmessedup)
-=======
-  assign(deparse(substitute(outdataset)), cbind(datasetname, datamessedup), envir=.GlobalEnv)
->>>>>>> messy-data:R/messy-data.R
-  
+
+
 }
 
 
