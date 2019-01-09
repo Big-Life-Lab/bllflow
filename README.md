@@ -14,7 +14,6 @@ You can see bllFlow in action at <https://big-life-lab.github.io/bllFlow-bookdow
 Installation
 ------------
 
-    # Install from GitHub (should we explain how? or provide resources)
     # If not installed, install the devtools
     install.packages("devtools")
 
