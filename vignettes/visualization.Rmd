@@ -1,0 +1,93 @@
+---
+title: "Data Visualization"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Healper and utility functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  % \VignetteDepends{plotly}
+ 
+---
+
+## Data Visualization
+
+
+Visualizing data is an important aspect for any statistical modeling and research. For our purposes we have created 
+two functions, one creates a basic calibration plot (predited versus actual), and the other an observed versus 
+predicted bar chart scatter plot hybrid.
+
+
+
+```{r echo=TRUE}
+#load packages
+library(bllFlow)
+library(plotly)
+
+#load dataset
+df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
+  read.csv %>%
+  as.data.frame
+
+```
+
+###Using helper functions in visualization process
+
+In order to help simplify the visualization process a helper function was created to
+filter the table one data frame.
+
+*filter_table_1(data, vars, groupby_sex=NA, groupby_1=NA, groupby_2=NA)*
+
+
+```{r filter_table_1, echo=TRUE}
+
+col<-c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2","group_by_value_label_1") #columns to keep in subset of the dataset
+
+# Example 1:
+ex1<-filter_table_1(df, col, groupby_sex="Female", groupby_1="age")  #creates a subset of data with only the observations that meet the specified criteria  
+
+#Example 2:
+ex2<-filter_table_1(df, col, groupby_sex="Male", groupby_1="Drinks per week")
+
+```
+
+
+###Calibration Plot
+
+Calibration plots are one of the richest and most utilized forms of data visualization. 
+It is mostly used to visualize and evaluate goodness of fit (R Square).  The closure the
+data points are to the 45⁰ diagonal line the stronger the goodness of fit of the model.
+In terms of R square, if your R square was high all the points on the graph would be
+close to the line. The lower the R square is the further away from the diagonal line
+the points would lie, and the weaker the Goodness of fit for the model is.
+Extremely distance points from the line represent possible outliers.
+
+*calibration_plot(data, observed, predicted, error=0, title=NA)*
+
+```{r Calibration Plot, echo=TRUE}
+# Example One:
+calibration_plot(ex1, "observed_risk_1_year", "predicted_risk_1_year", title="Canadian Female age")
+
+# Example Two:
+calibration_plot(ex2, "observed_risk_1_year", "predicted_risk_1_year", title="Drinks per Week for Canadian Males")
+```
+
+###Observed versus Predicted
+
+Another way to visualize goodness of fit is with our observed vs predicted plot. 
+Different from the more traditional observed vs predicted scatter plot, this graph
+visualizes the observes in a bar chart and the predicted as overlaying points on the
+bars. Like the calibration plots, the further away the predicted points are from the
+observed bars the weaker the goodness of fit of the model would be. Extremely 
+far off predicted points represent possible outliers.
+
+*op_plot<-function(data, observed, predicted, title = NA, xlab = NA)*
+
+```{r Observed vs Predicted, echo=TRUE}
+# Example One:
+op_plot(ex1, "observed_risk_1_year", "predicted_risk_1_year", title="Canadian Female age", xlab="Age")
+
+# Example Two:
+op_plot(ex2, "observed_risk_1_year", "predicted_risk_1_year", title="Drinks per Week for Canadian Males", xlab="Drinks per Week")
+
+```
+
