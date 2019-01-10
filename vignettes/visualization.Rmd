@@ -12,7 +12,9 @@ vignette: >
 ## Data Visualization
 
 
-Visualizing data is an important aspect for any statistical modeling and research. For our purposes we have created two functions, one creates a basic calibration plot (predited versus actual), and the other an observed versus predicted bar chart scatter plot hybrid.
+Visualizing data is an important aspect for any statistical modeling and research. For our purposes we have created 
+two functions, one creates a basic calibration plot (predited versus actual), and the other an observed versus 
+predicted bar chart scatter plot hybrid.
 
 
 
