@@ -2,12 +2,11 @@
 % Please edit documentation in R/calibration-plot.R
 \name{calibration_plot}
 \alias{calibration_plot}
-\title{Calibration Plot}
-\description
-{Creates a calibration plot using plotly package. Returns an actual vs 
+\title{Calibration Plot
+Creates a calibration plot using plotly package. Returns an actual vs 
 predicted plot. Used for model fit visualization}
 \usage{
-CalibrationPlot(data, observed, predicted, error=0, title=NA)
+calibration_plot(data, observed, predicted, error=0, title=NA)
 }
 \arguments{
 \item{data}{a data.frame}
@@ -26,6 +25,18 @@ of class string}
 Calibration Plot
 Creates a calibration plot using plotly package. Returns an actual vs 
 predicted plot. Used for model fit visualization
+}
+\examples{
+#upload MPorT table one data set
+mport<-read.csv("inst/extdata/MPoRT-table-one.csv")
+
+#create character vector of columns needed for visualizations
+col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
+
+#create new data frame using filter_table_1 helper function 
+data<-filter_table_1(mport, col, groupby_sex="Female", groupby_1="age")
+
+calibration_plot(data, "observed_risk_1_year", "predicted_risk_1_year", title="Observed vs Predicted for Female age")
 }
 \author{
 Molly Campbell

@@ -2,9 +2,8 @@
 % Please edit documentation in R/OP-plot.R
 \name{op_plot}
 \alias{op_plot}
-\title{Observed vs Predicted Plot}
-\description
- {Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.}
+\title{Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.}
 \usage{
 op_plot(data, observed, predicted, title=NA, xlab= NA)
 }
@@ -22,6 +21,18 @@ op_plot(data, observed, predicted, title=NA, xlab= NA)
 \description{
 Observed vs Predicted Plot
  Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.
+}
+\examples{
+#upload MPorT table one data set
+mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
+
+#create character vector of columns needed for visualizations
+col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
+
+#create new data frame using filter_table_1 helper function 
+data<-filter_table_1(mport, col, groupby_sex="Male", groupby_1 ="Drinks per week")
+
+op_plot(data, "observed_risk_1_year", "predicted_risk_1_year", title="Observed vs Predicted for Male Drinks per Week" , xlab="Drinks per Week")
 }
 \author{
 Molly Campbell
