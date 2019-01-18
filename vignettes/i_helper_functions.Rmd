@@ -67,6 +67,9 @@ df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
   read.csv %>%
   as.data.frame
 
+#Check variables
+head(df, num=1L)
+
 #list of variables to keep and filter in subset of the dataset
 var<-c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2","group_by_value_label_1") 
 
