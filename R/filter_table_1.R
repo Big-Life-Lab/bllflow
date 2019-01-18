@@ -5,7 +5,7 @@
 #'
 #'@param data   a data frame
 #'@param vars varaible(s) to keep in new subset. Given as a character vector
-#'@param groupby_sex  (Optional) grouping observation of interest from gourp_by_sex variable sex grouping variable (ie "Male" or "Female"). Only rows where the condition evaluates to TRUE are kept 
+#'@param groupby_sex  (Optional) grouping observation of interest from gourp_by_sex variable (ie "Male" or "Female"). Only rows where the condition evaluates to TRUE are kept 
 #'@param groupby_1 (Optional) grouping observation of interest from group_by_1 variable. Only rows where the condition evaluates to TRUE are kept
 #'@param groupby_2 (Optional) grouping pbservation of interest from group_by_2 variable. Only rows where the condition evaluates to TRUE are kept
 #'
