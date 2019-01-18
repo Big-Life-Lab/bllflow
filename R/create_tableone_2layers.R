@@ -23,6 +23,12 @@ library(knitr) # for printing tables
 #'
 #' @example
 #'
+#' library(survival)
+#' data(pbc)
+#' 
+#' table1 <- create_tableone_2layers(datasetname = pbc, CovariateName1 = pbc$age, GroupByName1 = pbc$status, GroupByName2 = pbc$sex)
+#' 
+#' 
 #'   messyEducation_cat variable has 8 categories including the missing category
 #'   messyDiabetes_bin variable is a binary variable with a separate category for missings
 #'   Risk_cont is a continous risk variable
@@ -68,9 +74,9 @@ create_tableone_2layers <- function(CovariateName1,
 
   # calculate the prevalence of the categories
 
-  da$percent <- 1 / nrow(datasetname)
+  datasetname$percent <- 1 / nrow(datasetname)
 
-  prevalence <- aggregate(da$percent ~ addNA(GroupByName1) + addNA(GroupByName2),
+  prevalence <- aggregate(datasetname$percent ~ addNA(GroupByName1) + addNA(GroupByName2),
     datasetname,
     FUN = sum, na.rm = FALSE, na.action = na.exclude
   )
@@ -79,9 +85,9 @@ create_tableone_2layers <- function(CovariateName1,
 
   # calculate the size of each category
 
-  da$one <- 1
+  datasetname$one <- 1
 
-  size <- aggregate(da$one ~ addNA(GroupByName1) + addNA(GroupByName2),
+  size <- aggregate(datasetname$one ~ addNA(GroupByName1) + addNA(GroupByName2),
     datasetname,
     FUN = sum, na.rm = FALSE, na.action = na.exclude
   )
