@@ -23,12 +23,6 @@ Filter_table_1
 Helper function to filter table 1 data to fit specifc row and column grouping for subsequent data visualizations (ie. calibration plots)
 }
 \examples{
-#upload MPorT table one data set
-mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
-
-#create character vector of columns needed for visualizations
-col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
-
 filter_table_1(mport, col, groupby_sex="Male", groupby_1 ="smoking", groupby_2="packyears")
 
 filter_table_1(mport, col, groupby_sex="Female", groupby_1="age")
