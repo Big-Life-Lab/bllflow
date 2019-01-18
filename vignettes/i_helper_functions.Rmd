@@ -58,7 +58,11 @@ df_length <- nrow(df)
 ```
 
 ## Filter table 1
-Assessing model performance is an important aspect to health care research. In order to simplify this post modeling step a helper function was created to filter table one data. This function is intrinsic for visual inspection model assessments (ie. Calibration plots). Filter_table_1 can filter data based on conditions given from either, all, or any combination of the three groupby variables typically seen in our algorithm development (group_by_sex, group_by_1, and group_by_2) 
+Assessing model performance is an important aspect to health care research. 
+In order to simplify this post modeling step a helper function was created to filter table one data.
+This function is intrinsic for visual inspection model assessments (ie. Calibration plots). 
+Filter_table_1 can filter data based on conditions given from either, all, or any combination of the three groupby variables 
+typically seen in our algorithm development (group_by_sex, group_by_1, and group_by_2) 
 ```{r filter table one, echo=TRUE}
 library(bllFlow)
 
