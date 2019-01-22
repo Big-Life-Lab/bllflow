@@ -53,6 +53,11 @@ create_tableone_2layers <- function(CovariateName1,
                                     GroupByName1,
                                     GroupByName2,
                                     datasetname) {
+  ### Data check
+  ## Check if the data given is a dataframe
+  ModuleStopIfNotDataFrame(datasetname)
+  
+
   # calculate mean of CovariateName1 for every category of GroupByName1 and GroupByName2
 
   partialtable <- as.data.frame(aggregate(CovariateName1 ~ addNA(GroupByName1) +
