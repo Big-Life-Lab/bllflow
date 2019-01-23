@@ -57,9 +57,51 @@ create_tableone_2layers <- function(CovariateName1,
   ## Check if the data given is a dataframe
   ModuleStopIfNotDataFrame(datasetname)
   
+  
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+  #check if variables are in the dataset
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+  
+  var1 <- sub(".*\\$", "", deparse(substitute(CovariateName1)))
+  
+  var1NotInData <- setdiff(var1, names(datasetname))
+  
+  if (length(var1NotInData) > 0) {
+    stop("The data frame does not have: ",
+         paste0(var1NotInData, sep = " "), "Function Stopped")
+    
+  }
+  
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+  
+  var2 <- sub(".*\\$", "", deparse(substitute(GroupByName1)))
+  
+  var2NotInData <- setdiff(var2, names(datasetname))
+  
+  if (length(var2NotInData) > 0) {
+    stop("The data frame does not have: ",
+         paste0(var2NotInData, sep = " "), "Function Stopped")
+    
+  }
+  
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+  var3 <- sub(".*\\$", "", deparse(substitute(GroupByName2)))
+  
+  var3NotInData <- setdiff(var3, names(datasetname))
+  
+  if (length(var3NotInData) > 0) {
+    stop("The data frame does not have: ",
+            paste0(var3NotInData, sep = " "), "Function Stopped")
 
+  }
+  
+
+  
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
   # calculate mean of CovariateName1 for every category of GroupByName1 and GroupByName2
-
+  
+  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  #  # 
+  
   partialtable <- as.data.frame(aggregate(CovariateName1 ~ addNA(GroupByName1) +
     addNA(GroupByName2), datasetname, mean, na.rm = FALSE, na.action = na.exclude))
 
