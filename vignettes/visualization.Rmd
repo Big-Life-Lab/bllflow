@@ -21,12 +21,12 @@ predicted bar chart scatter plot hybrid.
 ```{r echo=TRUE}
 #load packages
 library(bllFlow)
+library(Rcurl)
 library(plotly)
 
 #load dataset
-df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
-  read.csv %>%
-  as.data.frame
+df <- read.csv("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA%3D%3D", 
+fileEncoding="UTF-8-BOM")
 
 ```
 
