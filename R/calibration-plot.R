@@ -31,10 +31,9 @@ library(plotly)
 
 
 calibration_plot<- function(data, observed, predicted, error=0, title=NA) {
-  
-  
   data[[predicted]]<- as.numeric(as.character(data[[predicted]]))
   data[[observed]]<- as.numeric(as.character(data[[observed]]))  
+
 trace1<-list(
              x=data[[observed]],
              y=data[[predicted]],
