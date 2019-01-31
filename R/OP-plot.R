@@ -38,14 +38,16 @@ op_plot<-function(data, observed, predicted, title = NA, xlab = NA){
    stop("Warning: Cannot plot both sets of labels, refilter data with just one labeling variable")
  }
  else if (("group_by_value_label_1" %in% colnames(data)) & (!"group_by_value_label_2" %in% colnames(data))) {
-    label<-data$group_by_value_label_1
-  }
-  else if (("group_by_value_label_2" %in% colnames(data)) & (!"group_by_value_label_1" %in% colnames(data))) {
-    label<-data$group_by_value_label_2
-  }
-  else {
-    label<-data$rows
-  }
+   data$group_by_value_label_1<-as.character(data$group_by_value_label_1)
+   label<-data$group_by_value_label_1
+ }
+ else if (("group_by_value_label_2" %in% colnames(data)) & (!"group_by_value_label_1" %in% colnames(data))) {
+   data$group_by_value_label_2<-as.character(data$group_by_value_label_2)
+   label<-data$group_by_value_label_2
+ }
+ else {
+   label<-data$rows
+ }
 
 x<-label
     
@@ -84,8 +86,8 @@ layout<-list(
 )
 
 p <-plotly::plot_ly()
-p <-plotly::add_trace(p, x=data$rows, y=trace1$y, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type, orientation=trace1$orientation)
-p <-plotly::add_trace(p, x=data$rows, y=trace2$y, marker=trace2$marker, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type, name=trace2$name)
+p <-plotly::add_trace(p, x=x, y=trace1$y, mode=trace1$mode, name=trace1$name, showlegend=trace1$showlegend, type=trace1$type, orientation=trace1$orientation)
+p <-plotly::add_trace(p, x=x, y=trace2$y, marker=trace2$marker, mode=trace2$mode, showlegend=trace2$showlegend, type=trace2$type, name=trace2$name)
 p <-plotly::layout(p, autosize=layout$autosize , title=layout$title, xaxis=layout$xaxis, yaxis=layout$yaxis, hovermode=layout$hovermode)
 return(p)
 }
