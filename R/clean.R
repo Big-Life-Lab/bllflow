@@ -12,13 +12,15 @@
 #' Set to value - Specified as a number value in MSW. Column value for the row is 
 #' set to the value specified in the outlier column.
 #'
-#' @param bllFlowModel 
-#'
+#' @param bllFlowModel bllFlow model created using the BLLFlow method
+#' @param print=FALSE If set true, prints the following metrics about the model:
+#' 1. Number of rows deleted from the dataset 
+#' 
 #' @return
 #' @export
 #'
 #' @examples
-clean.min.BLLFlow <- function(bllFlowModel) {
+clean.min.BLLFlow <- function(bllFlowModel, print = FALSE) {
   
 }
 
@@ -36,12 +38,14 @@ clean.min.BLLFlow <- function(bllFlowModel) {
 #' Set to value - Specified as a number value in MSW. Column value for the row is 
 #' set to the value specified in the outlier column.
 #'
-#' @param bllFlowModel 
-#'
+#' @param bllFlowModel bllFlow model created using the BLLFlow method 
+#' @param print=FALSE If set to true, prints the following metrics about the model:
+#' 1. Number of rows deleted from the dataset 
+#' 
 #' @return
 #' @export
 #'
 #' @examples
-clean.max.BLLFlow <- function(bllFlowModel) {
+clean.max.BLLFlow <- function(bllFlowModel, print = FALSE) {
   
 }
