@@ -1,9 +1,10 @@
 #' Creates a table one long data frame
 #'
 #' @param bll_flow_model A bll_flow model. This is an R object that's been 
-#' returned from the bll_flow function
+#' returned from the bll_flow function.
 #' @param table_one_long_spec The config for creating the table one long.
-#' TODO Add example here
+#' An example of this sheet for the PBC dataset is available here
+#' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1062545869.
 #' @return Returns a data frame that contains the table one long
 #' @export
 #'
