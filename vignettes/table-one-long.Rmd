@@ -1,0 +1,39 @@
+---
+title: "Table One Long"
+---
+
+This vignette goes over the creation of a Table One Long object using the 
+bllFlow library. This object can then be exported as a CSV file, PDF for manuscripts
+etc.
+
+Table One Long gives summary statistics on the model variables, based on the
+data used in the model development.
+
+All the steps below will use the PBC dataset and the relevant model worksheets.
+
+Step 1: Initialize a bllFlow R object
+``` {R}
+# Install the survival model and load it as a library
+install.packages("survival")
+library(survival)
+
+# Load the data from the PBC dataset
+data(pbc)
+# Read in the MSW and variable_details sheet for the PBC model
+MSW <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC MSW.csv'))
+variable_details <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC variable details.csv'))
+
+# Create a bllFlow R object for the PBC model using the above variables as args
+pbc_model <- bll_flow(pbc, MSW, variable_details)
+```
+
+Step 2: Create a Table One Long object
+```{R}
+# Import the CSV file which describes how to make the table one long object
+table_one_specs <- read.csv(file.path(getwd(), 'inst/extdata/PBL/PBC Table Specs.csv'))
+# Create the table one long object
+table_one_long <- MakeTableOneLong(pbc_model, table_one_specs)
+
+# Print it
+print(table_one_long)
+```

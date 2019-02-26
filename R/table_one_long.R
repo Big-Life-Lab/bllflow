@@ -8,6 +8,6 @@
 #' @export
 #'
 #' @examples
-bll_flow.MakeTableOneLong <- function(bll_flow_model, table_one_long_spec) {
+MakeTableOneLong.bll_flow <- function(bll_flow_model, table_one_long_spec) {
   
 }
