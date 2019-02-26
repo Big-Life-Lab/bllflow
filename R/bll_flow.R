@@ -1,16 +1,21 @@
-#' Makes an object an instance of bll_flow and returns it. This function should
-#' be run on all the variables in the initial data set
+#' Creates a BLLFlow instance from the data arg
 #'
-#' @param x numeric The object to convert to bllFlow
-#' @param label string Optional label that will be attached to the object
-#'
-#' @return Returns a new bll_flow object
+#' @param data A dataframe that represents the dataset the model will be developed
+#' on
+#' @param variables The specification sheet for this model. An example
+#' of this worksheet is available here
+#' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0.
+#' CSV file should be read in using the read.csv function.
+#' @param variableDetailsSheet The variable details worksheet. An example
+#' of this worksheet is available here
+#' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036.
+#' CSV file should be read in using the read.csv function.
+#' @return Returns the data argument with BLLFlow attached as a class name.
+#' Adds the variables and variableDetailsSheet args as variables on the
+#' data argument.
 #' @export
 #'
 #' @examples
-bll_flow <- function(x, label="Not Defined") {
-  class(x) <- c('bll_flow', class(x))
-  attr(x, 'label') <- label
+BLLFlow <- function(data, variables, variableDetailsSheet) {
   
-  invisible(x)
 }
