@@ -11,7 +11,7 @@ library(survival)
 data(pbc)
 # Read in the MSW and variable_details sheet for the PBC model
 variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable details.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
 # Create a bllFlow R object for the PBC model using the above variables as args
 pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 ```
