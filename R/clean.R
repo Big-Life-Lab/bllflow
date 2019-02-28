@@ -83,16 +83,6 @@ ProcessMinOrMax <- function(bllFlowModel, operation) {
       }
 
       affectedRows <- preRows - nrow(bllFlowModel$data)
-
-      # Create a new deleted Rows list or append to the existing one
-      if (affectedRows != 0) {
-        if (is.null(bllFlowModel$metaData[["deletedRows"]])) {
-          bllFlowModel$metaData[["deletedRows"]] <- list(numberOfDeletedRows = affectedRows, reasonForDeletion = paste(operation, "at", i[[operation]]))
-        } else {
-          bllFlowModel$metaData$deletedRows$numberOfDeletedRows <- append(bllFlowModel$metaData$deletedRows$numberOfDeletedRows, affectedRows)
-          bllFlowModel$metaData$deletedRows$reasonForDeletion <- append(bllFlowModel$metaData$deletedRows$reasonForDeletion, paste(operation, "at", i[[operation]]))
-        }
-      }
       
     # Handle missing outlier
     } else if (i["outlier"] == "missing") {
