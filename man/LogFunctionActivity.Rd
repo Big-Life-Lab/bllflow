@@ -2,17 +2,34 @@
 % Please edit documentation in R/log-function-activity.R
 \name{LogFunctionActivity}
 \alias{LogFunctionActivity}
-\title{Title}
+\title{LogFunctionActivity}
 \usage{
 LogFunctionActivity(bllFlow, rowsChecked, rowsAffected, actionTaken,
-  reason, executedFunction, variable, value)
+  reason, executedFunction, variable, value, print)
 }
 \arguments{
-\item{bllFlow}{}
+\item{bllFlow}{BllFlow object containing data and related MetaData}
+
+\item{rowsChecked}{The amount of rows that the function calling this had to check}
+
+\item{rowsAffected}{The amount of rows the caller function changed}
+
+\item{actionTaken}{What was done with the affected rows}
+
+\item{reason}{A human readable reason for the action being performed}
+
+\item{executedFunction}{What was the caller function}
+
+\item{variable}{What variable the caller function was performed on}
+
+\item{value}{What was the caller functions compare value}
+
+\item{print}{Specification if the human readable output needs to be printed}
 }
 \value{
-
+bllFlow modifiied with the new log data
 }
 \description{
-Title
+A function to insert log information about the caller function
+as well as print a human readable output to verify caller function activity
 }

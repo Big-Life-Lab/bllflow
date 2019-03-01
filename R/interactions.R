@@ -11,27 +11,27 @@ library(glue)
 #'
 #' @examples
 isInInteractionsList <- function(interactionsList, varOne, varTwo) {
-  if(is.null(interactionsList)) {
+  if (is.null(interactionsList)) {
     return(FALSE)
   }
-  
-  if(length(interactionsList) == 0) {
+
+  if (length(interactionsList) == 0) {
     return(FALSE)
-  } 
-  
-  for(i in 1:length(interactionsList)) {
-    if(interactionsList[[i]][[1]] == varOne & interactionsList[[i]][[2]] == varTwo) {
+  }
+
+  for (i in 1:length(interactionsList)) {
+    if (interactionsList[[i]][[1]] == varOne & interactionsList[[i]][[2]] == varTwo) {
       return(TRUE)
-    } else if(interactionsList[[i]][[1]] == varTwo & interactionsList[[i]][[2]] == varOne) {
+    } else if (interactionsList[[i]][[1]] == varTwo & interactionsList[[i]][[2]] == varOne) {
       return(TRUE)
     }
   }
-  
+
   return(FALSE)
 }
 
 #' Builds the interactions list for the provided rows
-#' 
+#'
 #' @param rowsWithInteractions A webspec dataframe that contains only
 #' interactions rows
 #'
@@ -44,18 +44,18 @@ buildInteractionsList <- function(rowsWithInteractions) {
   # The list of interactions to return
   interactionsList <- list()
 
-  for(i in 1:nrow(rowsWithInteractions)) {
+  for (i in 1:nrow(rowsWithInteractions)) {
     # Get the variables this this var row will interact with
-    interactionsForCurrentRow <- strsplit(rowsWithInteractions[i, 'Interactions'], ',')
-    
+    interactionsForCurrentRow <- strsplit(rowsWithInteractions[i, "Interactions"], ",")
+
     # Go through the each interaction for the current var and add it to the
     # interactionsList if it hasn't already been done
     lapply(interactionsForCurrentRow[[1]], function(interactionVarTwo) {
       trimmedInteractionVarTwo <- trimws(interactionVarTwo)
-      
-      if(isInInteractionsList(interactionsList, rowsWithInteractions[i, 'Variable_Name'], trimmedInteractionVarTwo) == FALSE) {
-        interactionsList[[length(interactionsList)+1]] <<- list(rowsWithInteractions[i, 'Variable_Name'], trimmedInteractionVarTwo)
-      } 
+
+      if (isInInteractionsList(interactionsList, rowsWithInteractions[i, "Variable_Name"], trimmedInteractionVarTwo) == FALSE) {
+        interactionsList[[length(interactionsList) + 1]] <<- list(rowsWithInteractions[i, "Variable_Name"], trimmedInteractionVarTwo)
+      }
     })
   }
 
@@ -73,13 +73,13 @@ buildInteractionsList <- function(rowsWithInteractions) {
 #' @examples
 formatInteractionVariable <- function(varName) {
   # Removed _cont and _cat from the varName
-  return(gsub('_cont', '', gsub('_cat', '', varName)))  
+  return(gsub("_cont", "", gsub("_cat", "", varName)))
 }
 
 #' Returns code for an interaction
 #'
-#' @param varOne The first var part of this interaction 
-#' @param varTwo Th second var part of this interaction 
+#' @param varOne The first var part of this interaction
+#' @param varTwo Th second var part of this interaction
 #'
 #' @return string
 #' @export
@@ -88,8 +88,8 @@ formatInteractionVariable <- function(varName) {
 getCodeForInteraction <- function(varOne, varTwo) {
   formattedVarOne <- formatInteractionVariable(varOne)
   formattedVarTwo <- formatInteractionVariable(varTwo)
-  
+
   # Interaction code calls the Interact.fun between the 2 vars. The new
   # var name is the 3 formatted variable names seperated by a X
-  return(glue::glue('{formattedVarOne}X{formattedVarTwo}_int <- Interact.fun({varOne}, {varTwo})'))
+  return(glue::glue("{formattedVarOne}X{formattedVarTwo}_int <- Interact.fun({varOne}, {varTwo})"))
 }

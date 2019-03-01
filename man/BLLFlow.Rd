@@ -18,7 +18,7 @@ CSV file should be read in using the read.csv function.}
 \item{variableDetailsSheet}{The variable details worksheet. An example
 of this worksheet is available here
 https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036.
-CSV file should be read in using the read.csv function. 
+CSV file should be read in using the read.csv function.
 The paramater that is passed is the output of the read.csv function}
 }
 \value{

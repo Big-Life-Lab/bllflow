@@ -15,6 +15,10 @@ clean.Min.BLLFlow(bllFlowModel, print = FALSE)
 \item{print=FALSE}{If set true, prints the following metrics about the model:
 1. Number of rows deleted from the dataset}
 }
+\value{
+bllFlowModel that has had its data modified by the paramaters located in
+the variables object
+}
 \description{
 Currently supported outlier methods are:
 Delete - Specified as 'delete' in MSW. Deletes the row from the data.
