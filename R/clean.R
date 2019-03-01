@@ -23,6 +23,7 @@
 #'
 #' @examples
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
+  # create warning if some variables are not in data-----------------------------------------------------------------------------------
   bllFlowModel <- ProcessMinOrMax(bllFlowModel, "min",print)
   return(bllFlowModel)
 }

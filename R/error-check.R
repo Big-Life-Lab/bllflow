@@ -5,3 +5,9 @@ CheckForColumnPresence <- function(names,frame){
     }
   }
 }
+CheckForExistanceOfInList <- function(names,passedList){
+  for (i in names) {
+    if(is.null(passedList[i]))
+  }
+  
+}

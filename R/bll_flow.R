@@ -18,6 +18,7 @@
 #'
 #' @examples
 BLLFlow <- function(data, variables, variableDetailsSheet) {
+  # min/max/outlier check for columns being there also check all the args are data frames--------------------------------------------
   retClass <- list(data = data, variables = variables, variableDetailsSheet = variableDetailsSheet)
   attr(retClass, "class") <- "BLLFlow"
   return(retClass)
