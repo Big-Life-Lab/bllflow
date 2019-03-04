@@ -23,7 +23,6 @@
 #'
 #' @examples
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
-  # create warning if some variables are not in data-----------------------------------------------------------------------------------
   bllFlowModel <- ProcessMinOrMax(bllFlowModel, "min",print)
   return(bllFlowModel)
 }
@@ -73,7 +72,10 @@ ProcessMinOrMax <- function(bllFlowModel, operation, print) {
     apply(bllFlowModel$variables, 1, function(y)
       CreateOperationVariableList(y["variable"], y[operation], y["outlier"]))
   variablesToCheck[sapply(variablesToCheck, is.null)] <- NULL
-
+  
+  # Check if all the variables from variables to check exist in the data
+  CheckForExistanceOfInList(variablesToCheck, colnames(bllFlowModel$data))
+  
   # Clean the affected rows
   for (i in variablesToCheck) {
     preRows <- nrow(bllFlowModel$data)
