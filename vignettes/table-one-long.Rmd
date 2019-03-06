@@ -1,0 +1,25 @@
+```{r}
+library(survival)
+```
+
+```{r}
+data(pbc)
+pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
+pbc$ageGroup <- ifelse(pbc$age < 20, 1,
+                ifelse(pbc$age >= 20 & pbc$age < 40, 2,
+                ifelse(pbc$age >= 40 & pbc$age < 80, 3,
+                ifelse(pbc$age >= 80, 4, NA))))
+```
+
+```{r}
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC - variables.csv'))
+variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC - variable_details.csv'))
+
+pbcModel <- BllFlow(pbc, variablesSheet, variablesDetailsSheet)
+```
+
+```{r}
+tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-table-variables.csv'))
+tableOneLong <- tables.CreateTableOneLong(pblModel, tableVariables)
+print(tableOneLong)
+```
