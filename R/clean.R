@@ -73,15 +73,15 @@ CreateOperationVariableList <-
   }
 
 # Less then comparing function
-CheckLessThen <- function(leftArg, rightArg) {
+CheckLessThen <- function(operatorBasedCompareValue, valueBeingCompare) {
   
-  return(leftArg < rightArg)
+  return(operatorBasedCompareValue < valueBeingCompare)
 }
 
 # Greater then comparing function
-CheckGreaterThen <- function(leftArg, rightArg) {
+CheckGreaterThen <- function(operatorBasedCompareValue, valueBeingCompare) {
   
-  return(leftArg > rightArg)
+  return(operatorBasedCompareValue > valueBeingCompare)
 }
 # Function for actually manipulating the data
 ProcessMinOrMax <-
