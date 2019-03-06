@@ -16,13 +16,20 @@
 #'
 #' @examples
 BLLFlow <- function(data, variables, variableDetailsSheet) {
-  # Verify passed arg integrity for future functions
-  CheckIfDataFrame(data,"data")
-  CheckIfDataFrame(variables,"variables")
-  CheckIfDataFrame(variableDetailsSheet,"variableDetailsSheet")
-  CheckForColumnPresence(c("min","max","outlier"),variables,"variables")
   
-  retClass <- list(data = data, variables = variables, variableDetailsSheet = variableDetailsSheet)
-  attr(retClass, "class") <- "BLLFlow"
-  return(retClass)
+  # Verify passed arg integrity for future functions
+  CheckIfDataFrame(data, "data")
+  CheckIfDataFrame(variables, "variables")
+  CheckIfDataFrame(variableDetailsSheet, "variableDetailsSheet")
+  CheckForColumnPresence(c("min", "max", "outlier"), variables, "variables")
+
+  bllFlowModel <-
+    list(
+      data = data,
+      variables = variables,
+      variableDetailsSheet = variableDetailsSheet
+    )
+  attr(bllFlowModel, "class") <- "BLLFlow"
+  
+  return(bllFlowModel)
 }
