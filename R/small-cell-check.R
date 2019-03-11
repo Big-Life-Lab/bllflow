@@ -22,6 +22,40 @@
 #' variableName and factors and the rows are all the categorical variables
 #' whose one or more factors have small cells.
 #'
+#' @examples
+#' # Install the packages
+#'  
+#' # Use to generate the table one object
+#' install.packages("tableone")
+#' # Has the data we will use to generate a table one
+#' install.packages("survival")
+#' 
+#' # Read in the data we will use to generate Table One
+#' 
+#' library(survival)
+#' data(pbc)
+#' 
+#' # Create the Table One object
+#' 
+#' library("tableone")
+#' # The list of variables which are categorical
+#' catVars <- c("status", "trt", "ascites", "hepato",
+#'              "spiders", "edema", "stage")
+#'
+#' # create table 1 object
+#' TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
+#' 
+#' # check for small cells
+#' library("SmallCells")
+#' 
+#' # by default smallSize is 6 print is set to true and tableType is TableOne
+#' tmp <- CheckSmallCells(TableOne)
+#' 
+#' # increasing the smallSize threshold to 10
+#' tmp <- CheckSmallCells(TableOne, smallSize=10)
+#' 
+#' # currently only TableOne is supported so tableType != TableOne will throw error
+#' tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
 #'
 #' @export
 CheckSmallCells <- function(passedTable,
@@ -99,8 +133,8 @@ CheckSmallCellsInTableOne <- function(tableOne,
   strataValues <- do.call(paste, strataArgs)
   # Inserts values if not stratified
   if (is.null(attr(tableOne$CatTable, "strataVarName"))) {
-    stratifiedBy <- "No Strat"
-    strataValues <- "No Strat"
+    stratifiedBy <- NA
+    strataValues <- NA
   } else {
     stratifiedBy <- attr(tableOne$CatTable, "strataVarName")
   }
@@ -114,22 +148,18 @@ CheckSmallCellsInTableOne <- function(tableOne,
       variableName = "DummyRow"
     )
   detectedSmallCells$factors <- list(c(1, 2, 3))
-  print(strataValues)
   # Small Cell detection -------------------------------------------------------
-
-
-
   # Loop through the tables for each column
-  for (i in tableOne$CatTable) {
+  for (strataCounter in 1:nrow(tableOne$CatTable)) {
     # Loop through the tables of each variable
-    for (j in i) {
+    for (selectedVariable in tableOne$CatTable[[strataCounter]]) {
       variablesChecked <- variablesChecked + 1
       # Loop through the levels of each variable
-      for (row in 1:nrow(j)) {
+      for (row in 1:nrow(selectedVariable)) {
         levelsChecked <- levelsChecked + 1
-        frequent <- j[row, "freq"]
-        levName <- j[row, "level"]
-        if (frequent < smallSize) {
+        frequency <- selectedVariable[row, "freq"]
+        levName <- selectedVariable[row, "level"]
+        if (frequency < smallSize) {
           smallCellFound <- TRUE
           levelsFound <- levelsFound + 1
           freqVector <- c(freqVector, levName)
@@ -139,21 +169,20 @@ CheckSmallCellsInTableOne <- function(tableOne,
         variablesFound <- variablesFound + 1
         # Creates a temporary dataframe with data for the table that was read
         # Then that dataframe is added
-        tmp <-
+        newSmallCellRow <-
           data.frame(
             stratifiedBy = stratifiedBy,
             strataValues = strataValues[[strataCounter]],
             variableName = varNames[counter]
           )
-        tmp$factors <- list(freqVector)
-        detectedSmallCells <- rbind(detectedSmallCells, tmp)
+        newSmallCellRow$factors <- list(freqVector)
+        detectedSmallCells <- rbind(detectedSmallCells, newSmallCellRow)
         smallCellFound <- FALSE
       }
       counter <- counter + 1
       freqVector <- NULL
     }
     counter <- 1
-    strataCounter <- strataCounter + 1
   }
   # Removes the dummy row from the return dataframe and resets the counters
   cat(
@@ -170,6 +199,7 @@ CheckSmallCellsInTableOne <- function(tableOne,
     smallSize,
     " counts.\n\n"
   )
+  # After removal of dummy row the row order starts at 2 this resets the row order back to 1
   detectedSmallCells <- detectedSmallCells[-c(1), ]
   rownames(detectedSmallCells) <- NULL
   return(detectedSmallCells)

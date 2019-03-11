@@ -36,3 +36,7 @@ small cells. A small cell is a category where the number of people
 in the category (n) is less than the value specified by the smallSize param.
 The freq field within each variable has the n values.
 }
+\examples{
+CheckSma
+
+}
