@@ -14,9 +14,9 @@ CheckForColumnPresence <- function(names, frame, frameName) {
 
 CheckForExistanceOfInList <- function(names, passedList) {
   
-  for (checkRow in names) {
-    if (!(checkRow[[1]][["variable"]] %in% passedList)) {
-      stop(paste("The ", checkRow[["variable"]], "column is missing from the data"))
+  for (name.checkRow in names) {
+    if (!(name.checkRow["variable"] %in% passedList)) {
+      stop(paste("The ", name.checkRow["variable"], "column is missing from the data"))
     }
   }
 }

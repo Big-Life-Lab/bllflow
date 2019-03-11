@@ -58,7 +58,7 @@ LogFunctionActivity <-
         list(
           fun = executedFunction,
           result = list(
-            type = actionTaken[["outlier"]],
+            type = actionTaken,
             rowsAffected = rowsAffected,
             variable = variable,
             value = value
