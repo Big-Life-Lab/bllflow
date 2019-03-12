@@ -22,6 +22,34 @@
 #' @export
 #'
 #' @examples
+#' # Install the packages
+#'  
+#' # Use to generate the table one object
+#' install.packages("tableone")
+#' # Has the data we will use to generate a table one
+#' install.packages("survival")
+#' 
+#' # Read in the data we will use to generate Table One
+#' 
+#' library(survival)
+#' data(pbc)
+#' 
+#' # Read in the MSW and variable_details sheet for the PBC model
+#' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
+#' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+#' 
+#' # Create a bllFlow R object for the PBC model using the above variables as args
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+#'
+#' # Clean the data
+#' library(bllFlow)
+#' cleanedPbcModel <- clean.Min.BllFlow(pbcModel)
+#' 
+#' # if u wish to be updated in the log on what the function does set print to true
+#' cleanedPbcModel <- clean.Min.BllFlow(cleanedPbcModel, print=TRUE)
+#' 
+#' # passing non dataframe objects when generating the bllFlow object will cause errors
+#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Min, print, CheckLessThen)
@@ -59,6 +87,34 @@ CheckLessThen <-
 #' @export
 #'
 #' @examples
+#' # Install the packages
+#'  
+#' # Use to generate the table one object
+#' install.packages("tableone")
+#' # Has the data we will use to generate a table one
+#' install.packages("survival")
+#' 
+#' # Read in the data we will use to generate Table One
+#' 
+#' library(survival)
+#' data(pbc)
+#' 
+#' # Read in the MSW and variable_details sheet for the PBC model
+#' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
+#' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+#' 
+#' # Create a bllFlow R object for the PBC model using the above variables as args
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+#'
+#' # Clean the data
+#' library(bllFlow)
+#' cleanedPbcModel <- clean.Max.BllFlow(pbcModel)
+#' 
+#' # if u wish to be updated in the log on what the function does set print to true
+#' cleanedPbcModel <- clean.Max.BllFlow(cleanedPbcModel, print=TRUE)
+#' 
+#' # passing non dataframe objects when generating the bllFlow object will cause errors
+#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Max, print, CheckGreaterThen)
