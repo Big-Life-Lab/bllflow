@@ -29,13 +29,11 @@ Creates a BLLFlow instance from the data arg
 }
 \examples{
 #' # Install the packages
- 
-# Use to generate the table one object
-install.packages("tableone")
-# Has the data we will use to generate a table one
+
+# Has the data we will use
 install.packages("survival")
 
-# Read in the data we will use to generate Table One
+# Read in the data we will use
 
 library(survival)
 data(pbc)

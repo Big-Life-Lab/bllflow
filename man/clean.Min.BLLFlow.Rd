@@ -32,13 +32,11 @@ set to the value specified in the outlier column.
 }
 \examples{
 # Install the packages
- 
-# Use to generate the table one object
-install.packages("tableone")
-# Has the data we will use to generate a table one
+
+# Has the data we will use
 install.packages("survival")
 
-# Read in the data we will use to generate Table One
+# Read in the data we will use
 
 library(survival)
 data(pbc)
@@ -50,13 +48,13 @@ variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - vari
 # Create a bllFlow R object for the PBC model using the above variables as args
 library(bllFlow)
 pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#' # passing non dataframe objects when generating the bllFlow object will cause errors
+# passing non dataframe objects when generating the bllFlow object will cause errors
 pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 
 # Clean the data
-cleanedPbcModel <- clean.Min.BllFlow(pbcModel)
+cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
 
 # if u wish to be updated in the log on what the function does set print to true
-cleanedPbcModel <- clean.Min.BllFlow(cleanedPbcModel, print=TRUE)
+cleanedPbcModel <- clean.Min.BLLFlow(cleanedPbcModel, print=TRUE)
 
 }

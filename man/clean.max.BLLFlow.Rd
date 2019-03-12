@@ -31,13 +31,11 @@ set to the value specified in the outlier column.
 }
 \examples{
 # Install the packages
- 
-# Use to generate the table one object
-install.packages("tableone")
-# Has the data we will use to generate a table one
+
+# Has the data we will use
 install.packages("survival")
 
-# Read in the data we will use to generate Table One
+# Read in the data we will use
 
 library(survival)
 data(pbc)
@@ -53,8 +51,8 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 
 # Clean the data
-cleanedPbcModel <- clean.Max.BllFlow(pbcModel)
+cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
 
 # if u wish to be updated in the log on what the function does set print to true
-cleanedPbcModel <- clean.Max.BllFlow(cleanedPbcModel, print=TRUE)
+cleanedPbcModel <- clean.Max.BLLFlow(cleanedPbcModel, print=TRUE)
 }

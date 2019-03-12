@@ -1,10 +1,10 @@
 #' LogFunctionActivity
-#' 
+#'
 #' A function to insert log information about the caller function
 #' as well as print a human readable output to verify caller function activity
 #'
 #' @param bllFlow BllFlow object containing data and related MetaData
-#' @param rowsChecked The amount of rows that the function calling this had to check 
+#' @param rowsChecked The amount of rows that the function calling this had to check
 #' @param rowsAffected The amount of rows the caller function changed
 #' @param actionTaken What was done with the affected rows
 #' @param reason A human readable reason for the action being performed
@@ -27,7 +27,6 @@ LogFunctionActivity <-
            variable,
            value,
            print) {
-    
     # Print information about the function if the user desires
     if (print) {
       print(

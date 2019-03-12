@@ -23,19 +23,19 @@
 #'
 #' @examples
 #' # Install the packages
-#'  
-#' # Has the data we will use 
+#'
+#' # Has the data we will use
 #' install.packages("survival")
-#' 
-#' # Read in the data we will use 
-#' 
+#'
+#' # Read in the data we will use
+#'
 #' library(survival)
 #' data(pbc)
-#' 
+#'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
-#' 
+#'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
@@ -44,13 +44,16 @@
 #'
 #' # Clean the data
 #' cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
-#' 
+#'
 #' # if u wish to be updated in the log on what the function does set print to true
 #' cleanedPbcModel <- clean.Min.BLLFlow(cleanedPbcModel, print=TRUE)
-#' 
+#'
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
-    ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Min, print, CheckLessThen)
+    ProcessMinOrMax(bllFlowModel,
+                    pkg.globals$columnNames.Min,
+                    print,
+                    CheckLessThen)
   
   return(bllFlowModel)
 }
@@ -86,19 +89,19 @@ CheckLessThen <-
 #'
 #' @examples
 #' # Install the packages
-#'  
-#' # Has the data we will use 
+#'
+#' # Has the data we will use
 #' install.packages("survival")
-#' 
-#' # Read in the data we will use 
-#' 
+#'
+#' # Read in the data we will use
+#'
 #' library(survival)
 #' data(pbc)
-#' 
+#'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
-#' 
+#'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
@@ -107,12 +110,15 @@ CheckLessThen <-
 #'
 #' # Clean the data
 #' cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
-#' 
+#'
 #' # if u wish to be updated in the log on what the function does set print to true
 #' cleanedPbcModel <- clean.Max.BLLFlow(cleanedPbcModel, print=TRUE)
 clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
-    ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Max, print, CheckGreaterThen)
+    ProcessMinOrMax(bllFlowModel,
+                    pkg.globals$columnNames.Max,
+                    print,
+                    CheckGreaterThen)
   
   return(bllFlowModel)
 }
@@ -136,7 +142,11 @@ ProcessMinOrMax <-
     variablesToCheck <-
       apply(bllFlowModel$variables, 1, function(y)
         if (!is.na(y[operation])) {
-          return(list(variable = y[["variable"]], operation = y[[operation]], outlier = y[[pkg.globals$columnNames.Outlier]]))
+          return(list(
+            variable = y[["variable"]],
+            operation = y[[operation]],
+            outlier = y[[pkg.globals$columnNames.Outlier]]
+          ))
         })
     # Apply creates list of length of all rows it checks this removes the ones that had no data added
     variablesToCheck[sapply(variablesToCheck, is.null)] <- NULL
@@ -155,30 +165,32 @@ ProcessMinOrMax <-
         # Remove all rows that pass the rowCheck
         bllFlowModel$data <-
           bllFlowModel$data[!(
-            PerformRowCheck(bllFlowModel$data[variableRowBeingChecked[["variable"]]], variableRowBeingChecked[["operation"]]) &
-              !is.na(bllFlowModel$data[variableRowBeingChecked[["variable"]]])
+            PerformRowCheck(bllFlowModel$data[variableRowBeingChecked$variable], variableRowBeingChecked$operation) &
+              !is.na(bllFlowModel$data[variableRowBeingChecked$variable])
           ),]
         
         numAffectedRows <- numTotalRows - nrow(bllFlowModel$data)
         
         # Handle missing outlier
       } else if (variableRowBeingChecked[[pkg.globals$columnNames.Outlier]] == "missing") {
+        # this checks how many rows contained missing before the function was ran to calculate how many were changed
         numPreContainRows <-
-          length(which(is.na(bllFlowModel$data[variableRowBeingChecked[["variable"]]])))
-        bllFlowModel$data[variableRowBeingChecked[["variable"]]][PerformRowCheck(bllFlowModel$data[variableRowBeingChecked[["variable"]]], variableRowBeingChecked[["operation"]])] <-
+          length(which(is.na(bllFlowModel$data[variableRowBeingChecked$variable])))
+        bllFlowModel$data[variableRowBeingChecked$variable][PerformRowCheck(bllFlowModel$data[variableRowBeingChecked$variable], variableRowBeingChecked$operation)] <-
           NA
         numPostRows <-
-          length(which(is.na(bllFlowModel$data[variableRowBeingChecked[["variable"]]])))
+          length(which(is.na(bllFlowModel$data[variableRowBeingChecked$variable])))
         numAffectedRows <- numPostRows - numPreContainRows
         
         # Handle the replace with outlier
       } else if (!is.na(as.numeric(variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]))) {
+        # Check how many rows already contained the number that is being changed too to give exact number of changed rows
         numPreContainRows <-
-          length(which(bllFlowModel$data[variableRowBeingChecked[["variable"]]] == variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]))
-        bllFlowModel$data[variableRowBeingChecked[["variable"]]][PerformRowCheck(bllFlowModel$data[variableRowBeingChecked[["variable"]]], variableRowBeingChecked[["operation"]])] <-
+          length(which(bllFlowModel$data[variableRowBeingChecked$variable] == variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]))
+        bllFlowModel$data[variableRowBeingChecked$variable][PerformRowCheck(bllFlowModel$data[variableRowBeingChecked$variable], variableRowBeingChecked$operation)] <-
           variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]
         numPostRows <-
-          length(which(bllFlowModel$data[variableRowBeingChecked[["variable"]]] == variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]))
+          length(which(bllFlowModel$data[variableRowBeingChecked$variable] == variableRowBeingChecked[[pkg.globals$columnNames.Outlier]]))
         numAffectedRows <- numPostRows - numPreContainRows
         
         # Handle non supported outlier
@@ -194,16 +206,16 @@ ProcessMinOrMax <-
           numAffectedRows,
           variableRowBeingChecked[[pkg.globals$columnNames.Outlier]],
           paste(
-            variableRowBeingChecked[["variable"]],
+            variableRowBeingChecked$variable,
             " ",
             operation,
             " at ",
-            variableRowBeingChecked[["operation"]],
+            variableRowBeingChecked$operation,
             sep = ""
           ),
           paste("clean.", operation, ".BLLFlow", sep = ""),
-          variableRowBeingChecked[["variable"]],
-          variableRowBeingChecked[["operation"]],
+          variableRowBeingChecked$variable,
+          variableRowBeingChecked$operation,
           print
         )
     }
