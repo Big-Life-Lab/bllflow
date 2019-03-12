@@ -203,7 +203,7 @@ CheckSmallCellsInTableOne <- function(tableOne,
     " counts.\n\n"
   )
   # After removal of dummy row the row order starts at 2 this resets the row order back to 1
-  detectedSmallCells <- detectedSmallCells[-c(1), ]
+  detectedSmallCells <- detectedSmallCells[-c(1),]
   rownames(detectedSmallCells) <- NULL
   
   return(detectedSmallCells)
