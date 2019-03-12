@@ -32,6 +32,7 @@
 #' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
 #' 
 #' # Create a bllFlow R object for the PBC model using the above variables as args
+#' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #' 
 #' # Passing objects other then a dataframe will create errors
@@ -42,7 +43,7 @@ BLLFlow <- function(data, variables, variableDetailsSheet) {
   CheckIfDataFrame(data, "data")
   CheckIfDataFrame(variables, "variables")
   CheckIfDataFrame(variableDetailsSheet, "variableDetailsSheet")
-  CheckForColumnPresence(c("min", "max", "outlier"), variables, "variables")
+  CheckForColumnPresence(c(pkg.globals$columnNames.Min, pkg.globals$columnNames.Max, pkg.globals$columnNames.Outlier), variables, "variables")
 
   bllFlowModel <-
     list(

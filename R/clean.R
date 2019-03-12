@@ -39,17 +39,17 @@
 #' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
 #' 
 #' # Create a bllFlow R object for the PBC model using the above variables as args
+#' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+#' #' # passing non dataframe objects when generating the bllFlow object will cause errors
+#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
-#' library(bllFlow)
-#' cleanedPbcModel <- clean.Min.BllFlow(pbcModel)
+#' cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
 #' 
 #' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Min.BllFlow(cleanedPbcModel, print=TRUE)
+#' cleanedPbcModel <- clean.Min.BLLFlow(cleanedPbcModel, print=TRUE)
 #' 
-#' # passing non dataframe objects when generating the bllFlow object will cause errors
-#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Min, print, CheckLessThen)
@@ -104,17 +104,16 @@ CheckLessThen <-
 #' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
 #' 
 #' # Create a bllFlow R object for the PBC model using the above variables as args
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#'
-#' # Clean the data
 #' library(bllFlow)
-#' cleanedPbcModel <- clean.Max.BllFlow(pbcModel)
-#' 
-#' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Max.BllFlow(cleanedPbcModel, print=TRUE)
-#' 
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #' # passing non dataframe objects when generating the bllFlow object will cause errors
 #' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+#'
+#' # Clean the data
+#' cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
+#' 
+#' # if u wish to be updated in the log on what the function does set print to true
+#' cleanedPbcModel <- clean.Max.BLLFlow(cleanedPbcModel, print=TRUE)
 clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel, pkg.globals$columnNames.Max, print, CheckGreaterThen)

@@ -29,3 +29,32 @@ Not Applicable - TODO.
 Set to value - Specified as a number value in MSW. Column value for the row is
 set to the value specified in the outlier column.
 }
+\examples{
+# Install the packages
+ 
+# Use to generate the table one object
+install.packages("tableone")
+# Has the data we will use to generate a table one
+install.packages("survival")
+
+# Read in the data we will use to generate Table One
+
+library(survival)
+data(pbc)
+
+# Read in the MSW and variable_details sheet for the PBC model
+variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+
+# Create a bllFlow R object for the PBC model using the above variables as args
+library(bllFlow)
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+# passing non dataframe objects when generating the bllFlow object will cause errors
+pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+
+# Clean the data
+cleanedPbcModel <- clean.Max.BllFlow(pbcModel)
+
+# if u wish to be updated in the log on what the function does set print to true
+cleanedPbcModel <- clean.Max.BllFlow(cleanedPbcModel, print=TRUE)
+}
