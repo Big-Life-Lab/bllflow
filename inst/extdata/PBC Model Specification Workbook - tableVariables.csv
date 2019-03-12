@@ -1,0 +1,7 @@
+variables,table1,table2,pbcSummaryStat,pbcSummaryStat
+age,TRUE,TRUE,exp_percentile; sex,"ageGroup, sex"
+sex,TRUE,TRUE,exp_percentile; sex,
+bili,TRUE,TRUE,exp_percentile; sex,"ageGroup, sex"
+albumin,TRUE,TRUE,exp_percentile; sex,"ageGroup, sex"
+protime,TRUE,TRUE,exp_percentile; sex,"ageGroup, sex"
+edema,TRUE,TRUE,exp_percentile; sex,"ageGroup, sex"
