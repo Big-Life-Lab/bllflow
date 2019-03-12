@@ -24,19 +24,19 @@
 #'
 #' @examples
 #' # Install the packages
-#'  
+#'
 #' # Use to generate the table one object
 #' install.packages("tableone")
 #' # Has the data we will use to generate a table one
 #' install.packages("survival")
-#' 
+#'
 #' # Read in the data we will use to generate Table One
-#' 
+#'
 #' library(survival)
 #' data(pbc)
-#' 
+#'
 #' # Create the Table One object
-#' 
+#'
 #' library("tableone")
 #' # The list of variables which are categorical
 #' catVars <- c("status", "trt", "ascites", "hepato",
@@ -44,16 +44,16 @@
 #'
 #' # create table 1 object
 #' TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
-#' 
+#'
 #' # check for small cells
 #' library("SmallCells")
-#' 
+#'
 #' # by default smallSize is 6 print is set to true and tableType is TableOne
 #' tmp <- CheckSmallCells(TableOne)
-#' 
+#'
 #' # increasing the smallSize threshold to 10
 #' tmp <- CheckSmallCells(TableOne, smallSize=10)
-#' 
+#'
 #' # currently only TableOne is supported so tableType != TableOne will throw error
 #' tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
 #'
@@ -63,7 +63,7 @@ CheckSmallCells <- function(passedTable,
                             print = TRUE,
                             tableType = "TableOne") {
   # Chosing Table procesing function -------------------------------------------
-
+  
   # Handles TableOne type tables
   if (tableType == "TableOne") {
     smallSizeTable <- CheckSmallCellsInTableOne(passedTable, smallSize)
@@ -78,21 +78,22 @@ CheckSmallCells <- function(passedTable,
       "Unsupported Type"
     )
   }
-
+  
   # Outputing the created Table function ---------------------------------------
-
+  
   # Writes the created table into the MetaData object of the passed table
   # Appends to smallCells if previous reccord exists
   if ("smallCells" %in% names(passedTable$MetaData)) {
-    passedTable$MetaData[["smallCells"]] <-
+    passedTable$MetaData$smallCells <-
       rbind(passedTable$MetaData$smallCells, smallSizeTable)
   } else {
-    passedTable$MetaData[["smallCells"]] <- smallSizeTable
+    passedTable$MetaData$smallCells <- smallSizeTable
   }
   # Prints the table if the print is requested
   if (print) {
     print(passedTable$MetaData$smallCells)
   }
+  
   return(passedTable)
 }
 
@@ -117,7 +118,7 @@ CheckSmallCells <- function(passedTable,
 CheckSmallCellsInTableOne <- function(tableOne,
                                       smallSize = 6) {
   # Variable declaration -------------------------------------------------------
-
+  
   variablesChecked <- 0
   levelsChecked <- 0
   variablesFound <- 0
@@ -128,6 +129,9 @@ CheckSmallCellsInTableOne <- function(tableOne,
   freqVector <- character()
   dimNames <- attr(tableOne$CatTable, "dimnames")
   strataCounter <- 1
+  # This turns the strata arrays into one single array
+  # Then creates all possible combinations and seperates them with :
+  # Then all the combinations are combined into a single string array
   strataAllCombinationsDataFrame <- expand.grid(dimNames)
   strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
   strataValues <- do.call(paste, strataArgs)
@@ -176,7 +180,8 @@ CheckSmallCellsInTableOne <- function(tableOne,
             variableName = varNames[counter]
           )
         newSmallCellRow$factors <- list(freqVector)
-        detectedSmallCells <- rbind(detectedSmallCells, newSmallCellRow)
+        detectedSmallCells <-
+          rbind(detectedSmallCells, newSmallCellRow)
         smallCellFound <- FALSE
       }
       counter <- counter + 1
@@ -185,12 +190,10 @@ CheckSmallCellsInTableOne <- function(tableOne,
     counter <- 1
   }
   # Removes the dummy row from the return dataframe and resets the counters
-  cat(
-    variablesChecked,
-    " variables with ",
-    levelsChecked,
-    " levels checked.\n\n"
-  )
+  cat(variablesChecked,
+      " variables with ",
+      levelsChecked,
+      " levels checked.\n\n")
   cat(
     variablesFound,
     " variables with ",
@@ -200,7 +203,8 @@ CheckSmallCellsInTableOne <- function(tableOne,
     " counts.\n\n"
   )
   # After removal of dummy row the row order starts at 2 this resets the row order back to 1
-  detectedSmallCells <- detectedSmallCells[-c(1), ]
+  detectedSmallCells <- detectedSmallCells[-c(1),]
   rownames(detectedSmallCells) <- NULL
+  
   return(detectedSmallCells)
 }
