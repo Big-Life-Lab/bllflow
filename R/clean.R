@@ -24,12 +24,10 @@
 #' @examples
 #' # Install the packages
 #'  
-#' # Use to generate the table one object
-#' install.packages("tableone")
-#' # Has the data we will use to generate a table one
+#' # Has the data we will use 
 #' install.packages("survival")
 #' 
-#' # Read in the data we will use to generate Table One
+#' # Read in the data we will use 
 #' 
 #' library(survival)
 #' data(pbc)
@@ -41,7 +39,7 @@
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#' #' # passing non dataframe objects when generating the bllFlow object will cause errors
+#' # passing non dataframe objects when generating the bllFlow object will cause errors
 #' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
@@ -89,12 +87,10 @@ CheckLessThen <-
 #' @examples
 #' # Install the packages
 #'  
-#' # Use to generate the table one object
-#' install.packages("tableone")
-#' # Has the data we will use to generate a table one
+#' # Has the data we will use 
 #' install.packages("survival")
 #' 
-#' # Read in the data we will use to generate Table One
+#' # Read in the data we will use 
 #' 
 #' library(survival)
 #' data(pbc)
