@@ -15,12 +15,11 @@ pbc$ageGroup <- ifelse(pbc$age < 20, 1,
 library(bllFlow)
 variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
 variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-
 pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
 ```
 
 ```{r}
 tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-table-variables.csv'))
 tableOneLong <- tables.CreateTableOneLong(pbcModel, tableVariables)
-print(tableOneLong)
+#print(tableOneLong)
 ```
