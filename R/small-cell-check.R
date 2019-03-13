@@ -154,7 +154,7 @@ CheckSmallCellsInTableOne <- function(tableOne,
   detectedSmallCells$factors <- list(c(1, 2, 3))
   # Small Cell detection -------------------------------------------------------
   # Loop through the tables for each column
-  for (strataCounter in 1:nrow(tableOne$CatTable)) {
+  for (strataCounter in 1:length(tableOne$CatTable)) {
     # Loop through the tables of each variable
     for (selectedVariable in tableOne$CatTable[[strataCounter]]) {
       variablesChecked <- variablesChecked + 1
