@@ -4,10 +4,10 @@
 \alias{tables.CreateTableOneLong}
 \title{Creates a "Table One Long" and stores it in the metadata list.
 "Table One Long" has the same meaning as a regular table one except it consists
-of several table one's each of which gives summary statistics on a variable 
+of several table one's each of which gives summary statistics on a variable
 which may or may not be stratified by other variables
 A tableVariables spreadsheet specified how each table one within the final
-table should be build. An example is available here 
+table should be build. An example is available here
 https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1336039089.
 An example of the output table is available here
 https://docs.google.com/spreadsheets/d/1oDcl0Ed-KElO_a_DBWcontVnqyTCZlT63hSPd-gId88/edit#gid=276021298.}
@@ -26,17 +26,17 @@ A dataframe containing the table one long
 \description{
 Creates a "Table One Long" and stores it in the metadata list.
 "Table One Long" has the same meaning as a regular table one except it consists
-of several table one's each of which gives summary statistics on a variable 
+of several table one's each of which gives summary statistics on a variable
 which may or may not be stratified by other variables
 A tableVariables spreadsheet specified how each table one within the final
-table should be build. An example is available here 
+table should be build. An example is available here
 https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1336039089.
 An example of the output table is available here
 https://docs.google.com/spreadsheets/d/1oDcl0Ed-KElO_a_DBWcontVnqyTCZlT63hSPd-gId88/edit#gid=276021298.
 }
 \examples{
 # Install the packages
- 
+
 # Use to generate the table one object
 install.packages("tableone")
 # Has the data we will use to generate a table one
