@@ -7,7 +7,7 @@ the MSW. Outlier method is applied on a row if any of the variable
 values for that row is less than the min value as specified in the variables
 sheet. Outlier checking for the column is not applied if min value is NA.}
 \usage{
-clean.Min.BLLFlow(bllFlowModel, print = FALSE)
+\method{clean.Min}{BLLFlow}(bllFlowModel, print = FALSE)
 }
 \arguments{
 \item{bllFlowModel}{bllFlow model created using the BLLFlow method}

@@ -1,3 +1,7 @@
+#' @export
+clean.Min <- function(bllFlowModel,print =FALSE){
+  UseMethod("clean.Min", bllFlowModel)
+}
 #' Cleans the data using the min and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
 #' values for that row is less than the min value as specified in the variables
@@ -65,6 +69,10 @@ CheckLessThen <-
     return(operatorBasedCompareValue < valueBeingCompare)
   }
 
+#' @export
+clean.Max <- function(bllFlowModel,print =FALSE){
+  UseMethod("clean.Max", bllFlowModel)
+}
 #' Cleans the data using the max and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
 #' values for that row is greater than the max value as specified in the variables

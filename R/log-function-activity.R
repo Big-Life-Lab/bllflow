@@ -52,17 +52,16 @@ LogFunctionActivity <-
     }
     
     # Populate the log object with data about the function that was executed
-    bllFlow$metaData$log <-
-      c(bllFlow$metaData$log,
-        list(
-          fun = executedFunction,
-          result = list(
-            type = actionTaken,
-            rowsAffected = rowsAffected,
-            variable = variable,
-            value = value
-          )
-        ))
+    bllFlow$metaData$log[[length(bllFlow$metaData$log)+1]] <-
+      list(
+        fun = executedFunction,
+        result = list(
+          type = actionTaken,
+          rowsAffected = rowsAffected,
+          variable = variable,
+          value = value
+        )
+      )
     
     return(bllFlow)
   }
