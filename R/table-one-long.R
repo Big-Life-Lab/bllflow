@@ -60,10 +60,6 @@ tables.CreateTableOneLong <- function(bllFlowModel,
       percentile25 = numeric(),
       percentile75 = numeric()
     )
-  # # After removal of dummy row the row order starts at 2 this resets the row order back to 1
-  # longTable <- longTable[-c(1), ]
-  # rownames(longTable) <- NULL
-  # Extract the needed info from tableVariablesSheet to create the tableOne tables
   variablesForStrata <-
     unique(unlist(tableVariablesSheet[, grepl("pbcSummaryStat", colnames(tableVariablesSheet))]))
   variablesForStrata <- variablesForStrata[variablesForStrata != ""]
