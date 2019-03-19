@@ -88,7 +88,7 @@ CreateCustomTableOne <-
     for (variable in tableOneVars) {
       variableType <-
         bllFlowModel$variableDetailsSheet[compareNA(bllFlowModel$variableDetailsSheet$variable,
-                                                    variable) , "variable_type"]
+                                                    variable) , "variableType"]
       if (variableType[[1]] == "category") {
         categoricalVariables <- c(categoricalVariables, variable)
       }
@@ -168,7 +168,7 @@ ExtractDataFromContTable <-
                             compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
         groupByValueLabel1 <-
           variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                            compareNA(variableDetails$value, strataSplitValues[[1]]), "value_label"]
+                            compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
         groupByLabel2 <-
           variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
                             compareNA(variableDetails$value, strataSplitValues[[2]])
@@ -176,7 +176,7 @@ ExtractDataFromContTable <-
         groupByValueLabel2 <-
           variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
                             compareNA(variableDetails$value, strataSplitValues[[2]])
-                          , "value_label"]
+                          , "valueLabel"]
         longTableRow <- data.frame(
           groupBy1 = strataSplitName[[1]],
           groupByValue1 = strataSplitValues[[1]],
@@ -233,7 +233,7 @@ ExtractDataFromCatTable <-
                               compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
           groupByValueLabel1 <-
             variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                              compareNA(variableDetails$value, strataSplitValues[[1]]), "value_label"]
+                              compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
           groupByLabel2 <-
             variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
                               compareNA(variableDetails$value, strataSplitValues[[2]])
@@ -241,11 +241,11 @@ ExtractDataFromCatTable <-
           groupByValueLabel2 <-
             variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
                               compareNA(variableDetails$value, strataSplitValues[[2]])
-                            , "value_label"]
+                            , "valueLabel"]
           variableCategoryLabel <-
             variableDetails[compareNA(variableDetails$variable, varNames[[variablesChecked]]) &
                               compareNA(variableDetails$value, as.character(levName))
-                            , "value_label"]
+                            , "valueLabel"]
           
           longTableRow <- data.frame(
             groupBy1 = strataSplitName[[1]],
