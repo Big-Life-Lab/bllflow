@@ -14,8 +14,8 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 ```
 
 ```{r}
-cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
+cleanedPbcModel <- clean.Max(pbcModel)
 print(cleanedPbcModel$metaData$log)
-cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
+cleanedPbcModel <- clean.Min(pbcModel)
 print(cleanedPbcModel$metaData$log)
 ```

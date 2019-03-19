@@ -47,10 +47,10 @@ clean.Min <- function(bllFlowModel,print =FALSE){
 #' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
-#' cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
+#' cleanedPbcModel <- clean.Min(pbcModel)
 #'
 #' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Min.BLLFlow(cleanedPbcModel, print=TRUE)
+#' cleanedPbcModel <- clean.Min(cleanedPbcModel, print=TRUE)
 #'
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
@@ -117,10 +117,10 @@ clean.Max <- function(bllFlowModel,print =FALSE){
 #' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
-#' cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
+#' cleanedPbcModel <- clean.Max(pbcModel)
 #'
 #' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Max.BLLFlow(cleanedPbcModel, print=TRUE)
+#' cleanedPbcModel <- clean.Max(cleanedPbcModel, print=TRUE)
 clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel,

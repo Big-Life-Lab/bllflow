@@ -1,4 +1,4 @@
-variable,variable_type,variable_dummy,value_label_long,value_label,target,method,reference,database_start,variable_start,variable_start_type,valid_cat_n,valid_cat_n_start,value,value_label_start,units,low,high,interval
+variable,variableType,variableDummy,valueLabelLong,valueLabel,target,method,reference,databaseStart,variableStart,variableStartType,validCatN,validCatNStart,value,valueLabelStart,units,low,high,interval
 sex,category,sex_cat2_1,Female,Femle,pbc_demo,map1_1,Yes,pbc,sex,cat,2,2,0,female,NA,0,0,N/A
 sex,category,sex_cat2_2,Male,Male,pbc_demo,map1_1,No,pbc,sex,cat,2,2,1,male,N/A,1,1,N/A
 sex,category,sex_cat3_3,missing,missing,pbc_demo,map1_1,N/A,pbc,sex,cat,2,2,NA,N/A,N/A,N/A,N/A,N/A

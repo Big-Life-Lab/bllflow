@@ -1,4 +1,4 @@
-variable,data_start,label_long,label,units,type,variable_type,algorithm,required,centre,interaction,RCS,dummy,impute,min,max,outlier
+variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,centre,interaction,RCS,dummy,impute,min,max,outlier
 age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,TRUE,NA,4,NA,FALSE,60,70,missing
 sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,TRUE,FALSE,NA,NA,TRUE,FALSE,NA,NA,delete
 bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing
