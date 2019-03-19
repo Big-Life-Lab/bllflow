@@ -1,0 +1,21 @@
+```{r}
+library(survival)
+```
+
+```{r}
+data(pbc)
+```
+
+```{r}
+library(bllFlow)
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+```
+
+```{r}
+cleanedPbcModel <- clean.Max.BLLFlow(pbcModel)
+print(cleanedPbcModel$metaData$log)
+cleanedPbcModel <- clean.Min.BLLFlow(pbcModel)
+print(cleanedPbcModel$metaData$log)
+```
