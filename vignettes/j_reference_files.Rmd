@@ -1,0 +1,43 @@
+---
+title: "Reference files - variable labels and metadata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Reference files - variable labels and metadataa}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  % \VignetteDepends{DT}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+Data 
+and models are meaningless without good metadata.  Metadata should be 
+independently understandable; machine actionable; discoverable, dynamic, 
+interactive. 
+**bllFlow** uses consistent labels and metadata throughout the workflow. We explain why in our accompanying [document]. tl;dr [Nature Videos](https://youtu.be/j7K3s_vi_1Y)
+
+## `bllFlow-variables`
+`bllFlow-variables` is the data file that describes labels and metadata in bblFlow. Add to your own `bllFlow-variables` or make a [pull request](https://github.com/big-Life-Lab/bllflow/pulls). 
+
+Labels and metadata are used in five key areas of research reporting:
+
+1) **Data cleaning and variable transformation** -- such as applying truncation rules, centering, etc.
+1) **Aggregated results** -- such as _Table 1 - Characteristics of study population_.
+1) **Model description** -- model coefficeints.
+1) **Summary statistics** -- metrics model performance.
+1) **Validation data** -- example dataset to verify algorithm scoring (for predictive models).
+
+`bllFlow-variables`
+
+```{r, echo=FALSE, results='asis'}
+library(DT)
+
+dt <- read.csv(system.file("extdata", "bllFlow-variables.csv", package = "bllFlow"))
+datatable(dt, options = list(pageLength = 5))
+```

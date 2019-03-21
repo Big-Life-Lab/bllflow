@@ -1,46 +1,23 @@
-There are two reasons to use this R package.
 
-1. To transform variables using a consistent approach.
-2. To generate R code that can be converted (transpiled) into Predictive Modelling Markup Language (PMML).
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+bllFlow package <img src="man/figures/pbl-sticker.png" align="right" alt="" width="120" />
+==========================================================================================
 
-Currently, four transformations are supported:
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-- Centering
-- Interaction terms
-- Dummying
-- RCS Variables
-  This project is also available as an RStudio plugin and it's the recommended
-  way to use it
+bllFlow supports open, reproducible, efficient and robust research for teams.
 
-# RStudio Plugin Installation
+The package was originally developed for studies that develop predictive algoirthms using rountinely-collectec health data. However, bllFlow can support others studies that strive for pre-specified analyses, particularly when there are multiple people working together create an analysis plan.
 
-1. Install the devtool in RStudio by running the command `install.packages("devtools")`
-2. Install the plugin by running the command `devtools::install_github("Big-Life-Lab/pbl-r-project-builder")`
-   - If you have 2 factor authentication on your github account then you will need
-     to retreive your personal access token from github (https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/)
-     and use it to install the plugin by running the command `devtools::install_github("Big-Life-Lab/pbl-r-project-builder", auth_token="<personal access token>")`
-3. Restart the IDE
-4. If the plugin was successfully installed there should be a new entry in the
-   Addins menu at the top of the IDE called "R Project Builder"
+You can see bllFlow in action at <https://big-life-lab.github.io/bllFlow-bookdown/>.
 
-![Rstudio add-in](Rstudio-addin.png)
+Installation
+------------
 
-# How the package works
+    # If not installed, install the devtools
+    install.packages("devtools")
 
-The package requires a CSV file that identifies:
-
-1. Which variable you would like transformed.
-2. Which transformation you would like performed.
-
-The CSV file (what we call the `Model Specification File (MSF`). Excute the following code to see how the MSF is organized.
-
-`code example here to load and create a table output....`
-
-In the same code, .....
-
-# Plugin Usage
-
-1. Open the web specifications CSV file for which you need to build an R project for
-2. Run the plugin
-3. The generated project should be in a folder called "generated-project" within the folder
-   containing the web specifications file
+    # then, install the package
+    devtools::install_github("Big-Life-Lab/bllFlow", 
+      auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
+      ref="master")

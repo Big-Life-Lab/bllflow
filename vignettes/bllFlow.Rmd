@@ -1,0 +1,33 @@
+---
+title: "Introduction to bllFlow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to bllFlow}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+The `Workflow` menu describes seven common analyses steps when performing 
+research using observational data. You can pick and choose to use any steps that 
+fit your workflow.
+
+There there are two distictive features of **bllFlow** to facilitate open, 
+reproducible and efficient research.
+
+- The Model Specification Worksheet (MSW) - CSV files that contain key 
+information (metadata) about the variables in your model.
+
+- Formatted output files, tables and figures - CSV files that contain results of 
+your model that adhere to reporting guidelines such as TRIPOD, STROBE, and RECORD.
+
+"Flow" refers to the process of using the Model Specification Worksheet to 
+perform rountine data cleaning and transformation, performance reporting, and
+model deployment. The imperitive for bllFlow is the development of predictive 
+models but key parts help research using routinely-collected data. 
+
+At any point of your analyses you:
+
+- have a complete codebook.
+- always have labels for variables and categories.
+- always know (using variable attributes) how your data has been cleaned and 
+transformed.
+

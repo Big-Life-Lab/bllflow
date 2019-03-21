@@ -1,0 +1,20 @@
+---
+title: "7 - (predictive) Model deployment"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{7 - (predictive) Model deployment}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+PMML
+
+Validation data
+
+Calibration data

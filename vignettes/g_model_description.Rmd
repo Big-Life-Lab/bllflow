@@ -1,0 +1,18 @@
+---
+title: "6 - Describing a model"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{6 - Describing a model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+**bllFlow** supports pre-specifying model development as described by Harrell 
+and others.[ref]
+
