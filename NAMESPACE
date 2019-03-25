@@ -2,6 +2,7 @@
 
 S3method(clean.Max,BLLFlow)
 S3method(clean.Min,BLLFlow)
+S3method(print,metaDataLog)
 export(BLLFlow)
 export(LogFunctionActivity)
 export(assign_first_event)
