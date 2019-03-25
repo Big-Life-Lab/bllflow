@@ -4,7 +4,7 @@
 \alias{CheckSmallCells}
 \title{Check for Small Cells}
 \usage{
-CheckSmallCells(passedTable, smallSize = 6, print = TRUE,
+CheckSmallCells(passedTable, smallSize = 6, print = FALSE,
   tableType = "TableOne")
 }
 \arguments{
@@ -37,12 +37,6 @@ in the category (n) is less than the value specified by the smallSize param.
 The freq field within each variable has the n values.
 }
 \examples{
-# Install the packages
-
-# Use to generate the table one object
-install.packages("tableone")
-# Has the data we will use to generate a table one
-install.packages("survival")
 
 # Read in the data we will use to generate Table One
 
@@ -59,9 +53,6 @@ catVars <- c("status", "trt", "ascites", "hepato",
 # create table 1 object
 TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
 
-# check for small cells
-library("SmallCells")
-
 # by default smallSize is 6 print is set to true and tableType is TableOne
 tmp <- CheckSmallCells(TableOne)
 
@@ -69,6 +60,6 @@ tmp <- CheckSmallCells(TableOne)
 tmp <- CheckSmallCells(TableOne, smallSize=10)
 
 # currently only TableOne is supported so tableType != TableOne will throw error
-tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
+#tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
 
 }

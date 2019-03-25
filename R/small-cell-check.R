@@ -23,12 +23,6 @@
 #' whose one or more factors have small cells.
 #'
 #' @examples
-#' # Install the packages
-#'
-#' # Use to generate the table one object
-#' install.packages("tableone")
-#' # Has the data we will use to generate a table one
-#' install.packages("survival")
 #'
 #' # Read in the data we will use to generate Table One
 #'
@@ -45,9 +39,6 @@
 #' # create table 1 object
 #' TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
 #'
-#' # check for small cells
-#' library("SmallCells")
-#'
 #' # by default smallSize is 6 print is set to true and tableType is TableOne
 #' tmp <- CheckSmallCells(TableOne)
 #'
@@ -55,12 +46,12 @@
 #' tmp <- CheckSmallCells(TableOne, smallSize=10)
 #'
 #' # currently only TableOne is supported so tableType != TableOne will throw error
-#' tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
+#' #tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
 #'
 #' @export
 CheckSmallCells <- function(passedTable,
                             smallSize = 6,
-                            print = TRUE,
+                            print = FALSE,
                             tableType = "TableOne") {
   # Chosing Table procesing function -------------------------------------------
   
@@ -86,12 +77,33 @@ CheckSmallCells <- function(passedTable,
   if ("smallCells" %in% names(passedTable$MetaData)) {
     passedTable$MetaData$smallCells <-
       rbind(passedTable$MetaData$smallCells, smallSizeTable)
+    # Sort the small cells table by variable, stratifiedBy, strataValues
+    passedTable$MetaData$smallCells <-
+      passedTable$MetaData$smallCells[order(
+        passedTable$MetaData$smallCells$variable,
+        passedTable$MetaData$smallCells$stratifiedBy,
+        passedTable$MetaData$smallCells$strataValues
+      ), ]
+    # reset rowcount
+    rownames(passedTable$MetaData$smallCells) <- NULL
   } else {
-    passedTable$MetaData$smallCells <- smallSizeTable
+    # Sort the small cells table by variable, stratifiedBy, strataValues
+    passedTable$MetaData$smallCells <-
+      smallSizeTable[order(
+        smallSizeTable$variable,
+        smallSizeTable$stratifiedBy,
+        smallSizeTable$strataValues
+      ), ]
+    # reset rowcount
+    rownames(passedTable$MetaData$smallCells) <- NULL
   }
   # Prints the table if the print is requested
   if (print) {
-    print(passedTable$MetaData$smallCells)
+    if (nrow(passedTable$MetaData$smallCells) == 0) {
+      cat("No small cells are present")
+    } else{
+      print(passedTable$MetaData$smallCells)
+    }
   }
   
   return(passedTable)
@@ -119,10 +131,11 @@ CheckSmallCellsInTableOne <- function(tableOne,
                                       smallSize = 6) {
   # Variable declaration -------------------------------------------------------
   
-  variablesChecked <- 0
+  strataChecked <- 0
   levelsChecked <- 0
   variablesFound <- 0
   levelsFound <- 0
+  variablesCheckedNum <- 0
   smallCellFound <- FALSE
   varNames <- attr(tableOne$CatTable[[1]], "names")
   counter <- 1
@@ -147,17 +160,19 @@ CheckSmallCellsInTableOne <- function(tableOne,
   # A dummy row is used because first row is unknown at time of creation
   detectedSmallCells <-
     data.frame(
-      stratifiedBy = "DummyRow",
-      strataValues = "DummyRow",
-      variableName = "DummyRow"
+      variable = character(),
+      stratifiedBy = character(),
+      strataValues = character()
     )
-  detectedSmallCells$factors <- list(c(1, 2, 3))
+  detectedSmallCells$factors <- list()
   # Small Cell detection -------------------------------------------------------
   # Loop through the tables for each column
   for (strataCounter in 1:length(tableOne$CatTable)) {
+    variablesCheckedNum <- 0
     # Loop through the tables of each variable
     for (selectedVariable in tableOne$CatTable[[strataCounter]]) {
-      variablesChecked <- variablesChecked + 1
+      variablesCheckedNum <- variablesCheckedNum + 1
+      strataChecked <- strataChecked + 1
       # Loop through the levels of each variable
       for (row in 1:nrow(selectedVariable)) {
         levelsChecked <- levelsChecked + 1
@@ -175,9 +190,9 @@ CheckSmallCellsInTableOne <- function(tableOne,
         # Then that dataframe is added
         newSmallCellRow <-
           data.frame(
+            variable = varNames[counter],
             stratifiedBy = stratifiedBy,
-            strataValues = strataValues[[strataCounter]],
-            variableName = varNames[counter]
+            strataValues = strataValues[[strataCounter]]
           )
         newSmallCellRow$factors <- list(freqVector)
         detectedSmallCells <-
@@ -189,22 +204,17 @@ CheckSmallCellsInTableOne <- function(tableOne,
     }
     counter <- 1
   }
-  # Removes the dummy row from the return dataframe and resets the counters
-  cat(variablesChecked,
+  cat(variablesCheckedNum,
       " variables with ",
       levelsChecked,
       " levels checked.\n\n")
   cat(
-    variablesFound,
+    length(levels(detectedSmallCells$variable)),
     " variables with ",
     levelsFound,
     " levels have cells <",
     smallSize,
     " counts.\n\n"
   )
-  # After removal of dummy row the row order starts at 2 this resets the row order back to 1
-  detectedSmallCells <- detectedSmallCells[-c(1), ]
-  rownames(detectedSmallCells) <- NULL
-  
   return(detectedSmallCells)
 }

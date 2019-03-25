@@ -10,7 +10,6 @@ TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = ca
 ```
 
 ```{r}
-library("SmallCells")
 checkedTableOne <- CheckSmallCells(TableOne)
 ```
 
