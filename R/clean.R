@@ -1,6 +1,15 @@
+#' Clean.Min
+#'
+#' Clean The data using the Min according to the specifications in the passed object.
+#'
+#' @param  modelToClean A passed object that contains the data that needs to be cleaned
+#' as well as specifications on how to clean it.
+#' @param print If set true prints human readable log of the performed cleaning operations
+#'
+#' @return The passed object with now cleaned data as well as a log containing the performed actions
 #' @export
-clean.Min <- function(bllFlowModel,print =FALSE){
-  UseMethod("clean.Min", bllFlowModel)
+clean.Min <- function(modelToClean, print = FALSE) {
+  UseMethod("clean.Min", modelToClean)
 }
 #' Cleans the data using the min and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
@@ -18,7 +27,7 @@ clean.Min <- function(bllFlowModel,print =FALSE){
 #' set to the value specified in the outlier column.
 #'
 #' @param bllFlowModel bllFlow model created using the BLLFlow method
-#' @param print=FALSE If set true, prints the following metrics about the model:
+#' @param print If set true, prints the following metrics about the model:
 #' 1. Number of rows deleted from the dataset
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
@@ -28,23 +37,22 @@ clean.Min <- function(bllFlowModel,print =FALSE){
 #' @examples
 #' # Install the packages
 #'
-#' # Has the data we will use
-#' install.packages("survival")
-#'
 #' # Read in the data we will use
 #'
 #' library(survival)
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
-#' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+#' variablesSheet <- read.csv(file.path(getwd(),
+#'  'bllFlow/extdata/PBC/PBC - variables.csv'))
+#' variableDetailsSheet <- read.csv(file.path(getwd(),
+#' 'bllFlow/extdata/PBC/PBC - variable_details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #' # passing non dataframe objects when generating the bllFlow object will cause errors
-#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+#' #pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
 #' cleanedPbcModel <- clean.Min(pbcModel)
@@ -68,10 +76,18 @@ CheckLessThen <-
            valueBeingCompare) {
     return(operatorBasedCompareValue < valueBeingCompare)
   }
-
+#' Clean.Max
+#'
+#' Clean The data using the Max according to the specifications in the passed object.
+#'
+#' @param  modelToClean A passed object that contains the data that needs to be cleaned
+#' as well as specifications on how to clean it.
+#' @param print If set true prints human readable log of the performed cleaning operations
+#'
+#' @return The passed object with now cleaned data as well as a log containing the performed actions
 #' @export
-clean.Max <- function(bllFlowModel,print =FALSE){
-  UseMethod("clean.Max", bllFlowModel)
+clean.Max <- function(modelToClean, print = FALSE) {
+  UseMethod("clean.Max", modelToClean)
 }
 #' Cleans the data using the max and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
@@ -88,7 +104,7 @@ clean.Max <- function(bllFlowModel,print =FALSE){
 #' set to the value specified in the outlier column.
 #'
 #' @param bllFlowModel bllFlow model created using the BLLFlow method
-#' @param print=FALSE If set to true, prints the following metrics about the model:
+#' @param print If set to true, prints the following metrics about the model:
 #' 1. Number of rows deleted from the dataset
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
@@ -98,23 +114,22 @@ clean.Max <- function(bllFlowModel,print =FALSE){
 #' @examples
 #' # Install the packages
 #'
-#' # Has the data we will use
-#' install.packages("survival")
-#'
 #' # Read in the data we will use
 #'
 #' library(survival)
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
-#' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+#' variablesSheet <- read.csv(file.path(getwd(),
+#'  'bllFlow/extdata/PBC/PBC - variables.csv'))
+#' variableDetailsSheet <- read.csv(file.path(getwd(),
+#'  'bllFlow/extdata/PBC/PBC - variable_details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #' # passing non dataframe objects when generating the bllFlow object will cause errors
-#' pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+#' #pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
 #'
 #' # Clean the data
 #' cleanedPbcModel <- clean.Max(pbcModel)
@@ -175,7 +190,7 @@ ProcessMinOrMax <-
           bllFlowModel$data[!(
             PerformRowCheck(bllFlowModel$data[variableRowBeingChecked$variable], variableRowBeingChecked$operation) &
               !is.na(bllFlowModel$data[variableRowBeingChecked$variable])
-          ),]
+          ), ]
         
         numAffectedRows <- numTotalRows - nrow(bllFlowModel$data)
         
