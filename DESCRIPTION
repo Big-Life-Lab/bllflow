@@ -23,6 +23,7 @@ Depends:
 Imports:
   rstudioapi,
   glue,
+  plotly,
   Hmisc,
   tableone,
   tidyr,
