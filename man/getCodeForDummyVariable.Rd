@@ -17,3 +17,6 @@ string
 \description{
 Returns variable which contains dummying code for a categorical variable
 }
+\examples{
+
+}
