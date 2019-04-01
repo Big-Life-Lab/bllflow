@@ -2,7 +2,7 @@
 % Please edit documentation in R/project-builder.R
 \name{buildProjectFiles}
 \alias{buildProjectFiles}
-\title{Builds several R files from the web spec csv file located at the path 
+\title{Builds several R files from the web spec csv file located at the path
 specified by the webSpecCsvFilePath argument. The R files are written to the folder whose path
 is specified in the projectFolderPath arg}
 \usage{
@@ -14,7 +14,7 @@ buildProjectFiles(webSpecCsvFilePath, projectFolderPath)
 \item{projectFolderPath}{The path to the folder where the R files will be put}
 }
 \description{
-Builds several R files from the web spec csv file located at the path 
+Builds several R files from the web spec csv file located at the path
 specified by the webSpecCsvFilePath argument. The R files are written to the folder whose path
 is specified in the projectFolderPath arg
 }

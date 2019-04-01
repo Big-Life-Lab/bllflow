@@ -21,11 +21,12 @@ Depends:
 Imports:
   rstudioapi,
   glue,
-  plotly
+  plotly,
   Hmisc,
   tableone,
   tidyr,
-  dplyr
+  dplyr,
+  DDIwR
 Suggests:
   knitr,
   rmarkdown,

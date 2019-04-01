@@ -10,13 +10,13 @@ filter_table_1(data, vars, groupby_sex=NA, groupby_1=NA, groupby_2=NA)
 \arguments{
 \item{data}{a data frame}
 
-\item{vars}{varaible(s) to keep in new subset. Given as a character vector}
-
 \item{groupby_sex}{(Optional) grouping observation of interest from gourp_by_sex variable (ie "Male" or "Female"). Only rows where the condition evaluates to TRUE are kept}
 
 \item{groupby_1}{(Optional) grouping observation of interest from group_by_1 variable. Only rows where the condition evaluates to TRUE are kept}
 
 \item{groupby_2}{(Optional) grouping pbservation of interest from group_by_2 variable. Only rows where the condition evaluates to TRUE are kept}
+
+\item{vars}{varaible(s) to keep in new subset. Given as a character vector}
 }
 \description{
 Filter_table_1
@@ -24,7 +24,8 @@ Helper function to filter table 1 data to fit specifc row and column grouping fo
 }
 \examples{
 #upload MPorT table one data set
-mport<-read.csv("bllFlow/inst/extdata/MPoRT-table-one.csv")
+mport <- read.csv("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA\%3D\%3D", 
+   fileEncoding="UTF-8-BOM")
 
 #create character vector of columns needed for visualizations
 col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")
