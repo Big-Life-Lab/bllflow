@@ -4,3 +4,4 @@ inst/doc
 generated-project
 .RHistory
 .env
+.RData
