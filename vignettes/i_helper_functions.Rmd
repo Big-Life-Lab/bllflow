@@ -56,3 +56,34 @@ df_length <- nrow(df)
 # a <- sort(df$tt_event) %>% unique
 # toe <- tail(a, 2)[-2]
 ```
+
+## Filter table 1
+Assessing model performance is an important aspect to health care research. 
+In order to simplify this post modeling step a helper function was created to filter table one data.
+This function is intrinsic for visual inspection model assessments (ie. Calibration plots). 
+Filter_table_1 can filter data based on conditions given from either, all, or any combination of the three groupby variables 
+typically seen in our algorithm development (group_by_sex, group_by_1, and group_by_2) 
+```{r filter table one, echo=TRUE}
+library(bllFlow)
+
+#load dataset
+df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
+  read.csv %>%
+  as.data.frame
+
+#Check variables
+head(df, num=1L)
+
+#list of variables to keep and filter in subset of the dataset
+var<-c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2","group_by_value_label_1") 
+
+#Examples
+filter_table_1(df, var, groupby_sex="Male", groupby_1 ="smoking", groupby_2="packyears")
+
+filter_table_1(df, var, groupby_sex="Female", groupby_1="age")
+
+filter_table_1(df, var, groupby_1="age")
+
+
+```
+
