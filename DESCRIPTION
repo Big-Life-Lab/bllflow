@@ -5,8 +5,8 @@ Description: An implementation of predictive algorithm studies.
     Predictive Modelling Mark-up Language (PMML) is suported.
     The workflow has three steps: data prepartation; model development, 
     and; model deployment.
-Version: 0.1.1
-Date: 2018-12-09
+Version: 0.1.2
+Date: 2019-04-02
 Authors@R: c( 
   person(given = "Yulric", family = "Sequeira", 
     email = "ysequeira@ohri.ca", role = c("aut", "cre")),
@@ -14,15 +14,15 @@ Authors@R: c(
     email = "dmanuel@ohri.ca", role = c("aut"), 
     comment = c(ORCID = "0000-0003-0912-0845")),
   person(given = "Meltem", family = "Tuna", 
-    email = "mtuna@ohri.ca", role = c("aut"))
+    email = "mtuna@ohri.ca", role = c("aut")),
+  person(given = "Rostyslav (Rusty)", family = "Vyuha", 
+    email = "rostikvyuha@gmail.com", role = c("aut"))
     )
 Depends:
   R (>= 3.2)
 Imports:
   rstudioapi,
   glue,
-  plotly
-  Hmisc,
   tableone,
   tidyr,
   dplyr
@@ -31,7 +31,9 @@ Suggests:
   rmarkdown,
   DT,
   magrittr,
-  survival
+  survival,
+  plotly
+  Hmisc
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
 Maintainer: Yulric Sequeira <ysequeira@ohri.ca>

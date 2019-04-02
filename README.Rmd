@@ -18,12 +18,10 @@ knitr::opts_chunk$set(
 
 bllFlow supports open, reproducible, efficient research. 
 
-The package was originally developed for studies that develop predictive 
-algoirthms using rountinely-collected health data. However, bllFlow can support 
-others studies pre-specified analyses, particularly when there 
-are multiple people working together create an analysis plan.
+The package was originally developed for support prespecified predictive models in health, particularly when there are multiple people working together (content experts, analysts, etc.) to create an analysis plan. 
 
-You can see bllFlow in action at [https://big-life-lab.github.io/bllFlow-bookdown/](https://big-life-lab.github.io/bllFlow-bookdown/).
+You can see bllFlow in action at {TBA} 
+<!-- [https://big-life-lab.github.io/bllFlow-bookdown/](https://big-life-lab.github.io/bllFlow-bookdown/). -->
 
 ## Installation
 ```
@@ -36,3 +34,4 @@ devtools::install_github("Big-Life-Lab/bllFlow",
   auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
   ref="master")
 ```
+There are plans to submit bllFlow to CRAN.

@@ -20,14 +20,26 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introduction
-**bllFlow** uses seven steps to develop predictive algorithms. The steps 
-emphasize a _pre-specified_ approach following Harrell, Styerberg and others. 
-Pre-specified means the predictive model is specified prior to examining the 
-relationship between predictors (also known as risk factors or features) and the 
-outcome (target). 
+**bllFlow** emphasizes a _pre-specified_ approach to analyses. Pre-specified means 
+a model is specified prior to examining the relationship between predictors (also 
+known as risk factors or features) and the outcome (target). All analyses are logged, 
+allowing transparent reporting. 
 
-### Step 1 - Specifying your model
-The model specifications are recorded within the Model Specification Worksheet 
+### The Model Specification Workbook (MSW)
+The MSW is a series of XX worksheets -- each a CSV file -- that describe the 
+model specification. You can use bllFlow without a MSW but we recommend using 
+atleast the `variables` and `variable_details` worksheets. 
+
+- **variables** - Each row in the `variables.csv` file is a variable in your model. 
+The columns include variable labels, type, and other information such as which 
+variables are transformed (centered, have dummy variables, restrictive cubic 
+splines, have interaction terms, etc.).
+- **variables_details** - 
+- **model description** - 
+- **table description** - 
+
+### Step 1 - Pre-specifying your model
+The model specifications are recorded within the Model Specification Workbook 
 (MSW). Each predictor in your model is a row in the MSW. Included are columns 
 for variable labels, data cleaning, variable transformation rules and other 
 instructions that can be rountinely-performed (Step 4).
@@ -77,7 +89,7 @@ functions are underdeveloped. Second, **bllFlow** have versions of calibration
  plots and other visualizations. Third, plots are designed to replication on 
  many subgroups, using information from the `aggregated-results` data frame.
  
-### Step 6 - 6 - Describing a model
+### Step 6 - Describing a model
 **bllFlow** creates a consistent structure for descdribing models. The same as 
 other steps, a structured data frame, `model-description` is created to 
 facilitate export as a CSV file or other document format. Critically, the model 
