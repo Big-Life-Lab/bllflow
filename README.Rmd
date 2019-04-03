@@ -16,22 +16,36 @@ knitr::opts_chunk$set(
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-bllFlow supports open, reproducible, efficient research. 
+**bllFlow** supports a open, transparent, pre-specified appraoch to model 
+building. 
 
-The package was originally developed for support prespecified predictive models in health, particularly when there are multiple people working together (content experts, analysts, etc.) to create an analysis plan. 
+### Is this R package for you?
+
+Are you a researcher or analyst 
+
+### What does bllFlow 
+
+The package was originally developed for support predictive models in health, 
+particularly when there are multiple people working together (content experts, 
+analysts, etc.). However, bllFlow can be used for a range of modelling appraoches.
+
+The documentation includes an example of a pre-specified predictive model of 
+primary biliary cirrhosis, replicating the model by 
+[Dickerson et al.](https://www.ncbi.nlm.nih.gov/pubmed/2737595). However, 
+functions for data cleaning, variable transformation and model reporting can all 
+be used without pre-specifying analyses. 
 
 You can see bllFlow in action at {TBA} 
 <!-- [https://big-life-lab.github.io/bllFlow-bookdown/](https://big-life-lab.github.io/bllFlow-bookdown/). -->
 
 ## Installation
 ```
-# Install from GitHub (should we explain how? or provide resources)
 # If not installed, install the devtools
 install.packages("devtools")
 
 # then, install the package
 devtools::install_github("Big-Life-Lab/bllFlow", 
   auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
-  ref="master")
+  ref="master")b
 ```
 There are plans to submit bllFlow to CRAN.

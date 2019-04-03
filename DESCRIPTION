@@ -16,7 +16,9 @@ Authors@R: c(
   person(given = "Meltem", family = "Tuna", 
     email = "mtuna@ohri.ca", role = c("aut")),
   person(given = "Rostyslav (Rusty)", family = "Vyuha", 
-    email = "rostikvyuha@gmail.com", role = c("aut"))
+    email = "rostikvyuha@gmail.com", role = c("aut")),
+  person(given = "Carol", family = "Bennett", 
+    email = "cbennett@ohri.ca", role = c("aut"))
     )
 Depends:
   R (>= 3.2)

@@ -14,27 +14,37 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introduction
+The Model Specification Workbook (MSW) is used to specify your model. The MSW is 
+a series of four worksheets (CSV files) that describe different model components. 
+You can use **bllFlow** without a MSW but we recommend using atleast the 
+`variables` and `variable_details` worksheets. 
+ 
+## The four MSW worksheets
 
+- **variables.csv** - Each row in the `variables.csv` file is a variable in your model. 
+The columns include variable labels, type, and other information such as which 
+variables are transformed (centered, have dummy variables, restrictive cubic 
+splines, have interaction terms, etc.).
+- **variables_details.csv** - includes the details of each variable, including all 
+category (factor) levels and labels. Also included are  specific variable transformation 
+rules.
+- **model_description.csv** - includes information such as the model name, outcome, 
+model, creator(s), date and data set names.
+- **table_description.csv** - includes specifications for how to create Table 1 
+and other tables.
 
-## Data templates
-**bblFlow** has three Model Specfication Worksheets (MSW):
+**bllFlow** also supports the use of DDI documents. If available, bllFlow labels 
+and other information to the `variables.csv` and `variables_details.csv`, as well
+as perserving data information to support data provenance. 
 
-1) `MSW-variables` --- for all model variables (features).
-1) `MSW-categories` --- for all category (factor) levels.
+## Importing the MSW worksheets
 
-Include in each worksheet is metadata for specifying the model, including:
+## Examples of the MSW worksheets
 
-- variable labels
-- data cleaning
-- tranfromation rules
+#### variables.csv
 
-The 
+#### variables_details.csv
 
-We typically create a family of algorithms that consist of different outcomes 
-using the same development cohort. We create "master" worksheets that contain 
-variables used in any algorithm wtih a family of algorithms. As well as 
-algorithm specific worksheets with data cleaning and transformation rules, such 
-as max-min rules, that are specfic for each algorithm. 
 
 
 

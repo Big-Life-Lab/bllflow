@@ -22,27 +22,17 @@ knitr::opts_chunk$set(
 ## Introduction
 **bllFlow** emphasizes a _pre-specified_ approach to analyses. Pre-specified means 
 a model is specified prior to examining the relationship between predictors (also 
-known as risk factors or features) and the outcome (target). All analyses are logged, 
+known as variables, risk factors or features) and the outcome (target). All analyses are logged, 
 allowing transparent reporting. 
 
-### The Model Specification Workbook (MSW)
-The MSW is a series of XX worksheets -- each a CSV file -- that describe the 
-model specification. You can use bllFlow without a MSW but we recommend using 
-atleast the `variables` and `variable_details` worksheets. 
-
-- **variables** - Each row in the `variables.csv` file is a variable in your model. 
-The columns include variable labels, type, and other information such as which 
-variables are transformed (centered, have dummy variables, restrictive cubic 
-splines, have interaction terms, etc.).
-- **variables_details** - 
-- **model description** - 
-- **table description** - 
-
 ### Step 1 - Pre-specifying your model
-The model specifications are recorded within the Model Specification Workbook 
-(MSW). Each predictor in your model is a row in the MSW. Included are columns 
-for variable labels, data cleaning, variable transformation rules and other 
-instructions that can be rountinely-performed (Step 4).
+The model specifications are recorded within a series of 4 CVS worksheets that 
+together form the Model Specification Workbook (MSW). You can use bllFlow without 
+a MSW but we recommend using atleast the `variables` and `variable_details` worksheets. 
+
+The **variables.csv** worksheet is the worksheet, with each representing a variable
+ in your model. Included are columns for variable labels, data cleaning, variable 
+ transformations and other instructions (Step 4).
 
 Creating the MSW invovles everyone on your team: analysts, methodologist and
 content experts. Trainees will want to review their MSW with their supervisor 
@@ -50,16 +40,9 @@ and thesis committee.
 
 ### Step 2 - Describing the study cohort
 Research studies tyipically include a "Table 1" that describe the study cohort 
-or population. This step creates a CSV file, `aggregated-results`, with the all 
-infomation required for Table 1 and also similar descriptive tables and 
-codebooks. **bllFlow** follows the [Data Documentation Intitiatve](https://www.ddialliance.org) concept of "one document, many uses."
-
-**bllFlow** steps are sequential, but there is room a small amount if iteration, 
-particularly for Step 2. For example, most research reporting guidelines 
-recommended a description of the study cohort before any data cleaning -- thereby 
-disclosing and communicating data quality (amount of missing data, etc.). It is 
-helpful to also describe of your study data after data cleaning, 
-and variable transformation (Step 3).
+or population and additional tables and figures. With **bllFlow**, you specify what 
+variables are required for each table and then use utilitie functions to create 
+the tables. 
 
 ### Step 3 - Data cleaning and variable transformation
 Data cleaning and varible transformation is the most time consuming step of 
@@ -70,15 +53,15 @@ step as much as possible, while also improving transparency and reproduciblity.
 ### Step 4 - Developing a predicitve model
 This step is short and breif for **bllFlow**. **bllFlow**
  doesn't contain any functions for actual statistical or machine learning models.
- Rather, **bllFlow** acts more like a wrapper around the model model derivation, 
- by providing help prior to and following actual model development. You bring 
- your own model functions. 
+ Rather, **bllFlow** is a wrapper around the model model derivation, 
+ by providing help prior to and following actual model development.
  
  A challenge when using different modelling packages and software programs 
  are different approaches to variable transformation that occurres within model 
  generation. For example, dummy variables are created in different packages 
  during function call and then exported, but using different naming conventions. 
- In **bllFlow**, dummy variables are generated prior to function call.
+ In **bllFlow**, dummy variables and other transformations are generated prior 
+ to function call.
  
 ### Step 5 - Reporting the performance of a model
 This section generates performance reports for predictive 

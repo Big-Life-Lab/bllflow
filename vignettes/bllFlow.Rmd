@@ -1,11 +1,17 @@
 ---
-title: "Introduction to bllFlow"
+title: "Getting started with bllFlow"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to bllFlow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+### There are two ways to get started with bllFlow
+
+#### Use the utility functions 
+
+#### Try bllFlow workflow
+
 The [`Workflow`](a_workflow.html) menu describes seven steps when performing 
 research using observational data. You can pick and choose to use any steps that 
 fit your workflow.
@@ -19,7 +25,7 @@ cleaning and transformation steps and how to create output tables.
 - **Functions to perform rountine data cleaning and transformation tasks** - 
 bllFlow functions uses the MSW as instructions perform common tasks. (example here...)
 For example, `bllFlow.center(data)` centers all variables in the MSW where 
-center == TRUE, then creates a new variable with the `_c` suffix and logs which 
+`center == TRUE`, then creates a new variable with the `_c` suffix and logs which 
 variables are centred. 
 
 - **Formatted output files, tables** - CSV files that contain results of 
