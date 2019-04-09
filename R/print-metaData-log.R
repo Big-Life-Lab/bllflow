@@ -30,5 +30,5 @@ print.metaDataLog <- function(metaDataLog) {
       )
     printDataFrame <- rbind(printDataFrame, stepRow)
   }
-  print(printDataFrame)
+  print(printDataFrame, row.names = FALSE)
 }
