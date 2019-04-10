@@ -1,0 +1,34 @@
+```{r}
+library(survival)
+```
+
+```{r}
+data(pbc)
+```
+
+```{r}
+library(bllFlow)
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+```
+center.bllFlow() centers variables in the bllFlow dataframe using center specifications in the MSW.
+The MSW has `center` header with the following allowable values (sheet specifications would need to be updated; currently the only allowable value = "TRUE" )
+"mean" - centers on the mean of the variable in the bllflow dataframe.
+"weighted.mean" - centers on the weighted mean (see weighted.mean {stats}). The weight variale is defined with a .. of "weight"
+"MSWMean" - centers on the mean value in the MSW variableSheet. The values within the "mean" header for MSW.
+
+Note: we will not include `median` at this time. 
+
+```{r}
+
+center.bllFlow() # will call sj::center() with the following attributes
+
+#  sj::center  <- function(x, ..., include.fac = FALSE, append = TRUE, suffix = "_C")
+#    where
+#  x = bllFlow data frame
+#  ... = MSW variables where there is an allowable `center` value
+#  note: suffix for bllFlow = "_C" (not "_c")
+#  note: we would create a bllflow method for mean() that would calculate the three different means: 'mean' the original mean; 'meanWeighted' the weighted mean (see weighted.mean {stats}) and 'MSWMean' the mean calcualted using the MSW mean values.
+
+# Do we want a little utility function addMeanToMSW which would calculate mean and then add to the MSW sheet (object)?
