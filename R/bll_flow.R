@@ -75,6 +75,7 @@ BLLFlow <-
           if (length(detectedVariables[detectedVariables$variableStart == ddiElementName, 1]) >
               0) {
             valueForHighLow[[ddiElementName]] <- individualVariable$valrng$range
+            valueForHighLow[[ddiElementName]][["TypeOfVariable"]] <- ifelse(attr(individualVariable, "intrvl")=="discrete", "cat", "cont")
           }
         }
       }
@@ -104,33 +105,34 @@ BLLFlow <-
               catStartLabel <- valueLabelToCheck
               # Needs to be a character because cant access list with decimal value or zero value
               tmpOut[[as.character(catStartValue)]] <- list(
-                variableStartType = "To Be Determined",
+                variableStartType = valueForHighLow[[variableToCheck]]$Type,
                 catStartValue = catStartValue,
                 catStartLabel = catStartLabel,
                 variableStartLabel = variableStartLabel,
-                variableStartLow = attr(valueForHighLow[[variableToCheck]], "min"),
-                variableStartHigh = attr(valueForHighLow[[variableToCheck]], "max")
+                variableStartLow = catStartValue,
+                variableStartHigh = catStartValue
               )
             }
-            if (!containsOnlyNAValues) {
-              variableStartType <- "Categorical"
-            } else{
-              variableStartType <- "Continues"
-            }
-          } else{
-            variableStartType <- "Continues"
-            tmpOut[[variableToCheck]] <-
-              list(
-                variableStartType = variableStartType,
+            if (valueForHighLow[[variableToCheck]]$Type == "cont") {
+              tmpOut[[as.character(variableToCheck)]] <- list(
+                variableStartType = valueForHighLow[[variableToCheck]]$Type,
                 catStartValue = NA,
                 catStartLabel = NA,
                 variableStartLabel = variableStartLabel,
                 variableStartLow = attr(valueForHighLow[[variableToCheck]], "min"),
                 variableStartHigh = attr(valueForHighLow[[variableToCheck]], "max")
               )
-          }
-          for (valueInVariable in names(tmpOut)) {
-            tmpOut[[valueInVariable]]$variableStartType <- variableStartType
+            }
+          } else{
+            tmpOut[[variableToCheck]] <-
+              list(
+                variableStartType = valueForHighLow[[variableToCheck]]$Type,
+                catStartValue = NA,
+                catStartLabel = NA,
+                variableStartLabel = variableStartLabel,
+                variableStartLow = attr(valueForHighLow[[variableToCheck]], "min"),
+                variableStartHigh = attr(valueForHighLow[[variableToCheck]], "max")
+              )
           }
           labeledVariables[[variableToCheck]] <-
             list(Type = variableStartType, rest = tmpOut)
@@ -147,7 +149,9 @@ BLLFlow <-
         variables = variables,
         variableDetailsSheet = variableDetailsSheet,
         additionalDDIMetaData = list(docDscr = ddiObject$codeBook$docDscr, stdyDscr = ddiObject$codeBook$stdyDscr, fileDscr = ddiObject$codeBook$fileDscr),
-        populatedVariableDeatailsSheet = finalFrame
+        populatedVariableDeatailsSheet = finalFrame,
+        ddiObject = ddiObject,
+        whyAreYouLikeThis = labeledVariables
       )
     attr(bllFlowModel, "class") <- "BLLFlow"
     
@@ -180,39 +184,39 @@ PopulateVariableDetails <-
       for (rowToCheck in 1:nrow(rowsToCheck)) {
         presentCatStartValue <- rowsToCheck[rowToCheck, "catStartValue"]
         if (presentCatStartValue %in% names(labeledVariables[[nameBeingChecked]]$rest)) {
-          for (columnName in names(labeledVariables[[nameBeingChecked]]$rest[[presentCatStartValue]])) {
+          for (columnName in names(labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]])) {
             if (columnName != "catStartValue") {
-              if (CheckIfCellIsEmpty(rowsToCheck[rowToCheck, columnName], rowToCheck, columnName)) {
+              if (CheckIfCellIsEmpty(rowsToCheck[rowToCheck, columnName], rownames(variablesBeingChanged)[which(variablesBeingChanged$variableStart == nameBeingChecked)], columnName)) {
+                if (!labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]][[columnName]] %in% levels(rowsToCheck[,columnName])) {
+                  levels(rowsToCheck[,columnName]) <- c(levels(rowsToCheck[,columnName]),labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]][[columnName]])
+                  #print(paste(presentCatStartValue, labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]][[columnName]]))
+                  }
                 rowsToCheck[rowToCheck, columnName] <-
-                  labeledVariables[[nameBeingChecked]]$rest[[presentCatStartValue]][[columnName]]
+                  labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]][[columnName]]
+              }else{
+                #print(levels(rowsToCheck$catStartLabel))
               }
             }
           }
-          labeledVariables[[nameBeingChecked]]$rest[[presentCatStartValue]] <- NULL
+          labeledVariables[[nameBeingChecked]]$rest[[as.character(presentCatStartValue)]] <- NULL
+          finalFrame <- rbind(finalFrame,rowsToCheck[rowToCheck,])
           #print(rowsToCheck[rowToCheck,])
           # populate row with DDI data related to the value
-        }else if (is.na(presentCatStartValue) | is.null(presentCatStartValue)) {
-          for (columnName in names(labeledVariables[[nameBeingChecked]]$rest[[1]])) {
-              if (CheckIfCellIsEmpty(rowsToCheck[rowToCheck, columnName], rowToCheck, columnName)) {
-                rowsToCheck[rowToCheck, columnName] <-
-                  labeledVariables[[nameBeingChecked]]$rest[[1]][[columnName]]
-              }
-          }
-          labeledVariables[[nameBeingChecked]]$rest[[1]] <- NULL
-          #print(rowsToCheck[rowToCheck,])
         }else{
           # leave the row untouched
           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck, ])
         }
       }
-      finalFrame <- rbind(finalFrame, rowsToCheck)
-      
       # Create new Rows for leftover data
       for (leftOverValue in names(labeledVariables[[nameBeingChecked]]$rest)) {
         rowToAdd <-  frameToWriteTo[0,]
         for (columnName in names(labeledVariables[[nameBeingChecked]]$rest[[leftOverValue]])) {
             rowToAdd[1, columnName] <-
               labeledVariables[[nameBeingChecked]]$rest[[leftOverValue]][[columnName]]
+            if (!labeledVariables[[nameBeingChecked]]$rest[[as.character(leftOverValue)]][[columnName]] %in% levels(rowToAdd[,columnName])) {
+              levels(rowToAdd[,columnName]) <- c(levels(rowToAdd[,columnName]),labeledVariables[[nameBeingChecked]]$rest[[as.character(leftOverValue)]][[columnName]])
+              print(paste(levels(rowToAdd[,columnName]), labeledVariables[[nameBeingChecked]]$rest[[as.character(leftOverValue)]][[columnName]]))
+            }
         }
         rowToAdd[1, "variableStart"] <- nameBeingChecked
         finalFrame <- rbind(finalFrame,rowToAdd)
@@ -272,7 +276,8 @@ PopulateVariableDetails <-
 
 CheckIfCellIsEmpty <- function(cellContent, rowNumber, columnName) {
   isEmpty <- TRUE
-  if (!is.null(cellContent) & !is.na(cellContent)) {
+  if (!is.null(cellContent) & !is.na(cellContent) & cellContent != "") {
+    print(cellContent)
     warning(
       paste(
         "The cell in row ",
