@@ -15,7 +15,8 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 center.bllFlow() centers variables in the bllFlow dataframe using center specifications in the MSW.
 The MSW has `center` header with the following allowable values (sheet specifications would need to be updated; currently the only allowable value = "TRUE" )
 "mean" - centers on the mean of the variable in the bllflow dataframe.
-"weighted.mean" - centers on the weighted mean (see weighted.mean {stats}). The weight variale is defined with a .. of "weight"
+"weighted.mean" - centers on the weighted mean (see weighted.mean {stats}). The weight variable is located in the MSW_variables:`variableUse = 'weight'. see: https://docs.google.com/spreadsheets/d/1FGy-Zg0AUMEVSqpbAoIMoS_SgD__mG2SCIU2vVwsyCI/edit#gid=1948148365
+
 "MSWMean" - centers on the mean value in the MSW variableSheet. The values within the "mean" header for MSW.
 
 Note: we will not include `median` at this time. 
