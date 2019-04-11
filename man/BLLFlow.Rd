@@ -44,6 +44,9 @@ variableDetailsSheet <- read.csv(file.path(getwd(),
 # Create a bllFlow R object for the PBC model using the above variables as args
 library(bllFlow)
 pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+# Test for DDI
+tmp <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, file.path(getwd(),
+ 'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml')
 
 # Passing objects other then a dataframe will create errors
 #pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))
