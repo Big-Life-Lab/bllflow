@@ -52,3 +52,18 @@ transformations.
  final variables from their starting variables. 
 1) `summaryVariables` -- variables that are used in model reporting, such as 
 for `Table 1`. 
+
+```
+# pbc data for examples and vignettes
+library(survival)
+data(pbc)
+
+Read in the MSW and variable_details sheet for the PBC model
+modelDescription <- read.csv(file.path(getwd(),..
+variables <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC/PBC - variable_details.csv'))
+
+# Create a bllFlow R object for the PBC model using the above variables as args
+library(bllFlow)
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+```
