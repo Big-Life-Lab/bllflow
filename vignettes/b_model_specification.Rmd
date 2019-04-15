@@ -15,28 +15,40 @@ knitr::opts_chunk$set(
 ```
 ## Introduction
 
+The Model Specification Workbook (MSW) is the central document creating your 
+model using _bllflow_. 
+Worksheets within the MSW contain both the names of the starting variables in the original study 
+data and the final variables, if variable are transformed. 
 
-## Data templates
-**bblFlow** has three Model Specfication Worksheets (MSW):
+There are two approaches to creating the MSW. We usually start the MSW as a CSV 
+file to facilate collaboration -- and this approached is used throughout the 
+vignettes. Alternatively, you can create the MSW as an R dataframe. 
 
-1) `MSW-variables` --- for all model variables (features).
-1) `MSW-categories` --- for all category (factor) levels.
+The first step in _bllflow_ is to identify all starting and final variables for 
+your model in the MSW. We emphasize pre-specified analyses but 
+variables can be added as you perform study. We highly recommend any additional 
+variables and transformation be added to the MSW to ensure reproducibilty and 
+transparency. The MSW is a record of how you created your model and what analyses
+ you performed. As well, _bllflow_ uses metadata throughout the workflow. 
 
-Include in each worksheet is metadata for specifying the model, including:
+The second step is to add variable labels and other metadata to the MSW that 
+provides instructions for data cleaing and transformation. 
 
-- variable labels
-- data cleaning
-- tranfromation rules
+*bllFlow* supports importing metadata from:
 
-The 
+- DDI (xml) documents;
+- variable lablels in study dataframe as `attr` label (using hmisc, sjlabelled or
+similar packages); or,
+- manually added added to the MSW.
 
-We typically create a family of algorithms that consist of different outcomes 
-using the same development cohort. We create "master" worksheets that contain 
-variables used in any algorithm wtih a family of algorithms. As well as 
-algorithm specific worksheets with data cleaning and transformation rules, such 
-as max-min rules, that are specfic for each algorithm. 
+## Worksheets 
+**bblFlow** has four worksheets within the MSW:
 
-
-
-
-
+1) `modelDescription` --- the name of the model, date created and other 
+information about the study.
+1) `variables` --- all model variables, including data cleaning and 
+transformations. 
+1) `variableDetails` --- information on factors (categories) and how to transform
+ final variables from their starting variables. 
+1) `summaryVariables` -- variables that are used in model reporting, such as 
+for `Table 1`. 
