@@ -10,80 +10,67 @@ vignette: >
   % \VignetteDepends{magrittr}
   
 ---
-  
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+
+## Introduction
+
+### Metadata
+
+_bllFlow_ supports metadata from DDI and from the R packages hmisc and rjlabelled.
+
+#### DDI metadata
+The [Data Documentation Intitiatve](https://www.ddialliance.org) (DDI) is is an 
+international standard for describing the data produced by surveys and other 
+observational methods in the social, behavioral, economic, and health sciences.
+
 ```
-**bllFlow** supports pre-specifying model development as described by Harrell 
-and others.[ref]
+Get the description of the study data from DDI and add the description to 
+bllFlow object
 
-
-## Make an event date
-Our teams often work with health data in secure environments where privacy is 
-paramount. This means we cannot share data. ...
-```{r make event date}
-library(bllFlow)
+```{r}
 library(survival)
-library(dplyr)
-library(magrittr)
-library(Hmisc)
-
-df <- system.file("extdata", "RESPECT-EOL_validation.csv", package = "bllFlow") %>%
-  read.csv %>%
-  as.data.frame
-
-df_length <- nrow(df)
-
-# make events
-# df$tt_event <- make_event_dates(df_length, df$risk, 1825, label = "FollowUp", units = 'days')
-# label(df$tt_event) #check label
-# 
-# # check to see if events have been added
-# table(df$tt_event)
-# 
-# # check to see if df$tt_event is about the same as df$risk
-# mean(df$risk)
-# nrow(df[df$tt_event < 1825,]) / nrow(df)
-# 
-#  # create event variable
-# df$event <- ifelse(df$tt_event < 1825, 1, 0)
-# 
-# # Pick an available survial time less than 1825 for evaluation
-# # (This is only neccessary due to current limitations of the test dataset)
-# a <- sort(df$tt_event) %>% unique
-# toe <- tail(a, 2)[-2]
-```
-
-## Filter table 1
-Assessing model performance is an important aspect to health care research. 
-In order to simplify this post modeling step a helper function was created to filter table one data.
-This function is intrinsic for visual inspection model assessments (ie. Calibration plots). 
-Filter_table_1 can filter data based on conditions given from either, all, or any combination of the three groupby variables 
-typically seen in our algorithm development (group_by_sex, group_by_1, and group_by_2) 
-```{r filter table one, echo=TRUE}
+data(pbc)
 library(bllFlow)
 
-#load dataset
-df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
-  read.csv %>%
-  as.data.frame
+ddiPath <- 'file.path(getwd())'
+ddiFile <-  'cchs-82M0013-E-2013-2014-Annual-component.xml'
 
-#Check variables
-head(df, num=1L)
-
-#list of variables to keep and filter in subset of the dataset
-var<-c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2","group_by_value_label_1") 
-
-#Examples
-filter_table_1(df, var, groupby_sex="Male", groupby_1 ="smoking", groupby_2="packyears")
-
-filter_table_1(df, var, groupby_sex="Female", groupby_1="age")
-
-filter_table_1(df, var, groupby_1="age")
-
+pbcModel <- BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"))
+# this function call would get all the info from DDI sections: docDscr, stdyDscr, fileDscr
+# and add that info to the BLLFlow object.
+# would invoke the 'addDDItoBLLFlow' function with attribute 'getDDIDescription = TRUE' (see below)
 
 ```
+Get the varialbe metadata for the study data from DDI and add that the bllFlow 
+object.
 
+```{r}
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, getDDI = c(ddiPath, ddiFile, 
+"variables"))
+# this function call would bet just the DDI variable information and add that info
+# to the BLLflow object
+# would invoke the 'addDDItoBLLFlow' function with attribute 'getDDIVariables = TRUE' (see below)
+```
+
+Add both study data description and variable metadata.
+```{r}
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, getDDI = c(ddiPath, ddiFile))
+# the same as calling both functions above.
+# would invoke the 'addDDItoBLLFlow' function with attributes 'getDDIvariables = TRUE, 
+# 'getDDIdescription = TRUE' (see below)
+```
+
+# General utily functions 
+(These functions could already be in DDIwR?). Four functions.
+
+getDDIdescription(DDIPath = ddiPath, DDIFile = ddiFile)
+# same as calling BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"), but 
+would not add the info to the bllFlow object.
+
+
+getDDIvariables((DDIPath = ddiPath, DDIFile = ddiFile, variable = c(variableList))
+
+addDDItoBLLFlow(bllFlowObject, getDDIDescription = TRUE, getDDIVariable = TRUE)
+
+adddDDItoMSW(variableDetailsSheet, ddiPath, ddiFile)
