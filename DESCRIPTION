@@ -17,16 +17,16 @@ Authors@R: c(
     email = "mtuna@ohri.ca", role = c("aut"))
     )
 Depends:
-  R (>= 3.2)
+  R (>= 3.2),
+  tableone,
+  DDIwR
 Imports:
   rstudioapi,
   glue,
   plotly,
   Hmisc,
-  tableone,
   tidyr,
-  dplyr,
-  DDIwR
+  dplyr
 Suggests:
   knitr,
   rmarkdown,
