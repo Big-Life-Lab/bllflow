@@ -75,10 +75,9 @@ BLLFlow <-
       valueForHighLow <- list()
       # Need to loop through every element because the xml2 names all variables var
       for (individualVariable in ddiObject$codeBook$dataDscr) {
-        if (!is.null(attr(individualVariable, "name"))) {
-          ddiElementName <- attr(individualVariable, "name")
-          if (length(detectedVariables[detectedVariables$variableStart == ddiElementName, 1]) >
-              0) {
+        if (!is.null(attr(individualVariable, "name", exact = TRUE))) {
+          ddiElementName <- attr(individualVariable, "name", exact = TRUE)
+          if (length(detectedVariables[detectedVariables$variableStart == ddiElementName, 1]) != 0) {
             valueForHighLow[[ddiElementName]] <- individualVariable$valrng$range
             valueForHighLow[[ddiElementName]][["Type"]] <-
               ifelse(attr(individualVariable, "intrvl") == "discrete",
@@ -142,16 +141,21 @@ BLLFlow <-
           labeledVariables[[variableToCheck]] <- variableValueList
         }
       }
+      if (!length(labeledVariables)) {
+        populatedVariableDeatailsSheet <- NULL
+      }else{
       populatedVariableDeatailsSheet <-
         PopulateVariableDetails(variableDetailsSheet,
                                 labeledVariables,
                                 detectedVariables)
+      }
       additionalDDIMetaData <- list(
         docDscr = ddiObject$codeBook$docDscr,
         stdyDscr = ddiObject$codeBook$stdyDscr,
         fileDscr = ddiObject$codeBook$fileDscr
       )
-    } else{
+    
+      } else{
       # Set ddi related vars to null
       additionalDDIMetaData <- NULL
       populatedVariableDeatailsSheet <- NULL
@@ -163,7 +167,8 @@ BLLFlow <-
         variables = variables,
         variableDetailsSheet = variableDetailsSheet,
         additionalDDIMetaData = additionalDDIMetaData,
-        populatedVariableDeatailsSheet = populatedVariableDeatailsSheet
+        populatedVariableDeatailsSheet = populatedVariableDeatailsSheet,
+        ddi <- ddiMetaData
       )
     attr(bllFlowModel, "class") <- "BLLFlow"
     
