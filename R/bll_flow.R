@@ -7,13 +7,16 @@ library(DDIwR)
 #' of this worksheet is available here
 #' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0.
 #' CSV file should be read in using the read.csv function.
-#' @param variableDetailsSheet The variable details worksheet. An example
+#' @param variableDetails The variable details worksheet. An example
 #' of this worksheet is available here
 #' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036.
 #' CSV file should be read in using the read.csv function.
+#' @param ddi A string containing the path to the ddi file optional variable if the DDI is present
 #' @return Returns a new BllFlow object with the data, variables and
-#' variableDetailsSheet args attached as variables.
+#' variableDetails args attached as variables as well as additional ddiMetadata(Header information) and
+#' a populatedVaraiableDetailsSheet that contains information from DDI matching variables in variabledetails.
 #' @export
+#'
 #'
 #' @examples
 #' #' # Install the packages
@@ -26,27 +29,27 @@ library(DDIwR)
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
 #'  'bllFlow/extdata/PBC/PBC - variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(),
+#' variableDetails <- read.csv(file.path(getwd(),
 #'  'bllFlow/extdata/PBC/PBC - variable_details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
 #' # Test for DDI
-#' tmp <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, file.path(getwd(),
-#'  'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml')
+#' tmp <- BLLFlow(pbc, variablesSheet, variableDetails, file.path(getwd(),
+#'  'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml'))
 #'
 #' # Passing objects other then a dataframe will create errors
 #' #pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))
 BLLFlow <-
   function(data,
            variables,
-           variableDetailsSheet,
-           ddiXMLMetaData = FALSE) {
+           variableDetails,
+           ddi = FALSE) {
     # Verify passed arg integrity for future functions
     CheckIfDataFrame(data, pkg.globals$argument.Data)
     CheckIfDataFrame(variables, pkg.globals$argument.Variables)
-    CheckIfDataFrame(variableDetailsSheet,
+    CheckIfDataFrame(variableDetails,
                      pkg.globals$argument.VariableDetailsSheet)
     CheckForColumnPresence(
       c(
@@ -58,7 +61,7 @@ BLLFlow <-
       pkg.globals$argument.Variables
     )
     # if the ddi metadata is supplied populate variable details sheet using it
-    if (ddiXMLMetaData != FALSE) {
+    if (ddi != FALSE) {
       variableValueList <- list()
       labeledVariables <- list()
       catStartValue <- numeric()
@@ -66,19 +69,18 @@ BLLFlow <-
       variableStartLabel <- character()
       # DDwR crates lots of cat outputs that are suppressed
       ddiMetaData <-
-        SupressFunctionCatOutput(DDIwR::getMetadata(ddiXMLMetaData))
+        SupressFunctionCatOutput(DDIwR::getMetadata(ddi))
       # used for parcing out additional data
-      ddiObject <- xml2::as_list(xml2::read_xml(ddiXMLMetaData))
+      ddiObject <- xml2::as_list(xml2::read_xml(ddi))
       detectedVariables <-
-        unique(variableDetailsSheet[pkg.globals$argument.VariableStart])
+        unique(variableDetails[pkg.globals$argument.VariableStart])
       # Find extra info about the variable low and high
       valueForHighLow <- list()
       # Need to loop through every element because the xml2 names all variables var
       for (individualVariable in ddiObject$codeBook$dataDscr) {
-        if (!is.null(attr(individualVariable, "name"))) {
-          ddiElementName <- attr(individualVariable, "name")
-          if (length(detectedVariables[detectedVariables$variableStart == ddiElementName, 1]) >
-              0) {
+        if (!is.null(attr(individualVariable, "name", exact = TRUE))) {
+          ddiElementName <- attr(individualVariable, "name", exact = TRUE)
+          if (length(detectedVariables[detectedVariables$variableStart == ddiElementName, 1]) != 0) {
             valueForHighLow[[ddiElementName]] <- individualVariable$valrng$range
             valueForHighLow[[ddiElementName]][["Type"]] <-
               ifelse(attr(individualVariable, "intrvl") == "discrete",
@@ -142,15 +144,20 @@ BLLFlow <-
           labeledVariables[[variableToCheck]] <- variableValueList
         }
       }
-      populatedVariableDeatailsSheet <-
-        PopulateVariableDetails(variableDetailsSheet,
-                                labeledVariables,
-                                detectedVariables)
+      if (!length(labeledVariables)) {
+        populatedVariableDeatailsSheet <- NULL
+      }else{
+        populatedVariableDeatailsSheet <-
+          PopulateVariableDetails(variableDetails,
+                                  labeledVariables,
+                                  detectedVariables)
+      }
       additionalDDIMetaData <- list(
         docDscr = ddiObject$codeBook$docDscr,
         stdyDscr = ddiObject$codeBook$stdyDscr,
         fileDscr = ddiObject$codeBook$fileDscr
       )
+      
     } else{
       # Set ddi related vars to null
       additionalDDIMetaData <- NULL
@@ -161,7 +168,7 @@ BLLFlow <-
       list(
         data = data,
         variables = variables,
-        variableDetailsSheet = variableDetailsSheet,
+        variableDetails = variableDetails,
         additionalDDIMetaData = additionalDDIMetaData,
         populatedVariableDeatailsSheet = populatedVariableDeatailsSheet
       )
