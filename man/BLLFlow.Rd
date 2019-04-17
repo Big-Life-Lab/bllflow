@@ -4,7 +4,8 @@
 \alias{BLLFlow}
 \title{Creates a BLLFlow instance from the data arg}
 \usage{
-BLLFlow(data, variables, variableDetails, ddi = FALSE)
+BLLFlow(data = NULL, variables = NULL, variableDetails = NULL,
+  ddi = FALSE)
 }
 \arguments{
 \item{data}{A dataframe that represents the dataset the model will be developed

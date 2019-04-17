@@ -1,4 +1,3 @@
-library(DDIwR)
 #' Creates a BLLFlow instance from the data arg
 #'
 #' @param data A dataframe that represents the dataset the model will be developed
@@ -42,34 +41,43 @@ library(DDIwR)
 #' # Passing objects other then a dataframe will create errors
 #' #pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))
 BLLFlow <-
-  function(data,
-           variables,
-           variableDetails,
+  function(data = NULL,
+           variables = NULL,
+           variableDetails = NULL,
            ddi = FALSE) {
     # Verify passed arg integrity for future functions
-    CheckIfDataFrame(data, pkg.globals$argument.Data)
-    CheckIfDataFrame(variables, pkg.globals$argument.Variables)
-    CheckIfDataFrame(variableDetails,
-                     pkg.globals$argument.VariableDetailsSheet)
-    CheckForColumnPresence(
-      c(
-        pkg.globals$columnNames.Min,
-        pkg.globals$columnNames.Max,
-        pkg.globals$columnNames.Outlier
-      ),
-      variables,
-      pkg.globals$argument.Variables
-    )
-    processedDDI <- ProcessDDI(ddi, variableDetails)
+    if (!is.null(data)) {
+      CheckIfDataFrame(data, pkg.globals$argument.Data)
+    }
+    if (!is.null(variables)) {
+      CheckIfDataFrame(variables, pkg.globals$argument.Variables)
+      CheckForColumnPresence(
+        c(
+          pkg.globals$columnNames.Min,
+          pkg.globals$columnNames.Max,
+          pkg.globals$columnNames.Outlier
+        ),
+        variables,
+        pkg.globals$argument.Variables
+      )
+    }
+    if (!is.null(variableDetails)) {
+      CheckIfDataFrame(variableDetails,
+                       pkg.globals$argument.VariableDetailsSheet)
+    }
+    
+    
+    processedVariableDetails <- ProcessDDIVariableDetails(ddi, variableDetails)
+    ddiHeader <- GetDDIHeader(ddi)
     
     bllFlowModel <-
       list(
         data = data,
         variables = variables,
         variableDetails = variableDetails,
-        additionalDDIMetaData = processedDDI[[1]],
-        populatedVariableDeatailsSheet = processedDDI[[2]],
-        why = processedDDI
+        additionalDDIMetaData = ddiHeader,
+        populatedVariableDeatailsSheet = processedVariableDetails,
+        ddi = ddi 
       )
     attr(bllFlowModel, "class") <- "BLLFlow"
     
