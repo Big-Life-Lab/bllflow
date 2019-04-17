@@ -31,34 +31,23 @@ library(survival)
 data(pbc)
 library(bllFlow)
 
-ddiPath <- 'file.path(getwd())'
-ddiFile <-  'cchs-82M0013-E-2013-2014-Annual-component.xml'
-
-pbcModel <- BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"))
-# this function call would get all the info from DDI sections: docDscr, stdyDscr, fileDscr
-# and add that info to the BLLFlow object.
-# would invoke the 'addDDItoBLLFlow' function with attribute 'getDDIDescription = TRUE' (see below)
-
-```
-Get the varialbe metadata for the study data from DDI and add that the bllFlow 
-object.
-
+Example 1: Get the varialbe metadata for variableDetails sheet from DDI and add 
+that the bllFlow MSW-DDI object.
 ```{r}
-variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, getDDI = c(ddiPath, ddiFile, 
-"variables"))
-# this function call would bet just the DDI variable information and add that info
-# to the BLLflow object
-# would invoke the 'addDDItoBLLFlow' function with attribute 'getDDIVariables = TRUE' (see below)
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
+TODO: pbc-DDI <- readDDI(DDIPath = ddiPath, DDIFile = 'pbc-DDI.xml')
+pbcModel <- BLLFlow(pbc, variables, variableDetails, pbc-DDI)
 ```
 
-Add both study data description and variable metadata.
+Example 2: Write MSW-DDI to MSW.csv
 ```{r}
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet, getDDI = c(ddiPath, ddiFile))
-# the same as calling both functions above.
-# would invoke the 'addDDItoBLLFlow' function with attributes 'getDDIvariables = TRUE, 
-# 'getDDIdescription = TRUE' (see below)
+TODO: writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, DDI = , bllFlow = )
+
+
+writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, DDI = MSW_DDI)
+writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, bllFlow = pbcModel)
+
 ```
 
 # General utily functions 
@@ -68,9 +57,27 @@ getDDIdescription(DDIPath = ddiPath, DDIFile = ddiFile)
 # same as calling BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"), but 
 would not add the info to the bllFlow object.
 
+Example 3: general utility.
+```{r}
+TODO: CCHS-DDI <- read.DDI(DDIPath = ddiPath, DDIFile = ddiFile, variables = ...)
 
-getDDIvariables((DDIPath = ddiPath, DDIFile = ddiFile, variable = c(variableList))
+TODO: getDDIvariable(DDI = CCHS-DDI, "DDHAge", "sex")
+```
 
-addDDItoBLLFlow(bllFlowObject, getDDIDescription = TRUE, getDDIVariable = TRUE)
+```{r}
+writeDDItoMSW(MSWPath = ddiPath, MSWFile = "newPoRT-MSW", DDI = CCHS-DDI)
 
-adddDDItoMSW(variableDetailsSheet, ddiPath, ddiFile)
+writeDDItoMSW(MSWPath = ddiPath, MSWFile = "newPoRT-MSW") {
+MSWFile = DDI-MSW
+}
+```
+creates a new MSW-variableDetails sheet called "newPort-variableDetails.csv" 
+with one variable: DHHAGE
+
+Example 4: Should we directly import the DDI.xml file within the BLLFlow() ojbect, as currently written, or first have people invoke the general utility? The latter approach would 
+be more consistent with how we calling `variables` and `variableDetails`
+```{r}
+pbc-DDI <- read.DDI(DDIPath = ddiPath, DDIFile = 'pbc-DDI.xml')
+pbcModel <- BLLFlow(pbc, variables, variableDetails, DDI = pbc-DDI)
+```
+
