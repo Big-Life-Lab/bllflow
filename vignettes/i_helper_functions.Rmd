@@ -30,14 +30,14 @@ bllFlow object
 library(survival)
 data(pbc)
 library(bllFlow)
-
+```
 Example 1: Get the varialbe metadata for variableDetails sheet from DDI and add 
 that the bllFlow MSW-DDI object.
 ```{r}
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-TODO: pbc-DDI <- readDDI(DDIPath = ddiPath, DDIFile = 'pbc-DDI.xml')
-pbcModel <- BLLFlow(pbc, variables, variableDetails, pbc-DDI)
+variables <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), 'inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 ```
 
 Example 2: Write MSW-DDI to MSW.csv

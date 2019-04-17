@@ -67,7 +67,8 @@ BLLFlow <-
     }
     
     
-    processedVariableDetails <- ProcessDDIVariableDetails(ddi, variableDetails)
+    processedVariableDetails <-
+      ProcessDDIVariableDetails(ddi, variableDetails)
     ddiHeader <- GetDDIHeader(ddi)
     
     bllFlowModel <-
@@ -77,13 +78,10 @@ BLLFlow <-
         variableDetails = variableDetails,
         additionalDDIMetaData = ddiHeader,
         populatedVariableDeatailsSheet = processedVariableDetails,
-        ddi = ddi 
+        ddi = ddi
+        
       )
     attr(bllFlowModel, "class") <- "BLLFlow"
     
     return(bllFlowModel)
   }
-
-
-
-
