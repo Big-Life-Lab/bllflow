@@ -97,18 +97,16 @@ pbc
                 </IDNo>
             </titlStmt>
             <rspStmt>
-                <AuthEnty affiliation="Terry M Therneau">
-Health Statistics Division
+                <AuthEnty>Terry M Therneau
                 </AuthEnty>
             </rspStmt>
             <prodStmt>
-                <producer affiliation="Terry M Therneau">
-Health Statistics Division
+                <producer>Doug Manuel and Rostik Vyuha
                 </producer>
                 <copyright>
                 </copyright>
                 <prodDate date="2019-04-08">
-2016-03-08
+2019-04-08
                 </prodDate>
                 <prodPlac>
 The Ottawa Hosptial Research Institute, Ottawa, Ontario, Canada
@@ -244,7 +242,7 @@ RData
         <var ID="V1" name="age" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
-in years
+years
             </labl>
             <qstn>
                 <qstnLit>
