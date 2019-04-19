@@ -31,12 +31,23 @@ library(survival)
 data(pbc)
 library(bllFlow)
 ```
-Example 1: Get the varialbe metadata for variableDetails sheet from DDI and add 
+
+Example 1: First, read the DDI xml file for your data.
+```{r}
+pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+```
+
+All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can be accessed as follows:
+```{r}
+pbcDDI$variableMetaData
+```
+
+Get the varialbe metadata for variableDetails sheet from DDI and add 
 that the bllFlow MSW-DDI object.
 ```{r}
 variables <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), 'inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
-pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 ```
 
