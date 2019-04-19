@@ -47,21 +47,21 @@ pbcDDI$variableMetaData
 Get the varialbe metadata for variableDetails sheet from DDI and add 
 that the bllFlow MSW-DDI object.
 ```{r}
-variables <- read.csv(file.path('../inst/extdata/PBC/PBC - variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), 'inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
 
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 ```
 
 Example 2: Write MSW-DDI to MSW.csv
 ```{r}
-WriteDDIPopulatedMSW(pbcModel, "inst/extdata/PBC/vignette-testing/", "testing.csv")
+WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/PBC/vignette-testing/", "testing.csv")
 ```
 creates a directory and file (if they don't already exists. testing.csv will be overwritten if exists.
 New/overwrite file. testing.csv contains a `variablesDetail` file with current MSW variableDetails and all labels in the `variablesDetails` (variable and categories) from the DDI.xml file. 
-
-WriteDDIPopulatedMSW(pbcDDI, "inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
-Creates a new file ('newName.csv`) from an existing variableDetails.csv without need for a BLLFlow object.
+```{r}
+WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
+#Creates a new file ('newName.csv`) from an existing variableDetails.csv without need for a BLLFlow object.
 
 ```
 
@@ -74,20 +74,23 @@ would not add the info to the bllFlow object.
 
 Example 3: general utility.
 ```{r}
-pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
-CCHS_DDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "cchs-82M0013-E-2013-2014-Annual-component.xml")
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+CCHS_DDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "cchs-82M0013-E-2013-2014-Annual-component.xml")
 
 varsForCCHS <- GetDDIVariables(CCHS_DDI, c("DHHGAGE", "DHH_SEX"))
-No header info, but all the info.
+#No header info, but all the info.
 
 descrForCCHS <- GetDDIHeader(CCHS_DDI)
 
 ```
 This needs a newPoRT-MSW file to be there in order to populate from ddi otherwise it will not work
 ```{r}
-WriteDDIPopulatedMSW(CCHS_DDI, "inst/extdata/PBC/vignette-testing/", "newPoRT-MSW", "newName.csv")
-reports an error.
+#WriteDDIPopulatedMSW(CCHS_DDI, "../inst/extdata/PBC/vignette-testing/", "newPoRT-MSW", "newName.csv")
+#reports an error.
 ```
 creates a new MSW-variableDetails sheet called "newPort-variableDetails.csv" 
 with one variable: DHHAGE
+```{r}
+pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
+```
 
