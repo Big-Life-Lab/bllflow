@@ -7,13 +7,15 @@ the MSW. Outlier method is applied on a row if any of the variable
 values for that row is less than the min value as specified in the variables
 sheet. Outlier checking for the column is not applied if min value is NA.}
 \usage{
-\method{clean.Min}{BLLFlow}(bllFlowModel, print = FALSE)
+\method{clean.Min}{BLLFlow}(bllFlowModel, print = FALSE, ...)
 }
 \arguments{
 \item{bllFlowModel}{bllFlow model created using the BLLFlow method}
 
 \item{print}{If set true, prints the following metrics about the model:
 1. Number of rows deleted from the dataset}
+
+\item{...}{Arguments for next methods in the chain}
 }
 \value{
 bllFlowModel that has had its data modified by the paramaters located in
@@ -40,9 +42,9 @@ data(pbc)
 
 # Read in the MSW and variable_details sheet for the PBC model
 variablesSheet <- read.csv(file.path(getwd(),
- 'bllFlow/extdata/PBC/PBC - variables.csv'))
+ 'bllFlow/extdata/PBC/PBC-variables.csv'))
 variableDetailsSheet <- read.csv(file.path(getwd(),
-'bllFlow/extdata/PBC/PBC - variable_details.csv'))
+'bllFlow/extdata/PBC/PBC-variable-details.csv'))
 
 # Create a bllFlow R object for the PBC model using the above variables as args
 library(bllFlow)
