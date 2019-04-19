@@ -34,8 +34,9 @@ library(bllFlow)
 
 Example 1: First, read the DDI xml file for your data.
 ```{r}
-pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
 ```
+Metadata is stored in two approaches....
 
 Rusty -  it shows variable and value label lists
 All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can be accessed as follows:
@@ -46,7 +47,7 @@ pbcDDI$variableMetaData
 Get the varialbe metadata for variableDetails sheet from DDI and add 
 that the bllFlow MSW-DDI object.
 ```{r}
-variables <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
+variables <- read.csv(file.path('../inst/extdata/PBC/PBC - variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), 'inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
 
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
@@ -55,7 +56,12 @@ pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 Example 2: Write MSW-DDI to MSW.csv
 ```{r}
 WriteDDIPopulatedMSW(pbcModel, "inst/extdata/PBC/vignette-testing/", "testing.csv")
+```
+creates a directory and file (if they don't already exists. testing.csv will be overwritten if exists.
+New/overwrite file. testing.csv contains a `variablesDetail` file with current MSW variableDetails and all labels in the `variablesDetails` (variable and categories) from the DDI.xml file. 
+
 WriteDDIPopulatedMSW(pbcDDI, "inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
+Creates a new file ('newName.csv`) from an existing variableDetails.csv without need for a BLLFlow object.
 
 ```
 
@@ -72,17 +78,16 @@ pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xm
 CCHS_DDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "cchs-82M0013-E-2013-2014-Annual-component.xml")
 
 varsForCCHS <- GetDDIVariables(CCHS_DDI, c("DHHGAGE", "DHH_SEX"))
+No header info, but all the info.
+
+descrForCCHS <- GetDDIHeader(CCHS_DDI)
+
 ```
 This needs a newPoRT-MSW file to be there in order to populate from ddi otherwise it will not work
 ```{r}
 WriteDDIPopulatedMSW(CCHS_DDI, "inst/extdata/PBC/vignette-testing/", "newPoRT-MSW", "newName.csv")
+reports an error.
 ```
 creates a new MSW-variableDetails sheet called "newPort-variableDetails.csv" 
 with one variable: DHHAGE
 
-Example 4: Should we directly import the DDI.xml file within the BLLFlow() ojbect, as currently written, or first have people invoke the general utility? The latter approach would 
-be more consistent with how we calling `variables` and `variableDetails`
-```{r}
-pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
-pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
-```
