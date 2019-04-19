@@ -15,50 +15,87 @@ vignette: >
 
 ### Metadata
 
-_bllFlow_ supports metadata from DDI and from the R packages hmisc and rjlabelled.
+_bllflow_ supports metadata from DDI and from the R packages hmisc and rjlabelled.
 
 #### DDI metadata
 The [Data Documentation Intitiatve](https://www.ddialliance.org) (DDI) is is an 
 international standard for describing the data produced by surveys and other 
-observational methods in the social, behavioral, economic, and health sciences.
+observational methods in the social, behavioral, economic, and health sciences. 
+There is metadata for variables labels, but also important data provenance information.
 
-```
 Get the description of the study data from DDI and add the description to 
-bllFlow object
+_bllflow_ object
 
-```{r}
-library(survival)
+```{r Load libraries, warning=TRUE, include=FALSE}
+library(survival) # for pbc data
 data(pbc)
 library(bllFlow)
 ```
 
-Example 1: First, read the DDI xml file for your data.
+##### Example 1: Read the DDI xml file for your data.
+
 ```{r}
 pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
 ```
-Metadata is stored in two approaches....
+Your metadata is now stored in the `pbcDDI` object in two formats:
 
-Rusty -  it shows variable and value label lists
-All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can be accessed as follows:
+1) Variable and format labels can be accessed in `pbcDDI$variableMetaData`. 
+All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can 
+be accessed as follows:
 ```{r}
-pbcDDI$variableMetaData
+str(pbcDDI$variableMetaData$varlab) # variable labels
+str(pbcDDI$variableMetaData$vallab) # value labels for categorial variables
+```
+`variableMetaData` is generated using the `DDIwR` package.
+
+2) All metadata from the DDI document `pbcDDI$ddiObject`. Careful
+Get the varialbe metadata for variableDetails sheet from DDI and add 
+that the bllFlow MSW-DDI object. Careful printing: there can be a lot
+of information! And there can be a lot of nested lists.
+
+Get the name of the data.
+```{r}
+str(pbcDDI$ddiObject$codeBook$docDscr$citation$titlStmt$titl)
 ```
 
-Get the varialbe metadata for variableDetails sheet from DDI and add 
-that the bllFlow MSW-DDI object.
-```{r}
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+###### Example 2: Use DDI to variable labels and other information for your model variables.
 
+The MSW `variables` and `variableDetail.csv` file contains the variables in your model. 
+Use the `BLLFlow()` function with the MSW files as attributes to add labels to the 
+BLLFlow object, (`variables` and `variableDetails` and  the DDI object (`pbcDDI`).
+```{r}
+# read the MSW files
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), 
+              '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+
+# create a BLLFlow object and add labels.
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
+```
+Metadata is added to `variables` and `variableDetails`. If labels and other metadata 
+already were in the files, the DDI metadata is added to `startLabel`, `startType`, 
+`catStartValue`, `catStartLabel`, `startLow`, `startHigh` --- if that data is in 
+the DDI file. 
+
+```{r}
+cat("Variable labels in the original MSW\n")
+variables$label
+
+cat("\nNo variable labels from DDI in variable details\n")
+variableDetails$variableStartLabel 
+
+cat("\nDDI variable lables added to variableDetailsWithDDI\n")
+variableDetailsWithDDI$startLabel
 ```
 
 Example 2: Write MSW-DDI to MSW.csv
 ```{r}
 WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/PBC/vignette-testing/", "testing.csv")
 ```
-creates a directory and file (if they don't already exists. testing.csv will be overwritten if exists.
-New/overwrite file. testing.csv contains a `variablesDetail` file with current MSW variableDetails and all labels in the `variablesDetails` (variable and categories) from the DDI.xml file. 
+Creates a directory and file (if they don't already exists. testing.csv will be
+overwritten if exists. New/overwrite file. testing.csv contains a `variablesDetail` 
+file with current MSW variableDetails and all labels in the `variablesDetails` 
+(variable and categories) from the DDI.xml file. 
 ```{r}
 WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
 #Creates a new file ('newName.csv`) from an existing variableDetails.csv without need for a BLLFlow object.
