@@ -1,16 +1,13 @@
-#' Clean.Min
+#' Generic function for clean.Min
 #'
-#' Clean The data using the Min according to the specifications in the passed object.
+#' @param bllFlowModel The bllflow model we will clean
+#' @param ... Arguments to the next method in the chain
 #'
-#' @param  modelToClean A passed object that contains the data that needs to be cleaned
-#' as well as specifications on how to clean it.
-#' @param print If set true prints human readable log of the performed cleaning operations
-#'
-#' @return The passed object with now cleaned data as well as a log containing the performed actions
 #' @export
-clean.Min <- function(modelToClean, print = FALSE) {
-  UseMethod("clean.Min", modelToClean)
+clean.Min <- function(bllFlowModel, ...) {
+  UseMethod("clean.Min")
 }
+
 #' Cleans the data using the min and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
 #' values for that row is less than the min value as specified in the variables
@@ -29,6 +26,7 @@ clean.Min <- function(modelToClean, print = FALSE) {
 #' @param bllFlowModel bllFlow model created using the BLLFlow method
 #' @param print If set true, prints the following metrics about the model:
 #' 1. Number of rows deleted from the dataset
+#' @param ... Arguments for next methods in the chain
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
 #' the variables object
@@ -60,7 +58,7 @@ clean.Min <- function(modelToClean, print = FALSE) {
 #' # if u wish to be updated in the log on what the function does set print to true
 #' cleanedPbcModel <- clean.Min(cleanedPbcModel, print=TRUE)
 #'
-clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE) {
+clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE, ...) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel,
                     pkg.globals$columnNames.Min,
@@ -76,18 +74,15 @@ CheckLessThen <-
            valueBeingCompare) {
     return(operatorBasedCompareValue < valueBeingCompare)
   }
-#' Clean.Max
+
+#' Generic function for clean.Max
 #'
-#' Clean The data using the Max according to the specifications in the passed object.
+#' @param bllFlowModel The bllFlowModel we will clean
+#' @param ... Arguments to the next method in the chain
 #'
-#' @param  modelToClean A passed object that contains the data that needs to be cleaned
-#' as well as specifications on how to clean it.
-#' @param print If set true prints human readable log of the performed cleaning operations
-#'
-#' @return The passed object with now cleaned data as well as a log containing the performed actions
 #' @export
-clean.Max <- function(modelToClean, print = FALSE) {
-  UseMethod("clean.Max", modelToClean)
+clean.Max <- function(bllFlowModel, ...) {
+  UseMethod("clean.Max")
 }
 #' Cleans the data using the max and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
@@ -106,6 +101,7 @@ clean.Max <- function(modelToClean, print = FALSE) {
 #' @param bllFlowModel bllFlow model created using the BLLFlow method
 #' @param print If set to true, prints the following metrics about the model:
 #' 1. Number of rows deleted from the dataset
+#' @param ... Arguments for next methods in the chain
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
 #' the variables object
@@ -136,7 +132,7 @@ clean.Max <- function(modelToClean, print = FALSE) {
 #'
 #' # if u wish to be updated in the log on what the function does set print to true
 #' cleanedPbcModel <- clean.Max(cleanedPbcModel, print=TRUE)
-clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE) {
+clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE, ...) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel,
                     pkg.globals$columnNames.Max,

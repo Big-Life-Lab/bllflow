@@ -1,9 +1,10 @@
 #'Custom print function for the bllFlow metaData log 
 #'
-#'@param metaDataLog The metaData log object
+#'@param x The metaData log object
+#'@param ... Test
 #'
 #'@export
-print.metaDataLog <- function(metaDataLog) {
+print.metaDataLog <- function(x, ...) {
   print("Data cleaning and trandformation log")
   print(paste(length(metaDataLog), "steps performed"))
   printDataFrame <-

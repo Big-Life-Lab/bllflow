@@ -16,7 +16,7 @@
 #' @return bllFlow modifiied with the new log data
 #' @export
 #'
-#' @examples
+#' @examples # TODO Example for this function
 LogFunctionActivity <-
   function(bllFlow,
            rowsChecked,
