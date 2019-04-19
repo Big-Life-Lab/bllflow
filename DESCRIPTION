@@ -36,7 +36,7 @@ Suggests:
   survival
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
-Maintainer: Yulric Sequeira <ysequeira@ohri.ca>
+Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
