@@ -37,6 +37,7 @@ Example 1: First, read the DDI xml file for your data.
 pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
 ```
 
+Rusty -  it shows variable and value label lists
 All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can be accessed as follows:
 ```{r}
 pbcDDI$variableMetaData
@@ -53,11 +54,8 @@ pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 
 Example 2: Write MSW-DDI to MSW.csv
 ```{r}
-TODO: writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, DDI = , bllFlow = )
-
-
-writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, DDI = MSW_DDI)
-writeDDItoMSW(MSWPath = ddiPath, MSWFile = variableDetailsSheet, bllFlow = pbcModel)
+WriteDDIPopulatedMSW(pbcModel, "inst/extdata/PBC/vignette-testing/", "testing.csv")
+WriteDDIPopulatedMSW(pbcDDI, "inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
 
 ```
 
@@ -70,17 +68,14 @@ would not add the info to the bllFlow object.
 
 Example 3: general utility.
 ```{r}
-TODO: CCHS-DDI <- read.DDI(DDIPath = ddiPath, DDIFile = ddiFile, variables = ...)
+pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+CCHS_DDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "cchs-82M0013-E-2013-2014-Annual-component.xml")
 
-TODO: getDDIvariable(DDI = CCHS-DDI, "DDHAge", "sex")
+varsForCCHS <- GetDDIVariables(CCHS_DDI, c("DHHGAGE", "DHH_SEX"))
 ```
-
+This needs a newPoRT-MSW file to be there in order to populate from ddi otherwise it will not work
 ```{r}
-writeDDItoMSW(MSWPath = ddiPath, MSWFile = "newPoRT-MSW", DDI = CCHS-DDI)
-
-writeDDItoMSW(MSWPath = ddiPath, MSWFile = "newPoRT-MSW") {
-MSWFile = DDI-MSW
-}
+WriteDDIPopulatedMSW(CCHS_DDI, "inst/extdata/PBC/vignette-testing/", "newPoRT-MSW", "newName.csv")
 ```
 creates a new MSW-variableDetails sheet called "newPort-variableDetails.csv" 
 with one variable: DHHAGE
@@ -88,6 +83,6 @@ with one variable: DHHAGE
 Example 4: Should we directly import the DDI.xml file within the BLLFlow() ojbect, as currently written, or first have people invoke the general utility? The latter approach would 
 be more consistent with how we calling `variables` and `variableDetails`
 ```{r}
-pbc-DDI <- read.DDI(DDIPath = ddiPath, DDIFile = 'pbc-DDI.xml')
-pbcModel <- BLLFlow(pbc, variables, variableDetails, DDI = pbc-DDI)
+pbcDDI <- ReadDDI(file.path(getwd(), "inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 ```

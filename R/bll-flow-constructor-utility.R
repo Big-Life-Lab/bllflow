@@ -255,8 +255,7 @@ ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   } else{
     populatedVariableDeatailsSheet <-
       PopulateVariableDetails(variableDetails,
-                              ddiVariable,
-                              detectedVariables)
+                              ddiVariable)
   }
   
   return(populatedVariableDeatailsSheet)
