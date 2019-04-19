@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <codeBook version="1.2.2" ID="pbc.rda" xml-lang="en" 
-    xmlns="http://www.ddialliance.org" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ddialliance.org">
+    xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
     <docDscr>
         <citation>
             <titlStmt>
@@ -239,8 +238,8 @@ RData
         </fileTxt>
     </fileDscr>
     <dataDscr>
-        <var ID="V1" name="age" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
-            <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+        <var ID="V1" name="age" files="pbc" dcml="5" intrvl="contin">
+            <location RecSegNo="5"/>
             <labl>
 years
             </labl>
@@ -250,41 +249,29 @@ age of participant
                 </qstnLit>
             </qstn>
             <valrng>
-                <range min="1" max="127462"/>
+                <range min="26.27789" max="78.43943"/>
             </valrng>
             <sumStat type="vald">
-127462
-            </sumStat>
-            <sumStat wgtd="wgtd" type="vald">
-30002817
+418
             </sumStat>
             <sumStat type="invd">
 0
             </sumStat>
-            <sumStat wgtd="wgtd" type="invd">
-0
-            </sumStat>
             <sumStat type="min">
-1
+26.27789
             </sumStat>
             <sumStat type="max">
-127462
+78.43943
             </sumStat>
             <sumStat type="mean">
-63731.5
-            </sumStat>
-            <sumStat wgtd="wgtd" type="mean">
-63720.201
+50.74
             </sumStat>
             <sumStat type="stdev">
-36795.254
-            </sumStat>
-            <sumStat wgtd="wgtd" type="stdev">
-36814.963
+10.45
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V2" name="albumin" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V2" name="albumin"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 serum albumin(g/dl)
@@ -329,7 +316,7 @@ serum albumin(g/dl) of participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V3" name="alk.phos" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V3" name="alk.phos"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 alkaline phosphotase (U/liter)
@@ -374,7 +361,7 @@ alkaline phosphotase (U/liter) of participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V4" name="ascites" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V4" name="ascites"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 presence of ascites
@@ -419,7 +406,7 @@ presence of ascites in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V5" name="ast" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V5" name="ast"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 aspartate aminotransferase, once called SGOT (U/ml)
@@ -464,7 +451,7 @@ aspartate aminotransferase, once called SGOT (U/ml) in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V6" name="bili" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V6" name="bili"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 serum bilirunbin (mg/dl)
@@ -509,7 +496,7 @@ serum bilirunbin (mg/dl) in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V7" name="chol" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V7" name="chol"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 serum cholesterol (mg/dl)
@@ -554,7 +541,7 @@ serum cholesterol (mg/dl) in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V8" name="copper" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V8" name="copper"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 urine copper (ug/day)
@@ -599,7 +586,7 @@ urine copper (ug/day) in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V9" name="edema" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+        <var ID="V9" name="edema"  dcml="0" intrvl="discrete">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 edema
@@ -674,7 +661,7 @@ edema despite diuretic therapy
             </catgry>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V10" name="hepato" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V10" name="hepato"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 presence of hepatomegaly or enlarged liver
@@ -719,7 +706,7 @@ presence of hepatomegaly or enlarged liver in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V11" name="id" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V11" name="id"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 case number
@@ -764,7 +751,7 @@ participant case number
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V12" name="platelet" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V12" name="platelet"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 platelet count
@@ -809,7 +796,7 @@ platelet count in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V13" name="protime" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V13" name="protime"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 standardised blood clotting time
@@ -854,7 +841,7 @@ standardised blood clotting time in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V14" name="sex" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+        <var ID="V14" name="sex"  dcml="0" intrvl="discrete">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 standardised blood clotting time
@@ -915,7 +902,7 @@ Female
             </catgry>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V15" name="spiders" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V15" name="spiders"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 blood vessel malformations in the skin
@@ -960,7 +947,7 @@ blood vessel malformations in the skin in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V16" name="stage" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V16" name="stage"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 histologic stage of disease (needs biopsy)
@@ -1005,7 +992,7 @@ histologic stage of disease (needs biopsy) in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V17" name="status" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+        <var ID="V17" name="status"  dcml="0" intrvl="discrete">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 status at endpoint
@@ -1080,7 +1067,7 @@ dead
             </catgry>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V18" name="time" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V18" name="time"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 number of days between registration and the earlier of death,
@@ -1127,7 +1114,7 @@ transplantion, or study analysis in July, 1986 in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V19" name="trt" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+        <var ID="V19" name="trt"  dcml="0" intrvl="discrete">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 trt
@@ -1202,7 +1189,7 @@ not randomised
             </catgry>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V20" name="trig" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+        <var ID="V20" name="trig"  dcml="0" intrvl="contin">
             <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
             <labl>
 triglycerides (mg/dl)
