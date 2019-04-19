@@ -28,8 +28,8 @@ pbc <- pbc[!is.na(pbc$trt),]
 First we need to change sex from 'm' and 'f' to '0' and '1'
 ```{r}
 attach(pbc)
-pbc$sex <- ifelse(sex=='m', 0,
-            ifelse(sex=='f', 1, NA))
+pbc$sex <- ifelse(sex == 'm', 0,
+            ifelse(sex == 'f', 1, NA))
 detach(pbc)
 ```
 
@@ -67,15 +67,15 @@ detach(pbc)
 I have modified the rcs function from Harrell's rms package to let us specify the names of the resulting rcs variables. 
 
 ```{r}
-source(file.path("/Users/staceyfisher/Desktop/Git/bllFlow/R/rcs2.R"))
+source(file.path(getwd(), "../R/rcs2.R"))
 ```
 
 Use the rcs funciton to collect all of the variables you want to use in the model into a single object for easier regression running.
 ```{r}
 attach(pbc)
 allvars <- as.data.frame(cbind(trtC, sexC,
-                rcs2(ageC, 5, rcs_names= c('AgeC_rcs1', 'AgeC_rcs2', 'AgeC_rcs3', 'AgeC_rcs4')),
-                rcs2(biliC, 3, rcs_names= c('BiliC_rcs1', 'BiliC_rcs2'))))
+                rcs2(ageC, 5, rcs_names = c('AgeC_rcs1', 'AgeC_rcs2', 'AgeC_rcs3', 'AgeC_rcs4')),
+                rcs2(biliC, 3, rcs_names = c('BiliC_rcs1', 'BiliC_rcs2'))))
 detach(pbc)
 str(allvars)
 ```
@@ -85,7 +85,7 @@ The allvars object contains 8 variables.
 The 'time' variable is the time (in days) from study start to either censoring, liver transplantation, or death
 The 'status' variable is 0 for censored, 1 for transplant, 2 for death
 ```{r}
-pbc_crr_model <- crr(ftime= pbc$time, fstatus= pbc$status, allvars, failcode=1, cencode=0)
+pbc_crr_model <- crr(ftime = pbc$time, fstatus = pbc$status, allvars, failcode = 1, cencode = 0)
 summary(pbc_crr_model)
 ```
 The beta coefficients for the model are here:
@@ -96,7 +96,7 @@ pbc_crr_model$coef
 #Knot locations
 We need to know where the knots are placed. To determine this:
 ```{r}
-attributes(rcspline.eval(pbc$ageC, nk=5))$knots
-attributes(rcspline.eval(pbc$biliC, nk=3))$knots
+attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
+attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
 
