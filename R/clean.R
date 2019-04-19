@@ -44,9 +44,9 @@ clean.Min <- function(modelToClean, print = FALSE) {
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC - variables.csv'))
+#'  'bllFlow/extdata/PBC/PBC-variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(),
-#' 'bllFlow/extdata/PBC/PBC - variable_details.csv'))
+#' 'bllFlow/extdata/PBC/PBC-variable-details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
@@ -121,9 +121,9 @@ clean.Max <- function(modelToClean, print = FALSE) {
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC - variables.csv'))
+#'  'bllFlow/extdata/PBC/PBC-variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC - variable_details.csv'))
+#'  'bllFlow/extdata/PBC/PBC-variable-details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
