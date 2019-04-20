@@ -12,7 +12,7 @@ development:
   
 home:
   links:
-  - text: Calculators at
+  - text: Project Big Life home at
     href: https://projectbiglife.ca
 
 # modified from 'template_navbar()' to add the 'data' tab

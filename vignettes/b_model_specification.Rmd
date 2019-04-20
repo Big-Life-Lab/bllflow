@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 ## Introduction
 The Model Specification Workbook (MSW) is used to specify your model. The MSW is 
 a series of four worksheets (CSV files) that describe different model components. 
-You can use **bllFlow** without a MSW but we recommend using atleast the 
+You can use **bllflow** without a MSW but we recommend using the 
 `variables` and `variable_details` worksheets. 
  
 ## The four MSW worksheets
