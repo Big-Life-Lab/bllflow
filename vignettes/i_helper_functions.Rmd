@@ -10,80 +10,159 @@ vignette: >
   % \VignetteDepends{magrittr}
   
 ---
-  
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-**bllFlow** supports pre-specifying model development as described by Harrell 
-and others.[ref]
 
+## Introduction
 
-## Make an event date
-Our teams often work with health data in secure environments where privacy is 
-paramount. This means we cannot share data. ...
-```{r make event date}
+### Metadata
+
+_bllflow_ supports metadata from DDI and from the R packages hmisc and rjlabelled.
+
+#### DDI metadata
+The [Data Documentation Intitiatve](https://www.ddialliance.org) (DDI) is is an 
+international standard for describing the data produced by surveys and other 
+observational methods in the social, behavioral, economic, and health sciences. 
+There is metadata for variables labels, but also important data provenance information.
+
+Get the description of the study data from DDI and add the description to 
+_bllflow_ object
+
+```{r Load libraries, warning=TRUE, include=FALSE}
+library(survival) # for pbc data
+data(pbc)
 library(bllFlow)
-library(survival)
-library(dplyr)
-library(magrittr)
-library(Hmisc)
-
-df <- system.file("extdata", "RESPECT-EOL_validation.csv", package = "bllFlow") %>%
-  read.csv %>%
-  as.data.frame
-
-df_length <- nrow(df)
-
-# make events
-# df$tt_event <- make_event_dates(df_length, df$risk, 1825, label = "FollowUp", units = 'days')
-# label(df$tt_event) #check label
-# 
-# # check to see if events have been added
-# table(df$tt_event)
-# 
-# # check to see if df$tt_event is about the same as df$risk
-# mean(df$risk)
-# nrow(df[df$tt_event < 1825,]) / nrow(df)
-# 
-#  # create event variable
-# df$event <- ifelse(df$tt_event < 1825, 1, 0)
-# 
-# # Pick an available survial time less than 1825 for evaluation
-# # (This is only neccessary due to current limitations of the test dataset)
-# a <- sort(df$tt_event) %>% unique
-# toe <- tail(a, 2)[-2]
 ```
 
-## Filter table 1
-Assessing model performance is an important aspect to health care research. 
-In order to simplify this post modeling step a helper function was created to filter table one data.
-This function is intrinsic for visual inspection model assessments (ie. Calibration plots). 
-Filter_table_1 can filter data based on conditions given from either, all, or any combination of the three groupby variables 
-typically seen in our algorithm development (group_by_sex, group_by_1, and group_by_2) 
-```{r filter table one, echo=TRUE}
-library(bllFlow)
+##### Example 1: Read the DDI xml file for your data.
 
-#load dataset
-df <- system.file("extdata", "MPoRT-table-one.csv", package = "bllFlow") %>%
-  read.csv %>%
-  as.data.frame
+```{r}
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+```
+Your metadata is now stored in the `pbcDDI` object in two formats:
 
-#Check variables
-head(df, num=1L)
+1) Variable and format labels can be accessed in `pbcDDI$variableMetaData`. 
+All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can 
+be accessed as follows:
+```{r}
+str(pbcDDI$variableMetaData$varlab) # variable labels
+str(pbcDDI$variableMetaData$vallab) # value labels for categorial variables
+```
+`variableMetaData` is generated using the `DDIwR` package.
 
-#list of variables to keep and filter in subset of the dataset
-var<-c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2","group_by_value_label_1") 
+2) All metadata from the DDI document `pbcDDI$ddiObject`. Careful
+Get the varialbe metadata for variableDetails sheet from DDI and add 
+that the bllFlow MSW-DDI object. Careful printing: there can be a lot
+of information! And there can be a lot of nested lists.
 
-#Examples
-filter_table_1(df, var, groupby_sex="Male", groupby_1 ="smoking", groupby_2="packyears")
-
-filter_table_1(df, var, groupby_sex="Female", groupby_1="age")
-
-filter_table_1(df, var, groupby_1="age")
-
-
+Get the name of the data.
+```{r}
+cat("Dataset name: \n")
+pbcDDI$ddiObject$codeBook$docDscr$citation$titlStmt$titl
 ```
 
+###### Example 2: Use DDI to add variable labels and other information for your model variables.
+
+The MSW `variables` and `variableDetail.csv` file contains the variables in your model. 
+Use the `BLLFlow()` function with the MSW files as attributes to add labels to the 
+BLLFlow object, (`variables` and `variableDetails` and  the DDI object (`pbcDDI`).
+```{r}
+# read the MSW files
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), 
+              '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+
+# create a BLLFlow object and add labels.
+pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
+```
+Metadata is added to `variables` and `variableDetails`. If labels and other metadata 
+already were in the files, the DDI metadata is added to `startLabel`, `startType`, 
+`catStartValue`, `catStartLabel`, `startLow`, `startHigh` --- if that data is in 
+the DDI file. 
+
+```{r}
+cat("Variable labels in the original MSW\n")
+variables$label
+
+cat("\nNo variable labels from DDI in variable details\n")
+variableDetails$variableStartLabel 
+
+cat("\nDDI variable lables added to variableDetailsWithDDI\n")
+variableDetailsWithDDI$startLabel
+```
+
+###### Example 3: Write MSW_DDI to MSW.csv
+Use `WriteDDIPopulatedMSW()` to create a MSW `variable details` CSV file. 
+(change to new name `variableDetailsWithDDI()`) using `variableDetailsWithDDI()`. 
+Then export using `WriteDDIPopulatedMSW()` as a CSV file to help further develop 
+your study protocol. 
+
+`WriteDDIPopulatedMSW()` is a handy function at the beginning of your study. 
+First, identify thes ariable you need in your study. Then create a 'bane bones' 
+MSW `variables` CSV sheet, import into R and `BLLFlow()` to add additional 
+information from the DDI reference file such as labels, variable types, categories. 
+
+Alternatively, 
+1) directly add metadata to variables in a CSV file (see general utility 
+functions in *Example X*); or, 
+2) export a CSV with metadata from an R variable list and a DDI file.
+
+```{r}
+WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails.csv")
+```
+Creates a directory and file (if they don't already exists). `newMSWvariableDetails.csv` 
+will be overwritten if the file already exists. `newMSWvariableDetails.csv` is 
+created from `variableDetailsWithDDI`. First create `variableDetailsWithDDI` 
+with either `BLLFLow()` or `GetDDIVariables()`.
+
+Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
+```{r}
+WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", 
+                  "testing.csv", 
+                  "newName.csv")
+```
+
+##### Example 4: Update BBLFLow with new variables
+
+Do we need or want this? Rusty, can you write in a vignette?
+
+```{r}
+pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
+```
+
+##### Example 4. More general DDI utily functions 
+Described previously,`ReadDDI()` returns a dataframe with all DDI metadata from 
+a DDI.xml file. 
+
+There two additional DDI utility functions that return the two main parts of the 
+DDI file.
+
+`GetDDIDescription()` returns a dataframe with DDI 'header' information from a DDI file. 
+The header information includes the dataset ID, name, creatation date and other 
+important information to preserve the provenance of your study data.
+
+`GetDDIVariables()` returns a dataframe with variable DDI metadata for a list of 
+variables. DDI variable metadata is typical codebook information such as labels, 
+types, valid and invalid categories, category labels, and descriptive statistics, 
+such as number valid responses, missing responses, minimum, maximum and mean values. 
+
+The _bllflow_ workflow creates an ongoing, updated codebook as you perform your 
+study. The oringial data DDI metadata is the starting point for keeping the updated 
+codebook. The _bllflow_ then creates and modifies an new instance of the codebook 
+as you perform analyses. In addition, a log is created that describes the data 
+cleaning and data transformation steps. 
+
+getDDIdescription(DDIPath = ddiPath, DDIFile = ddiFile)
+# same as calling BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"), but 
+would not add the info to the bllFlow object.
+
+```{r}
+
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), 
+                "pbcDDI.xml")
+# all the DDI metadata
+
+varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
+# all the variable metadata (but no study description infomation)
+
+descrForCCHS <- GetDDIDescription(pbcDDI)
+# all the study description metadata (but no variable infomation)
+```
