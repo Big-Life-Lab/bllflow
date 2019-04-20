@@ -23,6 +23,18 @@ building.
 
 Are you a researcher or analyst 
 
+Agree with the concerns about p-values, but the alternatives seem daunting to prespecify analyses and report all findings.
+
+Want to adhere to reporting guidelines like SROBE,... 
+
+Open Science..
+
+Do you studder at the thought of trying to update the analyses for a study that 
+you recently published? (and imagine someone else trying to replicate your study?)
+
+
+Do work on your project in teams?
+
 ### What does bllFlow 
 
 The package was originally developed for support predictive models in health, 
