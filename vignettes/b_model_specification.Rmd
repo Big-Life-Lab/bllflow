@@ -25,27 +25,50 @@ You can use **bllflow** without a MSW but we recommend using the
 The columns include variable labels, type, and other information such as which 
 variables are transformed (centered, have dummy variables, restrictive cubic 
 splines, have interaction terms, etc.).
-- **variables_details.csv** - includes the details of each variable, including all 
+- **variablesCetails.csv** - includes the details of each variable, including all 
 category (factor) levels and labels. Also included are  specific variable transformation 
 rules.
-- **model_description.csv** - includes information such as the model name, outcome, 
+- **modelCescription.csv** - includes information such as the model name, outcome, 
 model, creator(s), date and data set names.
-- **table_description.csv** - includes specifications for how to create Table 1 
+- **tableCescription.csv** - includes specifications for how to create Table 1 
 and other tables.
 
-**bllFlow** also supports the use of DDI documents. If available, bllFlow labels 
-and other information to the `variables.csv` and `variables_details.csv`, as well
-as perserving data information to support data provenance. 
+## Getting stated with the Model Specification Worksheets.
+
+You have your study data. Great. The first step is specifying which variables you 
+need in your model as well as variables for study cohort creation, data cleaning and variable transformation. 
+
+_bllflow_ has example Model Specification Work sheets for the `pbc` data and the 
+vignette shows how to recreate a survival model for [primary biliary cirrhosis](https://aasldpubs.onlinelibrary.wiley.com/doi/pdf/10.1002/hep.1840100102). However, the specific work for many model types. 
+
+## Examples of the Model Specification Worksheet
+```{r} 
+library(DT)
+
+dt <- read.csv(system.file("extdata", "PBC/PBC-variables.csv", package = "bllFlow"))
+datatable(dt, options = list(pageLength = 5))
+```
 
 ## Importing the MSW worksheets
+```{r}
+library(survival)
+data(pbc) # pbc survival data
 
-## Examples of the MSW worksheets
+# Read variables and variableDetails sheet for the PBC model
+variablesSheet <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC/PBC-variables.csv'))
+variableDetailsSheet <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC/PBC-variable-details.csv'))
 
-#### variables.csv
+```
+```{r}
+# Create a bllFlow R object for the PBC model using the above variables as args
+library(bllFlow)
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 
-#### variables_details.csv
+```
 
-
+**bllFlow** also supports the use of DDI documents. If available, bllFlow labels 
+and other information to the `variables.csv` and `variablesCetails.csv`, as well
+as perserving data information to support data provenance. 
 
 
 

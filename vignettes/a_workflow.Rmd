@@ -35,9 +35,7 @@ The vignettes use the `pbc` data available in the `suvival` package. What is the
 
 ### Step 1 - Pre-specifying your model
 Model specifications are recorded within a series of four CVS worksheets that 
-together form the Model Specification Workbook (MSW). The most important sheets are the `variables` and `variable_details` worksheets. 
-
-The `variables` worksheet is a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 
+together form the Model Specification Workbook (MSW). The most important sheets is the `variables` worksheets -- a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 
  transformations and other instructions (Step 4).
 
 We've found that people starting a new project like using the MSW even if they don't use any other part of _bllflow_. The MSW worksheet helps you organize your thoughts about what variables to include in your model. The worksheets are also helpful when working in teams. We get everyone invovled in the MSW: analysts, methodologist and content experts. Graduate students have a team too -- you can use the MSW to review your modelling plans with your supervisor and thesis committee. 
