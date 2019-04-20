@@ -841,14 +841,14 @@ standardised blood clotting time in participant
             </sumStat>
             <varFormat type="numeric" schema="other"/>
         </var>
-        <var ID="V14" name="sex"  dcml="0" intrvl="discrete">
-            <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+        <var ID="V6" name="sex"  dcml="0" intrvl="discrete">
+            <location RecSegNo="6"/>
             <labl>
-standardised blood clotting time
+sex
             </labl>
             <qstn>
                 <qstnLit>
-standardised blood clotting time in participant
+sex of participant
                 </qstnLit>
             </qstn>
             <valrng>
