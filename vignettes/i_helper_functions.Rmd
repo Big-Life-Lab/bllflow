@@ -35,7 +35,7 @@ library(bllFlow)
 ##### Example 1: Read the DDI xml file for your data.
 
 ```{r}
-pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+#pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
 ```
 Your metadata is now stored in the `pbcDDI` object in two formats:
 
@@ -43,8 +43,8 @@ Your metadata is now stored in the `pbcDDI` object in two formats:
 All DDI metadata is brought into the `pbcDDI` object. For example, variable labels can 
 be accessed as follows:
 ```{r}
-str(pbcDDI$variableMetaData$varlab) # variable labels
-str(pbcDDI$variableMetaData$vallab) # value labels for categorial variables
+#str(pbcDDI$variableMetaData$varlab) # variable labels
+#str(pbcDDI$variableMetaData$vallab) # value labels for categorial variables
 ```
 `variableMetaData` is generated using the `DDIwR` package.
 
@@ -56,7 +56,7 @@ of information! And there can be a lot of nested lists.
 Get the name of the data.
 ```{r}
 cat("Dataset name: \n")
-pbcDDI$ddiObject$codeBook$docDscr$citation$titlStmt$titl
+#pbcDDI$ddiObject$codeBook$docDscr$citation$titlStmt$titl
 ```
 
 ###### Example 2: Use DDI to add variable labels and other information for your model variables.
@@ -66,12 +66,11 @@ Use the `BLLFlow()` function with the MSW files as attributes to add labels to t
 BLLFlow object, (`variables` and `variableDetails` and  the DDI object (`pbcDDI`).
 ```{r}
 # read the MSW files
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), 
-              '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
 
 # create a BLLFlow object and add labels.
-pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
+#pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 ```
 Metadata is added to `variables` and `variableDetails`. If labels and other metadata 
 already were in the files, the DDI metadata is added to `startLabel`, `startType`, 
@@ -86,7 +85,7 @@ cat("\nNo variable labels from DDI in variable details\n")
 variableDetails$variableStartLabel 
 
 cat("\nDDI variable lables added to variableDetailsWithDDI\n")
-variableDetailsWithDDI$startLabel
+#variableDetailsWithDDI$startLabel
 ```
 
 ###### Example 3: Write MSW_DDI to MSW.csv
@@ -106,7 +105,7 @@ functions in *Example X*); or,
 2) export a CSV with metadata from an R variable list and a DDI file.
 
 ```{r}
-WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails.csv")
+#WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails.csv")
 ```
 Creates a directory and file (if they don't already exists). `newMSWvariableDetails.csv` 
 will be overwritten if the file already exists. `newMSWvariableDetails.csv` is 
@@ -115,9 +114,7 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
-WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", 
-                  "testing.csv", 
-                  "newName.csv")
+#WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", "testing.csv", "newName.csv")
 ```
 
 ##### Example 4: Update BBLFLow with new variables
@@ -125,7 +122,7 @@ WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/",
 Do we need or want this? Rusty, can you write in a vignette?
 
 ```{r}
-pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
+#pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
 ```
 
 ##### Example 4. More general DDI utily functions 
@@ -156,13 +153,12 @@ would not add the info to the bllFlow object.
 
 ```{r}
 
-pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), 
-                "pbcDDI.xml")
+#pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
 # all the DDI metadata
 
-varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
+#varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
 # all the variable metadata (but no study description infomation)
 
-descrForCCHS <- GetDDIDescription(pbcDDI)
+#descrForCCHS <- GetDDIDescription(pbcDDI)
 # all the study description metadata (but no variable infomation)
 ```

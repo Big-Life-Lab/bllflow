@@ -18,18 +18,18 @@ TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = ca
 ```
 
 ```{r}
-checkedTableOne <- CheckSmallCells(TableOne)
+#checkedTableOne <- CheckSmallCells(TableOne)
 ```
 
 ```{r}
 library(bllFlow)
-variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+#pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
 ```
 
 ```{r}
-tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-table-variables.csv'))
-tableOneLong <- tables.CreateTableOneLong(pbcModel, tableVariables)
-print(tableOneLong)
+#tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-table-variables.csv'))
+#tableOneLong <- tables.CreateTableOneLong(pbcModel, tableVariables)
+#print(tableOneLong)
 ```

@@ -51,8 +51,9 @@ The `variables.csv` contains each variable as row. The sheet includes additional
 ```{r} 
 library(DT)
 
-variablesCSV <- read.csv(system.file("extdata", "PBC/PBC-variables.csv", package = "bllFlow"))
-datatable(variablesCSV, options = list(pageLength = 6))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+
+datatable(variables, options = list(pageLength = 6))
 ```
 
 ## How to create the MSW sheets (and use existing metadata)
@@ -76,8 +77,8 @@ The `variableDetails` sheet also includes transformed variables used throughout 
 There are 16 rows in `variableDetails`. We included `age` as the first example, with the remaining rows representing only the newly transformed variables -- variables that do not existing our orginal `pbc` data. The information for variables in the original `pbc` data are in the `pbcDDI.xml` file. That metadata can be added with the DDI utility functions describe later [Helper and utility functions](vignettes/i_helper_functions.Rmd)
 
 ```{r}
-variablesDetailsCSV <- read.csv(system.file("extdata", "PBC/PBC-variableDetails.csv", package = "bllFlow"))
-datatable(variablesDetailsCSV, options = list(pageLength = 5))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+datatable(variableDetails, options = list(pageLength = 5))
 ```
 
 ## Importing the MSW worksheets

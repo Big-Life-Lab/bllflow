@@ -5,20 +5,19 @@ output: html_document
 
 ``` {R}
 # Install the survival model and load it as a library
-install.packages("survival")
 library(survival)
 # Load the data from the PBC dataset
 data(pbc)
 # Read in the MSW and variable_details sheet for the PBC model
-variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
 # Create a bllFlow R object for the PBC model using the above variables as args
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+#pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 ```
 
 ```{R}
-clean.min(pbcModel)
+#clean.min(pbcModel)
 
-print(pbcModel$data)
-print(pbcModel$metadata$deletedRows)
+#print(pbcModel$data)
+#print(pbcModel$metadata$deletedRows)
 ```

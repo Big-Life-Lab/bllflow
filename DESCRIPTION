@@ -34,7 +34,7 @@ Suggests:
   DT,
   magrittr,
   survival,
-  plotly
+  plotly,
   Hmisc
 URL: https://github.com/Big-Life-Lab/bllFlow
 BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
