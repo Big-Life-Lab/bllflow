@@ -33,8 +33,6 @@ PopulateVariableDetails <-
           for (columnName in names(selectedVariableCatValue)) {
             if (columnName != pkg.globals$argument.CatStartValue) {
               # Check if there is any data precent in the cell in order to not override anything
-              print(rowsToCheck)
-              print(columnName)
               if (CheckIfCellIsEmpty(
                 rowsToCheck[rowToCheck, columnName],
                 rownames(rowsToCheck)[rowToCheck],
