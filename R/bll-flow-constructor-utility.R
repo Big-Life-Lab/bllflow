@@ -33,6 +33,8 @@ PopulateVariableDetails <-
           for (columnName in names(selectedVariableCatValue)) {
             if (columnName != pkg.globals$argument.CatStartValue) {
               # Check if there is any data precent in the cell in order to not override anything
+              print(rowsToCheck)
+              print(columnName)
               if (CheckIfCellIsEmpty(
                 rowsToCheck[rowToCheck, columnName],
                 rownames(rowsToCheck)[rowToCheck],
@@ -57,7 +59,9 @@ PopulateVariableDetails <-
           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck, ])
           
         } else if (!is.null(ddiVariable[[nameBeingChecked]][[nameBeingChecked]]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType])) {
+                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType]) &
+                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh]) &
+                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartLow])) {
           contVariableBeingChecked <-
             ddiVariable[[nameBeingChecked]][[nameBeingChecked]]
           if (rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh] == contVariableBeingChecked[[pkg.globals$argument.VariableStartHigh]] &
