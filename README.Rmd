@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-### Is _bllflow_ for you?
+### Is bllflow for you?
 
 - Do you shudder at the thought of trying to update the analyses for a previous study? (let alone imagine someone else trying to replicate your analyses?)
 
@@ -28,10 +28,10 @@ knitr::opts_chunk$set(
 
 We answered 'yes' to all these questions and then created _bllflow_. 
 
-### The purpose of _bllflow_
+### The purpose of bllflow
 **bllFlow** supports transparent, reproducible data analyses and model development. The goal is to improved science quality with quicker and more efficient data analyses. 
 
-### What does _bllflow_ do?
+### What does bllflow do?
 The focus of _bllflow_ is data cleaning and variable transformation -- the most time consuming and tedious analytic task -- and analyses reporting.
 
 _bllflow_ functions and workflow build from other packages including **sjmisc**, **tableone**, **codebook**, and **Hmisc**.
