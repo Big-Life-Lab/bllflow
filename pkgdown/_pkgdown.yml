@@ -1,4 +1,4 @@
-url: https://big-life-lab.github.io/bllFlow/
+url: https://big-life-lab.github.io/bllflow/
 
 template:
   params:
@@ -31,13 +31,13 @@ navbar:
       href: reference/index.html
     intro:
       text: Get started
-      href: articles/bllFlow.html
+      href: articles/bllflow.html
     news:
       text: Changelog
       href: news/index.html
     github:
       icon: fa-github fa-lg
-      href: https://github.com/Big-Life-Lab/bllFlow
+      href: https://github.com/Big-Life-Lab/bllflow
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings
@@ -46,10 +46,9 @@ reference:
 - title: "Clean and tranfrom variables"
   desc: Functions for cleaning and transforming variables
   contents:
-  - '`bll_flow`'
+  - '`BLLFlow`'
   - '`buildInteractionsList`'
   - '`buildProjectFiles`'
-  - '`center.bll_flow`'
   - '`formatInteractionVariable`'
   - '`getCodeForCenteredVariable`'
   - '`getCodeForDummyVariable`'
