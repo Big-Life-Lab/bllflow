@@ -44,7 +44,7 @@ BLLFlow <-
   function(data = NULL,
            variables = NULL,
            variableDetails = NULL,
-           ddi = FALSE) {
+           ddi = NULL) {
     # Verify passed arg integrity for future functions
     if (!is.null(data)) {
       CheckIfDataFrame(data, pkg.globals$argument.Data)
@@ -66,11 +66,14 @@ BLLFlow <-
                        pkg.globals$argument.VariableDetailsSheet)
     }
     
-    
-    processedVariableDetails <-
-      ProcessDDIVariableDetails(ddi, variableDetails)
-    ddiHeader <- GetDDIHeader(ddi)
-    
+    if (!is.null(ddi)) {
+      processedVariableDetails <-
+        ProcessDDIVariableDetails(ddi, variableDetails)
+      ddiHeader <- GetDDIHeader(ddi)
+    }else{
+      processedVariableDetails <- NULL
+      ddiHeader <- NULL
+    }
     bllFlowModel <-
       list(
         data = data,
