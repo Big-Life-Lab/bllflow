@@ -10,17 +10,17 @@ PopulateVariableDetails <-
            ddiVariable) {
     # Used to group all the variables in the dataframe
     variableDetails <-
-      variableDetails[order(variableDetails$variableStart,
-                                variableDetails$catStartValue),]
+      variableDetails[order(variableDetails[[pkg.globals$argument.VariableStart]],
+                                variableDetails[[pkg.globals$argument.CatStartValue]]),]
     onlyDesiredVariables <-
-      variableDetails[variableDetails$variableStart %in% names(ddiVariable), ]
+      variableDetails[variableDetails[[pkg.globals$argument.VariableStart]] %in% names(ddiVariable), ]
     # Copy all the columns
     finalFrame <- onlyDesiredVariables[0, ]
     for (nameIndex in 1:length(names(ddiVariable))) {
       nameBeingChecked <- names(ddiVariable)[[nameIndex]]
       # All the rows for the variable being checked
       rowsToCheck <-
-        onlyDesiredVariables[onlyDesiredVariables$variableStart == nameBeingChecked,]
+        onlyDesiredVariables[onlyDesiredVariables[[pkg.globals$argument.VariableStart]] == nameBeingChecked,]
       # Writes data to relavant rows and removes them from the value object
       for (rowToCheck in 1:nrow(rowsToCheck)) {
         presentCatStartValue <-
