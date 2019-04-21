@@ -1,16 +1,13 @@
 ```{r}
 library(survival)
-```
-
-```{r}
 data(pbc)
 ```
 
 ```{r}
 library(bllFlow)
-variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
 ```
 
 ```{r}

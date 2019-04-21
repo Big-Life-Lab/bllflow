@@ -66,9 +66,8 @@ Use the `BLLFlow()` function with the MSW files as attributes to add labels to t
 BLLFlow object, (`variables` and `variableDetails` and  the DDI object (`pbcDDI`).
 ```{r}
 # read the MSW files
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), 
-              '../inst/extdata/test-folder/DDI/PBC - variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
 
 # create a BLLFlow object and add labels.
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
