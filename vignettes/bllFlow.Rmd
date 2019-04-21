@@ -1,41 +1,59 @@
 ---
 title: "Getting started with bllFlow"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Introduction to bllFlow}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: 
+  rmarkdown::html_document:
+    toc: true 
+    toc_depth: 3
+    number_sections: false
+    css: "style.css"
 ---
-### There are two ways to get started with bllFlow
+“Flow” in _bllflow_ refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. Go to [`Workflow`](a_workflow.html) to see _bllflow_'s seven steps to analysing observational data. You can pick and choose to use any steps that 
+fit your own workflow.
 
-#### Use the utility functions 
+<div class="image">
+  <img src="images/coding.png" alt="if only bllflow" />
+  <div class="img_caption">
+  <p>If only they used <b>bllflow</b></p>
+  </div>
+</div>
 
-#### Try bllFlow workflow
+## Workflow vignettes
+Tne [`Workflow`](a_workflow.html) vignettes use the `pbc` data available in the `suvival` package to [replicate](https://www.ncbi.nlm.nih.gov/pubmed/2737595) a survival model for people with primary biliary cirrhosis.  What is the `pbc` data? The name, description and other information is included in the metadata file! 
 
-The [`Workflow`](a_workflow.html) menu describes seven steps when performing 
-research using observational data. You can pick and choose to use any steps that 
-fit your workflow.
+See [`Example 4 - Helper and utility functions`](i_helper_functions.html). 
 
-There there are three distictive features of **bllFlow**:
+## Example - Study exclusion criteria
+A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.
 
-- **The Model Specification Workbook (MSW)** - CSV files that contain key 
-information (metadata) about your data, model, the variables in your model, data
-cleaning and transformation steps and how to create output tables. 
+There are two approaches to perform these exclusion criteria.
 
-- **Functions to perform rountine data cleaning and transformation tasks** - 
-bllFlow functions uses the MSW as instructions perform common tasks. (example here...)
-For example, `bllFlow.center(data)` centers all variables in the MSW where 
-`center == TRUE`, then creates a new variable with the `_c` suffix and logs which 
-variables are centred. 
+##### 1) Excluding participatns age < 40 or >70 years using `clean.Min()` and `clean.Max()`
+```{r Load libraries, warning=TRUE, include=FALSE}
+library(survival) # for pbc data
+data(pbc)
+library(bllFlow)
 
-- **Formatted output files, tables** - CSV files that contain results of 
-your model that adhere to reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/).
+```
+```{r Clean with general utility fuctions}
+# TODO: cleanPBC <- clean.Min(pbc, age, min = 40)
+# TODO: cleanPBC <- clean.Max(cleanPBC, age, max = 70)
 
-At any point of your analyses you:
+# use print = TRUE for a log of how many participants were affected.
+# clean.Min(pbc, age, min = 40, print = TRUE)
+```
 
-- always have labels for variables.
-- have a log data cleaning and transformed variables (how your data has 
-been cleaned and transformed).
-- have a complete codebook, with information with data provenance of all variables.
+##### 2) Excluding participants using `BLLFLow()` and the Model Specification Worksheets
+```{r Clean with BBLFlow()}
+#TODO: library(magrittr)
+# read the MSW
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
 
-For predictive algorithms, **bllFlow** generates Predictive Model Modelling Language ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for algoirithm delployment. 
+# perform all data cleaning steps
+pbcModel <-  BLLFlow(pbc, variables, variableDetails)
+  cleanPbc <- clean.Min(pbcModel, print = TRUE)
+  cleanPbc <- clean.Max(cleanPbc, print = TRUE)
+```
+Within the `PBC-variables.csv` file there is a column 'min' and 'max' and a row each variable. The 'age' variable has the values for 40 and 70 in the 'min' and 'max' columns. This example is shown in more detail in the [data cleaning and transformation](d_clean_data.Rmd) vignette. 
+
+Note that executing `BLLClean.Max` executes `min` and `max` criteria for all variables in the pbcModel.
