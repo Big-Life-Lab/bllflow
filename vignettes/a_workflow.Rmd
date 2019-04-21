@@ -29,10 +29,6 @@ allowing transparent reporting.
 
 _bllflow_ uses general utility functions for data cleaning and variable transformation. Also included are functions for analyses logs and managing variable labels and other metadata. The utility functions can be used by themselves -- even if you don't want to follow _bllflow_'s prespecified approach. When you are ready, you can use the Model Specification Workbook to describe the your data cleaning and transformation steps -- additional bllflow 'wrapper' functions execute the utility functions according the Model Specification Workbook.
 
-_bllflow_ builds from other libraries including: `tableOne`, `rjmisc`, `DDIwR`, and `Hmisc`. 
-
-The vignettes use the `pbc` data available in the `suvival` package. What is the `pbc` data? The name, description and other information is included in the metadata file! See [`Example 4 - Helper and utility functions`](i_helper_functions.html).
-
 ### Step 1 - Pre-specifying your model
 Model specifications are recorded within a series of four CVS worksheets that 
 together form the Model Specification Workbook (MSW). The most important sheets is the `variables` worksheets -- a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 

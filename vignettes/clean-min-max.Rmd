@@ -1,18 +1,39 @@
+# clean min and max
+
+
+##### Example 1: `clean.Max` and `clean.Min` as a generic utility function.
+use clean.Min and clean.max without BLLFlow.
+
 ```{r}
+# change current clean.Max() to be a generic function (then create a BBLFlow wrapper -- see below)
+# TODO: clean.Min <- function(data, ..., min, print = FALSE) {}
+# TODO: BBLClean.Min <- function(modelToClean, print = FALSE) {}
+
 library(survival)
 data(pbc)
+library(bllFlow)
+
+# Todo: cleanedPbc <- clean.Min(pbc, age, 40)
 ```
 
+
+##### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
 ```{r}
-library(bllFlow)
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
-```
+pbcModel <- BLLFlow(pbc, variables, variableDetails)
 
+#todo: cleanedPbcModel <- clean.Max(pbc, age, 70, print = TRUE)
+#print(cleanedPbcModel$metaData$log)
+#todo: cleanedPbcModel <- clean.Min(pbc, age, 40, print = TRUE)
+#print(cleanedPbcModel$metaData$log)
+
+```
+##### original code below
 ```{r}
-cleanedPbcModel <- clean.Max(pbcModel)
-print(cleanedPbcModel$metaData$log)
-cleanedPbcModel <- clean.Min(cleanedPbcModel)
-print(cleanedPbcModel$metaData$log)
+cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
+cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
+
+cleanedPbcModel$metaData$log # to print the entire log.
+
 ```
