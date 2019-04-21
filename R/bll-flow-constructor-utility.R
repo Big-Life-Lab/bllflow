@@ -231,16 +231,14 @@ AddDDIToList <- function(variableStartType,
                          variableStartLabel,
                          variableStartLow ,
                          variableStartHigh) {
+  retList <- list()
+  retList[[pkg.globals$argument.VariableStartType]] <- variableStartType
+  retList[[pkg.globals$argument.CatStartValue]] <- catStartValue
+  retList[[pkg.globals$argument.CatStartLabel]] <- catStartLabel
+  retList[[pkg.globals$argument.VariableStartLabel]] <- variableStartLabel
+  retList[[pkg.globals$argument.VariableStartLow]] <- variableStartLow
+  retList[[pkg.globals$argument.VariableStartHigh]] <- variableStartHigh
   
-  return(
-    list(
-      variableStartType = variableStartType,
-      catStartValue = catStartValue,
-      catStartLabel = catStartLabel,
-      variableStartLabel = variableStartLabel,
-      variableStartLow = variableStartLow,
-      variableStartHigh = variableStartHigh
-    ) 
-  )
+  return(retList)
 }
 
