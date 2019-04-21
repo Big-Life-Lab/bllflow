@@ -13,11 +13,11 @@ vignette: >
 
 ## Introduction
 
-### Metadata
+## Metadata
 
 _bllflow_ supports metadata from DDI and from the R packages hmisc and rjlabelled.
 
-#### DDI metadata
+### DDI metadata
 The [Data Documentation Intitiatve](https://www.ddialliance.org) (DDI) is is an 
 international standard for describing the data produced by surveys and other 
 observational methods in the social, behavioral, economic, and health sciences. 
@@ -32,7 +32,7 @@ data(pbc)
 library(bllFlow)
 ```
 
-##### Example 1: Read the DDI xml file for your data.
+### Example 1: Read the DDI xml file for your data.
 
 ```{r}
 pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
@@ -59,7 +59,7 @@ cat("Dataset name: \n")
 pbcDDI$ddiObject$codeBook$docDscr$citation$titlStmt$titl
 ```
 
-###### Example 2: Use DDI to add variable labels and other information for your model variables.
+#### Example 2: Use DDI to add variable labels and other information for your model variables.
 
 The MSW `variables` and `variableDetail.csv` file contains the variables in your model. 
 Use the `BLLFlow()` function with the MSW files as attributes to add labels to the 
@@ -85,10 +85,10 @@ cat("\nNo variable labels from DDI in variable details\n")
 variableDetails$variableStartLabel 
 
 cat("\nDDI variable lables added to variableDetailsWithDDI\n")
-variableDetailsWithDDI$startLabel
+#TODO: variableDetailsWithDDI$startLabel
 ```
 
-###### Example 3: Write MSW_DDI to MSW.csv
+#### Example 3: Write MSW_DDI to MSW.csv
 Use `WriteDDIPopulatedMSW()` to create a MSW `variable details` CSV file. 
 (change to new name `variableDetailsWithDDI()`) using `variableDetailsWithDDI()`. 
 Then export using `WriteDDIPopulatedMSW()` as a CSV file to help further develop 
@@ -114,12 +114,12 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
-WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", 
-                  "testing.csv", 
-                  "newName.csv")
+#TODOWriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", 
+#                  "testing.csv", 
+#                  "newName.csv")
 ```
 
-##### Example 4: Update BBLFLow with new variables
+#### Example 4: Update BBLFLow with new variables
 
 Do we need or want this? Rusty, can you write in a vignette?
 
@@ -127,7 +127,7 @@ Do we need or want this? Rusty, can you write in a vignette?
 pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
 ```
 
-##### Example 4. More general DDI utily functions 
+#### Example 5. More general DDI utily functions 
 Described previously,`ReadDDI()` returns a dataframe with all DDI metadata from 
 a DDI.xml file. 
 
@@ -162,6 +162,6 @@ pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"),
 varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
 # all the variable metadata (but no study description infomation)
 
-descrForCCHS <- GetDDIDescription(pbcDDI)
+# descrForPbc <- GetDDIDescription(pbcDDI)
 # all the study description metadata (but no variable infomation)
 ```

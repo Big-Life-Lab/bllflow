@@ -2,7 +2,13 @@
 title: "2 - Describing the study cohort"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2 - Described the study cohort}
+  %\VignetteIndexEntry{2 - Describing the study cohort}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```

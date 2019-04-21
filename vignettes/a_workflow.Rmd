@@ -10,8 +10,6 @@ vignette: >
   %\VignetteIndexEntry{1 - Specifying your model}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-pkgdown:
-  as_is: true
 ---
 
 ```{r setup, include = FALSE}
@@ -21,7 +19,7 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introduction
-**bllflow** uses seven steps to creating a model. There is an emphasis on a _pre-specified_ approach to analyses. Pre-specified means 
+**bllflow** uses seven steps to create a model. There is an emphasis on a _pre-specified_ approach to analyses. Pre-specified means 
 a model is described prior to examining the relationship between predictors (also 
 known as variables, risk factors or features) and the outcome (target). All analyses 
 are logged, 
@@ -35,13 +33,6 @@ together form the Model Specification Workbook (MSW). The most important sheets 
  transformations and other instructions (Step 4).
 
 We've found that people starting a new project like using the MSW even if they don't use any other part of _bllflow_. The MSW worksheet helps you organize your thoughts about what variables to include in your model. The worksheets are also helpful when working in teams. We get everyone invovled in the MSW: analysts, methodologist and content experts. Graduate students have a team too -- you can use the MSW to review your modelling plans with your supervisor and thesis committee.
-
-<div class="image">
-  <img src="images/coding.png" alt="if only bllflow" />
-  <div class="img_caption">
-  <p>If only they used <b>bllflow</b></p>
-  </div>
-</div>
 
 ### Step 2 - Describing the study cohort
 Research studies tyipically include a "Table 1" that describe the study cohort 
