@@ -12,48 +12,49 @@ knitr::opts_chunk$set(
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
-# bllFlow package <img src="man/figures/pbl-sticker.png" align="right" alt="" width="120" />
+# bllflow - an R package for efficient, transparent data prepartion and reporting <img src="man/figures/pbl-sticker.png" align="right" alt="" width="120" />
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-**bllFlow** supports an open, transparent, pre-specified appraoch to statistical 
-model development. 
-
 ### Is _bllflow_ for you?
 
-Do you shudder at the thought of trying to update the analyses for a previous study? (let alone imagine someone else trying to replicate your analyses?)
+- Do you shudder at the thought of trying to update the analyses for a previous study? (let alone imagine someone else trying to replicate your analyses?)
 
-Are your data and statistcal models becoming more complex, challenging to perform and difficult to report?
+- Are your data and statistical models becoming more complex, challenging to perform, and challenging to report?
 
-Are you concerned about the [misuse](https://www.nature.com/articles/d41586-019-00857-9) of statistical findings? But not sure about reporting all results of all analyses?
+- Are you concerned about the [misuse](https://www.nature.com/articles/d41586-019-00857-9) of statistical findings? But not sure about reporting all results of all analyses?
 
-Do you want to adhere to reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/)?
+- Do you work in teams that span disciplines and institutions?
 
-Do you work in teams that span disciplines and institutions?
+We answered 'yes' to all these questions and then created _bllflow_. 
 
-We answered 'yes' to all these questions and then created _bllflow_ to improve our workflow. Our science quality and efficiency has improved and we're not going back.
+### The purpose of _bllflow_
+**bllFlow** supports transparent, reproducible data analyses and model development. The goal is to improved science quality with quicker and more efficient data analyses. 
 
-### What does bllFlow do?
-_bllflow_ is a workflow that facilitates transparent, reproducible, efficient analyses. The package was initially developed for projects where multiple people are working together (content experts, analysts, etc.). 
+### What does _bllflow_ do?
+The focus of _bllflow_ is data cleaning and variable transformation -- the most time consuming and tedious analytic task -- and analyses reporting.
 
-There there are three features of _bllflow_:
+_bllflow_ functions and workflow build from other packages including **sjmisc**, **tableone**, **codebook**, and **Hmisc**.
 
-- **The Model Specification Workbook (MSW)** - CSV files that contain key information (metadata) about your data, model, the variables in your model, data cleaning and transformation steps and how to create output tables. 
+There are three main features:
 
-- **Functions to perform routine data cleaning and transformation tasks** - _bllflow_ functions use the MSW as instructions perform regular data cleaning and variable transformation tasks. However, functions all  be used without pre-specifying analyses or using the Model Specification Workbook
+1) **The Model Specification Workbook (MSW)** - Start your model development with worksheets (CSV files) that contain information about the variables in your model, data cleaning and transformation steps and how to create output tables. 
 
-- **Formatted output files, tables** - CSV files that contain results of your analyses in a consistent format. 
+1) **Functions to perform routine data cleaning and transformation tasks** - use functions with or without the Model Specification Workbook. Functions with 'BLL' use the Model Specification Workbook to indicate which variables are cleaned and transformed.  
 
-At any point of your analyses you:
+1) **Formatted output files, tables** - results of your analyses in a consistent format following the concept of 'one document, many uses'.
 
-- have labels for variables.
-- have a log data cleaning and transformed variables (how your data has been cleaned and transformed).
-- have a codebook, with information with data provenance of all variables.
+At any point of your analyses you have:
 
-_bllflow_ support metadata, including the Data Document Initiative ([DDI](https://ddialliance.org)). For predictive algorithms, _bllflow_ generates Predictive Model Modelling Language ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for algorithm delployment
+- a log of data cleaning and transformed variables (how your data was cleaned and transformed).
+- a codebook to facilitate data transparency and provenance.
 
-The documentation includes an example of a pre-specified survival model for people with primary biliary cirrhosis, replicating the model by 
-[Dickerson et al.](https://www.ncbi.nlm.nih.gov/pubmed/2737595)  
+_bllflow_ supports the use of metadata, including:
+
+- the Data Document Initiative ([DDI](https://ddialliance.org)).
+- Predictive Model Modelling Language for predictive algorithms ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for transparent algorithm reporting and deployment.  
+
+_bllflow_ workflow and functions support reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/)?
 
 ## Installation
 ```
@@ -63,5 +64,8 @@ install.packages("devtools")
 # then, install the package
 devtools::install_github("Big-Life-Lab/bllFlow")
 ```
-There are plans to submit bllFlow to CRAN once we include all seven steps of our 
-workflow. Currently on step #4.
+There are plans to submit bllFlow to CRAN once we include all seven steps of the _bllflow_ workflow. Currently on step #4.
+
+## Contributing to the package
+
+Please follow [this guide](CONTRIBUTING.md) if you like to contribute to the _bllflow_ package.
