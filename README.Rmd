@@ -16,23 +16,52 @@ knitr::opts_chunk$set(
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 
-bllFlow supports open, reproducible, efficient research. 
+**bllFlow** supports an open, transparent, pre-specified appraoch to statistical 
+model development. 
 
-The package was originally developed for studies that develop predictive 
-algoirthms using rountinely-collected health data. However, bllFlow can support 
-others studies pre-specified analyses, particularly when there 
-are multiple people working together create an analysis plan.
+### Is _bllflow_ for you?
 
-You can see bllFlow in action at [https://big-life-lab.github.io/bllFlow-bookdown/](https://big-life-lab.github.io/bllFlow-bookdown/).
+Do you shudder at the thought of trying to update the analyses for a previous study? (let alone imagine someone else trying to replicate your analyses?)
+
+Are your data and statistcal models becoming more complex, challenging to perform and difficult to report?
+
+Are you concerned about the [misuse](https://www.nature.com/articles/d41586-019-00857-9) of statistical findings? But not sure about reporting all results of all analyses?
+
+Do you want to adhere to reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/)?
+
+Do you work in teams that span disciplines and institutions?
+
+We answered 'yes' to all these questions and then created _bllflow_ to improve our workflow. Our science quality and efficiency has improved and we're not going back.
+
+### What does bllFlow do?
+_bllflow_ is a workflow that facilitates transparent, reproducible, efficient analyses. The package was initially developed for projects where multiple people are working together (content experts, analysts, etc.). 
+
+There there are three features of _bllflow_:
+
+- **The Model Specification Workbook (MSW)** - CSV files that contain key information (metadata) about your data, model, the variables in your model, data cleaning and transformation steps and how to create output tables. 
+
+- **Functions to perform routine data cleaning and transformation tasks** - _bllflow_ functions use the MSW as instructions perform regular data cleaning and variable transformation tasks. However, functions all  be used without pre-specifying analyses or using the Model Specification Workbook
+
+- **Formatted output files, tables** - CSV files that contain results of your analyses in a consistent format. 
+
+At any point of your analyses you:
+
+- have labels for variables.
+- have a log data cleaning and transformed variables (how your data has been cleaned and transformed).
+- have a codebook, with information with data provenance of all variables.
+
+_bllflow_ support metadata, including the Data Document Initiative ([DDI](https://ddialliance.org)). For predictive algorithms, _bllflow_ generates Predictive Model Modelling Language ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for algorithm delployment
+
+The documentation includes an example of a pre-specified survival model for people with primary biliary cirrhosis, replicating the model by 
+[Dickerson et al.](https://www.ncbi.nlm.nih.gov/pubmed/2737595)  
 
 ## Installation
 ```
-# Install from GitHub (should we explain how? or provide resources)
 # If not installed, install the devtools
 install.packages("devtools")
 
 # then, install the package
-devtools::install_github("Big-Life-Lab/bllFlow", 
-  auth_token="75bdffc4a195fbc11ffccb546707030a8361d7de",
-  ref="master")
+devtools::install_github("Big-Life-Lab/bllFlow")
 ```
+There are plans to submit bllFlow to CRAN once we include all seven steps of our 
+workflow. Currently on step #4.
