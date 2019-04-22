@@ -45,8 +45,8 @@ library(bllFlow)
 ##### 2) Excluding participants using `BLLFLow()` and the Model Specification Worksheets
 ```{r Clean with BBLFlow()}
 # read the MSW
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
 # perform all data cleaning steps
 pbcModel <-  BLLFlow(pbc, variables, variableDetails)

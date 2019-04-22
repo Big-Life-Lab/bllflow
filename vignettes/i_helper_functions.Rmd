@@ -35,7 +35,7 @@ library(bllFlow)
 ### Example 1: Read the DDI xml file for your data.
 
 ```{r}
-pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), "pbcDDI.xml")
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), "pbcDDI.xml")
 ```
 Your metadata is now stored in the `pbcDDI` object in two formats:
 
@@ -66,8 +66,8 @@ Use the `BLLFlow()` function with the MSW files as attributes to add labels to t
 BLLFlow object, (`variables` and `variableDetails` and  the DDI object (`pbcDDI`).
 ```{r}
 # read the MSW files
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
 # create a BLLFlow object and add labels.
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
@@ -155,7 +155,7 @@ would not add the info to the bllFlow object.
 
 ```{r}
 
-pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata/test-folder/DDI"), 
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
                 "pbcDDI.xml")
 # all the DDI metadata
 

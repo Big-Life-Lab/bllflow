@@ -48,8 +48,8 @@ library(bllFlow)
 
 ### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
 ```{r}
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 pbcModel <- BLLFlow(pbc, variables, variableDetails)
 
 # TODO: cleanedPbcModel <- clean.Max(pbc, age, 70, print = TRUE)

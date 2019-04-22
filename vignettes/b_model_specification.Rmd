@@ -46,7 +46,7 @@ The `variables.csv` contains each variable as row. The sheet includes additional
 ```{r} 
 library(DT)
 
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 
 datatable(variables, options = list(pageLength = 6))
 ```
@@ -69,7 +69,7 @@ The `variableDetails` sheet also includes transformed variables used throughout 
 There are 16 rows in `variableDetails`. We included `age` as the first example, with the remaining rows representing only the newly transformed variables -- variables that do not existing our orginal `pbc` data. The information for variables in the original `pbc` data are in the `pbcDDI.xml` file. That metadata can be added with the DDI utility functions describe later [Helper and utility functions](vignettes/i_helper_functions.Rmd)
 
 ```{r}
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 datatable(variableDetails, options = list(pageLength = 5))
 ```
 
@@ -82,8 +82,8 @@ library(survival)
 data(pbc)
 
 # read MSW variables and variableDetails sheet for the PBC model
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-variableDetails.csv'))
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
 # create a bllflow object and add labels.
 # pbcModel <- BLLFlow(pbc, variables, variableDetails)
