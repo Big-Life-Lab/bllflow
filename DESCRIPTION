@@ -36,8 +36,8 @@ Suggests:
   DT,
   magrittr,
   survival
-URL: https://github.com/Big-Life-Lab/bllFlow
-BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
+URL: https://github.com/Big-Life-Lab/bllflow
+BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
