@@ -1,4 +1,7 @@
 #' Creates a BLLFlow instance from the data arg
+#' 
+#' Creates a BLLFlow Model that contains the data variables, variable details and ddi metadata.
+#' This later assists with maintaing the metadata and any related transformations
 #'
 #' @param data A dataframe that represents the dataset the model will be developed
 #' on
@@ -27,16 +30,18 @@
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC - variables.csv'))
+#'  'bllFlow/extdata/PBC-variables.csv'))
 #' variableDetails <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC - variable_details.csv'))
+#'  'bllFlow/extdata/PBC-variableDetails.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' library(bllFlow)
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
 #' # Test for DDI
-#' tmp <- BLLFlow(pbc, variablesSheet, variableDetails, file.path(getwd(),
-#'  'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml'))
+#' 
+#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' 
+#' tmp <- BLLFlow(pbc, variablesSheet, variableDetails, pbcDDI)
 #'
 #' # Passing objects other then a dataframe will create errors
 #' #pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))

@@ -87,7 +87,7 @@ PopulateVariableDetails <-
               rbind(finalFrame, rowsToCheck[rowToCheck, ])
           }
         } else{
-      
+          
           # leave the row untouched if no value is matched
           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck,])
         }
@@ -121,12 +121,24 @@ PopulateVariableDetails <-
     return(finalFrame)
   }
 
-#' populate variable details sheet using ddi
+#' Populate variable details sheet using ddi
+#' 
+#' Populates the passed variable details columns with variable related metadata
+#' from the passed ddi object. Does not overwrite value matching information
+#' if any is present. Returns a new variable details populated by the information
+#' and new rows created for any missing values.
 #'
 #' @param ddi the path to the ddi file containing the necessary information
 #' @param variableDetails the data frame containing unpopulated variableDetailsSheet
 #' @return returns a populated variableDetails dataframe
 #' @export
+#' @examples 
+#' library(bllFlow)
+#' 
+#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' variableDetails <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC-variableDetails.csv'))
+#' 
+#' populatedDetails <- ProcessDDIVariableDetails(pbcDDI, variableDetails)
 ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   variableValueList <- list()
   ddiVariable <- list()
@@ -222,10 +234,14 @@ ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   return(populatedVariableDeatailsSheet)
 }
 
-#' Create ddi variable list
+#' AddDDI information to a list
 #'
-#' @param ddi ddi object containing the necessary data
-#' @param varList list of variable to retrieve information for
+#' @param variableStartType Variable type cont or cat
+#' @param catStartValue value of the variable being recorded
+#' @param catStartLabel Label for the value of the variable
+#' @param variableStartLabel Label for the variable
+#' @param variableStartLow Min for the variable value
+#' @param variableStartHigh Max for the variable value
 #' @return Returns a list containg data on the variables in varList
 AddDDIToList <- function(variableStartType,
                          catStartValue,
