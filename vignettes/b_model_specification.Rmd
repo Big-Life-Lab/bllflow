@@ -77,7 +77,7 @@ datatable(variableDetails, options = list(pageLength = 5))
 Model Specification Workbook is imported and added to a _bllflow_ object that can be used instructions for data cleaning. Once read into the _bllflow_, the Model Specification Workbook are objects that are accessed and used to provide instructions to clean data and transform variables. 
 
 In the following example, the MSW `variables` and `variableDetails` sheets are read and then added with the `pbc` data into our `pbcModel`.
-```{r Read the MSW}
+```{r}
 library(survival)
 data(pbc)
 
