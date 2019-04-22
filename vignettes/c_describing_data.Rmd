@@ -28,5 +28,5 @@ TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = ca
 ```
 
 ```{r}
-checkedTableOne <- CheckSmallCells(TableOne)
+# TODO: checkedTableOne <- CheckSmallCells(TableOne)
 
