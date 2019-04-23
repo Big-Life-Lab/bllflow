@@ -84,6 +84,9 @@ PopulateVariableDetails <-
               NULL
             finalFrame <-
               rbind(finalFrame, rowsToCheck[rowToCheck, ])
+          }else{
+            # leave the row untouched if no value is matched
+            finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck,])
           }
         } else{
           # leave the row untouched if no value is matched

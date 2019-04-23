@@ -46,24 +46,17 @@ library(bllFlow)
 # Todo: cleanedPbc <- clean.Min(pbc, age, 40)
 ```
 
-### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
+### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails) :IT only uses MSW variables
 ```{r}
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 pbcModel <- BLLFlow(pbc, variables, variableDetails)
 
-# TODO: cleanedPbcModel <- clean.Max(pbc, age, 70, print = TRUE)
-#print(cleanedPbcModel$metaData$log)
-# TODO: cleanedPbcModel <- clean.Min(pbc, age, 40, print = TRUE)
-#print(cleanedPbcModel$metaData$log)
-
-```
-##### original code below
-```{r}
-cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
-cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
+cleanedPbcModel <- clean.Min(pbcModel, print = TRUE)
+cleanedPbcModel <- clean.Max(cleanedPbcModel, print = TRUE)
 
 cleanedPbcModel$metaData$log # to print the entire log.
+
 ```
 
 ## Data tranformation
