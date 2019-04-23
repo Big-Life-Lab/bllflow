@@ -85,7 +85,7 @@ BLLFlow <-
         variables = variables,
         variableDetails = variableDetails,
         additionalDDIMetaData = ddiHeader,
-        populatedVariableDeatailsSheet = processedVariableDetails,
+        populatedVariableDeatails = processedVariableDetails,
         ddi = ddi
         
       )

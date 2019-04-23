@@ -104,11 +104,11 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 #' WriteDDIPopulatedMSW(pbcModel, "bllFlow/extdata/", "newMSWvariableDetails.csv")
 WriteDDIPopulatedMSW.BLLFlow <-
   function(bllFlow, pathToWriteTo, newFileName) {
-    
     # create new directory if one does not exist
     if (!dir.exists(pathToWriteTo)) {
       dir.create(file.path(getwd(), pathToWriteTo))
     }
+    
     write.csv(
       bllFlow$populatedVariableDeatailsSheet,
       file = file.path(pathToWriteTo, newFileName),
@@ -143,10 +143,12 @@ WriteDDIPopulatedMSW.BLLFlowDDI <-
     if (!dir.exists(pathToMSW)) {
       dir.create(file.path(getwd(), pathToMSW))
     }
-    # generate name for new file if one is not provided
+    
+    # generate name for new file name if one is not provided
     if (is.null(newName)) {
       newName <- paste(mswName, "DDIPopulated.csv", sep = "")
     }
+    
     write.csv(
       populatedVariableDetails,
       file = file.path(pathToMSW, newName),
@@ -169,13 +171,13 @@ WriteDDIPopulatedMSW.BLLFlowDDI <-
 #' 
 #' varsForPBC <- GetDDIVariables(pbcDDI, c("age", "sex"))
 GetDDIVariables <- function(ddi, varList) {
-  retValue <- list()
+  ddiVariables <- list()
   requestedVariableIndexes <-
     which(names(ddi$ddiObject$codeBook$dataDscr) %in% varList)
-  retValue <-
+  ddiVariables <-
     ddi$ddiObject$codeBook$dataDscr[requestedVariableIndexes]
   
-  return(retValue)
+  return(ddiVariables)
 }
 
 #'  Updates the models MSW
@@ -204,11 +206,11 @@ GetDDIVariables <- function(ddi, varList) {
 #' pbcModel <- UpdateMSW(pbcModel, newMSWVariableDeatails = variableDetails)
 UpdateMSW <- function(bllModel, newMSWVariables = NULL, newMSWVariableDeatails = NULL){
   if (!is.null(newMSWVariables)) {
-    bllModel[["variables"]] <- newMSWVariables
+    bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
   }
   if (!is.null(newMSWVariableDeatails)) {
-    bllModel[["variableDetails"]] <- newMSWVariableDeatails
-    bllModel[["populatedVariableDeatailsSheet"]] <- ProcessDDIVariableDetails(bllModel$ddi, newMSWVariableDeatails)
+    bllModel[[pkg.globals$bllFlowContent.VariableDetails]] <- newMSWVariableDeatails
+    bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <- ProcessDDIVariableDetails(bllModel$ddi, newMSWVariableDeatails)
   }
   
   return(bllModel)
