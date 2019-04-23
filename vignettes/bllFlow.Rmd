@@ -7,8 +7,7 @@ output:
     number_sections: false
     css: "style.css"
 ---
-“Flow” in _bllflow_ refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. Go to [`Workflow`](a_workflow.html) to see _bllflow_'s seven steps to analysing observational data. You can pick and choose to use any steps that 
-fit your own workflow.
+“Flow” in _bllflow_ refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. Go to [`Workflow`](a_workflow.html) to see _bllflow_'s seven steps to analysing observational data. You can choose to use any steps that fit your own workflow.
 
 <div class="image">
   <img src="images/coding.png" alt="if only bllflow" />
@@ -18,12 +17,12 @@ fit your own workflow.
 </div>
 
 ## Workflow vignettes
-Tne [`Workflow`](a_workflow.html) vignettes use the `pbc` data available in the `suvival` package to [replicate](https://www.ncbi.nlm.nih.gov/pubmed/2737595) a survival model for people with primary biliary cirrhosis.  What is the `pbc` data? The name, description and other information is included in the metadata file! 
+The [`Workflow`](a_workflow.html) vignettes use the `pbc` data available in the `survival` package to [replicate](https://www.ncbi.nlm.nih.gov/pubmed/2737595) a survival model for people with primary biliary cirrhosis.  What is the `pbc` data? The name, description and other information is included in the metadata file! 
 
 See [`Example 4 - Helper and utility functions`](i_helper_functions.html). 
 
 ## Example - Study exclusion criteria
-A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.
+A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we only include participants aged 40 to 70 years.
 
 There are two approaches to perform these exclusion criteria.
 
@@ -31,7 +30,7 @@ There are two approaches to perform these exclusion criteria.
 ```{r Load libraries, warning=TRUE, include=FALSE}
 library(survival) # for pbc data
 data(pbc)
-library(bllFlow)
+library(bllflow)
 
 ```
 ```{r Clean with general utility fuctions}
