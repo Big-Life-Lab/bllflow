@@ -15,10 +15,10 @@ knitr::opts_chunk$set(
 # Introduction
 In _bllflow_ data cleaning is loosely defined as modifying rows (observations) and variable transformation as modifying columns (variables). Data preparation refers to both these procedures. Data preparation functions come in two forms:
 
-1) Functions where the data and variables are specfified as attributes within the function. _bllflow_ add to the functions that already exist in the `sjmisc` package.
-1) _bllflow_ object functions where the Model Specification Workbook specifies which data is cleaned and variables transformed. These _bllflow_ 'wrapper' functions are available for selected functions in the `sjmisc` package and for all _bllflow_ objects. 
+1) Functions -- where the data and variables are specified as attributes within the function. _bllflow_ adds to the functions that already exist in the `sjmisc` package.
+2) _bllflow_ object functions -- where the Model Specification Workbook specifies which data is cleaned and which variables are transformed. These _bllflow_ 'wrapper' functions are available for selected functions in the `sjmisc` package and for all _bllflow_ objects. 
 
-The effects of all data preparation functions can be logged and printed. Tranformations can be save as a Predictive Modelling Markup Language (PMML) file to faciliate predictive model deployment. 
+The effects of all data preparation functions can be logged and printed. Tranformations can be save as a Predictive Model Markup Language (PMML) file to faciliate predictive model deployment. 
 
 ## Data cleaning
 Three data cleaning functions are supported. 
@@ -26,7 +26,7 @@ Three data cleaning functions are supported.
 For continuous variables:
 
 1) `clean.Min()` -- deletes observations below a defined value.
-1) `clean.Max()` -- deletes observations abovea a defined value.
+1) `clean.Max()` -- deletes observations above a defined value.
 
 For categorical variables: 
 1) `recodeWithTable()` TODO.
@@ -41,7 +41,7 @@ use clean.Min and clean.max without BLLFlow.
 
 library(survival)
 data(pbc)
-library(bllFlow)
+library(bllflow)
 
 # Todo: cleanedPbc <- clean.Min(pbc, age, 40)
 ```
