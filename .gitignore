@@ -6,3 +6,4 @@ generated-project
 .env
 man
 docs
+.RData

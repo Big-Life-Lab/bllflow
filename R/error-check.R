@@ -24,3 +24,33 @@ CheckIfDataFrame <- function(passedFrame, passedName) {
     stop(paste("The ", passedName, " object is not a data frame"))
   }
 }
+
+CheckIfCellIsEmpty <-
+  function(cellContent,
+           rowNumber,
+           columnName,
+           ddiValue) {
+    isEmpty <- TRUE
+    if (!is.null(cellContent) &
+        !is.na(cellContent) &
+        cellContent != "" & cellContent != ddiValue) {
+      warning(
+        paste(
+          "Row ",
+          rowNumber,
+          ":",
+          columnName,
+          " column has value \"",
+          cellContent,
+          "\" but DDI value is \"",
+          ddiValue,
+          "\". Not overwriting"
+        ),
+        call. = FALSE,
+        immediate. = TRUE
+      )
+      isEmpty <- FALSE
+    }
+    
+    return(isEmpty)
+  }

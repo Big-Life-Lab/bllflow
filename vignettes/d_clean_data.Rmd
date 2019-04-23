@@ -6,39 +6,76 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
 ```
-In **bllFlow**, data cleaning defined as mutating observations. Variable 
-transformation is defined as mutating variables. While not perfect rules, they 
-serve a purpose ... tl;dr ...
+# Introduction
+In _bllflow_ data cleaning is loosely defined as modifying rows (observations) and variable transformation as modifying columns (variables). Data preparation refers to both these procedures. Data preparation functions come in two forms:
 
+1) Functions where the data and variables are specfified as attributes within the function. _bllflow_ add to the functions that already exist in the `sjmisc` package.
+1) _bllflow_ object functions where the Model Specification Workbook specifies which data is cleaned and variables transformed. These _bllflow_ 'wrapper' functions are available for selected functions in the `sjmisc` package and for all _bllflow_ objects. 
 
-An imperitive for **bllFlow** is the requirment that all data cleaning and 
-variable transformation steps must be reproduced during 
-  
-## RStudio Plugin Installation
+The effects of all data preparation functions can be logged and printed. Tranformations can be save as a Predictive Modelling Markup Language (PMML) file to faciliate predictive model deployment. 
 
-1. Restart the IDE
-1. If the plugin was successfully installed there should be a new entry in the
-   Addins menu at the top of the IDE called "R Project Builder"
+## Data cleaning
+Three data cleaning functions are supported. 
 
-<img src="../man/figures/Rstudio-addin.png"/>
+For continuous variables:
 
-## Plugin Usage
+1) `clean.Min()` -- deletes observations below a defined value.
+1) `clean.Max()` -- deletes observations abovea a defined value.
 
-1. Open the project's 'Model Specification Worksheet (MSW)' (CSV file).
-2. Run the plugin.
-3. The generated project should be in a folder called "generated-project" within the folder
-   containing the web specifications file.
-   
-The package requires a MSW CSV file that identifies:
+For categorical variables: 
+1) `recodeWithTable()` TODO.
 
-1. Which variable you would like transformed.
-2. Which transformation you would like performed.
+### Example 1: `clean.Max` and `clean.Min` as a generic utility function.
+use clean.Min and clean.max without BLLFlow.
 
-`code example here to load and create a table output....`
+```{r}
+# change current clean.Max() to be a generic function (then create a BBLFlow wrapper -- see below)
+# TODO: clean.Min <- function(data, ..., min, print = FALSE) {}
+# TODO: BBLClean.Min <- function(modelToClean, print = FALSE) {}
+
+library(survival)
+data(pbc)
+library(bllFlow)
+
+# Todo: cleanedPbc <- clean.Min(pbc, age, 40)
+```
+
+### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
+```{r}
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+pbcModel <- BLLFlow(pbc, variables, variableDetails)
+
+# TODO: cleanedPbcModel <- clean.Max(pbc, age, 70, print = TRUE)
+#print(cleanedPbcModel$metaData$log)
+# TODO: cleanedPbcModel <- clean.Min(pbc, age, 40, print = TRUE)
+#print(cleanedPbcModel$metaData$log)
+
+```
+##### original code below
+```{r}
+cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
+cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
+
+cleanedPbcModel$metaData$log # to print the entire log.
+```
+
+## Data tranformation
+
+Supported functions: <font color="red">TODO</font>: describe these functions.
+- centring
+- normalization and standardization
+- restrictive cubic splines
+- interaction terms
+- dummy variables
+- recoding
+
+## Logging
+
+## Transformations to PMML

@@ -1,4 +1,4 @@
-url: https://big-life-lab.github.io/bllFlow/
+url: https://big-life-lab.github.io/bllflow/
 
 template:
   params:
@@ -31,33 +31,45 @@ navbar:
       href: reference/index.html
     intro:
       text: Get started
-      href: articles/bllFlow.html
+      href: articles/bllflow.html
     news:
       text: Changelog
       href: news/index.html
     github:
       icon: fa-github fa-lg
-      href: https://github.com/Big-Life-Lab/bllFlow
+      href: https://github.com/Big-Life-Lab/bllflow
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings
 
 reference:
+- title: "Model specification"
+  desc: Functions for reading the Model Specification Workbook and addint metatdata
+  contents:
+   - '`AddDDIToList`'
+   - '`BLLFlow`'
+   - '`GetDDIHeader`'
+   - '`GetDDIVariables`'
+   - '`LogFunctionActivity`'
+   - '`PopulateVariableDetails`'
+   - '`ProcessDDIVariableDetails`'
+   - '`ReadDDI`'
+   - '`UpdateMSW`'
+   - '`WriteDDIPopulatedMSW.BLLFlow`'
+   - '`WriteDDIPopulatedMSW.BLLFlowDDI`'
+   - '`WriteDDIPopulatedMSW`'
+   
 - title: "Clean and tranfrom variables"
   desc: Functions for cleaning and transforming variables
   contents:
-  - '`bll_flow`'
-  - '`buildInteractionsList`'
-  - '`buildProjectFiles`'
-  - '`center.bll_flow`'
-  - '`formatInteractionVariable`'
-  - '`getCodeForCenteredVariable`'
-  - '`getCodeForDummyVariable`'
-  - '`getCodeForInteraction`'
-  - '`isInInteractionsList`'
-  - '`isPortWebSpecFile`'
+   - '`center.bll_flow`'
+   - '`clean.Max.BLLFlow`'
+   - '`clean.Max, clean`'
+   - '`Min.BLLFlow`'
+   - '`clean.Min`'
+
 - title: "Making test data"
-  desc: A bllFlow ....
+  desc: Functions for creating variables for testing
   contents:
   - '`assign_first_event`'
   - '`make_event_dates`'

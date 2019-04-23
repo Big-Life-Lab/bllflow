@@ -22,12 +22,15 @@ Authors@R: c(
   person(given = "Meltem", family = "Tuna", 
     email = "mtuna@ohri.ca", role = c("aut")))
 Depends:
-  R (>= 3.2)
+  R (>= 3.2),
+  tableone,
+  DDIwR,
+  xml2
 Imports:
   rstudioapi,
   glue,
+  plotly,
   Hmisc,
-  tableone,
   tidyr,
   dplyr
 Suggests:
