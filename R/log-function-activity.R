@@ -14,9 +14,6 @@
 #' @param print Specification if the human readable output needs to be printed
 #'
 #' @return bllFlow modifiied with the new log data
-#' @export
-#'
-#' @examples
 LogFunctionActivity <-
   function(bllFlow,
            rowsChecked,

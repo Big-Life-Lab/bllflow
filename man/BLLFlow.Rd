@@ -4,7 +4,8 @@
 \alias{BLLFlow}
 \title{Creates a BLLFlow instance from the data arg}
 \usage{
-BLLFlow(data, variables, variableDetailsSheet)
+BLLFlow(data = NULL, variables = NULL, variableDetails = NULL,
+  ddi = FALSE)
 }
 \arguments{
 \item{data}{A dataframe that represents the dataset the model will be developed
@@ -15,14 +16,17 @@ of this worksheet is available here
 https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0.
 CSV file should be read in using the read.csv function.}
 
-\item{variableDetailsSheet}{The variable details worksheet. An example
+\item{variableDetails}{The variable details worksheet. An example
 of this worksheet is available here
 https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036.
 CSV file should be read in using the read.csv function.}
+
+\item{ddi}{A string containing the path to the ddi file optional variable if the DDI is present}
 }
 \value{
 Returns a new BllFlow object with the data, variables and
-variableDetailsSheet args attached as variables.
+variableDetails args attached as variables as well as additional ddiMetadata(Header information) and
+a populatedVaraiableDetailsSheet that contains information from DDI matching variables in variabledetails.
 }
 \description{
 Creates a BLLFlow instance from the data arg
@@ -38,12 +42,15 @@ data(pbc)
 # Read in the MSW and variable_details sheet for the PBC model
 variablesSheet <- read.csv(file.path(getwd(),
  'bllFlow/extdata/PBC/PBC - variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(),
+variableDetails <- read.csv(file.path(getwd(),
  'bllFlow/extdata/PBC/PBC - variable_details.csv'))
 
 # Create a bllFlow R object for the PBC model using the above variables as args
 library(bllFlow)
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
+pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
+# Test for DDI
+tmp <- BLLFlow(pbc, variablesSheet, variableDetails, file.path(getwd(),
+ 'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml'))
 
 # Passing objects other then a dataframe will create errors
 #pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))
