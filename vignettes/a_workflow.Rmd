@@ -19,20 +19,20 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introduction
-**bllflow** uses seven steps to create a model. There is an emphasis on a _pre-specified_ approach to analyses. Pre-specified means 
+**bllflow** uses seven steps to create a model. There is an emphasis on a _pre-specified_ approach to analysis. Pre-specified means 
 a model is described prior to examining the relationship between predictors (also 
 known as variables, risk factors or features) and the outcome (target). All analyses 
 are logged, 
 allowing transparent reporting. 
 
-_bllflow_ uses general utility functions for data cleaning and variable transformation. Also included are functions for analyses logs and managing variable labels and other metadata. The utility functions can be used by themselves -- even if you don't want to follow _bllflow_'s prespecified approach. When you are ready, you can use the Model Specification Workbook to describe the your data cleaning and transformation steps -- additional bllflow 'wrapper' functions execute the utility functions according the Model Specification Workbook.
+_bllflow_ uses general utility functions for data cleaning and variable transformation. Functions for analysis logs and managing variable labels and other metadata are also included. The utility functions can be used by themselves -- even if you don't want to follow _bllflow_'s prespecified approach. When you are ready, you can use the Model Specification Workbook to describe your data cleaning and transformation steps -- additional bllflow 'wrapper' functions execute the utility functions according the Model Specification Workbook.
 
 ### Step 1 - Pre-specifying your model
-Model specifications are recorded within a series of four CVS worksheets that 
-together form the Model Specification Workbook (MSW). The most important sheets is the `variables` worksheets -- a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 
+Model specifications are recorded in a series of four CVS worksheets within 
+the Model Specification Workbook (MSW). The most important sheet is the `variables` worksheets -- a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 
  transformations and other instructions (Step 4).
 
-We've found that people starting a new project like using the MSW even if they don't use any other part of _bllflow_. The MSW worksheet helps you organize your thoughts about what variables to include in your model. The worksheets are also helpful when working in teams. We get everyone invovled in the MSW: analysts, methodologist and content experts. Graduate students have a team too -- you can use the MSW to review your modelling plans with your supervisor and thesis committee.
+We've found that people starting a new project like using the MSW even if they don't use other parts of _bllflow_. The MSW worksheet helps organize your thoughts about what variables to include in your model. The worksheets are also helpful when working in teams. We get everyone invovled in the MSW: analysts, methodologists and content experts. Graduate students have a team too -- you can use the MSW to review your modelling plans with your supervisor and thesis committee.
 
 ### Step 2 - Describing the study cohort
 Research studies tyipically include a "Table 1" that describe the study cohort 
