@@ -46,30 +46,22 @@ reference:
 - title: "Model specification"
   desc: Functions for reading the Model Specification Workbook and addint metatdata
   contents:
-   - '`AddDDIToList`'
-   - '`BLLFlow`'
-   - '`GetDDIHeader`'
-   - '`GetDDIVariables`'
-   - '`LogFunctionActivity`'
-   - '`PopulateVariableDetails`'
-   - '`ProcessDDIVariableDetails`'
-   - '`ReadDDI`'
-   - '`UpdateMSW`'
-   - '`WriteDDIPopulatedMSW.BLLFlow`'
-   - '`WriteDDIPopulatedMSW.BLLFlowDDI`'
-   - '`WriteDDIPopulatedMSW`'
-   
+   - AddDDIToList
+   - BLLFlow
+   - GetDDIHeader
+   - GetDDIVariables
+   - LogFunctionActivity
+   - PopulateVariableDetails
+   - ProcessDDIVariableDetails
+   - ReadDDI
+   - UpdateMSW
+   - WriteDDIPopulatedMSW.BLLFlow
+   - WriteDDIPopulatedMSW.BLLFlowDDI
 - title: "Clean and tranfrom variables"
   desc: Functions for cleaning and transforming variables
   contents:
-   - '`center.bll_flow`'
-   - '`clean.Max.BLLFlow`'
-   - '`clean.Max, clean`'
-   - '`Min.BLLFlow`'
-   - '`clean.Min`'
-
-- title: "Making test data"
-  desc: Functions for creating variables for testing
+   - clean.Max.BLLFlow
+   - clean.Min.BLLFlow
+- title: "Utility Functions"
   contents:
-  - '`assign_first_event`'
-  - '`make_event_dates`'
+   - print.metaDataLog
