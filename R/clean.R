@@ -1,4 +1,4 @@
-#' Generic function for clean.Min
+#' Clean a dataset by updating values below a certain minimum
 #'
 #' @param bllFlowModel The bllflow model we will clean
 #' @param ... Arguments to the next method in the chain
@@ -8,55 +8,50 @@ clean.Min <- function(bllFlowModel, ...) {
   UseMethod("clean.Min")
 }
 
-#' Cleans the data using the min and outlier columns in the variables sheet of
+#' @describeIn clean.Min Cleans the data using the min and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
 #' values for that row is less than the min value as specified in the variables
 #' sheet. Outlier checking for the column is not applied if min value is NA.
 #'
-#' Currently supported outlier methods are:
-#' Delete - Specified as 'delete' in MSW. Deletes the row from the data.
+#' Currently supported outlier methods are: \cr
+#' 1. \strong{Delete} - Specified as 'delete' in MSW. Deletes the row from the data. \cr
 #' number of deleted rows as well as their reason for deletion is stored in the
-#' metaData variable under the deletedRows name.
-#' Missing - Specified as 'missing' in MSW. Column value for that row which does
-#' not meet the criteria is set to NA.
-#' Not Applicable - TODO.
-#' Set to value - Specified as a number value in MSW. Column value for the row is
-#' set to the value specified in the outlier column.
+#' metaData variable under the deletedRows name. \cr
+#' 2. \strong{Missing} - Specified as 'missing' in MSW. Column value for that row which does
+#' not meet the criteria is set to NA. \cr
+#' 3. \strong{Not Applicable} - TODO. \cr
+#' 4. \strong{Set to value} - Specified as a number value in MSW. Column value for the row is
+#' set to the value specified in the outlier column. 
 #'
-#' @param bllFlowModel bllFlow model created using the BLLFlow method
-#' @param print If set true, prints the following metrics about the model:
-#' 1. Number of rows deleted from the dataset
+#' @param bllFlowModel A named list which is an instance of a bllFlow class
+#' @param print A boolean which when set to TRUE prints logs of what the operation did
 #' @param ... Arguments for next methods in the chain
 #'
-#' @return bllFlowModel that has had its data modified by the paramaters located in
-#' the variables object
+#' @return A bllflow named list whose dataset was cleaned
 #' @export
 #'
 #' @examples
-#' # Install the packages
-#'
-#' # Read in the data we will use
-#'
+#' # Load packages
 #' library(survival)
+#' library(bllflow)
+#' 
+#' # Read in the data we will use
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC-variables.csv'))
+#'  '../../inst/extdata/PBC/PBC-variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(),
-#' 'bllFlow/extdata/PBC/PBC-variable-details.csv'))
+#' '../../inst/extdata/PBC/PBC-variable-details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
-#' library(bllFlow)
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#' # passing non dataframe objects when generating the bllFlow object will cause errors
-#' #pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+#' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #'
 #' # Clean the data
-#' cleanedPbcModel <- clean.Min(pbcModel)
+#' cleanedPbcModel <- bllflow::clean.Min(pbcModel)
 #'
-#' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Min(cleanedPbcModel, print=TRUE)
+#' # If you wish to be updated in the log on what the function does set print to true
+#' cleanedPbcModel <- bllflow::clean.Min(cleanedPbcModel, print=TRUE)
 #'
 clean.Min.BLLFlow <- function(bllFlowModel, print = FALSE, ...) {
   bllFlowModel <-
