@@ -48,16 +48,18 @@ reference:
   contents:
    - AddDDIToList
    - BLLFlow
-   - GetDDIHeader
-   - GetDDIVariables
    - LogFunctionActivity
    - PopulateVariableDetails
    - ProcessDDIVariableDetails
-   - ReadDDI
    - UpdateMSW
-   - WriteDDIPopulatedMSW.BLLFlow
-   - WriteDDIPopulatedMSW.BLLFlowDDI
-- title: "Clean and tranfrom variables"
+   - WriteDDIPopulatedMSW
+- title: "DDI functions"
+  desc: Functions to parse, read and extract metadata from DDI documents
+  contents:
+   - ReadDDI
+   - GetDDIHeader
+   - GetDDIVariables
+- title: "Clean and transfrom variables"
   desc: Functions for cleaning and transforming variables
   contents:
    - clean.Max.BLLFlow
