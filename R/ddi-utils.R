@@ -1,19 +1,24 @@
-#' Creates a DDI object containing the metadata as well as object of overall DDI
+#' Parses a DDI document into an R object
 #' 
-#' Reads DDI from a path to a DDI.xml file it imports variable and value labels as well as
-#' all related metadata. Includes study related metadata. The return object is a list of 2
-#' containing all variable labels and value labels in first object and second object contains
-#' the entire ddi file as a list.
+#' Reads the DDI document on a file system and converts it into an R object. 
+#' Right now the following information is added to the object: \cr
+#' 1. Variables info as well as values labels for categorical variables \cr
+#' 2. Study Related Metadata
 #'
-#' @param ddiPath path to the directory containing the ddi file
-#' that is used to populate the frame with relevant ddi info
-#' @param ddiFile the name of the DDI file
-#' @return returns a list containing ddiMetadata and ddi xml parsed object
+#' @param ddiPath A string containing the path to the directory that has the 
+#' DDI document
+#' @param ddiFile A string containing the name of the DDI document
+#' @return A named list which is an instance of a BLLFlowDDI class. The list
+#' contains the following members: \cr
+#' 1. variableMetaData - A named list. It's value comes from calling the \cr
+#' getMetadata function in the DDIwR library \link{https://cran.r-project.org/web/packages/DDIwR/DDIwR.pdf} \cr
+#' 2. additionalDDIMetaData - A named list containig the remaining nodes in the DDI document
+#' 
 #' @export
 #' @examples 
-#' library(bllFlow)
+#' library(bllflow)
 #' 
-#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
 ReadDDI <- function(ddiPath, ddiFile) {
   # DDwR crates lots of cat outputs that are suppressed
   ddiMetaData <-
