@@ -46,16 +46,21 @@ LogFunctionActivity <-
     # Create a new log if metaData does not yet have a log object
     if (is.null(bllFlow$metaData$log)) {
       bllFlow$metaData$log <- list()
+      attr(bllFlow$metaData$log, "class") <- c(attr(bllFlow$metaData$log, "class"), "metaDataLog")
     }
     
     # Populate the log object with data about the function that was executed
-    bllFlow$metaData$log[[length(bllFlow$metaData$log)+1]] <-
+    label <-
+      bllFlow$variables[bllFlow$variables$variable==variable
+                        , "label"]
+    bllFlow$metaData$log[[length(bllFlow$metaData$log) + 1]] <-
       list(
         fun = executedFunction,
         result = list(
           type = actionTaken,
           rowsAffected = rowsAffected,
           variable = variable,
+          label = label[[1]],
           value = value
         )
       )
