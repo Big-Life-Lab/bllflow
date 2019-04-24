@@ -62,8 +62,8 @@ reference:
 - title: "Clean and transfrom variables"
   desc: Functions for cleaning and transforming variables
   contents:
-   - clean.Max.BLLFlow
-   - clean.Min.BLLFlow
+   - clean.Max
+   - clean.Min
 - title: "Utility Functions"
   contents:
    - print.metaDataLog
