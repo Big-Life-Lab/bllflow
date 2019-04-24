@@ -70,7 +70,7 @@ CheckLessThen <-
     return(operatorBasedCompareValue < valueBeingCompare)
   }
 
-#' Generic function for clean.Max
+#' Cleans a dataset by updating values above a certain maximum
 #'
 #' @param bllFlowModel The bllFlowModel we will clean
 #' @param ... Arguments to the next method in the chain
@@ -79,23 +79,23 @@ CheckLessThen <-
 clean.Max <- function(bllFlowModel, ...) {
   UseMethod("clean.Max")
 }
-#' Cleans the data using the max and outlier columns in the variables sheet of
+
+#' @describeIn clean.Max Cleans the data using the max and outlier columns in the variables sheet of
 #' the MSW. Outlier method is applied on a row if any of the variable
 #' values for that row is greater than the max value as specified in the variables
 #' sheet. Outlier checking for the column is not applied if max value is NA.
 #'
-#' Currently supported outlier methods are:
-#' Delete - Specified as 'delete' in MSW. Deletes the row from the data.
-#' Deleted rows are stored in the metadata variable under the deletedRows name.
-#' Missing - Specified as 'missing' in MSW. Column value for that row which does
-#' not meet the criteria is set to NA.
-#' Not Applicable - TODO.
-#' Set to value - Specified as a number value in MSW. Column value for the row is
+#' Currently supported outlier methods are: \cr
+#' \strong{Delete} - Specified as 'delete' in MSW. Deletes the row from the data.
+#' Deleted rows are stored in the metadata variable under the deletedRows name. \cr
+#' \strong{Missing} - Specified as 'missing' in MSW. Column value for that row which does
+#' not meet the criteria is set to NA. \cr
+#' \strong{Not Applicable} - TODO \cr
+#' \strong{Set to value} - Specified as a number value in MSW. Column value for the row is
 #' set to the value specified in the outlier column.
 #'
-#' @param bllFlowModel bllFlow model created using the BLLFlow method
-#' @param print If set to true, prints the following metrics about the model:
-#' 1. Number of rows deleted from the dataset
+#' @param bllFlowModel A bllflow named list whose data member will be cleaned
+#' @param print A boolean which when set to TRUE prints logs of what the operation did
 #' @param ... Arguments for next methods in the chain
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
@@ -103,30 +103,28 @@ clean.Max <- function(bllFlowModel, ...) {
 #' @export
 #'
 #' @examples
-#' # Install the packages
-#'
-#' # Read in the data we will use
-#'
+#' # Load packages
 #' library(survival)
+#' library(bllflow)
+#' 
+#' # Read in the data we will use
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
 #' variablesSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC-variables.csv'))
+#'  '../../inst/extdata/PBC/PBC-variables.csv'))
 #' variableDetailsSheet <- read.csv(file.path(getwd(),
-#'  'bllFlow/extdata/PBC/PBC-variable-details.csv'))
+#' '../../inst/extdata/PBC/PBC-variable-details.csv'))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
-#' library(bllFlow)
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#' # passing non dataframe objects when generating the bllFlow object will cause errors
-#' #pbcModel <- BLLFlow(pbc, c(1,2,3), variableDetailsSheet)
+#' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetailsSheet)
 #'
 #' # Clean the data
-#' cleanedPbcModel <- clean.Max(pbcModel)
+#' cleanedPbcModel <- bllflow::clean.Max(pbcModel)
 #'
-#' # if u wish to be updated in the log on what the function does set print to true
-#' cleanedPbcModel <- clean.Max(cleanedPbcModel, print=TRUE)
+#' # If you wish to be updated in the log on what the function does set print to true
+#' cleanedPbcModel <- bllflow::clean.Max(cleanedPbcModel, print=TRUE)
+#'
 clean.Max.BLLFlow <- function(bllFlowModel, print = FALSE, ...) {
   bllFlowModel <-
     ProcessMinOrMax(bllFlowModel,
