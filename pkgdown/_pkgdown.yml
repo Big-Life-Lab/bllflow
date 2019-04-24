@@ -46,10 +46,7 @@ reference:
 - title: "Model specification"
   desc: Functions for reading the Model Specification Workbook and addint metatdata
   contents:
-   - AddDDIToList
    - BLLFlow
-   - LogFunctionActivity
-   - PopulateVariableDetails
    - ProcessDDIVariableDetails
    - UpdateMSW
    - WriteDDIPopulatedMSW
