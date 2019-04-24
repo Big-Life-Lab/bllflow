@@ -31,7 +31,7 @@ There are two approaches to perform these exclusion criteria.
 ```{r Load libraries, warning=TRUE, include=FALSE}
 library(survival) # for pbc data
 data(pbc)
-library(bllFlow)
+library(bllflow)
 
 ```
 ```{r Clean with general utility fuctions}

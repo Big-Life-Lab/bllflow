@@ -41,7 +41,7 @@ use clean.Min and clean.max without BLLFlow.
 
 library(survival)
 data(pbc)
-library(bllFlow)
+library(bllflow)
 
 # Todo: cleanedPbc <- clean.Min(pbc, age, 40)
 ```

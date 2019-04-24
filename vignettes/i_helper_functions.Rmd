@@ -29,7 +29,7 @@ _bllflow_ object
 ```{r Load libraries, warning=TRUE, include=FALSE}
 library(survival) # for pbc data
 data(pbc)
-library(bllFlow)
+library(bllflow)
 ```
 
 ### Example 1: Read the DDI xml file for your data.
