@@ -46,20 +46,25 @@ SuppressFunctionOutput <- function(x) {
   invisible(force(x))
 }
 
-#' Retrieve docDscr stdyDscr and fileDscr from the DDI
+#' Parses the headers from a DDI document
 #' 
-#' Retrieves only study related information from the DDI object to prevent 
-#' clutter of many variables.
+#' Retreives the docDscr, stdyDscr and fileDscr nodes from a DDI document, storing
+#' them in a named list and returning the list
 #'
-#' @param ddi the path to the ddi file containing the necessary information
-#' @return returns a list containg he necissary data
+#' @param ddi A named list created using the \code{\link{ReadDDI}} function
+#' @return Returns a named list with the following members: \cr
+#' docDscr - Contains the docDscr node in the DDI document \cr
+#' stdyDscr - Contains the stdyDscr node in the DDI document \cr
+#' fileDscr - Contains the fileDscr node in the DDI document \cr
+#' 
 #' @export
 #' @examples 
-#' library(bllFlow)
+#' library(bllflow)
 #' 
-#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
 #' 
-#' studyDDIHeader <- GetDDIHeader(pbcDDI) 
+#' pbcDDIHeaders <- bllflow::GetDDIHeader(pbcDDI) 
+#' print(names(pbcDDIHeaders))
 GetDDIHeader <- function(ddi) {
   ddiObject <- ddi$ddiObject
   additionalDDIMetaData <- list(
