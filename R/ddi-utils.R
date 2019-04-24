@@ -194,30 +194,35 @@ GetDDIVariables <- function(ddi, varList) {
   return(ddiVariables)
 }
 
-#'  Updates the models MSW
+#' Updates the model specification worksheet (MSW) of a bllflow model. Also updates
+#' the variable details sheet with metadata from a ddi document from the original
+#' bllflow model if it exists.
 #'
-#' @param bllModel The model whose MSW needs updating
-#' @param newMSWVariables A dataframe containing the new MSWVariables
-#' @param newMSWVariableDeatails A dataframe containing the new MSWVariableDetails
-#' @return Returns an updated bllFlow model
+#' @param bllModel A bllflow instance whose MSW will be updated
+#' @param newMSWVariables A dataframe containing the new MSW variables sheet
+#' @param newMSWVariableDeatails A dataframe containing the new MSW variable details sheet
+#' @return A named list which is an instance of the bllflow model with it's
+#' variables and variableDetails members updated.
+#' 
 #' @export
 #' @examples 
 #' library(survival)
+#' library(bllflow)
+#' 
 #' data(pbc)
 #' 
-#' library(bllFlow)
+#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
 #' 
-#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' # Read the MSW files
+#' variables <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variables.csv'))
+#' variableDetails <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variableDetails.csv'))
 #' 
-#' # read the MSW files
-#' variables <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC-variables.csv'))
-#' variableDetails <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC-variableDetails.csv'))
-#' # create a BLLFlow object and add labels.
-#' pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
+#' # Create a BLLFlow object and add labels.
+#' pbcModel <- bllflow::BLLFlow(pbc, variables, variableDetails, pbcDDI)
 #' 
-#' pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
-#' pbcModel <- UpdateMSW(pbcModel, variables)
-#' pbcModel <- UpdateMSW(pbcModel, newMSWVariableDeatails = variableDetails)
+#' pbcModel <- bllflow::UpdateMSW(pbcModel, variables, variableDetails)
+#' pbcModel <- bllflow::UpdateMSW(pbcModel, variables)
+#' pbcModel <- bllflow::UpdateMSW(pbcModel, newMSWVariableDeatails = variableDetails)
 UpdateMSW <- function(bllModel, newMSWVariables = NULL, newMSWVariableDeatails = NULL){
   if (!is.null(newMSWVariables)) {
     bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
