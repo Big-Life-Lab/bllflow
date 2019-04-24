@@ -161,20 +161,24 @@ WriteDDIPopulatedMSW.BLLFlowDDI <-
     )
   }
 
-#' Gets ddi data related to variables provided
+#' Retreives variables in a DDI document
 #' 
-#' Extracts all ddi related information to provided variable list
+#' Returns a list of dataDscr nodes from a DDI document which represent 
+#' variables provided in the varList argument
 #'
-#' @param ddi ddi object containing the necessary data
-#' @param varList list of variable to retrieve information for
-#' @return Returns a list containg data on the variables in varList
+#' @param ddi A named list returned by the \code{\link{ReadDDI}} function
+#' @param varList A list of strings that represents variable names
+#' @return Returns a list containing the dataDscr nodes from the DDI document,
+#' each one of which matches with an entry in the varList argument
 #' @export
 #' @examples 
-#' library(bllFlow)
+#' library(bllflow)
 #' 
-#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
 #' 
-#' varsForPBC <- GetDDIVariables(pbcDDI, c("age", "sex"))
+#' varsForPBC <- bllflow::GetDDIVariables(pbcDDI, c("age", "sex"))
+#' print(attr(varsForPBC[[1]], 'name'))
+#' print(varsForPBC[[1]]$labl)
 GetDDIVariables <- function(ddi, varList) {
   ddiVariables <- list()
   requestedVariableIndexes <-
