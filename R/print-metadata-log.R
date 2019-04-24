@@ -5,6 +5,8 @@
 #'
 #'@export
 print.metaDataLog <- function(x, ...) {
+  metaDataLog <- x
+  
   print("Data cleaning and trandformation log")
   print(paste(length(metaDataLog), "steps performed"))
   printDataFrame <-
