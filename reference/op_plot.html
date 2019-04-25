@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • bllflow</title>
+<title>Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization. — op_plot • bllflow</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,7 +37,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization. — op_plot" />
+
+<meta property="og:description" content="Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -53,7 +59,7 @@
   </head>
 
   <body>
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -153,26 +159,69 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/OP-plot.R'><code>R/OP-plot.R</code></a></small>
+    <div class="hidden name"><code>op_plot.Rd</code></div>
     </div>
 
-    <div id="bllflow-0-1-0-first-version" class="section level1">
-<h1 class="page-header">
-<a href="#bllflow-0-1-0-first-version" class="anchor"></a>bllflow 0.1.0 (First Version)</h1>
-<p>2018-12-14</p>
-</div>
-  </div>
+    <div class="ref-description">
+    
+    <p>Observed vs Predicted Plot
+ Creates an observed versus predicted bar chart with scatter plot overlay using plotly. Used for model fit visualization.</p>
+    
+    </div>
 
+    <pre class="usage"><span class='fu'>op_plot</span>(<span class='no'>data</span>, <span class='no'>observed</span>, <span class='no'>predicted</span>, <span class='kw'>title</span><span class='kw'>=</span><span class='fl'>NA</span>, <span class='kw'>xlab</span><span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>data</th>
+      <td><p>a data.frame with observed events and predicted risk estimates</p></td>
+    </tr>
+    <tr>
+      <th>observed</th>
+      <td><p>variable of observed observation from data.frame, object of class string</p></td>
+    </tr>
+    <tr>
+      <th>predicted</th>
+      <td><p>variable of predicted observations from data.frame, object of class string</p></td>
+    </tr>
+    <tr>
+      <th>title</th>
+      <td><p>an overall title for the plot (optional), object of class string</p></td>
+    </tr>
+    <tr>
+      <th>xlab</th>
+      <td><p>a title for the x axis (optional), object of class string</p></td>
+    </tr>
+    </table>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'>#upload MPorT table one data set</span>
+<span class='no'>mport</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='st'>"https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA%3D%3D"</span>,
+   <span class='kw'>fileEncoding</span><span class='kw'>=</span><span class='st'>"UTF-8-BOM"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open URL 'https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA%3D%3D': HTTP status was '404 Not Found'</span></div><div class='output co'>#&gt; <span class='error'>Error in file(file, "rt", encoding = fileEncoding): cannot open the connection to 'https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA%3D%3D'</span></div><div class='input'>
+<span class='co'>#create character vector of columns needed for visualizations</span>
+<span class='no'>col</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"observed_risk_1_year"</span>, <span class='st'>"predicted_risk_1_year"</span>, <span class='st'>"group_by_sex"</span>, <span class='st'>"group_by_1"</span>, <span class='st'>"group_by_2"</span>, <span class='st'>"group_by_value_label_1"</span>)
+
+<span class='co'>#create new data frame using filter_table_1 helper function </span>
+<span class='no'>data</span><span class='kw'>&lt;-</span><span class='fu'><a href='filter_table_1.html'>filter_table_1</a></span>(<span class='no'>mport</span>, <span class='no'>col</span>, <span class='kw'>groupby_sex</span><span class='kw'>=</span><span class='st'>"Male"</span>, <span class='kw'>groupby_1</span> <span class='kw'>=</span><span class='st'>"Drinks per week"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in filter_table_1(mport, col, groupby_sex = "Male", groupby_1 = "Drinks per week"): could not find function "filter_table_1"</span></div><div class='input'>
+<span class='fu'>op_plot</span>(<span class='no'>data</span>, <span class='st'>"observed_risk_1_year"</span>, <span class='st'>"predicted_risk_1_year"</span>, <span class='kw'>title</span><span class='kw'>=</span><span class='st'>"Observed vs Predicted for Male Drinks per Week"</span> , <span class='kw'>xlab</span><span class='kw'>=</span><span class='st'>"Drinks per Week"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in op_plot(data, "observed_risk_1_year", "predicted_risk_1_year",     title = "Observed vs Predicted for Male Drinks per Week",     xlab = "Drinks per Week"): could not find function "op_plot"</span></div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div id="tocnav">
-      <h2>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-        <li><a href="#bllflow-0-1-0-first-version">0.1.0</a></li>
-      </ul>
-    </div>
-  </div>
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
+    <h2>Author</h2>
+    <p>Molly Campbell</p>
+  </div>
 </div>
 
       <footer>
