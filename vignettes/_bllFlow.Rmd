@@ -1,5 +1,5 @@
 ---
-title: "Getting started with bllFlow"
+title: "Getting started with bllFlows"
 output: 
   rmarkdown::html_document:
     toc: true 
