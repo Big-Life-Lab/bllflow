@@ -36,10 +36,8 @@
 #'
 #' # Read in the variables and variable details CSV sheets which are part of the 
 #' # master specification workbook
-#' variablesSheet <- read.csv(file.path(getwd(),
-#'  '../../inst/extdata/PBC-variables.csv'))
-#' variableDetails <- read.csv(file.path(getwd(),
-#'  '../../inst/extdata/PBC-variableDetails.csv'))
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' # and store it in the pbcModel variable

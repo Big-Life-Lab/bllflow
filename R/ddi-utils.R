@@ -11,14 +11,14 @@
 #' @return A named list which is an instance of a BLLFlowDDI class. The list
 #' contains the following members: \cr
 #' 1. variableMetaData - A named list. It's value comes from calling the \cr
-#' getMetadata function in the DDIwR library \link{https://cran.r-project.org/web/packages/DDIwR/DDIwR.pdf} \cr
+#' \link[DDIwR]{getMetadata} function \cr
 #' 2. additionalDDIMetaData - A named list containig the remaining nodes in the DDI document
 #' 
 #' @export
 #' @examples 
 #' library(bllflow)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 ReadDDI <- function(ddiPath, ddiFile) {
   # DDwR crates lots of cat outputs that are suppressed
   ddiMetaData <-
@@ -66,7 +66,7 @@ SuppressFunctionOutput <- function(x) {
 #' @examples 
 #' library(bllflow)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' 
 #' pbcDDIHeaders <- bllflow::GetDDIDescription(pbcDDI) 
 #' print(names(pbcDDIHeaders))
@@ -82,7 +82,9 @@ GetDDIDescription <- function(ddi) {
 }
 
 #' Writes a variable details CSV sheet to file
-#'
+#' @param x Object on which we will dispatch
+#' @param ... The next method in the chain
+#' 
 #' @export
 WriteDDIPopulatedMSW <- function(x, ...) {
   UseMethod("WriteDDIPopulatedMSW", x)
@@ -91,14 +93,13 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 #' @describeIn WriteDDIPopulatedMSW The populatedVariableDeatailsSheet data frame within a bllflow model is written 
 #' as a CSV file
 #'
-#' @param bllFlow A named list which is an instance of a bllflow class
 #' @param pathToWriteTo A string containing the path to the directory 
 #' where the file should be writtem
 #' @param newFileName A string containing the name of the written file
 #' 
 #' @export
 #' @examples 
-#' 
+#' \dontrun{
 #' # Writing the variable details sheet within a bllflow model
 #' # _________________________________________________________
 #' 
@@ -107,19 +108,22 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 #' 
 #' data(pbc)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' 
 #' # Read the MSW files
-#' variables <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variables.csv'))
-#' variableDetails <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variableDetails.csv'))
+#' variables <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #' 
 #' # Create a BLLFlow object and add labels.
 #' pbcModel <- bllflow::BLLFlow(pbc, variables, variableDetails, pbcDDI)
 #' 
-#' bllflow::WriteDDIPopulatedMSW(pbcModel, "../../inst/extdata/", "newMSWvariableDetails.csv")
 #' 
+#' bllflow::WriteDDIPopulatedMSW(pbcModel, "../../inst/extdata/", "newMSWvariableDetails.csv")
+#' }
 WriteDDIPopulatedMSW.BLLFlow <-
-  function(bllFlow, pathToWriteTo, newFileName) {
+  function(x, pathToWriteTo, newFileName, ...) {
+    bllFlow <- x
+    
     # create new directory if one does not exist
     if (!dir.exists(pathToWriteTo)) {
       dir.create(file.path(getwd(), pathToWriteTo))
@@ -134,25 +138,29 @@ WriteDDIPopulatedMSW.BLLFlow <-
 
 #' @describeIn WriteDDIPopulatedMSW Updates an existing variable details worksheet
 #' with metadata from a ddi document and then writes the new variable details
-#' sheet to file. The new sheet is saved in the same directory as the old sheet
+#' sheet to file. The new sheet is saved in the same directory as the old sheet. The
+#' first argument should be an object returned by the \code{\link{ReadDDI}} function.
 #'
-#' @param ddi A named list containing a DDI document. Made with the \code{\link{ReadDDI}} function
 #' @param pathToMSW A string containing the path to the directory with the variable details sheet
 #' @param mswName A string containing the name of the variable details sheet
 #' @param newName A string containing the name of the new variable details sheet
 #' 
 #' @export
 #' @examples 
+#' \dontrun{
 #' # Updating a variable details sheet from file and writing the updated version
 #' # ___________________________________________________________________________
 #' 
 #' library(bllflow)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' 
 #' bllflow::WriteDDIPopulatedMSW(pbcDDI, "../../inst/extdata/", "PBC-variableDetails.csv", "newName.csv")
+#' }
 WriteDDIPopulatedMSW.BLLFlowDDI <-
-  function(ddi, pathToMSW, mswName, newName = NULL) {
+  function(x, pathToMSW, mswName, newName = NULL, ...) {
+    ddi <- x
+    
     if (!file.exists(file.path(pathToMSW, mswName))) {
       stop(paste("The MSW file is not present in", pathToMSW), call. = FALSE)
     }
@@ -190,7 +198,7 @@ WriteDDIPopulatedMSW.BLLFlowDDI <-
 #' @examples 
 #' library(bllflow)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' 
 #' varsForPBC <- bllflow::GetDDIVariables(pbcDDI, c("age", "sex"))
 #' print(attr(varsForPBC[[1]], 'name'))
@@ -222,11 +230,11 @@ GetDDIVariables <- function(ddi, varList) {
 #' 
 #' data(pbc)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' 
 #' # Read the MSW files
-#' variables <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variables.csv'))
-#' variableDetails <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variableDetails.csv'))
+#' variables <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #' 
 #' # Create a BLLFlow object and add labels.
 #' pbcModel <- bllflow::BLLFlow(pbc, variables, variableDetails, pbcDDI)

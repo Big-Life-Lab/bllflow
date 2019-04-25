@@ -23,9 +23,7 @@ clean.Min <- function(bllFlowModel, ...) {
 #' 4. \strong{Set to value} - Specified as a number value in MSW. Column value for the row is
 #' set to the value specified in the outlier column. 
 #'
-#' @param bllFlowModel A named list which is an instance of a bllFlow class
 #' @param print A boolean which when set to TRUE prints logs of what the operation did
-#' @param ... Arguments for next methods in the chain
 #'
 #' @return A bllflow named list whose dataset was cleaned
 #' @export
@@ -39,10 +37,8 @@ clean.Min <- function(bllFlowModel, ...) {
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
-#' variablesSheet <- read.csv(file.path(getwd(),
-#'  '../../inst/extdata/PBC/PBC-variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(),
-#' '../../inst/extdata/PBC/PBC-variable-details.csv'))
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetailsSheet)
@@ -94,9 +90,7 @@ clean.Max <- function(bllFlowModel, ...) {
 #' \strong{Set to value} - Specified as a number value in MSW. Column value for the row is
 #' set to the value specified in the outlier column.
 #'
-#' @param bllFlowModel A bllflow named list whose data member will be cleaned
 #' @param print A boolean which when set to TRUE prints logs of what the operation did
-#' @param ... Arguments for next methods in the chain
 #'
 #' @return bllFlowModel that has had its data modified by the paramaters located in
 #' the variables object
@@ -111,10 +105,8 @@ clean.Max <- function(bllFlowModel, ...) {
 #' data(pbc)
 #'
 #' # Read in the MSW and variable_details sheet for the PBC model
-#' variablesSheet <- read.csv(file.path(getwd(),
-#'  '../../inst/extdata/PBC/PBC-variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(),
-#' '../../inst/extdata/PBC/PBC-variable-details.csv'))
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetailsSheet)

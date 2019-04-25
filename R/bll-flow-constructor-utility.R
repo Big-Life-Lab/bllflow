@@ -132,8 +132,8 @@ PopulateVariableDetails <-
 #' @examples 
 #' library(bllflow)
 #' 
-#' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
-#' variableDetails <- read.csv(file.path(getwd(), '../../inst/extdata/PBC-variableDetails.csv'))
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #' 
 #' populatedDetails <- ProcessDDIVariableDetails(pbcDDI, variableDetails)
 ProcessDDIVariableDetails <- function(ddi, variableDetails) {

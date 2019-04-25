@@ -1,7 +1,7 @@
 #'Custom print function for the bllFlow metaData log 
 #'
 #'@param x The metaData log object
-#'@param ... Test
+#'@param ... Arguments for next method in the chain
 #'
 #'@export
 print.metaDataLog <- function(x, ...) {
