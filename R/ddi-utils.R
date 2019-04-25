@@ -68,9 +68,9 @@ SuppressFunctionOutput <- function(x) {
 #' 
 #' pbcDDI <- bllflow::ReadDDI(file.path(getwd(), "../../inst/extdata"), "pbcDDI.xml")
 #' 
-#' pbcDDIHeaders <- bllflow::GetDDIHeader(pbcDDI) 
+#' pbcDDIHeaders <- bllflow::GetDDIDescription(pbcDDI) 
 #' print(names(pbcDDIHeaders))
-GetDDIHeader <- function(ddi) {
+GetDDIDescription <- function(ddi) {
   ddiObject <- ddi$ddiObject
   additionalDDIMetaData <- list(
     docDscr = ddiObject$codeBook$docDscr,

@@ -9,11 +9,11 @@ template:
 
 development:
   mode: auto
-  
+
 home:
   links:
-  - text: Calculators at
-    href: https://projectbiglife.ca
+    - text: Calculators at
+      href: https://projectbiglife.ca
 
 # modified from 'template_navbar()' to add the 'data' tab
 navbar:
@@ -43,24 +43,24 @@ navbar:
 # and then place the functions in the different section headings
 
 reference:
-- title: "Model specification"
-  desc: Functions for reading the Model Specification Workbook and addint metatdata
-  contents:
-   - BLLFlow
-   - ProcessDDIVariableDetails
-   - UpdateMSW
-   - WriteDDIPopulatedMSW
-- title: "DDI functions"
-  desc: Functions to parse, read and extract metadata from DDI documents
-  contents:
-   - ReadDDI
-   - GetDDIHeader
-   - GetDDIVariables
-- title: "Clean and transfrom variables"
-  desc: Functions for cleaning and transforming variables
-  contents:
-   - clean.Max
-   - clean.Min
-- title: "Utility Functions"
-  contents:
-   - print.metaDataLog
+  - title: "Model specification"
+    desc: Functions for reading the Model Specification Workbook and addint metatdata
+    contents:
+      - BLLFlow
+      - ProcessDDIVariableDetails
+      - UpdateMSW
+      - WriteDDIPopulatedMSW
+  - title: "DDI functions"
+    desc: Functions to parse, read and extract metadata from DDI documents
+    contents:
+      - ReadDDI
+      - GetDDIDescription
+      - GetDDIVariables
+  - title: "Clean and transfrom variables"
+    desc: Functions for cleaning and transforming variables
+    contents:
+      - clean.Max
+      - clean.Min
+  - title: "Utility Functions"
+    contents:
+      - print.metaDataLog
