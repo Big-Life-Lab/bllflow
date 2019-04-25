@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3 - Data cleaning and variable transformation • bllflow</title>
+<title>Getting started with bllFlows • bllflow</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="3 - Data cleaning and variable transformation">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Getting started with bllFlows">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -118,85 +118,60 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>3 - Data cleaning and variable transformation</h1>
+      <h1>Getting started with bllFlows</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/bllflow/blob/master/vignettes/d_clean_data.Rmd"><code>vignettes/d_clean_data.Rmd</code></a></small>
-      <div class="hidden name"><code>d_clean_data.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/Big-Life-Lab/bllflow/blob/master/vignettes/bllflow.Rmd"><code>vignettes/bllflow.Rmd</code></a></small>
+      <div class="hidden name"><code>bllflow.Rmd</code></div>
 
     </div>
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>In <em>bllflow</em> data cleaning is loosely defined as modifying rows (observations) and variable transformation as modifying columns (variables). Data preparation refers to both these procedures. Data preparation functions come in two forms:</p>
-<ol style="list-style-type: decimal">
-<li>Functions where the data and variables are specfified as attributes within the function. <em>bllflow</em> add to the functions that already exist in the <code>sjmisc</code> package.</li>
-<li>
-<em>bllflow</em> object functions where the Model Specification Workbook specifies which data is cleaned and variables transformed. These <em>bllflow</em> ‘wrapper’ functions are available for selected functions in the <code>sjmisc</code> package and for all <em>bllflow</em> objects.</li>
-</ol>
-<p>The effects of all data preparation functions can be logged and printed. Tranformations can be save as a Predictive Modelling Markup Language (PMML) file to faciliate predictive model deployment.</p>
-<div id="data-cleaning" class="section level2">
+<p>“Flow” in <em>bllflow</em> refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. Go to <a href="a_workflow.html"><code>Workflow</code></a> to see <em>bllflow</em>’s seven steps to analysing observational data. You can pick and choose to use any steps that fit your own workflow.</p>
+<div class="image">
+<img src="../../../Project%20Big%20Life/bllFlow/vignettes/images/coding.png" alt="if only bllflow"><div class="img_caption">
+<p>
+If only they used <b>bllflow</b>
+</p>
+</div>
+</div>
+<div id="workflow-vignettes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#data-cleaning" class="anchor"></a>Data cleaning</h2>
-<p>Three data cleaning functions are supported.</p>
-<p>For continuous variables:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code><a href="../reference/clean.Min.html">clean.Min()</a></code> – deletes observations below a defined value.</li>
-<li>
-<code><a href="../reference/clean.Max.html">clean.Max()</a></code> – deletes observations abovea a defined value.</li>
-</ol>
-<p>For categorical variables:</p>
-<ol style="list-style-type: decimal">
-<li>
-<code>recodeWithTable()</code> TODO.</li>
-</ol>
-<div id="example-1-clean-max-and-clean-min-using-bllflow-model-and-msw-variabledetails" class="section level3">
-<h3 class="hasAnchor">
-<a href="#example-1-clean-max-and-clean-min-using-bllflow-model-and-msw-variabledetails" class="anchor"></a>Example 1: <code>clean.Max</code> and <code>clean.Min</code> using BLLFlow model (and MSW variableDetails)</h3>
+<a href="#workflow-vignettes" class="anchor"></a>Workflow vignettes</h2>
+<p>Tne <a href="a_workflow.html"><code>Workflow</code></a> vignettes use the <code>pbc</code> data available in the <code>suvival</code> package to <a href="https://www.ncbi.nlm.nih.gov/pubmed/2737595">replicate</a> a survival model for people with primary biliary cirrhosis. What is the <code>pbc</code> data? The name, description and other information is included in the metadata file!</p>
+<p>See <a href="i_helper_functions.html"><code>Example 4 - Helper and utility functions</code></a>.</p>
+</div>
+<div id="example---study-exclusion-criteria" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example---study-exclusion-criteria" class="anchor"></a>Example - Study exclusion criteria</h2>
+<p>A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.</p>
+<div id="excluding-participatns-age-40-or-70-years-using-clean-min-and-clean-max" class="section level5">
+<h5 class="hasAnchor">
+<a href="#excluding-participatns-age-40-or-70-years-using-clean-min-and-clean-max" class="anchor"></a>1) Excluding participatns age &lt; 40 or &gt;70 years using <code><a href="../reference/clean.Min.html">clean.Min()</a></code> and <code><a href="../reference/clean.Max.html">clean.Max()</a></code>
+</h5>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load libraries and pbc data (from survival)</span>
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)
-<span class="co">#&gt; Loading required package: tableone</span>
-<span class="co">#&gt; Loading required package: DDIwR</span>
-<span class="co">#&gt; Loading required package: xml2</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)</code></pre></div>
+<pre><code>## Loading required package: tableone</code></pre>
+<pre><code>## Loading required package: DDIwR</code></pre>
+<pre><code>## Loading required package: xml2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tableone"</span>)
 
-<span class="co"># read the Model Specification Workbook</span>
+<span class="co"># read the MSW</span>
+<span class="co"># MSW includes columns 'min' and 'max' with rows for 'age' values 40 and 70.</span>
 variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))
 variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))
 
-<span class="co"># initialize BLLFlow - create the BLLFlow object</span>
-pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails)
-
-cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Max.html">clean.Max</a></span>(pbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] "clean.max.BLLFlow: 418 rows were checked and 13 rows were set to delete. Reason: Rule age max at 70 was violated"</span>
-cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Min.html">clean.Min</a></span>(cleanedPbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] "clean.min.BLLFlow: 405 rows were checked and 69 rows were set to delete. Reason: Rule age min at 40 was violated"</span>
-
-cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <span class="co"># to print the entire log.</span>
-<span class="co">#&gt; [1] "Data cleaning and trandformation log"</span>
-<span class="co">#&gt; [1] "2 steps performed"</span>
-<span class="co">#&gt;  Step          Function Variable       Label Value Rows   Type</span>
-<span class="co">#&gt;     1 clean.max.BLLFlow      age Age (years)    70   13 delete</span>
-<span class="co">#&gt;     2 clean.min.BLLFlow      age Age (years)    40   69 delete</span></code></pre></div>
-</div>
-</div>
-<div id="data-tranformation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#data-tranformation" class="anchor"></a>Data tranformation</h2>
-<p>Supported functions: <font color="red">TODO</font>: describe these functions. - centring - normalization and standardization - restrictive cubic splines - interaction terms - dummy variables - recoding</p>
-</div>
-<div id="logging" class="section level2">
-<h2 class="hasAnchor">
-<a href="#logging" class="anchor"></a>Logging</h2>
-</div>
-<div id="transformations-to-pmml" class="section level2">
-<h2 class="hasAnchor">
-<a href="#transformations-to-pmml" class="anchor"></a>Transformations to PMML</h2>
+<span class="co"># perform all data cleaning steps</span>
+pbcModel &lt;-<span class="st">  </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails)
+  cleanPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Min.html">clean.Min</a></span>(pbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] "clean.min.BLLFlow: 418 rows were checked and 69 rows were set to delete. Reason: Rule age min at 40 was violated"</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  cleanPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Max.html">clean.Max</a></span>(cleanPbc, <span class="dt">print =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## [1] "clean.max.BLLFlow: 349 rows were checked and 13 rows were set to delete. Reason: Rule age max at 70 was violated"</code></pre>
+<p>Within the <code>PBC-variables.csv</code> file there is a column ‘min’ and ‘max’ and a row each variable. The ‘age’ variable has the values for 40 and 70 in the ‘min’ and ‘max’ columns. This example is shown in more detail in the <a href="d_clean_data.Rmd">data cleaning and transformation</a> vignette.</p>
+<p>Note that executing <code>clean.Max</code> executes <code>min</code> and <code>max</code> criteria for all variables in the pbcModel.</p>
 </div>
 </div>
   </div>
@@ -206,14 +181,8 @@ cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <sp
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#data-cleaning">Data cleaning</a></li>
-      <li><a href="#data-tranformation">Data tranformation</a></li>
-      <li><a href="#logging">Logging</a></li>
-      <li><a href="#transformations-to-pmml">Transformations to PMML</a></li>
-      </ul>
-</li>
+<li><a href="#workflow-vignettes">Workflow vignettes</a></li>
+      <li><a href="#example---study-exclusion-criteria">Example - Study exclusion criteria</a></li>
       </ul>
 </div>
       </div>
