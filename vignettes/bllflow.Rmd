@@ -11,7 +11,7 @@ output:
 fit your own workflow.
 
 <div class="image">
-  <img src="images/coding.png" alt="if only bllflow" />
+  <img src="../reference/figures/coding.png" alt="if only bllflow" />
   <div class="img_caption">
   <p>If only they used <b>bllflow</b></p>
   </div>
