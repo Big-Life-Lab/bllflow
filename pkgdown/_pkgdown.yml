@@ -31,7 +31,7 @@ navbar:
       href: reference/index.html
     intro:
       text: Get started
-      href: articles/_bllFlow.html
+      href: articles/bllflow.html
     news:
       text: Changelog
       href: news/index.html
