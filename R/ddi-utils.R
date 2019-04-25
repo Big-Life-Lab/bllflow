@@ -120,6 +120,7 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 #' 
 #' bllflow::WriteDDIPopulatedMSW(pbcModel, "../../inst/extdata/", "newMSWvariableDetails.csv")
 #' }
+#' 
 WriteDDIPopulatedMSW.BLLFlow <-
   function(x, pathToWriteTo, newFileName, ...) {
     bllFlow <- x
