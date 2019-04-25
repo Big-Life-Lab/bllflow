@@ -12,9 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-_bllflow_ build from the `tableone` package to present the study cohort. 
-
-#TODO. Did we create a wrapper for tableone - import the table specifications and create the table?
+_bllflow_ builds from the `tableone` package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.
 
 ```{r}
 library(survival)
@@ -29,4 +27,4 @@ TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = ca
 
 ```{r}
 # TODO: checkedTableOne <- CheckSmallCells(TableOne)
-
+# TODO: show how the MSW provides instructoins to create tables.

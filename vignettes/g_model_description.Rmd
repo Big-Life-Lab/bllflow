@@ -1,5 +1,5 @@
 ---
-title: "6 - Describing a model"
+title: "6 - Describing and reporting a model"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{6 - Describing a model}
@@ -13,6 +13,16 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-**bllFlow** supports pre-specifying model development as described by Harrell 
-and others.[ref]
+## Introduction
 
+This section is in progress. _bllflow_ has several helper functions, tables and 
+plots to help describe and deploy predictive models, including exporting models in two formats:
+
+  - Predictive Modelling Markup Language (PMML)
+  - CSV files that correspond to the study data DDI file and Model Specification Workbook.
+
+See the follow examples of how `bllflow` is used to report predictive models.
+
+1) [Algorithm viewer](http://algorithm-viewer.projectbiglife.ca/#/)
+1) [Model description](https://docs.projectbiglife.ca)
+1) [Model description as PMML file](https://github.com/Ottawa-mHealth/predictive-algorithms)

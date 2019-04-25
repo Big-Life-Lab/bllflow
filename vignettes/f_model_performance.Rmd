@@ -13,6 +13,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-**bllFlow** supports pre-specifying model development as described by Harrell 
-and others.[ref]
+## Introduction
 
+This section is in progress. _bllflow_ has several helper functions, tables and 
+plots to help report model performance. Most of these tools support predictive models, including calibration plots of observed versus predicted risk estimates that use `summaryData` tables specified in the Model Specification Workbook.
+
+See the follow examples of how `bllflow` is used to report model performance:
+
+- [Algorithm viewer](http://algorithm-viewer.projectbiglife.ca/#/)
