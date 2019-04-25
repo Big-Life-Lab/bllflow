@@ -12,9 +12,7 @@ knitr::opts_chunk$set(
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 
-# bllflow - an R package for efficient, transparent data prepartion and reporting <img src="./reference/figures/pbl-sticker.png" align="right" alt="" width="120" />
-
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+# bllflow - an R package for efficient, transparent data prepartion and reporting <img src="./man/figures/pbl-sticker.png" align="right" alt="" width="120" />
 
 ### Is bllflow for you?
 
