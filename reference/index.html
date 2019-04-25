@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • bllFlow</title>
+<title>Function reference • bllflow</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -65,7 +65,7 @@
         <span class="icon-bar"></span>
       </button>
       <span class="navbar-brand">
-        <a class="navbar-link" href="../index.html">bllFlow</a>
+        <a class="navbar-link" href="../index.html">bllflow</a>
         <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
@@ -79,7 +79,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/bllFlow.html">Get started</a>
+  <a href="../articles/_bllFlow.html">Get started</a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -107,7 +107,7 @@
       <a href="../articles/f_model_performance.html">5 - Reporting the performance of a model</a>
     </li>
     <li>
-      <a href="../articles/g_model_description.html">6 - Describing a model</a>
+      <a href="../articles/g_model_description.html">6 - Describing and reporting a model</a>
     </li>
     <li>
       <a href="../articles/h_model_deployment.html">7 - (predictive) Model deployment</a>
@@ -130,7 +130,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/Big-Life-Lab/bllFlow">
+  <a href="https://github.com/Big-Life-Lab/bllflow">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -167,95 +167,96 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-clean-and-tranfrom-variables" class="hasAnchor"><a href="#section-clean-and-tranfrom-variables" class="anchor"></a>Clean and tranfrom variables</h2>
+          <h2 id="section-model-specification" class="hasAnchor"><a href="#section-model-specification" class="anchor"></a>Model specification</h2>
+          <p class="section-desc"><p>Functions for reading the Model Specification Workbook and addint metatdata</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="BLLFlow.html">BLLFlow()</a></code> </p>
+        </td>
+        <td><p>Creates a bllflow model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="ProcessDDIVariableDetails.html">ProcessDDIVariableDetails()</a></code> </p>
+        </td>
+        <td><p>Imports DDI metadata into a variable details worksheet</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="UpdateMSW.html">UpdateMSW()</a></code> </p>
+        </td>
+        <td><p>Updates the model specification worksheet (MSW) of a bllflow model. Also updates
+the variable details sheet with metadata from a ddi document from the original
+bllflow model if it exists.</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW()</a></code> </p>
+        </td>
+        <td><p>Writes a variable details CSV sheet to file</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-ddi-functions" class="hasAnchor"><a href="#section-ddi-functions" class="anchor"></a>DDI functions</h2>
+          <p class="section-desc"><p>Functions to parse, read and extract metadata from DDI documents</p></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="ReadDDI.html">ReadDDI()</a></code> </p>
+        </td>
+        <td><p>Parses a DDI document into an R object</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="GetDDIDescription.html">GetDDIDescription()</a></code> </p>
+        </td>
+        <td><p>Parses the headers from a DDI document</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="GetDDIVariables.html">GetDDIVariables()</a></code> </p>
+        </td>
+        <td><p>Retreives variables in a DDI document</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-clean-and-transfrom-variables" class="hasAnchor"><a href="#section-clean-and-transfrom-variables" class="anchor"></a>Clean and transfrom variables</h2>
           <p class="section-desc"><p>Functions for cleaning and transforming variables</p></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="bll_flow.html">bll_flow()</a></code> </p>
+          <p><code><a href="clean.Max.html">clean.Max()</a></code> </p>
         </td>
-        <td><p>Makes an object an instance of bll_flow and returns it. This function should
-be run on all the variables in the initial data set</p></td>
+        <td><p>Cleans a dataset by updating values above a certain maximum</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="buildInteractionsList.html">buildInteractionsList()</a></code> </p>
+          <p><code><a href="clean.Min.html">clean.Min()</a></code> </p>
         </td>
-        <td><p>Builds the interactions list for the provided rows</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="buildProjectFiles.html">buildProjectFiles()</a></code> </p>
-        </td>
-        <td><p>Builds several R files from the web spec csv file located at the path 
-specified by the webSpecCsvFilePath argument. The R files are written to the folder whose path
-is specified in the projectFolderPath arg</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="center.bll_flow.html">center.bll_flow()</a></code> </p>
-        </td>
-        <td><p>Centers the x argument using the provided mean argument and returns a new bll_flow 
-variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="formatInteractionVariable.html">formatInteractionVariable()</a></code> </p>
-        </td>
-        <td><p>Formats a variable name for interaction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForCenteredVariable.html">getCodeForCenteredVariable()</a></code> </p>
-        </td>
-        <td><p>Returns R code to center a variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForDummyVariable.html">getCodeForDummyVariable()</a></code> </p>
-        </td>
-        <td><p>Returns variable which contains dummying code for a categorical variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getCodeForInteraction.html">getCodeForInteraction()</a></code> </p>
-        </td>
-        <td><p>Returns code for an interaction</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="isInInteractionsList.html">isInInteractionsList()</a></code> </p>
-        </td>
-        <td><p>Checks whether an interactions is already present in the interactionsList arg</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="isPortWebSpecFile.html">isPortWebSpecFile()</a></code> </p>
-        </td>
-        <td><p>Checks whether a web spec file is for a PORT algorithm or for a RESPECT
-algorithm</p></td>
+        <td><p>Clean a dataset by updating values below a certain minimum</p></td>
       </tr>
     </tbody><tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-making-test-data" class="hasAnchor"><a href="#section-making-test-data" class="anchor"></a>Making test data</h2>
-          <p class="section-desc"><p>A bllFlow ….</p></p>
+          <h2 id="section-utility-functions" class="hasAnchor"><a href="#section-utility-functions" class="anchor"></a>Utility Functions</h2>
+          <p class="section-desc"></p>
         </th>
       </tr>
       <tr>
         
         <td>
-          <p><code><a href="assign_first_event.html">assign_first_event()</a></code> </p>
+          <p><code><a href="print.metaDataLog.html">print(<i>&lt;metaDataLog&gt;</i>)</a></code> </p>
         </td>
-        <td><p>Assign the earliest event, when there are multiple events</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="make_event_dates.html">make_event_dates()</a></code> </p>
-        </td>
-        <td><p>Add an event date, when you only have an event probability</p></td>
+        <td><p>Custom print function for the bllFlow metaData log</p></td>
       </tr>
     </tbody>
     </table>
@@ -264,15 +265,17 @@ algorithm</p></td>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-clean-and-tranfrom-variables">Clean and tranfrom variables</a></li>
-      <li><a href="#section-making-test-data">Making test data</a></li>
+      <li><a href="#section-model-specification">Model specification</a></li>
+      <li><a href="#section-ddi-functions">DDI functions</a></li>
+      <li><a href="#section-clean-and-transfrom-variables">Clean and transfrom variables</a></li>
+      <li><a href="#section-utility-functions">Utility Functions</a></li>
     </ul>
   </div>
 </div>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Yulric Sequeira, Doug Manuel, Meltem Tuna.</p>
+  <p>Developed by Doug Manuel, Rostyslav Vyuha, Meltem Tuna.</p>
 </div>
 
 <div class="pkgdown">
