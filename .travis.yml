@@ -17,7 +17,7 @@ script:
   
 after_success:
   - R -e "install.packages('pkgdown')"
-  - Rscript -e 'pkgdown::build_site()'
+  - Rscript -e 'pkgdown::build_site(run_dont_run = TRUE)'
 
 deploy:
   provider: pages
