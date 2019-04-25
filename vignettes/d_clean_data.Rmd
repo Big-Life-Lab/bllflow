@@ -29,37 +29,23 @@ For continuous variables:
 1) `clean.Max()` -- deletes observations abovea a defined value.
 
 For categorical variables: 
+
 1) `recodeWithTable()` TODO.
 
-### Example 1: `clean.Max` and `clean.Min` as a generic utility function.
-use clean.Min and clean.max without BLLFlow.
-
+### Example 1: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
 ```{r}
-# change current clean.Max() to be a generic function (then create a BBLFlow wrapper -- see below)
-# TODO: clean.Min <- function(data, ..., min, print = FALSE) {}
-# TODO: BBLClean.Min <- function(modelToClean, print = FALSE) {}
-
+# load libraries and pbc data (from survival)
 library(survival)
 data(pbc)
 library(bllflow)
 
-# Todo: cleanedPbc <- clean.Min(pbc, age, 40)
-```
-
-### Example 2: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
-```{r}
+# read the Model Specification Workbook
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+
+# initialize BLLFlow - create the BLLFlow object
 pbcModel <- BLLFlow(pbc, variables, variableDetails)
 
-# TODO: cleanedPbcModel <- clean.Max(pbc, age, 70, print = TRUE)
-#print(cleanedPbcModel$metaData$log)
-# TODO: cleanedPbcModel <- clean.Min(pbc, age, 40, print = TRUE)
-#print(cleanedPbcModel$metaData$log)
-
-```
-##### original code below
-```{r}
 cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
 cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
 

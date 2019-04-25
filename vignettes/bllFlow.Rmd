@@ -25,26 +25,16 @@ See [`Example 4 - Helper and utility functions`](i_helper_functions.html).
 ## Example - Study exclusion criteria
 A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.
 
-There are two approaches to perform these exclusion criteria.
-
 ##### 1) Excluding participatns age < 40 or >70 years using `clean.Min()` and `clean.Max()`
-```{r Load libraries, warning=TRUE, include=FALSE}
-library(survival) # for pbc data
+```{r Clean with BBLFlow()}
+# load libraries and pbc data (from survival)
+library(survival)
 data(pbc)
 library(bllflow)
+library("tableone")
 
-```
-```{r Clean with general utility fuctions}
-# TODO: cleanPBC <- clean.Min(pbc, age, min = 40)
-# TODO: cleanPBC <- clean.Max(cleanPBC, age, max = 70)
-
-# use print = TRUE for a log of how many participants were affected.
-# clean.Min(pbc, age, min = 40, print = TRUE)
-```
-
-##### 2) Excluding participants using `BLLFLow()` and the Model Specification Worksheets
-```{r Clean with BBLFlow()}
 # read the MSW
+# MSW includes columns 'min' and 'max' with rows for 'age' values 40 and 70.
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
@@ -55,4 +45,4 @@ pbcModel <-  BLLFlow(pbc, variables, variableDetails)
 ```
 Within the `PBC-variables.csv` file there is a column 'min' and 'max' and a row each variable. The 'age' variable has the values for 40 and 70 in the 'min' and 'max' columns. This example is shown in more detail in the [data cleaning and transformation](d_clean_data.Rmd) vignette. 
 
-Note that executing `BLLClean.Max` executes `min` and `max` criteria for all variables in the pbcModel.
+Note that executing `clean.Max` executes `min` and `max` criteria for all variables in the pbcModel.
