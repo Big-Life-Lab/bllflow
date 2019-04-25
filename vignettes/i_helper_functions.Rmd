@@ -149,7 +149,7 @@ codebook. The _bllflow_ then creates and modifies an new instance of the codeboo
 as you perform analyses. In addition, a log is created that describes the data 
 cleaning and data transformation steps. 
 
-getDDIdescription(DDIPath = ddiPath, DDIFile = ddiFile)
+getDDIDescription(DDIPath = ddiPath, DDIFile = ddiFile)
 # same as calling BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, "description"), but 
 would not add the info to the bllFlow object.
 
@@ -162,6 +162,6 @@ pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"),
 varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
 # all the variable metadata (but no study description infomation)
 
-# descrForPbc <- GetDDIDescription(pbcDDI)
+descrForPbc <- GetDDIDescription(pbcDDI)
 # all the study description metadata (but no variable infomation)
 ```
