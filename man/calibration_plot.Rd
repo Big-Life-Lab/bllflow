@@ -28,7 +28,8 @@ predicted plot. Used for model fit visualization
 }
 \examples{
 #upload MPorT table one data set
-mport<-read.csv("inst/extdata/MPoRT-table-one.csv")
+mport <- read.csv("https://raw.githubusercontent.com/Big-Life-Lab/bllFlow/data-visualization/inst/extdata/MPoRT-table-one.csv?token=ApmTWVvRI4hGeBRlPLR6R3P6J73Po5Paks5cWzfswA\%3D\%3D", 
+fileEncoding="UTF-8-BOM")
 
 #create character vector of columns needed for visualizations
 col <- c("observed_risk_1_year", "predicted_risk_1_year", "group_by_sex", "group_by_1", "group_by_2", "group_by_value_label_1")

@@ -1,4 +1,4 @@
-url: https://big-life-lab.github.io/bllFlow/
+url: https://big-life-lab.github.io/bllflow/
 
 template:
   params:
@@ -9,11 +9,11 @@ template:
 
 development:
   mode: auto
-  
+
 home:
   links:
-  - text: Calculators at
-    href: https://projectbiglife.ca
+    - text: Calculators at
+      href: https://projectbiglife.ca
 
 # modified from 'template_navbar()' to add the 'data' tab
 navbar:
@@ -31,33 +31,36 @@ navbar:
       href: reference/index.html
     intro:
       text: Get started
-      href: articles/bllFlow.html
+      href: articles/bllflow.html
     news:
       text: Changelog
       href: news/index.html
     github:
       icon: fa-github fa-lg
-      href: https://github.com/Big-Life-Lab/bllFlow
+      href: https://github.com/Big-Life-Lab/bllflow
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings
 
 reference:
-- title: "Clean and tranfrom variables"
-  desc: Functions for cleaning and transforming variables
-  contents:
-  - '`bll_flow`'
-  - '`buildInteractionsList`'
-  - '`buildProjectFiles`'
-  - '`center.bll_flow`'
-  - '`formatInteractionVariable`'
-  - '`getCodeForCenteredVariable`'
-  - '`getCodeForDummyVariable`'
-  - '`getCodeForInteraction`'
-  - '`isInInteractionsList`'
-  - '`isPortWebSpecFile`'
-- title: "Making test data"
-  desc: A bllFlow ....
-  contents:
-  - '`assign_first_event`'
-  - '`make_event_dates`'
+  - title: "Model specification"
+    desc: Functions for reading the Model Specification Workbook and addint metatdata
+    contents:
+      - BLLFlow
+      - ProcessDDIVariableDetails
+      - UpdateMSW
+      - WriteDDIPopulatedMSW
+  - title: "DDI functions"
+    desc: Functions to parse, read and extract metadata from DDI documents
+    contents:
+      - ReadDDI
+      - GetDDIDescription
+      - GetDDIVariables
+  - title: "Clean and transfrom variables"
+    desc: Functions for cleaning and transforming variables
+    contents:
+      - clean.Max
+      - clean.Min
+  - title: "Utility Functions"
+    contents:
+      - print.metaDataLog
