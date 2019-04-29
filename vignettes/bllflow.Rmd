@@ -26,12 +26,11 @@ See [`Example 4 - Helper and utility functions`](i_helper_functions.html).
 A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.
 
 ##### 1) Excluding participatns age < 40 or >70 years using `clean.Min()` and `clean.Max()`
-```{r Clean with BBLFlow()}
+```{r Clean with BBLFlow(), message=FALSE, warning=FALSE}
 # load libraries and pbc data (from survival)
 library(survival)
 data(pbc)
 library(bllflow)
-library("tableone")
 
 # read the MSW
 # MSW includes columns 'min' and 'max' with rows for 'age' values 40 and 70.
