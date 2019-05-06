@@ -58,7 +58,8 @@ tables.CreateTableOneLong <- function(bllFlowModel,
       mean = numeric(),
       sd = numeric(),
       percentile25 = numeric(),
-      percentile75 = numeric()
+      percentile75 = numeric(),
+      stringsAsFactors = FALSE
     )
   variablesForStrata <-
     unique(unlist(tableVariablesSheet[, grepl("pbcSummaryStat", colnames(tableVariablesSheet))]))
@@ -68,7 +69,7 @@ tables.CreateTableOneLong <- function(bllFlowModel,
       CreateCustomTableOne(strataValue, tableVariablesSheet, bllFlowModel))
   for (tableOne in tableOneTables) {
     longTable <-
-      AddToLongTable(tableOne, bllFlowModel$variableDetailsSheet, longTable)
+      AddToLongTable(tableOne, longTable)
   }
   
   return(longTable)
@@ -108,7 +109,7 @@ CreateCustomTableOne <-
 
 # Function to create a long table one for one tableOne
 AddToLongTable <-
-  function(passedTable, variableDetails, longTable) {
+  function(passedTable, longTable) {
     # Format Strata values into machine retable format
     dimNames <- attr(passedTable$ContTable, "dimnames")
     strataAllCombinationsDataFrame <- expand.grid(dimNames)
@@ -121,18 +122,16 @@ AddToLongTable <-
           passedTable$ContTable,
           attr(passedTable$ContTable, "strataVarName"),
           strataValues,
-          variableDetails,
           longTable
         )
     }
     # Call Cat table extraction if tableOne contains CatTable
     if (!is.null(passedTable$CatTable)) {
-      longTable <- 
+      longTable <-
         ExtractDataFromCatTable(
           passedTable$CatTable,
           attr(passedTable$CatTable, "strataVarName"),
           strataValues,
-          variableDetails,
           longTable
         )
     }
@@ -144,11 +143,15 @@ ExtractDataFromContTable <-
   function(contTable,
            strataName,
            strataValues,
-           variableDetails,
            longTable) {
+    strataSplitName <- character()
     # Split the strata name into he two variables
-    strataSplitName <-
-      unlist(strsplit(as.character(strataName), split = ":"))
+    if (!is.null(strataName)) {
+      strataSplitName <-
+        unlist(strsplit(as.character(strataName), split = ":"))
+    } else{
+      strataSplitName <- strataName
+    }
     # loop through each strata columns
     for (i in 1:length(contTable)) {
       variables <- (row.names(contTable[[i]]))
@@ -163,31 +166,43 @@ ExtractDataFromContTable <-
         rowPercentile25 <- contTable[[i]][row, "p25"]
         rowPercentile75 <- contTable[[i]][row, "p75"]
         # create the row to add to tableOne Long
-        groupByLabel1 <-
-          variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                            compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
-        groupByValueLabel1 <-
-          variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                            compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
-        groupByLabel2 <-
-          variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
-                            compareNA(variableDetails$value, strataSplitValues[[2]])
-                          , "label"]
-        groupByValueLabel2 <-
-          variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
-                            compareNA(variableDetails$value, strataSplitValues[[2]])
-                          , "valueLabel"]
-        longTableRow <- data.frame(
-          groupBy1 = strataSplitName[[1]],
-          groupByValue1 = strataSplitValues[[1]],
-          groupByLabel1 = groupByLabel1,
-          groupByValueLabel1 = groupByValueLabel1,
-          groupBy2 = strataSplitName[[2]],
-          groupByValue2 = strataSplitValues[[2]],
-          groupByLabel2 = groupByLabel2,
-          groupByValueLabel2 = groupByValueLabel2,
+        groupByList <- list()
+        for (groupByIndex in 1:length(strataSplitName)) {
+          groupByList[[paste("groupBy", groupByIndex, sep = "")]] <-
+            strataSplitName[[groupByIndex]]
+          if (!paste("groupBy", groupByIndex, sep = "") %in% colnames(longTable)) {
+            if (nrow(longTable) == 0) {
+              longTable[[paste("groupBy", groupByIndex, sep = "")]] <- character()
+            } else {
+              longTable[[paste("groupBy", groupByIndex, sep = "")]] <- NA
+            }
+          }
+          groupByList[[paste("groupByValue", groupByIndex, sep = "")]] <-
+            strataSplitValues[[groupByIndex]]
+          if (!paste("groupByValue", groupByIndex, sep = "") %in% colnames(longTable)) {
+            if (nrow(longTable) == 0) {
+              longTable[[paste("groupBy", groupByIndex, sep = "")]] <- character()
+            } else {
+              longTable[[paste("groupBy", groupByIndex, sep = "")]] <- NA
+            }
+          }
+        }
+        # groupByLabel1 <-
+        #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
+        #                     compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
+        # groupByValueLabel1 <-
+        #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
+        #                     compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
+        # groupByLabel2 <-
+        #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
+        #                     compareNA(variableDetails$value, strataSplitValues[[2]])
+        #                   , "label"]
+        # groupByValueLabel2 <-
+        #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
+        #                     compareNA(variableDetails$value, strataSplitValues[[2]])
+        #                  , "valueLabel"]
+        longTableRow <- list(
           variableCategory = NA,
-          variableCategoryLabel = NA,
           variable = variables[[row]],
           prevalence = NA,
           n = num,
@@ -197,10 +212,11 @@ ExtractDataFromContTable <-
           percentile25 = rowPercentile25,
           percentile75 = rowPercentile75
         )
-        longTable <- rbind(longTable, longTableRow)
+        longTableRow <- append(longTableRow, groupByList)
+        longTable <-
+          rbind(longTable, longTableRow,  stringsAsFactors = FALSE)
       }
     }
-    
     return(longTable)
   }
 
@@ -209,7 +225,6 @@ ExtractDataFromCatTable <-
   function(catTable,
            strataName,
            strataValues,
-           variableDetails,
            longTable) {
     variablesChecked <- 0
     varNames <- attr(catTable[[1]], "names")
@@ -228,36 +243,48 @@ ExtractDataFromCatTable <-
           frequency <- selectedVariable[row, "freq"]
           levName <- selectedVariable[row, "level"]
           prevalence <- selectedVariable[row, "percent"]
-          groupByLabel1 <-
-            variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                              compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
-          groupByValueLabel1 <-
-            variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
-                              compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
-          groupByLabel2 <-
-            variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
-                              compareNA(variableDetails$value, strataSplitValues[[2]])
-                            , "label"]
-          groupByValueLabel2 <-
-            variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
-                              compareNA(variableDetails$value, strataSplitValues[[2]])
-                            , "valueLabel"]
-          variableCategoryLabel <-
-            variableDetails[compareNA(variableDetails$variable, varNames[[variablesChecked]]) &
-                              compareNA(variableDetails$value, as.character(levName))
-                            , "valueLabel"]
+          groupByList <- list()
+          for (groupByIndex in 1:length(strataSplitName)) {
+            groupByList[[paste("groupBy", groupByIndex, sep = "")]] <-
+              strataSplitName[[groupByIndex]]
+            if (!paste("groupBy", groupByIndex, sep = "") %in% colnames(longTable)) {
+              if (nrow(longTable) == 0) {
+                longTable[[paste("groupBy", groupByIndex, sep = "")]] <- character()
+              } else {
+                longTable[[paste("groupBy", groupByIndex, sep = "")]] <- NA
+              }
+            }
+            groupByList[[paste("groupByValue", groupByIndex, sep = "")]] <-
+              strataSplitValues[[groupByIndex]]
+            if (!paste("groupByValue", groupByIndex, sep = "") %in% colnames(longTable)) {
+              if (nrow(longTable) == 0) {
+                longTable[[paste("groupBy", groupByIndex, sep = "")]] <- character()
+              } else {
+                longTable[[paste("groupBy", groupByIndex, sep = "")]] <- NA
+              }
+            }
+          }
+          # groupByLabel1 <-
+          #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
+          #                     compareNA(variableDetails$value, strataSplitValues[[1]]), "label"]
+          # groupByValueLabel1 <-
+          #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[1]]) &
+          #                     compareNA(variableDetails$value, strataSplitValues[[1]]), "valueLabel"]
+          # groupByLabel2 <-
+          #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
+          #                     compareNA(variableDetails$value, strataSplitValues[[2]])
+          #                   , "label"]
+          # groupByValueLabel2 <-
+          #   variableDetails[compareNA(variableDetails$variable, strataSplitName[[2]]) &
+          #                     compareNA(variableDetails$value, strataSplitValues[[2]])
+          #                   , "valueLabel"]
+          # variableCategoryLabel <-
+          #   variableDetails[compareNA(variableDetails$variable, varNames[[variablesChecked]]) &
+          #                     compareNA(variableDetails$value, as.character(levName))
+          #                   , "valueLabel"]
           
-          longTableRow <- data.frame(
-            groupBy1 = strataSplitName[[1]],
-            groupByValue1 = strataSplitValues[[1]],
-            groupByLabel1 = groupByLabel1,
-            groupByValueLabel1 = groupByValueLabel1,
-            groupBy2 = strataSplitName[[2]],
-            groupByValue2 = strataSplitValues[[2]],
-            groupByLabel2 = groupByLabel2,
-            groupByValueLabel2 = groupByValueLabel2,
+          longTableRow <- list(
             variableCategory = levName,
-            variableCategoryLabel = variableCategoryLabel,
             variable = varNames[variablesChecked],
             prevalence = prevalence,
             n = frequency,
@@ -267,7 +294,9 @@ ExtractDataFromCatTable <-
             percentile25 = NA,
             percentile75 = NA
           )
-          longTable <- rbind(longTable, longTableRow)
+          longTableRow <- append(longTableRow, groupByList)
+          longTable <-
+            rbind(longTable, longTableRow,  stringsAsFactors = FALSE)
         }
       }
       variablesChecked <- 0
@@ -284,3 +313,39 @@ compareNA <- function(v1, v2) {
   same[is.na(same)] <- FALSE
   return(same)
 }
+
+#'@export
+SummaryDataLong <- function(tableOne, longTable = NULL, bllModel = NULL) {
+  if (is.null(tableOne) & is.null(longTable)) {
+    warning("No talbe one or long table was passed to SummaryDataLong",
+            call. = FALSE)
+  }
+  if (is.null(longTable)) {
+    longTable <- data.frame(
+      variableCategory = character(),
+      variable = character(),
+      prevalence = numeric(),
+      n = numeric(),
+      nMissing = numeric(),
+      mean = numeric(),
+      sd = numeric(),
+      percentile25 = numeric(),
+      percentile75 = numeric(),
+      stringsAsFactors = FALSE
+    )
+  }
+  AddToLongTable(tableOne, longTable,bllModel[[]])
+}
+
+CreateTableOne <- function(x = NULL, ...) {
+  UseMethod("CreateTableOne", x)
+}
+
+# If no vars are present use the variables inside bllVariables
+CreateTableOne.BLLFlow <- function(bllFlowModel,
+                                   vars = NULL,
+                                   strata = NULL,
+                                   factorVars = NULL) {
+  
+}
+CreateTableOne.default <- tableone::CreateTableOne

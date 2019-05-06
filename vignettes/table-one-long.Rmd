@@ -23,3 +23,10 @@ tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-table-var
 tableOneLong <- tables.CreateTableOneLong(pbcModel, tableVariables)
 print(tableOneLong)
 ```
+
+```{r}
+#pbcTableOne <- CreateTableOne(pbcModel, tableVariables)
+#pbcLongTable <- SummaryDataLong(AnyTableOne = optional, AnyTableLong = optional)
+#This lets u append to the long table any table one u prefer and hopefully allows for implementation of other tables
+#Only issue is i need to figure out what to later order it by to keep the table organized
+```
