@@ -223,7 +223,8 @@ first argument should be an object returned by the <code><a href='ReadDDI.html'>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Writing the variable details sheet within a bllflow model</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='co'># Writing the variable details sheet within a bllflow model</span>
 <span class='co'># _________________________________________________________</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>survival</span>)
@@ -238,17 +239,21 @@ first argument should be an object returned by the <code><a href='ReadDDI.html'>
 <span class='no'>variableDetails</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"PBC-variableDetails.csv"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"bllflow"</span>))
 
 <span class='co'># Create a BLLFlow object and add labels.</span>
-<span class='no'>pbcModel</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/BLLFlow'>BLLFlow</a></span>(<span class='no'>pbc</span>, <span class='no'>variables</span>, <span class='no'>variableDetails</span>, <span class='no'>pbcDDI</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Row  2 : valueLabelStart  column has value " male " but DDI value is " Male ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  1 : valueLabelStart  column has value " female " but DDI value is " Female ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : valueLabelStart  column has value " No edema " but DDI value is " edema despite diuretic therapy ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : label  column has value " Edema " but DDI value is " edema ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : low  column has value " 0 " but DDI value is " 1 ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : high  column has value " 0 " but DDI value is " 1 ". Not overwriting</span></div><div class='input'>
+<span class='no'>pbcModel</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/BLLFlow'>BLLFlow</a></span>(<span class='no'>pbc</span>, <span class='no'>variables</span>, <span class='no'>variableDetails</span>, <span class='no'>pbcDDI</span>)
 
-<span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/WriteDDIPopulatedMSW'>WriteDDIPopulatedMSW</a></span>(<span class='no'>pbcModel</span>, <span class='st'>"../../inst/extdata/"</span>, <span class='st'>"newMSWvariableDetails.csv"</span>)</div><div class='input'>
-</div><div class='input'><span class='co'># Updating a variable details sheet from file and writing the updated version</span>
+
+<span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/WriteDDIPopulatedMSW'>WriteDDIPopulatedMSW</a></span>(<span class='no'>pbcModel</span>, <span class='st'>"../../inst/extdata/"</span>, <span class='st'>"newMSWvariableDetails.csv"</span>)
+<span class='co'># }</span><div class='input'>
+</div><span class='co'># NOT RUN {</span>
+<span class='co'># Updating a variable details sheet from file and writing the updated version</span>
 <span class='co'># ___________________________________________________________________________</span>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>bllflow</span>)
 
 <span class='no'>pbcDDI</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/ReadDDI'>ReadDDI</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>""</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"bllflow"</span>), <span class='st'>"pbcDDI.xml"</span>)
 
-<span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/WriteDDIPopulatedMSW'>WriteDDIPopulatedMSW</a></span>(<span class='no'>pbcDDI</span>, <span class='st'>"../../inst/extdata/"</span>, <span class='st'>"PBC-variableDetails.csv"</span>, <span class='st'>"newName.csv"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Row  2 : valueLabelStart  column has value " male " but DDI value is " Male ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  1 : valueLabelStart  column has value " female " but DDI value is " Female ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : valueLabelStart  column has value " No edema " but DDI value is " edema despite diuretic therapy ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : label  column has value " Edema " but DDI value is " edema ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : low  column has value " 0 " but DDI value is " 1 ". Not overwriting</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Row  9 : high  column has value " 0 " but DDI value is " 1 ". Not overwriting</span></div></pre>
+<span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/WriteDDIPopulatedMSW'>WriteDDIPopulatedMSW</a></span>(<span class='no'>pbcDDI</span>, <span class='st'>"../../inst/extdata/"</span>, <span class='st'>"PBC-variableDetails.csv"</span>, <span class='st'>"newName.csv"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
