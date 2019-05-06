@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 - Are your data and statistical models becoming more complex, challenging to perform, and challenging to report?
 
-- Are you concerned about the [misuse](https://www.nature.com/articles/d41586-019-00857-9) of statistical findings? But not sure about reporting all results of all analyses?
+- Are you concerned about the [misuse](https://www.nature.com/articles/d41586-019-00857-9) of statistical findings? But not sure about prespecifying your model and reporting all results of all analyses?
 
 - Do you work in teams that span disciplines and institutions?
 
@@ -38,7 +38,7 @@ There are three main features:
 
 1) **The Model Specification Workbook (MSW)** - Start your model development with worksheets (CSV files) that contain information about the variables in your model, data cleaning and transformation steps and how to create output tables. 
 
-1) **Functions to perform routine data cleaning and transformation tasks** - use functions with or without the Model Specification Workbook. Functions with 'BLL' in the function name perform data cleaning and transformation using the Model Specification Workbook.  
+1) **Functions to perform routine data cleaning and transformation tasks** - use functions with or without the Model Specification Workbook. Complex non-linear transformations and interactions are as easy to perform as simpler transformations. Functions with 'BLL' in the function name perform data cleaning and transformation using the Model Specification Workbook.  
 
 1) **Formatted output files, tables** - results of your analyses in a consistent format following the concept of 'one document, many uses'.
 
