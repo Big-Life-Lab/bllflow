@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{The metaData log object}
 
-\item{...}{Test}
+\item{...}{Arguments for next method in the chain}
 }
 \description{
 Custom print function for the bllFlow metaData log

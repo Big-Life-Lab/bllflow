@@ -2,56 +2,59 @@
 % Please edit documentation in R/bll-flow.R
 \name{BLLFlow}
 \alias{BLLFlow}
-\title{Creates a BLLFlow instance from the data arg}
+\title{Creates a bllflow model}
 \usage{
 BLLFlow(data = NULL, variables = NULL, variableDetails = NULL,
-  ddi = FALSE)
+  ddi = NULL)
 }
 \arguments{
 \item{data}{A dataframe that represents the dataset the model will be developed
 on}
 
-\item{variables}{The specification sheet for this model. An example
+\item{variables}{A dataframe that has the specification sheet for this model. An example
 of this worksheet is available here
-https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0.
-CSV file should be read in using the read.csv function.}
+\url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0}.}
 
-\item{variableDetails}{The variable details worksheet. An example
+\item{variableDetails}{A dataframe that is the variable details worksheet. An example
 of this worksheet is available here
-https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036.
-CSV file should be read in using the read.csv function.}
+\url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036}.}
 
-\item{ddi}{A string containing the path to the ddi file optional variable if the DDI is present}
+\item{ddi}{An optinal string that contains the path to a ddi document}
 }
 \value{
-Returns a new BllFlow object with the data, variables and
-variableDetails args attached as variables as well as additional ddiMetadata(Header information) and
-a populatedVaraiableDetailsSheet that contains information from DDI matching variables in variabledetails.
+A named list which is an instance of the bllflow class. The items
+in the list are specified below: \cr
+1. data - A dataframe that contains the passed data argument \cr
+2. variables - A dataframe that contains the passed variables argument \cr
+3. variableDetails - A dataframe that contains the passed variableDetails argument \cr
+4. ddi - A string that contains the passed ddi argument \cr
+5. additionalDDIMetaData - A named list. See the return type of the \code{\link{GetDDIDescription}} function \cr
+6. populatedVariableDeatails - A dataframe that contains the rows in the variableDetails \cr
+argument but with additional data filled in using the ddi argument it's specified
 }
 \description{
-Creates a BLLFlow instance from the data arg
+Wraps up the data, variables and variableDetails arguments in an R object, 
+making it an instance of a bllflow class and returning the resulting object.
+If a ddi argument is provided, all the metadata from the DDI document is 
+imported into the R object
 }
 \examples{
-#' # Install the packages
-
-# Read in the data we will use
-
+# ALl the libraries we will be using
+library(bllflow)
 library(survival)
+
+# Read in the data we will use for this example
 data(pbc)
 
-# Read in the MSW and variable_details sheet for the PBC model
-variablesSheet <- read.csv(file.path(getwd(),
- 'bllFlow/extdata/PBC/PBC-variables.csv'))
-variableDetailsSheet <- read.csv(file.path(getwd(),
- 'bllFlow/extdata/PBC/PBC-variable-details.csv'))
+# Read in the variables and variable details CSV sheets which are part of the 
+# master specification workbook
+variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 
 # Create a bllFlow R object for the PBC model using the above variables as args
-library(bllFlow)
-pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails)
-# Test for DDI
-tmp <- BLLFlow(pbc, variablesSheet, variableDetails, file.path(getwd(),
- 'bllFlow/extdata/test-folder/DDI/cchs-82M0013-E-2013-2014-Annual-component.xml'))
+# and store it in the pbcModel variable
+pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetails)
 
-# Passing objects other then a dataframe will create errors
-#pbcModel <- BLLFlow(pbc, c(1,2,3), list(2,3,4))
+# The pbcModel variable is an R object of instance BLLFlow
+print(attr(pbcModel, 'class'))
 }

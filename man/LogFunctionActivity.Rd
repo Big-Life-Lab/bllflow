@@ -33,6 +33,3 @@ bllFlow modifiied with the new log data
 A function to insert log information about the caller function
 as well as print a human readable output to verify caller function activity
 }
-\examples{
-# TODO Example for this function
-}
