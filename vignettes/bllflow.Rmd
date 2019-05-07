@@ -2,7 +2,6 @@
 title: "Getting started with bllFlows"
 resource_files:
   - ../man/figures/coding.png
-  - d_clean_data.Rmd
 output: 
   rmarkdown::html_document:
     toc: true 
@@ -45,6 +44,6 @@ pbcModel <-  BLLFlow(pbc, variables, variableDetails)
   cleanPbc <- clean.Min(pbcModel, print = TRUE)
   cleanPbc <- clean.Max(cleanPbc, print = TRUE)
 ```
-Within the `PBC-variables.csv` file there is a column 'min' and 'max' and a row each variable. The 'age' variable has the values for 40 and 70 in the 'min' and 'max' columns. This example is shown in more detail in the [data cleaning and transformation](d_clean_data.Rmd) vignette. 
+Within the `PBC-variables.csv` file there is a column 'min' and 'max' and a row each variable. The 'age' variable has the values for 40 and 70 in the 'min' and 'max' columns. This example is shown in more detail in the [data cleaning and transformation](d_clean_data.html) vignette. 
 
 Note that executing `clean.Max` executes `min` and `max` criteria for all variables in the pbcModel.
