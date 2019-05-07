@@ -2,6 +2,7 @@
 title: "Getting started with bllFlows"
 resource_files:
   - ../man/figures/coding.png
+  - d_clean_data.Rmd
 output: 
   rmarkdown::html_document:
     toc: true 
