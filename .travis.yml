@@ -1,8 +1,6 @@
-# safelist
 branches:
-  only:
-  - travis-fixes
-  - travis-fixes-pages
+  except:
+  - gh-pages
   
 language: r
 
@@ -32,6 +30,6 @@ deploy:
   github-token: $GITHUB_TOKEN
   keep-history: true
   local-dir: docs
-  target_branch: travis-fixes-pages
+  target_branch: gh-pages
   on:
-    branch: travis-fixes
+    branch: master
