@@ -2,6 +2,7 @@
 branches:
   only:
   - travis-fixes
+  - travis-fixes-pages
   
 language: r
 
@@ -21,6 +22,7 @@ script:
   - R CMD check *tar.gz
   
 after_success:
+  - Rscript -e 'devtools::install()'
   - R -e "install.packages('pkgdown')"
   - Rscript -e 'pkgdown::build_site(run_dont_run = TRUE)'
 
