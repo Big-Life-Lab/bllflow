@@ -33,3 +33,5 @@ deploy:
   keep-history: true
   local-dir: docs
   target_branch: travis-fixes-pages
+  on:
+    branch: travis-fixes
