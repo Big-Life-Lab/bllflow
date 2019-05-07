@@ -1,21 +1,26 @@
-Package: bllFlow
+Package: bllflow
 Type: Package
 Title: Big Life Lab Flow - a Workflow for Predictive Studies
-Description: An implementation of predictive algorithm studies.
-    Predictive Modelling Mark-up Language (PMML) is suported.
-    The workflow has three steps: data prepartation; model development, 
-    and; model deployment.
-Version: 0.1.1
+Description: An implementation of predictive algorithm studies. Predictive 
+  Modelling Mark-up Language (PMML) is suported. The workflow has three steps:
+  data prepartation; model development, and; model deployment.
+Version: 0.1.0
 Date: 2018-12-09
 Authors@R: c( 
-  person(given = "Yulric", family = "Sequeira", 
-    email = "ysequeira@ohri.ca", role = c("aut", "cre")),
   person(given = "Doug", family = "Manuel", 
-    email = "dmanuel@ohri.ca", role = c("aut"), 
+    email = "dmanuel@ohri.ca", role = c("aut", "cre"), 
     comment = c(ORCID = "0000-0003-0912-0845")),
+  person(given = "Rostyslav", family = "Vyuha", 
+    email = "rostikvyuha@gmail.com", role = c("aut")),
+  person(given = "Yulric", family = "Sequeira", 
+    email = "ysequeira@ohri.ca", role = c("ctb")),
+  person(given = "Stacey", family = "Fisher", 
+    email = "stacey.fisher@uottawa.ca", role = c("ctb"), 
+    comment = c(ORCID = "0000-0002-4925-7806")),
+  person(given = "Carol", family = "Bennett", 
+    email = "cbennett@ohri.ca", role = c("ctb")),
   person(given = "Meltem", family = "Tuna", 
-    email = "mtuna@ohri.ca", role = c("aut"))
-    )
+    email = "mtuna@ohri.ca", role = c("aut")))
 Depends:
   R (>= 3.2),
   tableone,
@@ -34,9 +39,9 @@ Suggests:
   DT,
   magrittr,
   survival
-URL: https://github.com/Big-Life-Lab/bllFlow
-BugReports: https://github.com/Big-Life-Lab/bllFlow/issues
-Maintainer: Yulric Sequeira <ysequeira@ohri.ca>
+URL: https://github.com/Big-Life-Lab/bllflow
+BugReports: https://github.com/Big-Life-Lab/bllflow/issues
+Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

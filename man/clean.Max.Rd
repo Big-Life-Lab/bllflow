@@ -2,19 +2,15 @@
 % Please edit documentation in R/clean.R
 \name{clean.Max}
 \alias{clean.Max}
-\title{Clean.Max}
+\title{Generic function for clean.Max}
 \usage{
-clean.Max(modelToClean, print = FALSE)
+clean.Max(bllFlowModel, ...)
 }
 \arguments{
-\item{modelToClean}{A passed object that contains the data that needs to be cleaned
-as well as specifications on how to clean it.}
+\item{bllFlowModel}{The bllFlowModel we will clean}
 
-\item{print}{If set true prints human readable log of the performed cleaning operations}
-}
-\value{
-The passed object with now cleaned data as well as a log containing the performed actions
+\item{...}{Arguments to the next method in the chain}
 }
 \description{
-Clean The data using the Max according to the specifications in the passed object.
+Generic function for clean.Max
 }

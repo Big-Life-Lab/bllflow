@@ -13,8 +13,16 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-PMML
+## Introduction
 
-Validation data
+This section is in progress. _bllflow_ use the Model Specification Workbook to provide instructions to generate:
 
-Calibration data
+- the PMML file that described how to calculate predictive algorithms.
+- validation (testing) data.
+- calibratin data.
+
+See the following examples of how `bllflow` is used to report and deploy models.
+
+  * Algorithms for indivdual use at [Project Big Life](https://www.projectbiglife.ca)
+  * Application Program Interface [(API)](https://ottawa-mhealth.github.io/pbl-calculator-engine-docs/)
+  * Algorithm deployment for population planning - Coming September 2019.

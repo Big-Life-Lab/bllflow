@@ -37,7 +37,7 @@ LogFunctionActivity <-
           actionTaken,
           ". Reason: Rule ",
           reason,
-          " was violated",
+          " ",
           sep = ""
         )
       )

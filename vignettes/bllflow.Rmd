@@ -1,0 +1,47 @@
+---
+title: "Getting started with bllFlows"
+output: 
+  rmarkdown::html_document:
+    toc: true 
+    toc_depth: 3
+    number_sections: false
+    css: "style.css"
+---
+“Flow” in _bllflow_ refers to the process of using the Model Specification Worksheet to perform rountine data cleaning and transformation, performance reporting, and model deployment. Go to [`Workflow`](a_workflow.html) to see _bllflow_'s seven steps to analysing observational data. You can pick and choose to use any steps that 
+fit your own workflow.
+
+<div class="image">
+  <img src="../reference/figures/coding.png" alt="if only bllflow" />
+  <div class="img_caption">
+  <p>If only they used <b>bllflow</b></p>
+  </div>
+</div>
+
+## Workflow vignettes
+Tne [`Workflow`](a_workflow.html) vignettes use the `pbc` data available in the `suvival` package to [replicate](https://www.ncbi.nlm.nih.gov/pubmed/2737595) a survival model for people with primary biliary cirrhosis.  What is the `pbc` data? The name, description and other information is included in the metadata file! 
+
+See [`Example 4 - Helper and utility functions`](i_helper_functions.html). 
+
+## Example - Study exclusion criteria
+A typical first step when starting a new study is applying inclusion and exclusion criteria to the study data. In our PBC survival model, we will include only participants ages 40 to 70 years.
+
+##### 1) Excluding participatns age < 40 or >70 years using `clean.Min()` and `clean.Max()`
+```{r Clean with BBLFlow(), message=FALSE, warning=FALSE}
+# load libraries and pbc data (from survival)
+library(survival)
+data(pbc)
+library(bllflow)
+
+# read the MSW
+# MSW includes columns 'min' and 'max' with rows for 'age' values 40 and 70.
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+
+# perform all data cleaning steps
+pbcModel <-  BLLFlow(pbc, variables, variableDetails)
+  cleanPbc <- clean.Min(pbcModel, print = TRUE)
+  cleanPbc <- clean.Max(cleanPbc, print = TRUE)
+```
+Within the `PBC-variables.csv` file there is a column 'min' and 'max' and a row each variable. The 'age' variable has the values for 40 and 70 in the 'min' and 'max' columns. This example is shown in more detail in the [data cleaning and transformation](d_clean_data.Rmd) vignette. 
+
+Note that executing `clean.Max` executes `min` and `max` criteria for all variables in the pbcModel.

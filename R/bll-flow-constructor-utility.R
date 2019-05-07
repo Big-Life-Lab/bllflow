@@ -122,22 +122,21 @@ PopulateVariableDetails <-
     return(finalFrame)
   }
 
-#' Populate variable details sheet using ddi
+#' Imports DDI metadata into a variable details worksheet
 #' 
-#' Populates the passed variable details columns with variable related metadata
-#' from the passed ddi object. Does not overwrite value matching information
-#' if any is present. Returns a new variable details populated by the information
-#' and new rows created for any missing values.
+#' Updates a variable details worksheet with metadata from a DDI document. New rows
+#' are added for missing categories and columns that are empty are updated with
+#' values from the document. No information from the worksheet is overwritten.
 #'
-#' @param ddi the path to the ddi file containing the necessary information
-#' @param variableDetails the data frame containing unpopulated variableDetailsSheet
-#' @return returns a populated variableDetails dataframe
+#' @param ddi A string that is the file path to the DDI document
+#' @param variableDetails A data frame containing a variable details worksheet
+#' @return A dataframe containing the updated variable details worksheet
 #' @export
 #' @examples 
-#' library(bllFlow)
+#' library(bllflow)
 #' 
-#' pbcDDI <- ReadDDI(file.path(getwd(), "bllFlow/extdata"), "pbcDDI.xml")
-#' variableDetails <- read.csv(file.path(getwd(), 'bllFlow/extdata/PBC-variableDetails.csv'))
+#' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #' 
 #' populatedDetails <- ProcessDDIVariableDetails(pbcDDI, variableDetails)
 ProcessDDIVariableDetails <- function(ddi, variableDetails) {
