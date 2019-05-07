@@ -1,0 +1,41 @@
+<<<<<<< HEAD:inst/extdata/PBC/PBC - variable_details.csv
+variable,variableType,variableDummy,valueLabelLong,valueLabel,target,method,reference,databaseStart,variableStart,variableStartType,validCatN,validCatNStart,value,valueLabelStart,units,low,high,interval,label
+sex,category,sex_cat2_1,Female,Femle,pbc_demo,map1_1,Yes,pbc,sex,cat,2,2,f,female,NA,0,0,N/A,sexLabel1
+sex,category,sex_cat2_2,Male,Male,pbc_demo,map1_1,No,pbc,sex,cat,2,2,m,male,N/A,1,1,N/A,sexLabel2
+sex,category,sex_cat3_3,missing,missing,pbc_demo,map1_1,N/A,pbc,sex,cat,2,2,NA,N/A,N/A,N/A,N/A,N/A,sexLabel3
+age,continuous,age_rcs4_1,Age Restricted Cubic Spline Knot 1,Age RCS 1,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,1,N/A,years,N/A,N/A,N/A,ageLabel1
+age,continuous,age_rcs4_2,Age Restricted Cubic Spline Knot 2,Age RCS 2,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,2,N/A,years,N/A,N/A,N/A,ageLabel2
+age,continuous,age_rcs4_3,Age Restricted Cubic Spline Knot 3,Age RCS 3,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,3,N/A,years,N/A,N/A,N/A,ageLabel3
+age,continuous,age_rcs4_4,Age Restricted Cubic Spline Knot 4,Age RCS 4,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,4,N/A,years,N/A,N/A,N/A,ageLabel4
+age,continuous,age_rcs4_4,missing,missing,pbc_demo,rcs4,N/A,pbc,age,cont,N/A,N/A,NA,N/A,years,NA,NA,N/A,ageLabel5
+edema,category,edema_cat3_1,No edema,No edema,pbc_demo,map1_1,Yes,pbc,edema,cat,3,3,0,No edema,N/A,0,0,N/A,edemaLabel1
+edema,category,edema_cat3_2,Untreated or successfully treated,Untreated or successfully treated,pbc_demo,map1_1,No,pbc,edema,cat,3,3,0.5,Untreated or successfully treated,N/A,0.5,0.5,N/A,edemaLabel2
+edema,category,edema_cat3_3,Edema despite diuretic therapy,Edema despite diuretic therapy,pbc_demo,map1_1,No,pbc,edema,cat,3,3,1,Edema despite diuretic therapy,N/A,1,1,N/A,edemaLabel3
+edema,category,edema_cat3_3,missing,missing,pbc_demo,map1_1,N/A,pbc,edema,cat,3,3,NA,Edema despite diuretic therapy,N/A,NA,NA,N/A,edemaLabel4
+ageGroup,category,ageGroup_cat4_1,age (four groups),< 20,table_2,map1_1,yes,pbc,age,cont,4,N/A,1,N/A,years,0,20,"[,)",ageGroupLabel1
+ageGroup,category,ageGroup_cat4_2,age (four groups),20 - 40,table_2,map1_1,no,pbc,age,cont,4,N/A,2,N/A,years,20,40,"[,)",ageGroupLabel2
+ageGroup,category,ageGroup_cat4_3,age (four groups),40 - 80,table_2,map1_1,no,pbc,age,cont,4,N/A,3,N/A,years,40,80,"[,)",ageGroupLabel3
+ageGroup,category,ageGroup_cat4_4,age (four groups),80+,table_2,map1_1,no,pbc,age,cont,4,N/A,4,N/A,years,80,105,"[,]",ageGroupLabel4
+bili,continuous,,,,,,,,,,,,,,,,,
+albumin,continuous,,,,,,,,,,,,,,,,,
+protime,continuous,,,,,,,,,,,,,,,,,
+=======
+variable,variableType,variableDummy,valueLabelLong,valueLabel,target,method,reference,databaseStart,variableStart,variableStartType,validCatN,validCatNStart,value,valueLabelStart,units,low,high,interval
+sex,category,sex_cat2_1,Female,Femle,pbc_demo,map1_1,Yes,pbc,sex,cat,2,2,0,female,NA,0,0,N/A
+sex,category,sex_cat2_2,Male,Male,pbc_demo,map1_1,No,pbc,sex,cat,2,2,1,male,N/A,1,1,N/A
+sex,category,sex_cat3_3,missing,missing,pbc_demo,map1_1,N/A,pbc,sex,cat,2,2,NA,N/A,N/A,N/A,N/A,N/A
+age,continuous,age_rcs4_1,Age Restricted Cubic Spline Knot 1,Age RCS 1,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,1,N/A,years,N/A,N/A,N/A
+age,continuous,age_rcs4_2,Age Restricted Cubic Spline Knot 2,Age RCS 2,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,2,N/A,years,N/A,N/A,N/A
+age,continuous,age_rcs4_3,Age Restricted Cubic Spline Knot 3,Age RCS 3,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,3,N/A,years,N/A,N/A,N/A
+age,continuous,age_rcs4_4,Age Restricted Cubic Spline Knot 4,Age RCS 4,pbc_demo,rcs4,NA,pbc,age,cont,N/A,N/A,4,N/A,years,N/A,N/A,N/A
+age,continuous,age_rcs4_4,missing,missing,pbc_demo,rcs4,N/A,pbc,age,cont,N/A,N/A,NA,N/A,years,NA,NA,N/A
+edema,category,edema_cat3_1,No edema,No edema,pbc_demo,map1_1,Yes,pbc,edema,cat,3,3,1,No edema,N/A,0,0,N/A
+edema,category,edema_cat3_2,Untreated or successfully treated,Untreated or successfully treated,pbc_demo,map1_1,No,pbc,edema,cat,3,3,2,Untreated or successfully treated,N/A,0.5,0.5,N/A
+edema,category,edema_cat3_3,Edema despite diuretic therapy,Edema despite diuretic therapy,pbc_demo,map1_1,No,pbc,edema,cat,3,3,3,Edema despite diuretic therapy,N/A,1,1,N/A
+edema,category,edema_cat3_3,missing,missing,pbc_demo,map1_1,N/A,pbc,edema,cat,3,3,NA,Edema despite diuretic therapy,N/A,NA,NA,N/A
+age_group,category,age_group_cat4_1,age (four groups),< 20,table_2,map1_1,yes,pbc,age,cont,4,N/A,1,N/A,years,0,20,"[,)"
+age_group,category,age_group_cat4_2,age (four groups),20 - 40,table_2,map1_1,no,pbc,age,cont,4,N/A,2,N/A,years,20,40,"[,)"
+age_group,category,age_group_cat4_3,age (four groups),40 - 80,table_2,map1_1,no,pbc,age,cont,4,N/A,3,N/A,years,40,80,"[,)"
+age_group,category,age_group_cat4_4,age (four groups),80+,table_2,map1_1,no,pbc,age,cont,4,N/A,4,N/A,years,80,105,"[,]"
+,,,,,,,,,Drinks,,,,,,,,,
+>>>>>>> origin/master:inst/extdata/PBC/PBC-variable-details.csv

@@ -14,29 +14,81 @@ knitr::opts_chunk$set(
 )
 ```
 ## Introduction
+The Model Specification Workbook (MSW) is used to specify your model. The MSW is 
+a series of four worksheets (CSV files) that describe different model components. 
+You can use __bllflow__ without a MSW but we recommend using the 
+`variables` and `variable_details` worksheets. 
+ 
+## Four worksheets in the Model Specification Workbook
+1) `modelDescription` --- the name of the model, date created and other 
+information about the study.
+1) `variables` --- all model variables, including data cleaning and 
+transformations. `variables` is the most important sheet and is helpful even if you don't use other parts of _bllflow_
+1) `variableDetails` --- information on factors (categories) and how to transform
+ final variables from their starting variables. 
+1) `summaryVariables` -- Identify variables that are used in model reporting, such as 
+for `Table 1`. 
 
+## Getting started with the Model Specification Workbook
+You have your study data. Great. The first step is specifying which variables you 
+need in your model, as well as variables for study cohort creation, data cleaning and variable transformation. 
 
-## Data templates
-**bblFlow** has three Model Specfication Worksheets (MSW):
+_bllflow_ has an example Model Specification Workbook for the `pbc` data. The Model Specification Sheets describe the specifications to recreate a survival model for [primary biliary cirrhosis](https://aasldpubs.onlinelibrary.wiley.com/doi/pdf/10.1002/hep.1840100102). 
 
-1) `MSW-variables` --- for all model variables (features).
-1) `MSW-categories` --- for all category (factor) levels.
+Pre-specified analyses is emphasized, but variables can be added as you perform study. Additional variables and transformation are added to the Model Specification Workbook to ensure reproducibilty and transparency. The Model Specification Workbook is a record of how you created your model and what analyses you performed. As well, _bllflow_ uses metadata throughout the workflow, including reporting the results of your model. 
 
-Include in each worksheet is metadata for specifying the model, including:
+## Examples of the worksheets
+The model the we will develop has six variables: age, sex, bili, albumin, protime, edema. 
 
-- variable labels
-- data cleaning
-- tranfromation rules
+### Example 1: Variables
+The `variables.csv` contains each variable as row. The sheet includes additional information such as variable labels. There are instructions for data cleaning that are discussed in step 3. For example, the model is restricted to ages 40 to 70 years. So, for `age` there there are `min` and `max` values. 
 
-The 
+```{r} 
+library(DT)
 
-We typically create a family of algorithms that consist of different outcomes 
-using the same development cohort. We create "master" worksheets that contain 
-variables used in any algorithm wtih a family of algorithms. As well as 
-algorithm specific worksheets with data cleaning and transformation rules, such 
-as max-min rules, that are specfic for each algorithm. 
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 
+datatable(variables, options = list(pageLength = 6))
+```
 
+## How to create the Model Specification Workbook
+There are two approaches to creating the Model Specification Workbook. We usually start the Model Specification Workbook as a CSV file to facilate collaboration between study colloborators. Alternatively, you can create the MSW as an R dataframe.
 
+_bllflow_ supports importing metadata into the workbook from:
 
+- DDI (xml) files. Use DDI files ([Data Document Initiative](https://www.ddialliance.org)) to add labels, units, type, variableType and other metadata. [Helper and utility functions](vignettes/i_helper_functions.Rmd) shows examples of adding DDI metadata to the MSW. 
+- variable lablels in study dataframe as `attr` label (using hmisc, sjlabelled or
+similar packages); or,
+- manually added added to the MSW.
 
+### Example 2: Variable details
+The `variableDetails.csv` contains additional variable details. For categorical variables there are rows for each category (factor). Included for each row are factor levels and lablels. Again, this information can be added through helper functions if there is a DDI file or the labels are already in your data. 
+
+The `variableDetails` sheet also includes transformed variables used throughout the study. In our example model, we use age as a non-linear predictor (3 knot restricted cubic spline). However, `Table 1` and other tables report `age` categories. We added the transformed `age_cat4` variable to the `variableDetails.csv` file, along with labels and infomiation on the age range for each category. 
+
+There are 16 rows in `variableDetails`. We included `age` as the first example, with the remaining rows representing only the newly transformed variables -- variables that do not existing our orginal `pbc` data. The information for variables in the original `pbc` data are in the `pbcDDI.xml` file. That metadata can be added with the DDI utility functions describe later [Helper and utility functions](vignettes/i_helper_functions.Rmd)
+
+```{r}
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+datatable(variableDetails, options = list(pageLength = 5))
+```
+
+## Reading the Model Specification Workbook
+Model Specification Workbook is imported and added to a _bllflow_ object that can be used instructions for data cleaning. Once read into the _bllflow_, the Model Specification Workbook are objects that are accessed and used to provide instructions to clean data and transform variables. 
+
+In the following example, the MSW `variables` and `variableDetails` sheets are read and then added with the `pbc` data into our `pbcModel`.
+```{r}
+library(survival)
+data(pbc)
+
+# read MSW variables and variableDetails sheet for the PBC model
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+
+# create a bllflow object and add labels.
+# pbcModel <- BLLFlow(pbc, variables, variableDetails)
+```
+The `pbcModel` contains `pbc`, `variables` and `variableDetails` along with three additional objects used to support model building.
+```{r the pbcModel}
+# pbcModel
+```

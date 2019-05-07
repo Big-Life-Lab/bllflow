@@ -12,10 +12,11 @@ pbc$ageGroup <- ifelse(pbc$age < 20, 1,
 ```
 
 ```{r}
-library(bllFlow)
-variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variables.csv'))
-variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC - variable_details.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
+library(bllflow)
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 ```
 
 ```{r}
@@ -25,7 +26,7 @@ print(tableOneLong)
 ```
 
 ```{r}
-#pbcTableOne <- CreateTableOne(pbcModel, tableVariables)
+pbcTableOne <- CreateTableOne(pbcModel)
 #pbcLongTable <- SummaryDataLong(AnyTableOne = optional, AnyTableLong = optional)
 #This lets u append to the long table any table one u prefer and hopefully allows for implementation of other tables
 #Only issue is i need to figure out what to later order it by to keep the table organized

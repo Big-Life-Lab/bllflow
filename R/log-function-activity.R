@@ -1,10 +1,10 @@
 #' LogFunctionActivity
-#' 
+#'
 #' A function to insert log information about the caller function
 #' as well as print a human readable output to verify caller function activity
 #'
 #' @param bllFlow BllFlow object containing data and related MetaData
-#' @param rowsChecked The amount of rows that the function calling this had to check 
+#' @param rowsChecked The amount of rows that the function calling this had to check
 #' @param rowsAffected The amount of rows the caller function changed
 #' @param actionTaken What was done with the affected rows
 #' @param reason A human readable reason for the action being performed
@@ -14,9 +14,6 @@
 #' @param print Specification if the human readable output needs to be printed
 #'
 #' @return bllFlow modifiied with the new log data
-#' @export
-#'
-#' @examples
 LogFunctionActivity <-
   function(bllFlow,
            rowsChecked,
@@ -27,7 +24,6 @@ LogFunctionActivity <-
            variable,
            value,
            print) {
-    
     # Print information about the function if the user desires
     if (print) {
       print(
@@ -41,7 +37,7 @@ LogFunctionActivity <-
           actionTaken,
           ". Reason: Rule ",
           reason,
-          " was violated",
+          " ",
           sep = ""
         )
       )
@@ -50,20 +46,24 @@ LogFunctionActivity <-
     # Create a new log if metaData does not yet have a log object
     if (is.null(bllFlow$metaData$log)) {
       bllFlow$metaData$log <- list()
+      attr(bllFlow$metaData$log, "class") <- c(attr(bllFlow$metaData$log, "class"), "metaDataLog")
     }
     
     # Populate the log object with data about the function that was executed
-    bllFlow$metaData$log <-
-      c(bllFlow$metaData$log,
-        list(
-          fun = executedFunction,
-          result = list(
-            type = actionTaken[["outlier"]],
-            rowsAffected = rowsAffected,
-            variable = variable,
-            value = value
-          )
-        ))
+    label <-
+      bllFlow$variables[bllFlow$variables$variable==variable
+                        , "label"]
+    bllFlow$metaData$log[[length(bllFlow$metaData$log) + 1]] <-
+      list(
+        fun = executedFunction,
+        result = list(
+          type = actionTaken,
+          rowsAffected = rowsAffected,
+          variable = variable,
+          label = label[[1]],
+          value = value
+        )
+      )
     
     return(bllFlow)
   }

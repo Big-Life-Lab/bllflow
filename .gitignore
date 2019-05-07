@@ -4,3 +4,7 @@ inst/doc
 generated-project
 .RHistory
 .env
+man/*
+!man/figures/
+docs
+.RData
