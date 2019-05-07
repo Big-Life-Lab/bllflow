@@ -49,7 +49,7 @@ At any point of your analyses you have:
 
 _bllflow_ supports the use of metadata, including:
 
-- the Data Document Initiative ([DDI](https://ddialliance.org)).
+- the Data Document Initiative ([DDI](https://www.ddialliance.org)).
 - Predictive Model Modelling Language for predictive algorithms ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for transparent algorithm reporting and deployment.  
 
 _bllflow_ workflow and functions support reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/).

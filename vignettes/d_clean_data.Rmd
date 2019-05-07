@@ -64,4 +64,8 @@ Supported functions: <font color="red">TODO</font>: describe these functions.
 
 ## Logging
 
+TODO
+
 ## Transformations to PMML
+
+TODO
