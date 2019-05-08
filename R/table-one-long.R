@@ -10,6 +10,7 @@
 #' @param bllFlowModel A bllFlow model
 #' @param tableVariablesSheet The data frame with information on how to build
 #' the table
+#' 
 #' @return A dataframe containing the table one long
 #'
 #' @examples
@@ -362,7 +363,36 @@ compareNA <- function(v1, v2) {
   same[is.na(same)] <- FALSE
   return(same)
 }
+#' Summary Data Long Table
+#' 
+#' Creates a Long table to summarise data from multiple tables in one convinient table.
+#' Its primary use is to convert Table one tables into long table.
+#' The optional arguments allow appending to long table as well as addition of labeles
+#' 
+#' @param tableOne the table one object to be converted into a long table
+#' @param longTable the optional long table to append the table one information to
+#' @param bllModel The optional bllObject containing labels and extra information on the variables
+#' @return Returns the long table or the bllModel with long table attached
+#' 
+#' @examples 
+#' library(survival)
 
+#' data(pbc)
+#' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
+#' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
+#' ifelse(pbc$age >= 20 & pbc$age < 40, 2,
+#' ifelse(pbc$age >= 40 & pbc$age < 80, 3,
+#' ifelse(pbc$age >= 80, 4, NA))))
+#' 
+#' library(bllflow)
+#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' 
+#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
+#' pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
+#' pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllModel = pbcModel, longTable = pbcSummaryTableNoLabels)
 #'@export
 SummaryDataLong <-
   function(tableOne,
@@ -388,15 +418,55 @@ SummaryDataLong <-
     }
     returnTable <- AddToLongTable(tableOne, longTable, bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
     returnTable <- unique(returnTable)
-    return(returnTable)
+    retObject <- NULL
+    if (is.null(bllModel)) {
+      retObject <- returnTable
+    }else {
+      bllModel$longTable <- returnTable
+      retObject <- bllModel
+    }
+    
+    return(retObject)
   }
-
+#' Create Table One
+#' 
+#' Creates Table One using the tableone package
 #' @export
 CreateTableOne <- function(x = NULL, ...) {
   UseMethod("CreateTableOne", x)
 }
 
-#' If no vars are present use the variables inside bllVariables
+#' Create Table One using BLLFlow Object
+#' 
+#' Creates table one using the information present in the passed bllFlow object
+#' additional arguments can be passed to create a specific table one.
+#' However if no optional args are passed the variable info stored in variables MSW is used.
+#' 
+#' @param bllFlowModel The bllflow object
+#' @param vars The optional vars to use in creation of table one
+#' @param strata The optional strata to use in creation of table one if no strata is passed no strata is used
+#' @param factorVars The optional factorVars (categorical variables) used in creation of table one
+#' 
+#' @return returns a table one tableOne object
+#' 
+#' @examples 
+#' #' library(survival)
+
+#' data(pbc)
+#' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
+#' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
+#' ifelse(pbc$age >= 20 & pbc$age < 40, 2,
+#' ifelse(pbc$age >= 40 & pbc$age < 80, 3,
+#' ifelse(pbc$age >= 80, 4, NA))))
+#' 
+#' library(bllflow)
+#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' 
+#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
+#' 
 #' @export
 CreateTableOne.BLLFlow <- function(bllFlowModel,
                                    vars = NULL,
@@ -426,6 +496,7 @@ CreateTableOne.BLLFlow <- function(bllFlowModel,
 #' @export
 CreateTableOne.default <- tableone::CreateTableOne
 
+# Adds the column to the list as well as the dataframe that is passed
 AddColumn <-
   function(columnName,
            valueToSet,
@@ -442,5 +513,6 @@ AddColumn <-
         tableToAddTo[[columnName]] <- NA
       }
     }
+    
     return(list(listToAddTo, tableToAddTo))
   }
