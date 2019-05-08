@@ -13,28 +13,6 @@
 #' 
 #' @return A dataframe containing the table one long
 #'
-#' @examples
-#' # Install the packages
-#'
-#' # Use to generate the table one object
-#' install.packages("tableone")
-#' # Has the data we will use to generate a table one
-#' install.packages("survival")
-#'
-#' # Read in the data we will use to generate Table One
-#'
-#' library(survival)
-#' data(pbc)
-#'
-#' # Read in the MSW and variable_details sheet for the PBC model
-#' variablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variables.csv'))
-#' variableDetailsSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC - variable_details.csv'))
-#' tableVariablesSheet <- read.csv(file.path(getwd(), 'inst/extdata/PBC/PBC-table-variables.csv'))
-#'
-#' # Create a bllFlow R object for the PBC model using the above variables as args
-#' library(bllFlow)
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetailsSheet)
-#' tables.CreateTableOneLong(pbcModel,tableVariablesSheet)
 #' @import tableone
 tables.CreateTableOneLong <- function(bllFlowModel,
                                       tableVariablesSheet) {
