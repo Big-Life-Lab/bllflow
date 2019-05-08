@@ -449,8 +449,7 @@ CreateTableOne <- function(x = NULL, ...) {
 #' @return returns a table one tableOne object
 #' 
 #' @examples 
-#' #' library(survival)
-
+#' library(survival)
 #' data(pbc)
 #' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
 #' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
