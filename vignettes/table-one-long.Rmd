@@ -20,13 +20,13 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 ```
 
 ```{r}
-tableVariables <- read.csv(file.path(getwd(), '../inst/extdata/PBC/PBC-table-variables.csv'))
-tableOneLong <- tables.CreateTableOneLong(pbcModel, tableVariables)
-print(tableOneLong)
+pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
+pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
+pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllModel = pbcModel, longTable = pbcSummaryTableNoLabels)
 ```
 
 ```{r}
-pbcTableOne <- CreateTableOne(pbcModel)
+
 #pbcLongTable <- SummaryDataLong(AnyTableOne = optional, AnyTableLong = optional)
 #This lets u append to the long table any table one u prefer and hopefully allows for implementation of other tables
 #Only issue is i need to figure out what to later order it by to keep the table organized
