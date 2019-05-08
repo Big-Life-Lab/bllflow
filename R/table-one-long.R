@@ -376,7 +376,6 @@ compareNA <- function(v1, v2) {
 #' 
 #' @examples 
 #' library(survival)
-
 #' data(pbc)
 #' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
 #' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
