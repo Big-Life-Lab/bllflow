@@ -403,9 +403,6 @@ CreateTableOne.BLLFlow <- function(bllFlowModel,
                                    strata = NULL,
                                    factorVars = NULL) {
   #pull from variables in bllFlow
-  #   variableDetails[compareNA(variableDetails$variable, varNames[[variablesChecked]]) &
-  #                     compareNA(variableDetails$value, as.character(levName))
-  #                   , "valueLabel"]
   variablesSheet <- bllFlowModel[[pkg.globals$bllFlowContent.Variables]]
   if (is.null(vars)) {
     vars <-
