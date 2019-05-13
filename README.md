@@ -86,3 +86,13 @@ steps of the *bllflow* workflow. Currently on step \#4.
 
 Please follow [this guide](CONTRIBUTING.md) if you like to contribute to
 the *bllflow* package.
+
+## Documentation
+
+In case your documentation .Rmd file contains images you wish to include, make sure to add the path to the image in the resource_files section.
+An example of that is shown below:
+
+    resource_files:
+      - ../man/figures/coding.png
+  
+In case you wish to link .Rmd files together make sure to change their .Rmd extension to a .html extension to make sure the wiki links properly.
