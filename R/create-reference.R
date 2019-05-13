@@ -26,7 +26,7 @@ CreateBLLModelObject <- function(passedData, passedModel, passedTableOne){
     for (strataVar in length(passedTableOne$ContTable)) {
       allStrataVarMeans[[strataVar]] <-  passedTableOne$ContTable[[strataVar]][varNames, "mean"]
       attr(allStrataVarMeans[[strataVar]], "names") <- NULL
-      retTable[[paste("meanForStrata#", strataVar, sep = "")]] <- allStrataVarMeans[[strataVar]]
+      retTable[["mean"]] <- allStrataVarMeans[[strataVar]]
     }
   }
   
