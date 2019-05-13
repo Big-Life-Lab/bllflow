@@ -99,4 +99,7 @@ We need to know where the knots are placed. To determine this:
 attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
 attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
+```{r}
+modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
+```
 
