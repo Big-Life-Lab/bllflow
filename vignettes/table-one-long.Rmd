@@ -22,7 +22,7 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 ```{r}
 pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
 pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
-pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllModel = pbcModel, longTable = pbcSummaryTableNoLabels)
+pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = pbcSummaryTableNoLabels)
 ```
 
 ```{r}
