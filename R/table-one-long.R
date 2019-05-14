@@ -197,6 +197,8 @@ ExtractDataFromContTable <-
     } else{
       strataSplitName <- strataName
     }
+    longTable <-
+      AddGroupByColumns(strataSplitName, longTable, variableDetails)
     # loop through each strata columns
     for (strataIndex in 1:length(contTable)) {
       variables <- (row.names(contTable[[strataIndex]]))
@@ -218,52 +220,13 @@ ExtractDataFromContTable <-
         
         # create the row to add to tableOne Long
         groupByList <- list()
+        longTableRow <- list()
         if (length(strataSplitName) > 0) {
-          for (groupByIndex in 1:length(strataSplitName)) {
-            tempReturn <-
-              AddColumn(
-                paste("groupBy", groupByIndex, sep = ""),
-                strataSplitName[[groupByIndex]],
-                groupByList,
-                longTable
-              )
-            groupByList <- tempReturn[[1]]
-            longTable <- tempReturn[[2]]
-            
-            tempReturn <-
-              AddColumn(
-                paste("groupByValue", groupByIndex, sep = ""),
-                strataSplitValues[[groupByIndex]],
-                groupByList,
-                longTable
-              )
-            groupByList <- tempReturn[[1]]
-            longTable <- tempReturn[[2]]
-            
-            if (!is.null(variableDetails)) {
-              tempReturn <-
-                AddColumn(
-                  paste("groupByLabel", groupByIndex, sep = ""),
-                  variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                    isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.VariableStartLabel],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-              
-              tempReturn <-
-                AddColumn(
-                  paste("groupByValueLabel", groupByIndex, sep = ""),
-                  variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                    isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.CatStartLabel],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-            }
-          }
+          longTableRow <-
+            FillInGroupByColumns(strataSplitName,
+                                 strataSplitValues,
+                                 longTableRow,
+                                 variableDetails)
         }
         longTableRow <- list()
         longTableRow[[pkg.globals$LongTable.VariableCategory]] <- NA
@@ -304,6 +267,9 @@ ExtractDataFromCatTable <-
     varNames <- attr(catTable[[1]], "names")
     strataSplitName <-
       unlist(strsplit(as.character(strataName), split = ":"))
+    # Adds group by columns not found in the long table
+    longTable <-
+      AddGroupByColumns(strataSplitName, longTable, variableDetails)
     for (strataCounter in 1:length(catTable)) {
       strataSplitValues <-
         unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
@@ -321,65 +287,21 @@ ExtractDataFromCatTable <-
           prevalence <-
             selectedVariable[row, pkg.globals$tableOne.Percent]
           groupByList <- list()
-          
+          longTableRow <- list()
           if (length(strataSplitName) > 0) {
-            for (groupByIndex in 1:length(strataSplitName)) {
-              tempReturn <-
-                AddColumn(
-                  paste("groupBy", groupByIndex, sep = ""),
-                  strataSplitName[[groupByIndex]],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-              
-              tempReturn <-
-                AddColumn(
-                  paste("groupByValue", groupByIndex, sep = ""),
-                  strataSplitValues[[groupByIndex]],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-              if (!is.null(variableDetails)) {
-                tempReturn <-
-                  AddColumn(
-                    paste("groupByLabel", groupByIndex, sep = ""),
-                    variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                      isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.VariableStartLabel],
-                    groupByList,
-                    longTable
-                  )
-                groupByList <- tempReturn[[1]]
-                longTable <- tempReturn[[2]]
-                
-                tempReturn <-
-                  AddColumn(
-                    paste("groupByValueLabel", groupByIndex, sep = ""),
-                    variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                      isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.CatStartLabel],
-                    groupByList,
-                    longTable
-                  )
-                groupByList <- tempReturn[[1]]
-                longTable <- tempReturn[[2]]
-              }
-            }
+            longTableRow <-
+              FillInGroupByColumns(strataSplitName,
+                                   strataSplitValues,
+                                   longTableRow,
+                                   variableDetails)
             if (!is.null(variableDetails)) {
-              tempReturn <-
-                AddColumn("variableCategoryLabel",
-                          variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], varNames[[variablesChecked]]) &
-                                            isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], as.character(levName)), pkg.globals$argument.CatStartLabel],
-                          groupByList,
-                          longTable)
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
+              longTableRow[["variableCategoryLabel"]] <-
+                variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], varNames[[variablesChecked]]) &
+                                  isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], as.character(levName)), pkg.globals$argument.CatStartLabel]
+              longTable <- AddColumn("variableCategoryLabel",
+                                     longTable)
             }
           }
-          
-          longTableRow <- list()
           longTableRow[[pkg.globals$LongTable.VariableCategory]] <-
             levName
           longTableRow[[pkg.globals$LongTable.Variable]] <-
@@ -422,9 +344,9 @@ ExtractDataFromCatTable <-
 #' @param bllFlowModel A bllFlow model
 #' @param tableVariablesSheet The data frame with information on how to build
 #' the table
-#' 
+#'
 #' @return A dataframe containing the table one long
-#' 
+#'
 #' @import tableone
 # tables.CreateTableOneLong <- function(bllFlowModel,
 #                                       tableVariablesSheet) {
@@ -461,10 +383,10 @@ ExtractDataFromCatTable <-
 #     longTable <-
 #       AddToLongTable(tableOne, longTable)
 #   }
-# 
+#
 #   return(longTable)
 # }
-# 
+#
 # # Create Table Ones from the tableVariablesSheet
 # CreateCustomTableOne <-
 #   function(strataValue, variableNames, bllFlowModel) {
@@ -493,6 +415,6 @@ ExtractDataFromCatTable <-
 #         strata = strataList,
 #         factorVars = as.character(categoricalVariables)
 #       )
-# 
+#
 #     return(retTable)
 #   }
