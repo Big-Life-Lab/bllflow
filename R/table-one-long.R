@@ -304,6 +304,12 @@ ExtractDataFromCatTable <-
     varNames <- attr(catTable[[1]], "names")
     strataSplitName <-
       unlist(strsplit(as.character(strataName), split = ":"))
+
+    AddGroupByColumns(
+      strataSplitName,
+      longTable
+    )
+
     for (strataCounter in 1:length(catTable)) {
       strataSplitValues <-
         unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
@@ -321,52 +327,13 @@ ExtractDataFromCatTable <-
           prevalence <-
             selectedVariable[row, pkg.globals$tableOne.Percent]
           groupByList <- list()
-          
+          longTableRow <- list()
+
           if (length(strataSplitName) > 0) {
-            for (groupByIndex in 1:length(strataSplitName)) {
-              tempReturn <-
-                AddColumn(
-                  paste("groupBy", groupByIndex, sep = ""),
-                  strataSplitName[[groupByIndex]],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-              
-              tempReturn <-
-                AddColumn(
-                  paste("groupByValue", groupByIndex, sep = ""),
-                  strataSplitValues[[groupByIndex]],
-                  groupByList,
-                  longTable
-                )
-              groupByList <- tempReturn[[1]]
-              longTable <- tempReturn[[2]]
-              if (!is.null(variableDetails)) {
-                tempReturn <-
-                  AddColumn(
-                    paste("groupByLabel", groupByIndex, sep = ""),
-                    variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                      isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.VariableStartLabel],
-                    groupByList,
-                    longTable
-                  )
-                groupByList <- tempReturn[[1]]
-                longTable <- tempReturn[[2]]
-                
-                tempReturn <-
-                  AddColumn(
-                    paste("groupByValueLabel", groupByIndex, sep = ""),
-                    variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                      isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.CatStartLabel],
-                    groupByList,
-                    longTable
-                  )
-                groupByList <- tempReturn[[1]]
-                longTable <- tempReturn[[2]]
-              }
-            }
+            FillInGroupByColumns(
+              strataSplitName,
+              longTableRow
+            )
             if (!is.null(variableDetails)) {
               tempReturn <-
                 AddColumn("variableCategoryLabel",
@@ -379,7 +346,6 @@ ExtractDataFromCatTable <-
             }
           }
           
-          longTableRow <- list()
           longTableRow[[pkg.globals$LongTable.VariableCategory]] <-
             levName
           longTableRow[[pkg.globals$LongTable.Variable]] <-
@@ -409,6 +375,24 @@ ExtractDataFromCatTable <-
     
     return(longTable)
   }
+
+# Adds the groupBy columns to the longTableRow list
+FillInGroupByColumns <- function(
+  strataSplitName,
+  longTableRow,
+) {
+  return(longTableRow)
+}
+
+# Adds in the groupBy columns to the longTable argument if they don't
+# already exist
+AddGroupByColumns <- function(
+ strataSplitName,
+ longTable
+) {
+
+}
+
 # deprecated ----------------------------------------------------------------------
 #' Creates a "Table One Long" and stores it in the metadata list.
 #' "Table One Long" has the same meaning as a regular table one except it consists
