@@ -82,10 +82,10 @@ cat("Variable labels in the original MSW\n")
 variables$label
 
 cat("\nNo variable labels from DDI in variable details\n")
-variableDetails$variableStartLabel 
+variableDetails$label
 
 cat("\nDDI variable lables added to variableDetailsWithDDI\n")
-#TODO: variableDetailsWithDDI$startLabel
+pbcModel$populatedVariableDetails$label
 ```
 
 #### Example 3: Write MSW_DDI to MSW.csv
@@ -114,14 +114,16 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
-#TODOWriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/PBC/vignette-testing/", 
-#                  "testing.csv", 
-#                  "newName.csv")
+WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", 
+                  "newMSWvariableDetails.csv", 
+                  "nonBLLPopulated.csv")
 ```
 
 #### Example 4: Update BBLFLow with new variables
 
 Do we need or want this? Rusty, can you write in a vignette?
+Replaces the models msw with all or either variables or variableDetails. 
+Passing variableDetails also updates the populatedVariableDetails
 
 ```{r}
 pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)

@@ -131,7 +131,7 @@ WriteDDIPopulatedMSW.BLLFlow <-
     }
     
     write.csv(
-      bllFlow$populatedVariableDeatailsSheet,
+      bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
       file = file.path(pathToWriteTo, newFileName),
       row.names = FALSE
     )
