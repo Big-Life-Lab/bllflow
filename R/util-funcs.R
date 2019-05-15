@@ -16,9 +16,9 @@ AddColumn <-
            tableToAddTo) {
     if (!columnName %in% colnames(tableToAddTo)) {
       if (nrow(tableToAddTo) == 0) {
-        tableToAddTo[[columnName]] <- character()
+        tableToAddTo[, columnName] <- character()
       } else {
-        tableToAddTo[[columnName]] <- NA
+        tableToAddTo[, columnName] <- NA
       }
     }
     
@@ -46,6 +46,8 @@ AddGroupByColumns <-
                     longTable)
       }
     }
+    
+    return(longTable)
   }
 
 FillInGroupByColumns <- function(strataSplitName, strataSplitValues, longTableRow, variableDetails) {
@@ -61,4 +63,6 @@ FillInGroupByColumns <- function(strataSplitName, strataSplitValues, longTableRo
       
     }
   }
+  
+  return(longTableRow)
 }
