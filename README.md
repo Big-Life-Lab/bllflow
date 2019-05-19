@@ -89,10 +89,15 @@ the *bllflow* package.
 
 ## Documentation
 
-In case your documentation .Rmd file contains images you wish to include, make sure to add the path to the image in the resource_files section.
-An example of that is shown below:
+### Linking to Images
 
-    resource_files:
-      - ../man/figures/coding.png
-  
-In case you wish to link .Rmd files together make sure to change their .Rmd extension to a .html extension to make sure the wiki links properly.
+When linking to images in .Rmd files, make sure to add the relative path to the image in the resource_files section of the .Rmd file. An example is given below,
+
+```YAML
+resource_files:
+  - ../man/figures/coding.png
+```
+
+### Linking to other .Rmd files
+
+When linking to other .Rmd files make sure their extension is changed to .html. This ensures that the links continue to work when they are converted to the pkgdown site
