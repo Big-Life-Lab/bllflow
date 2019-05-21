@@ -250,6 +250,8 @@ UpdateMSW <-
            newDDI = NULL) {
     if (!is.null(newDDI)) {
       bllModel[[pkg.globals$bllFlowContent.DDI]] <- newDDI
+      bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
+        ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], bllModel[[pkg.globals$bllFlowContent.VariableDetails]])
     }
     if (!is.null(newMSWVariables)) {
       bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables

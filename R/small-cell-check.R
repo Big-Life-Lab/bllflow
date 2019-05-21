@@ -1,12 +1,37 @@
+#' CheckSmallCells
+#'
+#' Checks for presence of small cells within the passed table
+#' 
+#' @param passedTable Table to check currently supported is LongTable and TableOne
+#' @param smallSize Preffered small cell size default <6
+#' @param print Option to print the smallCell table
+#' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #' @export
 CheckSmallCells <- function(passedTable, ...) {
   UseMethod("CheckSmallCells", passedTable)
 }
+#' CheckSmallCells for Summary Data
+#'
+#' Checks for presence of small cells within Summary Data
+#' 
+#' @param passedTable Table to check currently supported is LongTable and TableOne
+#' @param smallSize Preffered small cell size default <6
+#' @param print Option to print the smallCell table
+#' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #'@export
 CheckSmallCells.LongTable <- function(passedTable,
                                       smallSize = 6,
                                       print = FALSE) {
-  print(passedTable[passedTable[, pkg.globals$LongTable.Frequency] <= smallSize, ])
+  newRetTable <- list()
+  newRetTable[[pkg.globals$bllFlowContent.LongTable]] <- passedTable
+  newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]] <-
+    passedTable[passedTable[, pkg.globals$LongTable.Frequency] < smallSize, ]
+  print(paste(nrow(newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]]), "Small cells were found"))
+  if (print) {
+    print(newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]])
+  }
+  
+  return(newRetTable)
 }
 
 #' Check for Small Cells
@@ -58,7 +83,7 @@ CheckSmallCells.LongTable <- function(passedTable,
 #'
 #' # currently only TableOne is supported so tableType != TableOne will throw error
 #' #tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
-#' 
+#'
 #' @export
 CheckSmallCells.TableOne <- function(passedTable,
                                      smallSize = 6,

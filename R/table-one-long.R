@@ -57,6 +57,8 @@ SummaryDataLong <-
     }
     # Remove duplicate rows
     returnTable <- unique(returnTable)
+    # Remove empty rows made during initialization
+    #returnTable <- returnTable[!apply(is.na(returnTable) | returnTable == "", 1, all),]
     if (is.null(bllFlowModel)) {
       return(returnTable)
     } else {
@@ -227,7 +229,7 @@ ExtractDataFromContTable <-
     # ----Step 2: Add columns to long table
     longTable <-
       AddGroupByColumns(strataSplitName, longTable, variableDetails)
-    longTableRows <- data.frame()
+    longTableRows <- longTable[0, ]
     
     # loop through each strata columns
     # ----Step 3: Extract information for each new row of the longtable ----
@@ -276,6 +278,17 @@ ExtractDataFromContTable <-
         longTableRow <- append(longTableRow, groupByList)
         
         # ----Step 5: Add row to the rest of the rows----
+        # If empty longTableRows copy columns from row
+        for (eachElement in 1:length(longTableRow)) {
+          if (length(longTableRow[[eachElement]]) == 0) {
+            longTableRow[[eachElement]] <- NA
+          }
+        }
+        for (columnMissing in colnames(longTableRows)) {
+          if (!columnMissing %in% names(longTableRow)) {
+            longTableRow[[columnMissing]] <- NA
+          }
+        }
         longTableRows <-
           rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
       }
@@ -301,7 +314,7 @@ ExtractDataFromCatTable <-
     # ----Step 2: Add columns to long table
     longTable <-
       AddGroupByColumns(strataSplitName, longTable, variableDetails)
-    longTableRows <- data.frame()
+    longTableRows <- longTableRows <- longTable[0, ]
     
     # ----Step 3: Extract information for each new row of the longtable ----
     for (strataCounter in 1:length(catTable)) {
@@ -359,6 +372,17 @@ ExtractDataFromCatTable <-
           longTableRow <- append(longTableRow, groupByList)
           
           # ----Step 5: Add row to the rest of the rows----
+          # If empty longTableRows copy columns from row
+          for (eachElement in 1:length(longTableRow)) {
+            if (length(longTableRow[[eachElement]]) == 0) {
+              longTableRow[[eachElement]] <- NA
+            }
+          }
+          for (columnMissing in colnames(longTableRows)) {
+            if (!columnMissing %in% names(longTableRow)) {
+              longTableRow[[columnMissing]] <- NA
+            }
+          }
           longTableRows <-
             rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
         }

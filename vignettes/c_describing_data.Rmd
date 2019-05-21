@@ -46,12 +46,11 @@ TableOneLong <- SummaryDataLong(TableOne)
 
 For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents.
 Initialize the model with the DDI document.
-```
-ddi <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
-pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi) 
-# Rusty, can ddi document be added to the pbcModel after it is generated?
+```{r}
+ddi <- bllflow::ReadDDI(system.file("extdata", "", package = "bllflow"), "pbcDDI.xml")
+pbcModel <- UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
 
-LongTableWithLabels <- SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+pbcModelWithLongTable <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
 ```
 
 Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.
@@ -59,8 +58,28 @@ Our team works with personal health data in secure settings. For privacy, no sum
 TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
 checkedTableOne <- CheckSmallCells(TableOne)
 ```
+To obtain print of the actual small cells pass print as TRUE
+```{r}
+checkedTableOne <- CheckSmallCells(TableOne, print = TRUE)
+```
 
 Find out which rows and variables contain the small cells.
 ```{r}
-checkedTableOne
+checkedTableOne$MetaData$smallCells
+```
+
+
+You can also check small cells inside your Summary Data in case you have multiple tables
+```{r}
+checkedLongTable <- CheckSmallCells(pbcModelWithLongTable$longTable)
+```
+
+For a print of the found rows pass print as TRUE
+```{r}
+checkedLongTable <- CheckSmallCells(pbcModelWithLongTable$longTable, print = TRUE)
+```
+
+Find out which rows and variables contain the small cells.
+```{r}
+checkedLongTable$MetaData$smallCells
 ```
