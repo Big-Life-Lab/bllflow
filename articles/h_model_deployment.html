@@ -84,6 +84,15 @@
     <li>
       <a href="../articles/j_reference_files.html">Reference files - variable labels and metadata</a>
     </li>
+    <li>
+      <a href="../articles/long-table-small-cells.html">UNKNOWN TITLE</a>
+    </li>
+    <li>
+      <a href="../articles/small-cells.html">UNKNOWN TITLE</a>
+    </li>
+    <li>
+      <a href="../articles/table-one-long.html">UNKNOWN TITLE</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -143,13 +152,18 @@
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; Loading required package: tableone</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Loading required package: DDIwR</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Loading required package: xml2</span></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># create a BLLFlow object and add labels.</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails, pbcDDI)</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw"><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW</a></span>(pbcModel, <span class="st">"../inst/extdata/"</span>, <span class="st">"newMSWvariableDetails1.csv"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co">#&gt; Attaching package: 'bllflow'</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co">#&gt; The following object is masked from 'package:tableone':</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#&gt;     CreateTableOne</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co"># create a BLLFlow object and add labels.</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails, pbcDDI)</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="kw"><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW</a></span>(pbcModel, <span class="st">"../inst/extdata/"</span>, <span class="st">"newMSWvariableDetails1.csv"</span>)</a></code></pre></div>
 <p>See the following examples of how <code>bllflow</code> is used to report and deploy models.</p>
 <ul>
 <li>Algorithms for indivdual use at <a href="https://www.projectbiglife.ca">Project Big Life</a>

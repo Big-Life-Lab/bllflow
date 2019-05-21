@@ -13,6 +13,9 @@ articles:
   h_model_deployment: h_model_deployment.html
   i_helper_functions: i_helper_functions.html
   j_reference_files: j_reference_files.html
+  long-table-small-cells: long-table-small-cells.html
+  small-cells: small-cells.html
+  table-one-long: table-one-long.html
 urls:
   reference: https://big-life-lab.github.io/bllflow//reference
   article: https://big-life-lab.github.io/bllflow//articles

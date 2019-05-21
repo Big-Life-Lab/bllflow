@@ -10,6 +10,24 @@
     <loc>https://big-life-lab.github.io/bllflow//reference/BLLFlow.html</loc>
   </url>
   <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.LongTable.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.TableOne.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCellsInTableOne.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CreateTableOne.BLLFlow.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CreateTableOne.html</loc>
+  </url>
+  <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/GetDDIDescription.html</loc>
   </url>
   <url>
@@ -26,6 +44,9 @@
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/ReadDDI.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/SummaryDataLong.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/UpdateMSW.html</loc>
@@ -74,5 +95,14 @@
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/j_reference_files.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/long-table-small-cells.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/small-cells.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/table-one-long.html</loc>
   </url>
 </urlset>

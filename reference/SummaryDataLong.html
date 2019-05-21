@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Clean a dataset by updating values below a certain minimum — clean.Min • bllflow</title>
+<title>Summary Data Long Table — SummaryDataLong • bllflow</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Clean a dataset by updating values below a certain minimum — clean.Min" />
+<meta property="og:title" content="Summary Data Long Table — SummaryDataLong" />
 
-<meta property="og:description" content="Clean a dataset by updating values below a certain minimum" />
+<meta property="og:description" content="Creates a Long table to summarise data from multiple tables in one convenient table.
+Its primary use is to convert Table one tables into a long table.
+The optional arguments allow appending to long table as well as addition of labels" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -165,83 +167,57 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Clean a dataset by updating values below a certain minimum</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/clean.R'><code>R/clean.R</code></a></small>
-    <div class="hidden name"><code>clean.Min.Rd</code></div>
+    <h1>Summary Data Long Table</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/table-one-long.R'><code>R/table-one-long.R</code></a></small>
+    <div class="hidden name"><code>SummaryDataLong.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Clean a dataset by updating values below a certain minimum</p>
+    <p>Creates a Long table to summarise data from multiple tables in one convenient table.
+Its primary use is to convert Table one tables into a long table.
+The optional arguments allow appending to long table as well as addition of labels</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>clean.Min</span>(<span class='no'>bllFlowModel</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for BLLFlow</span>
-<span class='fu'>clean.Min</span>(<span class='no'>bllFlowModel</span>, <span class='kw'>print</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>SummaryDataLong</span>(<span class='no'>tableOne</span>, <span class='kw'>longTable</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>bllFlowModel</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
+      <th>tableOne</th>
+      <td><p>the table one object to be converted into a long table</p></td>
+    </tr>
+    <tr>
+      <th>longTable</th>
+      <td><p>the optional long table to append the table one information to</p></td>
+    </tr>
+    <tr>
       <th>bllFlowModel</th>
-      <td><p>The bllflow model we will clean</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments to the next method in the chain</p></td>
-    </tr>
-    <tr>
-      <th>print</th>
-      <td><p>A boolean which when set to TRUE prints logs of what the operation did</p></td>
+      <td><p>The optional bllFlow object containing labels and extra information on the variables</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A bllflow named list whose dataset was cleaned</p>
-    
-    <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
-
-    <ul>
-<li><p><code>BLLFlow</code>: Cleans the data using the min and outlier columns in the variables sheet of
-the MSW. Outlier method is applied on a row if any of the variable
-values for that row is less than the min value as specified in the variables
-sheet. Outlier checking for the column is not applied if min value is NA.</p>
-<p>Currently supported outlier methods are: <br />
-1. <strong>Delete</strong> - Specified as 'delete' in MSW. Deletes the row from the data. <br />
-number of deleted rows as well as their reason for deletion is stored in the
-metaData variable under the deletedRows name. <br />
-2. <strong>Missing</strong> - Specified as 'missing' in MSW. Column value for that row which does
-not meet the criteria is set to NA. <br />
-3. <strong>Not Applicable</strong> - TODO. <br />
-4. <strong>Set to value</strong> - Specified as a number value in MSW. Column value for the row is
-set to the value specified in the outlier column.</p></li>
-</ul>
+    <p>Returns the long table or the bllFlowModel with long table attached</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Load packages</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>survival</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>bllflow</span>)
-
-<span class='co'># Read in the data we will use</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>survival</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>pbc</span>)
+<span class='no'>pbc</span>$<span class='no'>exp_percentile</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>pbc</span>), <span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='no'>pbc</span>$<span class='no'>ageGroup</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&lt;</span> <span class='fl'>20</span>, <span class='fl'>1</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&gt;=</span> <span class='fl'>20</span> <span class='kw'>&amp;</span> <span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&lt;</span> <span class='fl'>40</span>, <span class='fl'>2</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&gt;=</span> <span class='fl'>40</span> <span class='kw'>&amp;</span> <span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&lt;</span> <span class='fl'>80</span>, <span class='fl'>3</span>,
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>pbc</span>$<span class='no'>age</span> <span class='kw'>&gt;=</span> <span class='fl'>80</span>, <span class='fl'>4</span>, <span class='fl'>NA</span>))))
 
-<span class='co'># Read in the MSW and variable_details sheet for the PBC model</span>
-<span class='no'>variablesSheet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"PBC-variables.csv"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"bllflow"</span>))
-<span class='no'>variableDetailsSheet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/system.file'>system.file</a></span>(<span class='st'>"extdata"</span>, <span class='st'>"PBC-variableDetails.csv"</span>, <span class='kw'>package</span><span class='kw'>=</span><span class='st'>"bllflow"</span>))
-
-<span class='co'># Create a bllFlow R object for the PBC model using the above variables as args</span>
-<span class='no'>pbcModel</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/BLLFlow'>BLLFlow</a></span>(<span class='no'>pbc</span>, <span class='no'>variablesSheet</span>, <span class='no'>variableDetailsSheet</span>)
-
-<span class='co'># Clean the data</span>
-<span class='no'>cleanedPbcModel</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/clean.Min'>clean.Min</a></span>(<span class='no'>pbcModel</span>)
-
-<span class='co'># If you wish to be updated in the log on what the function does set print to true</span>
-<span class='no'>cleanedPbcModel</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>bllflow</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/bllflow/topics/clean.Min'>clean.Min</a></span>(<span class='no'>cleanedPbcModel</span>, <span class='kw'>print</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; [1] "clean.min.BLLFlow: 349 rows were checked and 0 rows were set to delete. Reason: Rule age min at 40 "</div><div class='input'>
-</div></pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>bllflow</span>)
+<span class='no'>variablesSheet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>'../inst/extdata/PBC-variables.csv'</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file '/home/travis/build/Big-Life-Lab/bllflow/docs/reference/../inst/extdata/PBC-variables.csv': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(file, "rt"): cannot open the connection</span></div><div class='input'><span class='no'>variablesDetailsSheet</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/read.table'>read.csv</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>'../inst/extdata/PBC-variableDetails.csv'</span>))</div><div class='output co'>#&gt; <span class='warning'>Warning: cannot open file '/home/travis/build/Big-Life-Lab/bllflow/docs/reference/../inst/extdata/PBC-variableDetails.csv': No such file or directory</span></div><div class='output co'>#&gt; <span class='error'>Error in file(file, "rt"): cannot open the connection</span></div><div class='input'><span class='no'>ddi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='ReadDDI.html'>ReadDDI</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.path'>file.path</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/getwd'>getwd</a></span>(), <span class='st'>'../inst/extdata'</span>),<span class='st'>"pbcDDI.xml"</span>)</div><div class='output co'>#&gt; <span class='error'>Error: Cannot find the path up to "/home/travis/build/Big-Life-Lab/bllflow/docs/reference/../inst/extdata".</span>
+#&gt; <span class='error'>Please check that path, or try changing the working directory.</span>
+#&gt; <span class='error'></span></div><div class='input'><span class='no'>pbcModel</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='BLLFlow.html'>BLLFlow</a></span>(<span class='no'>pbc</span>, <span class='no'>variablesSheet</span>, <span class='no'>variablesDetailsSheet</span>, <span class='no'>ddi</span>)</div><div class='output co'>#&gt; <span class='error'>Error in BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi): object 'variablesSheet' not found</span></div><div class='input'>
+<span class='no'>pbcTableOne</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CreateTableOne.html'>CreateTableOne</a></span>(<span class='no'>pbcModel</span>, <span class='kw'>strata</span> <span class='kw'>=</span> <span class='st'>"edema"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in CreateTableOne(pbcModel, strata = "edema"): object 'pbcModel' not found</span></div><div class='input'><span class='no'>pbcSummaryTableNoLabels</span> <span class='kw'>&lt;-</span> <span class='fu'>SummaryDataLong</span>(<span class='no'>pbcTableOne</span>)</div><div class='output co'>#&gt; <span class='error'>Error in SummaryDataLong(pbcTableOne): object 'pbcTableOne' not found</span></div><div class='input'><span class='no'>pbcLongTableWithLabel</span> <span class='kw'>&lt;-</span> <span class='fu'>SummaryDataLong</span>(<span class='no'>pbcTableOne</span>, <span class='kw'>bllFlowModel</span> <span class='kw'>=</span> <span class='no'>pbcModel</span>, <span class='kw'>longTable</span> <span class='kw'>=</span> <span class='no'>pbcSummaryTableNoLabels</span>)</div><div class='output co'>#&gt; <span class='error'>Error in SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = pbcSummaryTableNoLabels): object 'pbcTableOne' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -249,8 +225,6 @@ set to the value specified in the outlier column.</p></li>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#methods-by-class-">Methods (by class)</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
