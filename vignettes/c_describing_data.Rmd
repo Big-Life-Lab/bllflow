@@ -26,6 +26,7 @@ CreateTableOne(data = pbc, factorVars = catVars)
 Create a Table 1 with only the variables in your model, using the Model Specification Workbook.
 First initialize the BLLFlow model.
 ```{r} 
+library(bllflow)
 variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
