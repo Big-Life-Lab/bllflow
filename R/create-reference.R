@@ -16,7 +16,20 @@ ExtractData <- function(passedData){
 }
 
 #' @export
-CreateBLLModelObject <- function(passedData, passedModel, passedTableOne){
+#' CreateBLLModelObject (modelObject, modelType, tableOne, modelData)
+CreateBLLModelObject <- function(modelData, modelObject, tableOne = NULL, modelType = NULL) {
+  # ----Step 1: verify input/create not passed input----
+  varNames <- attr(modelObject$coef, "names")
+  if (is.null(tableOne)) {
+    tableOne <- tableone::CreateTableOne(data = modelData, vars = varNames)
+  } else {
+    for (varName in varNames) {
+      
+    }
+  }
+  # ----Step 2: Pull out information ----
+  
+  # ----Step 3: Generate model object ----
   varNames <- attr(passedModel$coef, "names")
   betaCoefficient <- passedModel$coef
   attr(betaCoefficient, "names") <- NULL
