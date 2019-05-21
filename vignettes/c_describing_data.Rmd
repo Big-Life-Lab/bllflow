@@ -14,17 +14,53 @@ knitr::opts_chunk$set(
 ```
 _bllflow_ builds from the `tableone` package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.
 
+Create a "Table 1 - description of study data" for all variables in your database.
 ```{r}
 library(survival)
-```
-
-```{r}
 data(pbc)
 library("tableone")
 catVars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
-TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
+CreateTableOne(data = pbc, factorVars = catVars)
 ```
 
+Create a Table 1 with only the variables in your model, using the Model Specification Workbook.
+First initialize the BLLFlow model.
+```{r} 
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
+CreateTableOne(pbcModel)
+```
+
+You can stratify Table 1 in two methods. With stratifications as:
+1) columns. This is how to describe your data for manuscripts. This method is supported with the `CreateTableOne` library.
 ```{r}
-# TODO: checkedTableOne <- CheckSmallCells(TableOne)
-# TODO: show how the MSW provides instructoins to create tables.
+TableOne <- CreateTableOne(data = pbc,strata = c("trt"), factorVars = catVars)
+```
+
+2) rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. 
+For example, see an '[algorithm viewer](http://algorithm-viewer.projectbiglife.ca/#/respect)' that shows Table 1 stratified for 61 strata (bins).
+```{r}
+TableOneLong <- SummaryDataLong(TableOne)
+```
+
+For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents.
+Initialize the model with the DDI document.
+```
+ddi <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
+pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi) 
+# Rusty, can ddi document be added to the pbcModel after it is generated?
+
+LongTableWithLabels <- SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+```
+
+Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.
+```{r}
+TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
+checkedTableOne <- CheckSmallCells(TableOne)
+```
+
+Find out which rows and variables contain the small cells.
+```{r}
+checkedTableOne
+```
