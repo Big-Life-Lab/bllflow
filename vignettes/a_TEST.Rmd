@@ -1,6 +1,8 @@
 ---
 title: "Helper and utility functions"
 output: rmarkdown::html_vignette
+resource_files:
+  - ../inst/extdata/newMSWvariableDetails1.csv
 vignette: >
   %\VignetteIndexEntry{Healper and utility functions}
   %\VignetteEngine{knitr::rmarkdown}
