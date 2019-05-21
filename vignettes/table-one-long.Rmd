@@ -1,0 +1,33 @@
+```{r}
+library(survival)
+```
+
+```{r}
+data(pbc)
+pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
+pbc$ageGroup <- ifelse(pbc$age < 20, 1,
+                ifelse(pbc$age >= 20 & pbc$age < 40, 2,
+                ifelse(pbc$age >= 40 & pbc$age < 80, 3,
+                ifelse(pbc$age >= 80, 4, NA))))
+```
+
+```{r}
+library(bllflow)
+variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+```
+
+```{r}
+pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
+pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
+pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = pbcSummaryTableNoLabels)
+```
+
+```{r}
+
+#pbcLongTable <- SummaryDataLong(AnyTableOne = optional, AnyTableLong = optional)
+#This lets u append to the long table any table one u prefer and hopefully allows for implementation of other tables
+#Only issue is i need to figure out what to later order it by to keep the table organized
+```

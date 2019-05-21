@@ -223,14 +223,14 @@ ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   }
   
   if (!length(ddiVariables)) {
-    populatedVariableDeatailsSheet <- NULL
+    populatedVariableDetails <- NULL
   } else{
-    populatedVariableDeatailsSheet <-
+    populatedVariableDetails <-
       PopulateVariableDetails(variableDetails,
                               ddiVariables)
   }
   
-  return(populatedVariableDeatailsSheet)
+  return(populatedVariableDetails)
 }
 
 #' AddDDI information to a list
