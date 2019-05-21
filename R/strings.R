@@ -28,6 +28,7 @@ pkg.globals$bllFlowContent.Data <- "data"
 pkg.globals$bllFlowContent.Variables <- "variables"
 pkg.globals$bllFlowContent.VariableDetails <- "variableDetails"
 pkg.globals$bllFlowContent.PopulatedVariableDetails <- "populatedVariableDetails"
+pkg.globals$bllFlowContent.DDI <- "ddi"
 pkg.globals$bllFlowContent.LongTable <- "longTable"
 
 # MSW Column Names
