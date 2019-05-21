@@ -114,6 +114,7 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
+# Writing does not work with pkgdown howver evaluation works on user machine
 #WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", 
 #                  "newMSWvariableDetails.csv", 
 #                  "nonBLLPopulated.csv")
