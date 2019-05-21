@@ -25,44 +25,62 @@ AddColumn <-
     return(tableToAddTo)
   }
 
+# Adds groupBy columns to long table
 AddGroupByColumns <-
   function(strataSplitName,
            longTable,
            variableDetails) {
     for (groupByIndex in 1:length(strataSplitName)) {
       longTable <-
-        AddColumn(paste("groupBy", groupByIndex, sep = ""),
+        AddColumn(paste(pkg.globals$LongTable.GroupBy, groupByIndex, sep = ""),
                   longTable)
       longTable <-
-        AddColumn(paste("groupByValue", groupByIndex, sep = ""),
+        AddColumn(paste(pkg.globals$LongTable.GroupByValue, groupByIndex, sep = ""),
                   longTable)
       
       if (!is.null(variableDetails)) {
         longTable <-
-          AddColumn(paste("groupByLabel", groupByIndex, sep = ""),
+          AddColumn(paste(pkg.globals$LongTable.GroupByLabel, groupByIndex, sep = ""),
                     longTable)
         longTable <-
-          AddColumn(paste("groupByValueLabel", groupByIndex, sep = ""),
-                    longTable)
+          AddColumn(
+            paste(
+              pkg.globals$LongTable.GroupByValueLabel,
+              groupByIndex,
+              sep = ""
+            ),
+            longTable
+          )
       }
     }
     
     return(longTable)
   }
 
-FillInGroupByColumns <- function(strataSplitName, strataSplitValues, longTableRow, variableDetails) {
-  for (groupByIndex in 1:length(strataSplitName)) {
-    longTableRow[[paste("groupBy", groupByIndex, sep = "")]] <- strataSplitName[[groupByIndex]]
-    longTableRow[[paste("groupByValue", groupByIndex, sep = "")]] <- strataSplitValues[[groupByIndex]]
-    
-    if (!is.null(variableDetails)) {
-      longTableRow[[paste("groupByLabel", groupByIndex, sep = "")]] <- variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                                                                         isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.VariableStartLabel]
-      longTableRow[[paste("groupByValueLabel", groupByIndex, sep = "")]] <- variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
-                                                                                              isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.CatStartLabel]
+# Fills group by columns with information from variable details
+FillInGroupByColumns <-
+  function(strataSplitName,
+           strataSplitValues,
+           longTableRow,
+           variableDetails) {
+    for (groupByIndex in 1:length(strataSplitName)) {
+      longTableRow[[paste(pkg.globals$LongTable.GroupBy, groupByIndex, sep = "")]] <-
+        strataSplitName[[groupByIndex]]
+      longTableRow[[paste(pkg.globals$LongTable.GroupByValue, groupByIndex, sep = "")]] <-
+        strataSplitValues[[groupByIndex]]
       
+      if (!is.null(variableDetails)) {
+        longTableRow[[paste(pkg.globals$LongTable.GroupByLabel, groupByIndex, sep = "")]] <-
+          variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
+                            isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.VariableStartLabel]
+        longTableRow[[paste(pkg.globals$LongTable.GroupByValueLabel,
+                            groupByIndex,
+                            sep = "")]] <-
+          variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], strataSplitName[[groupByIndex]]) &
+                            isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], strataSplitValues[[groupByIndex]]), pkg.globals$argument.CatStartLabel]
+        
+      }
     }
+    
+    return(longTableRow)
   }
-  
-  return(longTableRow)
-}
