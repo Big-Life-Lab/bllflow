@@ -116,9 +116,9 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
-#WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", 
-#                  "newMSWvariableDetails1.csv", 
-#                  "nonBLLPopulated.csv")
+WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", 
+                  "newMSWvariableDetails1.csv", 
+                  "nonBLLPopulated.csv")
 ```
 
 #### Example 4: Update BBLFLow with new variables
