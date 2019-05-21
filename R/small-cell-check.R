@@ -1,3 +1,14 @@
+#' @export
+CheckSmallCells <- function(passedTable, ...) {
+  UseMethod("CheckSmallCells", passedTable)
+}
+#'@export
+CheckSmallCells.LongTable <- function(passedTable,
+                                      smallSize = 6,
+                                      print = FALSE) {
+  print(passedTable[passedTable[, pkg.globals$LongTable.Frequency] <= smallSize, ])
+}
+
 #' Check for Small Cells
 #'
 #' Small Cells Check checks a given table for small sells then adds a
@@ -47,12 +58,12 @@
 #'
 #' # currently only TableOne is supported so tableType != TableOne will throw error
 #' #tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
-#'
+#' 
 #' @export
-CheckSmallCells <- function(passedTable,
-                            smallSize = 6,
-                            print = FALSE,
-                            tableType = "TableOne") {
+CheckSmallCells.TableOne <- function(passedTable,
+                                     smallSize = 6,
+                                     print = FALSE,
+                                     tableType = "TableOne") {
   # Chosing Table procesing function -------------------------------------------
   
   # Handles TableOne type tables
@@ -83,7 +94,7 @@ CheckSmallCells <- function(passedTable,
         passedTable$MetaData$smallCells$variable,
         passedTable$MetaData$smallCells$stratifiedBy,
         passedTable$MetaData$smallCells$strataValues
-      ), ]
+      ),]
     # reset rowcount
     rownames(passedTable$MetaData$smallCells) <- NULL
   } else {
@@ -93,7 +104,7 @@ CheckSmallCells <- function(passedTable,
         smallSizeTable$variable,
         smallSizeTable$stratifiedBy,
         smallSizeTable$strataValues
-      ), ]
+      ),]
     # reset rowcount
     rownames(passedTable$MetaData$smallCells) <- NULL
   }

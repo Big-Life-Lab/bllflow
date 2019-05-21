@@ -51,6 +51,11 @@ SummaryDataLong <-
     }
     returnTable <-
       AddToLongTable(tableOne, longTable, bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
+    if (!pkg.globals$LongTable.ClassName %in% class(returnTable)) {
+      class(returnTable) <-
+        append(class(returnTable), pkg.globals$LongTable.ClassName)
+    }
+    # Remove duplicate rows
     returnTable <- unique(returnTable)
     if (is.null(bllFlowModel)) {
       return(returnTable)
@@ -105,7 +110,6 @@ CreateTableOne.BLLFlow <- function(bllFlowModel,
                                    vars = NULL,
                                    strata = NULL,
                                    factorVars = NULL) {
-  
   # ----Step 1: pull from variables in bllFlowModel ----
   variablesSheet <-
     bllFlowModel[[pkg.globals$bllFlowContent.Variables]]
@@ -143,7 +147,6 @@ CreateTableOne.default <- tableone::CreateTableOne
 # Function to create a long table one for one tableOne
 AddToLongTable <-
   function(passedTable, longTable, variableDetails) {
-    
     # ----Step 1: Convert strata into usable format ----
     # Format Strata values into machine readable format
     dimNames <- attr(passedTable$ContTable, "dimnames")
@@ -288,7 +291,6 @@ ExtractDataFromCatTable <-
            strataValues,
            longTable,
            variableDetails) {
-    
     # ----Step 1: Split the strata name into the two variables ----
     variablesChecked <- 0
     varNames <- attr(catTable[[1]], "names")
