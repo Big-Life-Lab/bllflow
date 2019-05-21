@@ -105,7 +105,7 @@ functions in *Example X*); or,
 2) export a CSV with metadata from an R variable list and a DDI file.
 
 ```{r}
-WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails.csv")
+WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails1.csv")
 ```
 Creates a directory and file (if they don't already exists). `newMSWvariableDetails.csv` 
 will be overwritten if the file already exists. `newMSWvariableDetails.csv` is 
