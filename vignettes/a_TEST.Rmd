@@ -115,7 +115,7 @@ with either `BLLFLow()` or `GetDDIVariables()`.
 Create a new file (`newName.csv`) directly from an existing variableDetails.csv.
 ```{r}
 WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", 
-                  "newMSWvariableDetails.csv", 
+                  "newMSWvariableDetails1.csv", 
                   "nonBLLPopulated.csv")
 ```
 
@@ -126,7 +126,7 @@ Replaces the models msw with all or either variables or variableDetails.
 Passing variableDetails also updates the populatedVariableDetails
 
 ```{r}
-pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
+#pbcModel <- UpdateMSW(pbcModel, variables, variableDetails)
 ```
 
 #### Example 5. More general DDI utily functions 
@@ -157,13 +157,13 @@ would not add the info to the bllFlow object.
 
 ```{r}
 
-pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
+#pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
                 "pbcDDI.xml")
 # all the DDI metadata
 
-varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
+#varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
 # all the variable metadata (but no study description infomation)
 
-descrForPbc <- GetDDIDescription(pbcDDI)
+#descrForPbc <- GetDDIDescription(pbcDDI)
 # all the study description metadata (but no variable infomation)
 ```
