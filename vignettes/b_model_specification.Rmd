@@ -85,7 +85,9 @@ data(pbc)
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
+
 library(bllflow)
+
 # create a bllflow object and add labels.
 pbcModel <- BLLFlow(pbc, variables, variableDetails)
 ```
