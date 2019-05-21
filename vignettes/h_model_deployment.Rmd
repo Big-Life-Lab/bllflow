@@ -21,6 +21,19 @@ This section is in progress. _bllflow_ use the Model Specification Workbook to p
 - validation (testing) data.
 - calibratin data.
 
+```{r}
+library(survival) # for pbc data
+data(pbc)
+library(bllflow)
+pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), "pbcDDI.xml")
+variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+
+# create a BLLFlow object and add labels.
+pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
+WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails1.csv")
+```
+
 See the following examples of how `bllflow` is used to report and deploy models.
 
   * Algorithms for indivdual use at [Project Big Life](https://www.projectbiglife.ca)
