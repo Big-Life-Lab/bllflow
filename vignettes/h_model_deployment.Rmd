@@ -31,6 +31,10 @@ variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDeta
 # create a BLLFlow object and add labels.
 pbcModel <- BLLFlow(pbc, variables, variableDetails, pbcDDI)
 WriteDDIPopulatedMSW(pbcModel, "../inst/extdata/", "newMSWvariableDetails.csv")
+WriteDDIPopulatedMSW("../inst/extdata/", 
+                  "newMSWvariableDetails.csv", 
+                  "nonBLLPopulated.csv")
+ 
 ```
 See the following examples of how `bllflow` is used to report and deploy models.
 
