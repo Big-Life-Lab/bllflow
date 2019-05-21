@@ -158,7 +158,7 @@ would not add the info to the bllFlow object.
 ```{r}
 
 #pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
-                "pbcDDI.xml")
+#                "pbcDDI.xml")
 # all the DDI metadata
 
 #varsForPbc <- GetDDIVariables(pbcDDI, c("age", "sex"))
