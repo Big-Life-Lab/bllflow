@@ -128,9 +128,9 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>In <em>bllflow</em> data cleaning is loosely defined as modifying rows (observations) and variable transformation as modifying columns (variables). Data preparation refers to both these procedures. Data preparation functions come in two forms:</p>
 <ol style="list-style-type: decimal">
 <li>Functions where the data and variables are specfified as attributes within the function. <em>bllflow</em> add to the functions that already exist in the <code>sjmisc</code> package.</li>
@@ -138,6 +138,7 @@
 <em>bllflow</em> object functions where the Model Specification Workbook specifies which data is cleaned and variables transformed. These <em>bllflow</em> ‘wrapper’ functions are available for selected functions in the <code>sjmisc</code> package and for all <em>bllflow</em> objects.</li>
 </ol>
 <p>The effects of all data preparation functions can be logged and printed. Tranformations can be save as a Predictive Modelling Markup Language (PMML) file to faciliate predictive model deployment.</p>
+</div>
 <div id="data-cleaning" class="section level2">
 <h2 class="hasAnchor">
 <a href="#data-cleaning" class="anchor"></a>Data cleaning</h2>
@@ -157,32 +158,33 @@
 <div id="example-1-clean-max-and-clean-min-using-bllflow-model-and-msw-variabledetails" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1-clean-max-and-clean-min-using-bllflow-model-and-msw-variabledetails" class="anchor"></a>Example 1: <code>clean.Max</code> and <code>clean.Min</code> using BLLFlow model (and MSW variableDetails)</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load libraries and pbc data (from survival)</span>
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)
-<span class="co">#&gt; Loading required package: tableone</span>
-<span class="co">#&gt; Loading required package: DDIwR</span>
-<span class="co">#&gt; Loading required package: xml2</span>
-
-<span class="co"># read the Model Specification Workbook</span>
-variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))
-variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))
-
-<span class="co"># initialize BLLFlow - create the BLLFlow object</span>
-pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails)
-
-cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Max.html">clean.Max</a></span>(pbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] "clean.max.BLLFlow: 418 rows were checked and 13 rows were set to delete. Reason: Rule age max at 70 was violated"</span>
-cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Min.html">clean.Min</a></span>(cleanedPbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; [1] "clean.min.BLLFlow: 405 rows were checked and 69 rows were set to delete. Reason: Rule age min at 40 was violated"</span>
-
-cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <span class="co"># to print the entire log.</span>
-<span class="co">#&gt; [1] "Data cleaning and trandformation log"</span>
-<span class="co">#&gt; [1] "2 steps performed"</span>
-<span class="co">#&gt;  Step          Function Variable       Label Value Rows   Type</span>
-<span class="co">#&gt;     1 clean.max.BLLFlow      age Age (years)    70   13 delete</span>
-<span class="co">#&gt;     2 clean.min.BLLFlow      age Age (years)    40   69 delete</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># load libraries and pbc data (from survival)</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; Loading required package: tableone</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; Loading required package: DDIwR</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; Loading required package: xml2</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co"># read the Model Specification Workbook</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co"># initialize BLLFlow - create the BLLFlow object</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails)</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Max.html">clean.Max</a></span>(pbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co">#&gt; [1] "clean.max.BLLFlow: 418 rows were checked and 13 rows were set to delete. Reason: Rule age max at 70 "</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">cleanedPbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/clean.Min.html">clean.Min</a></span>(cleanedPbcModel, <span class="dt">print =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co">#&gt; [1] "clean.min.BLLFlow: 405 rows were checked and 69 rows were set to delete. Reason: Rule age min at 40 "</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <span class="co"># to print the entire log.</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="co">#&gt; [1] "Data cleaning and trandformation log"</span></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co">#&gt; [1] "2 steps performed"</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="co">#&gt;  Step          Function Variable       Label Value Rows   Type</span></a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co">#&gt;     1 clean.max.BLLFlow      age Age (years)    70   13 delete</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co">#&gt;     2 clean.min.BLLFlow      age Age (years)    40   69 delete</span></a></code></pre></div>
 </div>
 </div>
 <div id="data-tranformation" class="section level2">
@@ -193,11 +195,12 @@ cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <sp
 <div id="logging" class="section level2">
 <h2 class="hasAnchor">
 <a href="#logging" class="anchor"></a>Logging</h2>
+<p>TODO</p>
 </div>
 <div id="transformations-to-pmml" class="section level2">
 <h2 class="hasAnchor">
 <a href="#transformations-to-pmml" class="anchor"></a>Transformations to PMML</h2>
-</div>
+<p>TODO</p>
 </div>
   </div>
 
@@ -206,14 +209,11 @@ cleanedPbcModel<span class="op">$</span>metaData<span class="op">$</span>log <sp
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li>
-<a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#data-cleaning">Data cleaning</a></li>
+<li><a href="#introduction">Introduction</a></li>
+      <li><a href="#data-cleaning">Data cleaning</a></li>
       <li><a href="#data-tranformation">Data tranformation</a></li>
       <li><a href="#logging">Logging</a></li>
       <li><a href="#transformations-to-pmml">Transformations to PMML</a></li>
-      </ul>
-</li>
       </ul>
 </div>
       </div>

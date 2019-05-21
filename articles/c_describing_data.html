@@ -129,13 +129,13 @@
     
     
 <p><em>bllflow</em> builds from the <code>tableone</code> package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)
-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tableone"</span>)
-catVars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"status"</span>, <span class="st">"trt"</span>, <span class="st">"ascites"</span>, <span class="st">"hepato"</span>, <span class="st">"spiders"</span>, <span class="st">"edema"</span>, <span class="st">"stage"</span>)
-TableOne &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tableone/topics/CreateTableOne">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>,<span class="st">"stage"</span>), <span class="dt">factorVars =</span> catVars)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># </span><span class="al">TODO</span><span class="co">: checkedTableOne &lt;- CheckSmallCells(TableOne)</span>
-<span class="co"># </span><span class="al">TODO</span><span class="co">: show how the MSW provides instructoins to create tables.</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tableone"</span>)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">catVars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"status"</span>, <span class="st">"trt"</span>, <span class="st">"ascites"</span>, <span class="st">"hepato"</span>, <span class="st">"spiders"</span>, <span class="st">"edema"</span>, <span class="st">"stage"</span>)</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/tableone/topics/CreateTableOne">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>,<span class="st">"stage"</span>), <span class="dt">factorVars =</span> catVars)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># </span><span class="al">TODO</span><span class="co">: checkedTableOne &lt;- CheckSmallCells(TableOne)</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># </span><span class="al">TODO</span><span class="co">: show how the MSW provides instructoins to create tables.</span></a></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
