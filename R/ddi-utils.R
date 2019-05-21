@@ -124,7 +124,7 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 WriteDDIPopulatedMSW.BLLFlow <-
   function(x, pathToWriteTo, newFileName, ...) {
     bllFlow <- x
-    
+
     # create new directory if one does not exist
     if (!dir.exists(pathToWriteTo)) {
       dir.create(file.path(getwd(), pathToWriteTo))
