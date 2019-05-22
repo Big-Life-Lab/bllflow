@@ -150,6 +150,13 @@ AddToLongTable <-
     strataAllCombinationsDataFrame <- expand.grid(dimNames)
     strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
     strataValues <- do.call(paste, strataArgs)
+    # # ----Step 1: Split the strata name into the two variables ----
+    # if (!is.null(strataName)) {
+    #   strataSplitName <-
+    #     unlist(strsplit(as.character(strataName), split = ":"))
+    # } else{
+    #   strataSplitName <- strataName
+    # }
     
     # ----Step 2: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
@@ -272,7 +279,11 @@ ExtractDataFromContTable <-
           rowPercentile75
         longTableRow <- append(longTableRow, groupByList)
         
-        # ----Step 5: Add row to the rest of the rows----
+        # ----Step 5: Clean the row
+         
+        
+        # ----Step 6: Add row to the rest of the rows----
+        #print(paste(longTableRows,"asdawdasdawd", longTableRow))
         longTableRows <-
           rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
       }
@@ -356,7 +367,15 @@ ExtractDataFromCatTable <-
           longTableRow[[pkg.globals$LongTable.Percentile75]] <-  NA
           longTableRow <- append(longTableRow, groupByList)
           
-          # ----Step 5: Add row to the rest of the rows----
+          # ----Step 5: Clean the row
+          for (eachElementIndex in 1:length(longTableRow)) {
+            if (length(longTableRow[[eachElementIndex]]) == 0) {
+              longTableRow[[eachElementIndex]] <- NA
+            }
+          }
+          
+          # ----Step 6: Add row to the rest of the rows----
+          #print(paste(longTableRows,"asdawdasdawd", longTableRow))
           longTableRows <-
             rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
         }
