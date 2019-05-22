@@ -14,8 +14,10 @@ knitr::opts_chunk$set(
 ```
 _bllflow_ builds from the `tableone` package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.
 
-Create a "Table 1 - description of study data" for all variables in your database.
-```{r}
+## Create "Table 1"
+Create "Table 1- description of study data" for all variables in your database. This method is from the `tableone` package.
+
+```{r warning=FALSE}
 library(survival)
 data(pbc)
 library("tableone")
@@ -23,6 +25,7 @@ catVars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
 CreateTableOne(data = pbc, factorVars = catVars)
 ```
 
+## Create Table 1 using the Model Specification Workbook
 Create a Table 1 with only the variables in your model, using the Model Specification Workbook.
 First initialize the BLLFlow model.
 ```{r} 
@@ -33,18 +36,21 @@ pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
 CreateTableOne(pbcModel)
 ```
 
-You can stratify Table 1 in two methods. With stratifications as:
-1) columns. This is how to describe your data for manuscripts. This method is supported with the `CreateTableOne` library.
+## Create Table 1 with stratification
+You can stratify Table 1 in two methods.
+
+1) Stratify with columns. This is how to describe your data for manuscripts. This method is supported with the `CreateTableOne` library.
 ```{r}
 TableOne <- CreateTableOne(data = pbc,strata = c("trt"), factorVars = catVars)
 ```
 
-2) rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. 
+2) Stratify with rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. 
 For example, see an '[algorithm viewer](http://algorithm-viewer.projectbiglife.ca/#/respect)' that shows Table 1 stratified for 61 strata (bins).
 ```{r}
 TableOneLong <- SummaryDataLong(TableOne)
 ```
 
+## Add labels and metadata
 For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents.
 Initialize the model with the DDI document.
 ```{r}
@@ -54,6 +60,7 @@ pbcModel <- UpdateMSW(bllModel = pbcModel, newDDI = ddi)
 pbcModelWithLongTable <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
 ```
 
+## Check for small cells
 Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.
 ```{r}
 TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
