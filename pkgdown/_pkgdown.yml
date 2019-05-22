@@ -56,6 +56,11 @@ reference:
       - ReadDDI
       - GetDDIDescription
       - GetDDIVariables
+  - title: "Describe data"
+    desc: Create summary tables
+    contents:
+      - CreateTableOne
+      - SummaryDataLong
   - title: "Clean and transfrom variables"
     desc: Functions for cleaning and transforming variables
     contents:
@@ -63,4 +68,5 @@ reference:
       - clean.Min
   - title: "Utility Functions"
     contents:
+      - CheckSmallCells
       - print.metaDataLog
