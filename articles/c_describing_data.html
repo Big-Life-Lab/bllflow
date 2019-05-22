@@ -129,7 +129,10 @@
     
     
 <p><em>bllflow</em> builds from the <code>tableone</code> package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.</p>
-<p>Create a “Table 1 - description of study data” for all variables in your database.</p>
+<div id="create-table-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-table-1" class="anchor"></a>Create “Table 1”</h2>
+<p>Create “Table 1- description of study data” for all variables in your database. This method is from the <code>tableone</code> package.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)</a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tableone"</span>)</a>
@@ -168,6 +171,10 @@
 <a class="sourceLine" id="cb1-36" data-line-number="36"><span class="co">#&gt;      2                      92 (22.3)   </span></a>
 <a class="sourceLine" id="cb1-37" data-line-number="37"><span class="co">#&gt;      3                     155 (37.6)   </span></a>
 <a class="sourceLine" id="cb1-38" data-line-number="38"><span class="co">#&gt;      4                     144 (35.0)</span></a></code></pre></div>
+</div>
+<div id="create-table-1-using-the-model-specification-workbook" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-table-1-using-the-model-specification-workbook" class="anchor"></a>Create Table 1 using the Model Specification Workbook</h2>
 <p>Create a Table 1 with only the variables in your model, using the Model Specification Workbook. First initialize the BLLFlow model.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Loading required package: DDIwR</span></a>
@@ -193,17 +200,32 @@
 <a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;      0                  354 (84.7) </span></a>
 <a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;      0.5                 44 (10.5) </span></a>
 <a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;      1                   20 ( 4.8)</span></a></code></pre></div>
-<p>You can stratify Table 1 in two methods. With stratifications as: 1) columns. This is how to describe your data for manuscripts. This method is supported with the <code>CreateTableOne</code> library.</p>
+</div>
+<div id="create-table-1-with-stratification" class="section level2">
+<h2 class="hasAnchor">
+<a href="#create-table-1-with-stratification" class="anchor"></a>Create Table 1 with stratification</h2>
+<p>You can stratify Table 1 in two methods.</p>
+<ol style="list-style-type: decimal">
+<li>Stratify with columns. This is how to describe your data for manuscripts. This method is supported with the <code>CreateTableOne</code> library.</li>
+</ol>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>), <span class="dt">factorVars =</span> catVars)</a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
-<li>rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. For example, see an ‘<a href="http://algorithm-viewer.projectbiglife.ca/#/respect">algorithm viewer</a>’ that shows Table 1 stratified for 61 strata (bins).</li>
+<li>Stratify with rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. For example, see an ‘<a href="http://algorithm-viewer.projectbiglife.ca/#/respect">algorithm viewer</a>’ that shows Table 1 stratified for 61 strata (bins).</li>
 </ol>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">TableOneLong &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(TableOne)</a></code></pre></div>
+</div>
+<div id="add-labels-and-metadata" class="section level2">
+<h2 class="hasAnchor">
+<a href="#add-labels-and-metadata" class="anchor"></a>Add labels and metadata</h2>
 <p>For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents. Initialize the model with the DDI document.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ddi &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bllflow/topics/ReadDDI">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">""</span>, <span class="dt">package =</span> <span class="st">"bllflow"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/UpdateMSW.html">UpdateMSW</a></span>(<span class="dt">bllModel =</span> pbcModel, <span class="dt">newDDI =</span> ddi) </a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4">pbcModelWithLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(<span class="dt">tableOne =</span> TableOne, <span class="dt">bllFlowModel =</span> pbcModel, <span class="dt">longTable =</span> TableOneLong)</a></code></pre></div>
+</div>
+<div id="check-for-small-cells" class="section level2">
+<h2 class="hasAnchor">
+<a href="#check-for-small-cells" class="anchor"></a>Check for small cells</h2>
 <p>Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>,<span class="st">"stage"</span>), <span class="dt">factorVars =</span> catVars)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">checkedTableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(TableOne)</a>
@@ -340,9 +362,21 @@
 <a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; 29           NA      trt             1</span></a>
 <a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; 48           NA      trt             2</span></a>
 <a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; 61           NA      trt             2</span></a></code></pre></div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+        <div id="tocnav">
+      <h2 class="hasAnchor">
+<a href="#tocnav" class="anchor"></a>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+<li><a href="#create-table-1">Create “Table 1”</a></li>
+      <li><a href="#create-table-1-using-the-model-specification-workbook">Create Table 1 using the Model Specification Workbook</a></li>
+      <li><a href="#create-table-1-with-stratification">Create Table 1 with stratification</a></li>
+      <li><a href="#add-labels-and-metadata">Add labels and metadata</a></li>
+      <li><a href="#check-for-small-cells">Check for small cells</a></li>
+      </ul>
+</div>
       </div>
 
 </div>
