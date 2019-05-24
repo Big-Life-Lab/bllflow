@@ -195,12 +195,14 @@ AddToLongTable <-
       for (columnMissing in colnames(tableToAppend)) {
         if (!columnMissing %in% colnames(longTable)) {
           if (nrow(longTable) == 0) {
-            class(longTable[[columnMissing]]) <- class(tableToAppend[[columnMissing]])
+            class(longTable[[columnMissing]]) <-
+              class(tableToAppend[[columnMissing]])
           } else {
             longTable[[columnMissing]] <- NA
           }
         }
       }
+      
       longTable <-
         rbind(longTable, tableToAppend,  stringsAsFactors = FALSE)
     }
