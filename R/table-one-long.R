@@ -105,7 +105,6 @@ CreateTableOne.BLLFlow <- function(bllFlowModel,
                                    vars = NULL,
                                    strata = NULL,
                                    factorVars = NULL) {
-  
   # ----Step 1: pull from variables in bllFlowModel ----
   variablesSheet <-
     bllFlowModel[[pkg.globals$bllFlowContent.Variables]]
@@ -143,21 +142,12 @@ CreateTableOne.default <- tableone::CreateTableOne
 # Function to create a long table one for one tableOne
 AddToLongTable <-
   function(passedTable, longTable, variableDetails) {
-    
     # ----Step 1: Convert strata into usable format ----
     # Format Strata values into machine readable format
     dimNames <- attr(passedTable$ContTable, "dimnames")
     strataAllCombinationsDataFrame <- expand.grid(dimNames)
     strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
     strataValues <- do.call(paste, strataArgs)
-    # # ----Step 1: Split the strata name into the two variables ----
-    # if (!is.null(strataName)) {
-    #   strataSplitName <-
-    #     unlist(strsplit(as.character(strataName), split = ":"))
-    # } else{
-    #   strataSplitName <- strataName
-    # }
-    
     # ----Step 2: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
     returnedLongTables <- list()
@@ -175,8 +165,7 @@ AddToLongTable <-
           longTable,
           variableDetails
         )
-      returnedLongTables[[tableCount]] <- contTableLongTable[[1]]
-      longTable <- contTableLongTable[[2]]
+      returnedLongTables[[tableCount]] <- contTableLongTable
     }
     
     # Call Cat table extraction if tableOne contains CatTable
@@ -193,8 +182,7 @@ AddToLongTable <-
           longTable,
           variableDetails
         )
-      returnedLongTables[[tableCount]] <- catTableLongTable[[1]]
-      longTable <- catTableLongTable[[2]]
+      returnedLongTables[[tableCount]] <- catTableLongTable
     }
     
     # ----Step 4: Add any missing columns to the newly created tables----
@@ -202,6 +190,15 @@ AddToLongTable <-
       for (columnMissing in colnames(longTable)) {
         if (!columnMissing %in% colnames(tableToAppend)) {
           tableToAppend[[columnMissing]] <- NA
+        }
+      }
+      for (columnMissing in colnames(tableToAppend)) {
+        if (!columnMissing %in% colnames(longTable)) {
+          if (nrow(longTable) == 0) {
+            class(longTable[[columnMissing]]) <- class(tableToAppend[[columnMissing]])
+          } else {
+            longTable[[columnMissing]] <- NA
+          }
         }
       }
       longTable <-
@@ -229,8 +226,6 @@ ExtractDataFromContTable <-
     }
     
     # ----Step 2: Add columns to long table
-    longTable <-
-      AddGroupByColumns(strataSplitName, longTable, variableDetails)
     longTableRows <- data.frame()
     
     # loop through each strata columns
@@ -280,16 +275,19 @@ ExtractDataFromContTable <-
         longTableRow <- append(longTableRow, groupByList)
         
         # ----Step 5: Clean the row
-         
+        for (eachElementIndex in 1:length(longTableRow)) {
+          if (length(longTableRow[[eachElementIndex]]) == 0) {
+            longTableRow[[eachElementIndex]] <- NA
+          }
+        }
         
         # ----Step 6: Add row to the rest of the rows----
-        #print(paste(longTableRows,"asdawdasdawd", longTableRow))
         longTableRows <-
           rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
       }
     }
     
-    return(list(longTableRows, longTable))
+    return(longTableRows)
   }
 
 # Create long table from CatTable
@@ -299,7 +297,6 @@ ExtractDataFromCatTable <-
            strataValues,
            longTable,
            variableDetails) {
-    
     # ----Step 1: Split the strata name into the two variables ----
     variablesChecked <- 0
     varNames <- attr(catTable[[1]], "names")
@@ -308,8 +305,6 @@ ExtractDataFromCatTable <-
     # Adds group by columns not found in the long table
     
     # ----Step 2: Add columns to long table
-    longTable <-
-      AddGroupByColumns(strataSplitName, longTable, variableDetails)
     longTableRows <- data.frame()
     
     # ----Step 3: Extract information for each new row of the longtable ----
@@ -344,9 +339,6 @@ ExtractDataFromCatTable <-
               if (length(groupByList[[pkg.globals$LongTable.VariableCategoryLabel]]) == 0) {
                 groupByList[[pkg.globals$LongTable.VariableCategoryLabel]] <- NA
               }
-              longTable <-
-                AddColumn(pkg.globals$LongTable.VariableCategoryLabel,
-                          longTable)
             }
           }
           
@@ -375,7 +367,6 @@ ExtractDataFromCatTable <-
           }
           
           # ----Step 6: Add row to the rest of the rows----
-          #print(paste(longTableRows,"asdawdasdawd", longTableRow))
           longTableRows <-
             rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
         }
@@ -383,7 +374,7 @@ ExtractDataFromCatTable <-
       variablesChecked <- 0
     }
     
-    return(list(longTableRows, longTable))
+    return(longTableRows)
   }
 # deprecated ----------------------------------------------------------------------
 #' Creates a "Table One Long" and stores it in the metadata list.
