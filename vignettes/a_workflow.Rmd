@@ -27,26 +27,26 @@ allowing transparent reporting.
 
 _bllflow_ uses general utility functions for data cleaning and variable transformation. Also included are functions for analyses logs and managing variable labels and other metadata. The utility functions can be used by themselves -- even if you don't want to follow _bllflow_'s prespecified approach. When you are ready, you can use the Model Specification Workbook to describe the your data cleaning and transformation steps -- additional bllflow 'wrapper' functions execute the utility functions according the Model Specification Workbook.
 
-### Step 1 - Pre-specifying your model
+## Step 1 - Pre-specifying your model
 Model specifications are recorded within a series of four CVS worksheets that 
 together form the Model Specification Workbook (MSW). The most important sheets is the `variables` worksheets -- a CSV file with a row for each variable in your model. Included are columns for variable labels, data cleaning, variable 
  transformations and other instructions (Step 4).
 
 We've found that people starting a new project like using the MSW even if they don't use any other part of _bllflow_. The MSW worksheet helps you organize your thoughts about what variables to include in your model. The worksheets are also helpful when working in teams. We get everyone invovled in the MSW: analysts, methodologist and content experts. Graduate students have a team too -- you can use the MSW to review your modelling plans with your supervisor and thesis committee.
 
-### Step 2 - Describing the study cohort
+## Step 2 - Describing the study cohort
 Research studies tyipically include a "Table 1" that describe the study cohort 
 or population and additional tables and figures. With _bllflow_, you specify what 
 variables are required for each table and then use functions to create 
 the tables. 
 
-### Step 3 - Data cleaning and variable transformation
+## Step 3 - Data cleaning and variable transformation
 Data cleaning and varible transformation is the most time consuming step of 
 model development -- and also a step that poorly communicated and difficult 
 to reproduce. _bllflow_ strives to reduce the effort required in this 
 step as much as possible, while also improving transparency and reproduciblity. 
 
-### Step 4 - Developing a predicitve model
+## Step 4 - Developing a predicitve model
 This step is short and breif for _bllflow_. _bllflow_
  doesn't contain any functions for actual statistical or machine learning models.
  Rather, _bllflow_ is a wrapper around the model model derivation, 
@@ -59,7 +59,7 @@ This step is short and breif for _bllflow_. _bllflow_
  In _bllflow_, dummy variables and other transformations are generated prior 
  to function call.
  
-### Step 5 - Reporting the performance of a model
+## Step 5 - Reporting the performance of a model
 This section generates performance reports for predictive 
 algorithms -- and much of this section will not be helpful if are performing 
 other types of studies. We add onto popular packages such as Hmisc in three ways. 
@@ -68,7 +68,7 @@ functions are underdeveloped. Second, _bllflow_ have versions of calibration
  plots and other visualizations. Third, plots are designed to replication on 
  many subgroups, using information from the `aggregatedResults` data frame.
  
-### Step 6 - Describing a model
+## Step 6 - Describing a model
 _bllflow_ creates a consistent structure for descdribing models. The same as 
 other steps, a structured data frame, `model-description` is created to 
 facilitate export as a CSV file or other document format. Critically, the model 
@@ -77,7 +77,7 @@ deployment in various settings. PMML can be imported into Tensor Flow deployment
 engines (with future plans for export to Tensor Flow Graph). `model-description`
  is also used for manuscript-ready exhibits.
  
-### Reference files - Variable types, labels and metadata
+## Reference files - Variable types, labels and metadata
 _bllflow_ uses consistent labels and metadata throughout the workflow. 
 _bllflow_ metadata is alligned with two documentation initiatives: the 
 [Data Documentaiton Initiative (DDI)](https://www.ddialliance.org) and 
@@ -85,7 +85,7 @@ _bllflow_ metadata is alligned with two documentation initiatives: the
 all variable types used. For example, `mean`  refers to the mean value of an 
 exposure. All variable types are defined to ensure consistent, understandable and machine-actionable across software libraries. 
 
-### Helper and utility functions
+## Helper and utility functions
 Helpter and utility functions to support your workflow. For example, metadata utility functions help maintain variable labels and build from `hmsic` and `labelled` and `codebook` packages.
 
 

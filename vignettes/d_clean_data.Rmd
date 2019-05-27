@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-# Introduction
+## Introduction
 In _bllflow_ data cleaning is loosely defined as modifying rows (observations) and variable transformation as modifying columns (variables). Data preparation refers to both these procedures. Data preparation functions come in two forms:
 
 1) Functions where the data and variables are specfified as attributes within the function. _bllflow_ add to the functions that already exist in the `sjmisc` package.
@@ -39,6 +39,7 @@ library(survival)
 data(pbc)
 library(bllflow)
 
+
 # read the Model Specification Workbook
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
 variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
@@ -50,6 +51,7 @@ cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
 cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
 
 cleanedPbcModel$metaData$log # to print the entire log.
+
 ```
 
 ## Data tranformation
@@ -64,4 +66,8 @@ Supported functions: <font color="red">TODO</font>: describe these functions.
 
 ## Logging
 
+TODO
+
 ## Transformations to PMML
+
+TODO

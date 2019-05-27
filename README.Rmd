@@ -49,7 +49,7 @@ At any point of your analyses you have:
 
 _bllflow_ supports the use of metadata, including:
 
-- the Data Document Initiative ([DDI](https://ddialliance.org)).
+- the Data Document Initiative ([DDI](https://www.ddialliance.org)).
 - Predictive Model Modelling Language for predictive algorithms ([PMML](http://dmg.org/pmml/v4-3/GeneralStructure.html)) files for transparent algorithm reporting and deployment.  
 
 _bllflow_ workflow and functions support reporting guidelines such as [TRIPOD](https://www.equator-network.org/2015/01/07/guidelines-for-reporting-multivariable-prediction-models-for-individual-prognosis-or-diagnosis-tripod-published/), [STROBE](http://www.equator-network.org/reporting-guidelines/strobe/), and [RECORD](http://www.equator-network.org/reporting-guidelines/record/).
@@ -67,3 +67,14 @@ There are plans to submit bllFlow to CRAN once we include all seven steps of the
 ## Contributing to the package
 
 Please follow [this guide](CONTRIBUTING.md) if you like to contribute to the _bllflow_ package.
+
+## Documentation
+
+In case your documentation .Rmd file contains images you wish to include, make sure to add the path to the image in the resource_files section.
+An example of that is shown below:
+```
+resource_files:
+  - ../man/figures/coding.png
+```
+  
+In case you wish to link .Rmd files together make sure to change their .Rmd extension to a .html extension to make sure the wiki links properly.

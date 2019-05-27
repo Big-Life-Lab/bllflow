@@ -29,7 +29,7 @@ in the list are specified below: \cr
 3. variableDetails - A dataframe that contains the passed variableDetails argument \cr
 4. ddi - A string that contains the passed ddi argument \cr
 5. additionalDDIMetaData - A named list. See the return type of the \code{\link{GetDDIDescription}} function \cr
-6. populatedVariableDeatails - A dataframe that contains the rows in the variableDetails \cr
+6. populatedVariableDetails - A dataframe that contains the rows in the variableDetails \cr
 argument but with additional data filled in using the ddi argument it's specified
 }
 \description{
