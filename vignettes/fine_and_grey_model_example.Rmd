@@ -101,13 +101,12 @@ attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
 ```{r}
 modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
-CreateBLLModelObject(pbc, pbc_crr_model, modelPbcTableOne)
+CreateBLLModelObject(allvars, pbc_crr_model, modelPbcTableOne)
 ```
 
 # Generate a bllflow model object
 This object is used to generate the PMML file, for manuscript figures and other uses.
 
-CreateBLLModelObject(modelObject, modelType, tableOne, ModekData)
 @param modelObject The object that is returned when a model is created. 
 @param modelType values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
 @param tableOne The object returned by createTableOne(). 
@@ -117,7 +116,7 @@ CreateBLLModelObject(modelObject, modelType, tableOne, ModekData)
 ```{r}
 
 pbcTableOne = CreateTableOne(data = pbc)
-CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = pbc)
+CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
 
 ```
 Note that modelType is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
