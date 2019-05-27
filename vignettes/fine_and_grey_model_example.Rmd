@@ -116,7 +116,7 @@ CreateBLLModelObject(modelObject, modelType, tableOne, ModekData)
 
 ```{r}
 
-pbcTableOne = CreateTableOne(pbc)
+pbcTableOne = CreateTableOne(data = pbc)
 CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = pbc)
 
 ```

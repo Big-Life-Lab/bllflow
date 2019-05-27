@@ -46,6 +46,7 @@ pkg.globals$tableOne.Level <- "level"
 pkg.globals$tableOne.Percent <- "percent"
 pkg.globals$tableOne.StrataVarName <- "strataVarName"
 pkg.globals$tableOne.N <- "n"
+pkg.globals$tableOne.Vars <- "vars"
 
 # Long table column names
 pkg.globals$LongTable.VariableCategory <- "variableCategory"
