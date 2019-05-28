@@ -19,10 +19,10 @@
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
 #' library(bllflow)
-#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+#' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
 #' pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
@@ -100,10 +100,10 @@ CreateTableOne <- function(x = NULL, ...) {
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
 #' library(bllflow)
-#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+#' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
 #'
