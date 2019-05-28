@@ -33,3 +33,23 @@ center.bllFlow() # will call sj::center() with the following attributes
 #  note: we would create a bllflow method for mean() that would calculate the three different means: 'mean' the original mean; 'meanWeighted' the weighted mean (see weighted.mean {stats}) and 'MSWMean' the mean calcualted using the MSW mean values.
 
 # Do we want a little utility function addMeanToMSW which would calculate mean and then add to the MSW sheet (object)?
+```
+Generic Center Function SPEC
+
+@param data the dataset that is to be centered
+@param varsToCenterOn a vector of vars names to center on
+@param howToCenter Value/What to center the data(make it a vector with 1 for 1 on the vector of passed vars)
+@param appendName the value to append to variable 
+@param append append new vars or replace vars
+
+@return new modified data
+
+BLLFlow Center Function
+
+@param bllFlow contains the data and MSW we use
+@param appendName The name to append to the data
+@param append/replace config if u want to append/replace
+@param optional vector of vars to center
+@param optional vector of how to center (Not sure if we wanna let them do that)
+
+@return bllflow object with modified metadata and the MSW data
