@@ -39,7 +39,8 @@ Suggests:
   DT,
   magrittr,
   survival,
-  rms
+  rms, 
+  cmprsk
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
