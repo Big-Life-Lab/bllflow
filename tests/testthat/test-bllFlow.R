@@ -37,14 +37,14 @@ test_that("bllFlow populates appropriate ddi related vars", {
   expect_is(model$ddi, "BLLFlowDDI")
 })
 test_that("bllFlow handles passed args of wrong type", {
-
+# Display error wrong arg passed? should match the classes that are checked above
 })
 test_that("bllFlow handles passed args with wrong/innapropriate information", {
-  
+  # This is the check for proper columns being there not cell content/ unless u want it to check column data types
 })
 test_that("bllFlow handles empty passed args", {
-  
+  # What kind of error should it throw if something is passed of right class but its just empty as in empty data frame
 })
 test_that("bllFlow display appropriate warnings when trying to overwrite rows", {
-  
+  # are the current warnings i display the ones we wish to stick with?
 })
