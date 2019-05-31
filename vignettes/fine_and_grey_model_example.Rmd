@@ -73,9 +73,7 @@ source(file.path(getwd(), "../R/rcs2.R"))
 Use the rcs funciton to collect all of the variables you want to use in the model into a single object for easier regression running.
 ```{r}
 attach(pbc)
-allvars <- as.data.frame(cbind(trtC, sexC,
-                rcs2(ageC, 5, rcs_names = c('AgeC_rcs1', 'AgeC_rcs2', 'AgeC_rcs3', 'AgeC_rcs4')),
-                rcs2(biliC, 3, rcs_names = c('BiliC_rcs1', 'BiliC_rcs2'))))
+allvars <- as.data.frame(cbind(trtC, sexC))
 detach(pbc)
 str(allvars)
 ```
@@ -99,6 +97,7 @@ We need to know where the knots are placed. To determine this:
 attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
 attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
+TODO: when we create the RCS function, we'll need to have an argument that passess the bllflow modelObject. Then add these knots to that object. 
 ```{r}
 modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
 library(bllflow)

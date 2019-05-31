@@ -22,3 +22,113 @@ approach.
 Vignette examples will develop the `pbc` model following the original study's 
 cox proportional hazard approach using functions in base R and the 'Hmisc' 
 package. 
+
+
+Below is a temporary example for the Fine and Grey model.
+
+
+##Overview
+Here I am going to show an example of using the primary billary cirrhosis (PBC) data to create a Fine and Grey regression model to evalute the effect of treatment with Dpenicillamine (trt) on time to transpantion (time), considering death as a competing risk (status)
+Age will be modelled as a restricted cubic spline with 5 knots (requires the Hmic package), and bilirubin as an rcs with 3 knots.
+
+Only include the patients invovled in the randomized trial:
+```{r}
+pbc <- pbc[!is.na(pbc$trt),]
+```
+
+##Prepare the data
+First we need to change sex from 'm' and 'f' to '0' and '1'
+```{r}
+attach(pbc)
+pbc$sex <- ifelse(sex == 'm', 0,
+            ifelse(sex == 'f', 1, NA))
+detach(pbc)
+```
+
+Next we want to find the means and center the variables
+```{r}
+attach(pbc)
+trt_mean <- signif(mean(trt), 3)
+sex_mean <- signif(mean(sex), 3)
+age_mean <- signif(mean(age), 3)
+bili_mean <- signif(mean(bili), 3)
+detach(pbc)
+```
+
+Center on the means
+```{r}
+attach(pbc)
+pbc$trtC <- trt - trt_mean
+pbc$sexC <- sex - sex_mean
+pbc$ageC <- age - age_mean
+pbc$biliC <- bili - bili_mean
+detach(pbc)
+```
+
+##Create restricted cubic spline variables for age and bilirubin
+A k knot spline is specified by k-1 variables. For example, a five knot spline is specified by 4 variables. The first variable is always the same as the original variable.
+
+The rcs function creates variables are named by adding ' to the end of the original variable name. These names are difficult to work with and do not fit our naming scheme. For example, this code this will create the four variables needed for a 5 knot cubic spline of age: age (the original variable), age', age'', and age''':
+
+```{r}
+attach(pbc)
+age_rcs_vec <- rcs(ageC, 5)
+detach(pbc)
+```
+
+I have modified the rcs function from Harrell's rms package to let us specify the names of the resulting rcs variables. 
+
+```{r}
+source(file.path(getwd(), "../R/rcs2.R"))
+```
+
+Use the rcs funciton to collect all of the variables you want to use in the model into a single object for easier regression running.
+```{r}
+attach(pbc)
+allvars <- as.data.frame(cbind(trtC, sexC))
+detach(pbc)
+str(allvars)
+```
+The allvars object contains 8 variables.
+
+##Create the Fine and Grey regression model
+The 'time' variable is the time (in days) from study start to either censoring, liver transplantation, or death
+The 'status' variable is 0 for censored, 1 for transplant, 2 for death
+```{r}
+pbc_crr_model <- crr(ftime = pbc$time, fstatus = pbc$status, allvars, failcode = 1, cencode = 0)
+summary(pbc_crr_model)
+```
+The beta coefficients for the model are here:
+```{r}
+pbc_crr_model$coef
+```
+
+#Knot locations
+We need to know where the knots are placed. To determine this:
+```{r}
+attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
+attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
+```
+TODO: when we create the RCS function, we'll need to have an argument that passess the bllflow modelObject. Then add these knots to that object. 
+```{r}
+modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
+library(bllflow)
+CreateBLLModelObject(allvars, pbc_crr_model, modelPbcTableOne)
+```
+
+# Generate a bllflow model object
+This object is used to generate the PMML file, for manuscript figures and other uses.
+
+@param modelObject The object that is returned when a model is created. 
+@param modelType values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
+@param tableOne The object returned by createTableOne(). This contains the mean values that is used if there are any variables that are centered on the mean.
+@param modelData The data used to generate the model. This is only required if tableOne = misssiong.
+@param calculateMean default = TRUE. If TRUE and tableOne = missing, then calculate means of variables.
+
+```{r}
+
+pbcTableOne = CreateTableOne(data = pbc)
+CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
+
+```
+Note that modelType is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
