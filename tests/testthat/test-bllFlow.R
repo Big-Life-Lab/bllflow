@@ -2,9 +2,9 @@ context("bllFlow construction")
 library(bllflow)
 library(survival)
 data(pbc)
-variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package = "bllflow"))
-variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
-ddi <- ReadDDI(system.file("extdata", package = "bllflow"), "pbcDDI.xml")
+variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
+variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
+ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
 
 test_that("bllFlow can be passed no args", {
   model <- BLLFlow()
@@ -17,7 +17,7 @@ test_that("bllFlow can be passed no args", {
   expect_equal(model$ddi, NULL)
 })
 test_that("bllFlow does not populate ddi related vars when no ddi is passed", {
-  model <- BLLFlow(pbc, variablesSheet, variableDetails)
+  model <- BLLFlow(pbc, variables, variableDetails)
   expect_is(model, "BLLFlow")
   expect_is(model$data, "data.frame")
   expect_is(model$variables, "data.frame")
@@ -27,7 +27,7 @@ test_that("bllFlow does not populate ddi related vars when no ddi is passed", {
   expect_equal(model$ddi, NULL)
 })
 test_that("bllFlow populates appropriate ddi related vars", {
-  model <- BLLFlow(pbc, variablesSheet, variableDetails,ddi)
+  model <- BLLFlow(pbc, variables, variableDetails,ddi)
   expect_is(model, "BLLFlow")
   expect_is(model$data, "data.frame")
   expect_is(model$variables, "data.frame")
