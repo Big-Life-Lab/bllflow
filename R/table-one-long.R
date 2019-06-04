@@ -48,6 +48,8 @@ SummaryDataLong <-
       longTable[[pkg.globals$LongTable.SD]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile25]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile75]] <-  numeric()
+    }else{
+      longTable <- longTable[[pkg.globals$LongTable.LongTable]]
     }
     returnTable <-
       AddToLongTable(tableOne, longTable, bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
@@ -57,15 +59,11 @@ SummaryDataLong <-
     }
     # Remove duplicate rows
     returnTable <- unique(returnTable)
-    # Remove empty rows made during initialization
-    #returnTable <- returnTable[!apply(is.na(returnTable) | returnTable == "", 1, all),]
-    if (is.null(bllFlowModel)) {
-      return(returnTable)
-    } else {
-      bllFlowModel[[pkg.globals$bllFlowContent.LongTable]] <- returnTable
-      
-      return(bllFlowModel)
-    }
+    returnTable <- list(summaryData = returnTable)
+    class(returnTable) <- "SummaryData"
+    
+    return(returnTable)
+    
   }
 
 #' Create Table One
@@ -236,7 +234,7 @@ ExtractDataFromContTable <-
     
     # ----Step 2: Add columns to long table
     longTableRows <- data.frame()
-
+    
     # loop through each strata columns
     # ----Step 3: Extract information for each new row of the longtable ----
     for (strataIndex in 1:length(contTable)) {

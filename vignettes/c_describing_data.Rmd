@@ -56,7 +56,7 @@ Initialize the model with the DDI document.
 ```{r}
 ddi <- bllflow::ReadDDI(system.file("extdata", "", package = "bllflow"), "pbcDDI.xml")
 pbcModel <- bllflow::UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
-pbcModelWithLongTable <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+longTableWithLabels <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
 ```
 
 ## Check for small cells
