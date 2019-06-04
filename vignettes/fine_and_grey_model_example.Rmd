@@ -37,7 +37,6 @@ Next we want to find the means and center the variables
 ```{r}
 attach(pbc)
 trt_mean <- signif(mean(trt), 3)
-sex_mean <- signif(mean(sex), 3)
 age_mean <- signif(mean(age), 3)
 bili_mean <- signif(mean(bili), 3)
 detach(pbc)
@@ -47,13 +46,12 @@ Center on the means
 ```{r}
 attach(pbc)
 pbc$trtC <- trt - trt_mean
-pbc$sexC <- sex - sex_mean
 pbc$ageC <- age - age_mean
 pbc$biliC <- bili - bili_mean
 detach(pbc)
 ```
 
-##Create restricted cubic spline variables for age and bilirubin
+##Create restricted cubic spline variables for age
 A k knot spline is specified by k-1 variables. For example, a five knot spline is specified by 4 variables. The first variable is always the same as the original variable.
 
 The rcs function creates variables are named by adding ' to the end of the original variable name. These names are difficult to work with and do not fit our naming scheme. For example, this code this will create the four variables needed for a 5 knot cubic spline of age: age (the original variable), age', age'', and age''':
@@ -61,6 +59,7 @@ The rcs function creates variables are named by adding ' to the end of the origi
 ```{r}
 attach(pbc)
 age_rcs_vec <- rcs(ageC, 5)
+bili_rcs_vec <- rcs(biliC, 5)
 detach(pbc)
 ```
 
@@ -68,16 +67,18 @@ I have modified the rcs function from Harrell's rms package to let us specify th
 
 ```{r}
 source(file.path(getwd(), "../R/rcs2.R"))
+age_rcs_vec2 <- rcs2(pbc$ageC, 5, rcs_names = c("AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4"))
+bili_rcs_vec2 <- rcs2(pbc$biliC, 3, rcs_names = c("BiliC_rcs1", "BiliC_rcs2"))
 ```
 
 Use the rcs funciton to collect all of the variables you want to use in the model into a single object for easier regression running.
 ```{r}
 attach(pbc)
-allvars <- as.data.frame(cbind(trtC, sexC))
+allvars <- as.data.frame(cbind(trtC, age_rcs_vec2, bili_rcs_vec2))
 detach(pbc)
 str(allvars)
 ```
-The allvars object contains 8 variables.
+The allvars object contains 7 variables.
 
 ##Create the Fine and Grey regression model
 The 'time' variable is the time (in days) from study start to either censoring, liver transplantation, or death
@@ -91,11 +92,21 @@ The beta coefficients for the model are here:
 pbc_crr_model$coef
 ```
 
+#Baseline Risk of Event
+We also need to know the baseline risk of the event at time t. Here I will show how to obtain baseline risk at 5 years:
+
+
+
 #Knot locations
 We need to know where the knots are placed. To determine this:
 ```{r}
 attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
 attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
+```
+Or,
+```{r}
+attributes(age_rcs_vec2)$parms
+attributes(bili_rcs_vec2)$parms
 ```
 TODO: when we create the RCS function, we'll need to have an argument that passess the bllflow modelObject. Then add these knots to that object. 
 ```{r}
