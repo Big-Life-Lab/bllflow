@@ -1,0 +1,46 @@
+---
+title: "RCS transformation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Restrictive cubic spline transformation
+
+### General function
+
+#' Restrictrive cubic spline transformation. 
+#' @describe Added features to harrelfe/rms to allign with rjmisc approach. Orginal rcs() function by harrelfe. See: https://github.com/harrelfe/rms/blob/master/R/rms.s
+#'
+#' @param 
+#' @param ... Arguments to the next method in the chain
+#'
+#' @export
+rcs <- function() {
+}
+
+#'
+#' @param print A boolean which when set to TRUE prints logs of what the operation did
+#'
+#' @return 
+#' @export
+#'
+#' @examples
+#' # Load packages
+#' library(survival)
+#' library(bllflow)
+#' 
+#' # Read in the data we will use
+#' data(pbc)
+#' rcs(Age, 5, "_rcs")  
+
+
+### bllflow instance
+
+### add knots to modelObject
+#' Add knot locations to bllflow modelObject for variables with restrictive cubic spline transformation. Variables must be transformed using rcs() from bllflow or rms packages. 
+
+addKnots <- function() 
+
