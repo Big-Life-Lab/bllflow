@@ -1,7 +1,14 @@
 context("SummaryDataLong")
 library(bllflow)
+library(survival)
+data(pbc)
+variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
+variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
+ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
 
 test_that("SummaryDataLong converts tableOne into a long table", {
+  pbcModel <- BLLFlow(pbc, variables, variableDetails, ddi)
+  tableOne <- CreateTableOne(pbcModel)
   
 })
 test_that("SummaryDataLong appends tableOne to passed long table", {

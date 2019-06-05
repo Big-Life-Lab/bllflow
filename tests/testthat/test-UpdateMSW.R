@@ -31,7 +31,7 @@ test_that("UpdateMSW updates bllFlow ddi and populatedVariableDetails", {
   bllFlowModel <- UpdateMSW(bllFlowModel,newDDI  =  newDDI)
   expect(!identical(ddi, newDDI),"Two sets of dataframes being tested are equal making the test unable to test")
   expect_identical(bllFlowModel[[pkg.globals$bllFlowContent.DDI]], newDDI)
-  expect_identical(bllFlowModel[[pkg.globals$bllFlowContent.VariableDetails]], ddiVariableDetails)
+  expect_equal(bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]], ddiVariableDetails)
   
 })
 test_that("UpdateMSW Throws a warning if no update parameters are passed", {
