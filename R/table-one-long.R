@@ -48,7 +48,7 @@ SummaryDataLong <-
       longTable[[pkg.globals$LongTable.SD]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile25]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile75]] <-  numeric()
-    }else{
+    } else{
       longTable <- longTable[[pkg.globals$LongTable.LongTable]]
     }
     returnTable <-
@@ -57,12 +57,11 @@ SummaryDataLong <-
       class(returnTable) <-
         append(class(returnTable), pkg.globals$LongTable.ClassName)
     }
-    # Remove duplicate rows
     returnTable <- unique(returnTable)
-    returnTable <- list(summaryData = returnTable)
-    class(returnTable) <- "SummaryData"
+    returnSummaryData <- list(summaryData = returnTable)
+    class(returnSummaryData) <- "SummaryData"
     
-    return(returnTable)
+    return(returnSummaryData)
     
   }
 
@@ -147,17 +146,13 @@ CreateTableOne.default <- tableone::CreateTableOne
 # Function to create a long table one for one tableOne
 AddToLongTable <-
   function(passedTable, longTable, variableDetails) {
-    # ----Step 1: Convert strata into usable format ----
-    # Format Strata values into machine readable format
-    dimNames <- attr(passedTable$ContTable, "dimnames")
-    strataAllCombinationsDataFrame <- expand.grid(dimNames)
-    strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
-    strataValues <- do.call(paste, strataArgs)
-    # ----Step 2: Populate long table from cont and cat tableone tables ----
+    # ----Step 1: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
     returnedLongTables <- list()
     tableCount <- 0
     if (!is.null(passedTable$ContTable)) {
+      dimNames <- attr(passedTable$ContTable, "dimnames")
+      strataValues <- CleanStrataValues(dimNames)
       tableCount <- tableCount + 1
       contTableLongTable <-
         ExtractDataFromContTable(
@@ -175,6 +170,8 @@ AddToLongTable <-
     
     # Call Cat table extraction if tableOne contains CatTable
     if (!is.null(passedTable$CatTable)) {
+      dimNames <- attr(passedTable$CatTable, "dimnames")
+      strataValues <- CleanStrataValues(dimNames)
       tableCount <- tableCount + 1
       catTableLongTable <-
         ExtractDataFromCatTable(
@@ -190,7 +187,7 @@ AddToLongTable <-
       returnedLongTables[[tableCount]] <- catTableLongTable
     }
     
-    # ----Step 4: Add any missing columns to the newly created tables----
+    # ----Step 2: Add any missing columns to the newly created tables----
     for (tableToAppend in returnedLongTables) {
       for (columnMissing in colnames(longTable)) {
         if (!columnMissing %in% colnames(tableToAppend)) {
@@ -199,6 +196,7 @@ AddToLongTable <-
       }
       for (columnMissing in colnames(tableToAppend)) {
         if (!columnMissing %in% colnames(longTable)) {
+          # in case of zero row table columns need to be declared in columns <- dataType()
           if (nrow(longTable) == 0) {
             class(longTable[[columnMissing]]) <-
               class(tableToAppend[[columnMissing]])
@@ -319,18 +317,18 @@ ExtractDataFromCatTable <-
       strataSplitValues <-
         unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
       # Loop through the tables of each variable
-      for (selectedVariable in catTable[[strataCounter]]) {
+      for (selectedVariableTable in catTable[[strataCounter]]) {
         variablesChecked <- variablesChecked + 1
         
         # Loop through the levels of each variable
-        for (row in 1:nrow(selectedVariable)) {
-          nMiss <- selectedVariable[row, pkg.globals$tableOne.Miss]
+        for (row in 1:nrow(selectedVariableTable)) {
+          nMiss <- selectedVariableTable[row, pkg.globals$tableOne.Miss]
           frequency <-
-            selectedVariable[row, pkg.globals$tableOne.Freq]
+            selectedVariableTable[row, pkg.globals$tableOne.Freq]
           levName <-
-            selectedVariable[row, pkg.globals$tableOne.Level]
+            selectedVariableTable[row, pkg.globals$tableOne.Level]
           prevalence <-
-            selectedVariable[row, pkg.globals$tableOne.Percent]
+            selectedVariableTable[row, pkg.globals$tableOne.Percent]
           groupByList <- list()
           if (length(strataSplitName) > 0) {
             groupByList <-
