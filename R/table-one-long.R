@@ -197,6 +197,7 @@ AddToLongTable <-
       for (columnMissing in colnames(tableToAppend)) {
         if (!columnMissing %in% colnames(longTable)) {
           # in case of zero row table columns need to be declared in columns <- dataType()
+          # Set data type of missing column to type of append table
           if (nrow(longTable) == 0) {
             class(longTable[[columnMissing]]) <-
               class(tableToAppend[[columnMissing]])
@@ -281,6 +282,8 @@ ExtractDataFromContTable <-
         
         # ----Step 5: Clean the row
         for (eachElementIndex in 1:length(longTableRow)) {
+          # remove empty classes to avoid bind conflicts
+          # example character(0)
           if (length(longTableRow[[eachElementIndex]]) == 0) {
             longTableRow[[eachElementIndex]] <- NA
           }
@@ -381,6 +384,7 @@ ExtractDataFromCatTable <-
     
     return(longTableRows)
   }
+
 # deprecated ----------------------------------------------------------------------
 #' Creates a "Table One Long" and stores it in the metadata list.
 #' "Table One Long" has the same meaning as a regular table one except it consists
