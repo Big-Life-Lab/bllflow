@@ -13,7 +13,6 @@ test_that("WriteDDI should create directory if one does not exist BLLFlow Versio
   expect(dir.exists("../testDataFolder"),"Dir does not exist")
   expect(file.exists("../testDataFolder/newMSWvariableDetails.csv"), "File does not exist")
   unlink("../testDataFolder", recursive = TRUE)
- 
 })
 test_that("WriteDDI should create new file when writing BLLFlow Version", {
   dir.create("../testDataFolder")
@@ -31,6 +30,7 @@ test_that("WriteDDI should create new file when writing ddi Version", {
   expect(file.exists("../testDataFolder/ddiCreatedVariableDetails.csv"), "File does not exist")
   unlink("../testDataFolder", recursive = TRUE)
 })
+# ---- 
 test_that("writeDDI should Throw an error when no ddi is present for ddi version", {
   #What error should it throw i suggest No DDI file was found at <path> please make sure a valid DDI xml file is passed
 })

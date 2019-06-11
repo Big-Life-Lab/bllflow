@@ -5,10 +5,13 @@ data(pbc)
 variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
 variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
 ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
+catVars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
+TableOne <- CreateTableOne(data = pbc,strata = c("trt"), factorVars = catVars)
+LongTableNoLabelStandards <- read.csv(system.file("extdata/testdata", "CompareLongTable.csv", package = "bllflow"), as.is = TRUE)
 
 test_that("SummaryDataLong converts tableOne into a long table", {
-  pbcModel <- BLLFlow(pbc, variables, variableDetails, ddi)
-  tableOne <- CreateTableOne(pbcModel)
+  TableOneLong <- SummaryDataLong(TableOne)
+  expect_equivalent(TableOneLong, LongTableNoLabelStandards)
   
 })
 test_that("SummaryDataLong appends tableOne to passed long table", {
