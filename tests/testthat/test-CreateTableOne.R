@@ -2,7 +2,8 @@ context("CreateTableOne for BLLFlow")
 library(bllflow)
 
 test_that("CreateTableOne creates tableOne with just bllFlow using bllFlow specs", {
-  
+  testTableOne <- CreateTableOne(model)
+  expect_setequal(testTableOne$MetaData$vars, levels(model$variables$variable))
 })
 test_that("CreateTableOne creates tableOne with just passed vars that creates tableOne with just those vars", {
   

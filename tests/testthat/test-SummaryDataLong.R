@@ -1,21 +1,23 @@
 context("SummaryDataLong")
 
 test_that("SummaryDataLong converts tableOne into a long table", {
-  TableOneLong <- SetAllColumnsToChars(SummaryDataLong(TableOne1))
-  expect_equivalent(TableOneLong, LongTableNoLabelStandards)
+  TableOneLong <- SummaryDataLong(TableOne1)
+  expect_equivalent(SetAllColumnsToChars(TableOneLong$summaryData), LongTableNoLabelStandards)
   
 })
 test_that("SummaryDataLong appends tableOne to passed long table", {
   TableOneLong <- SummaryDataLong(TableOne1)
-  appendedLongTable <- SetAllColumnsToChars(SummaryDataLong(tableOne = TableOne2, longTable = TableOneLong))
-  expect_equivalent(appendedLongTable, AppendedLongTableNoLabelStandard)
+  appendedLongTable <- SummaryDataLong(tableOne = TableOne2, longTable = TableOneLong)
+  expect_equivalent(SetAllColumnsToChars(appendedLongTable$summaryData), AppendedLongTableNoLabelStandard)
 })
 test_that("SummaryDataLong append tableOne to passed long table as well as labels from bllFlow object", {
   TableOneLong <- SummaryDataLong(TableOne1)
   appendedLongTable <- SummaryDataLong(tableOne = TableOne2, bllFlowModel = model, longTable = TableOneLong)
+  expect_equivalent(SetAllColumnsToChars(appendedLongTable$summaryData), AppendedLongTableLabelStandard)
 })
 test_that("SummaryDataLong converts tableOne into a long table with labels from bllFlow object", {
-
+  TableOneLong <- SummaryDataLong(TableOne1, bllFlowModel = model)
+  expect_equivalent(SetAllColumnsToChars(TableOneLong$summaryData), LongTableLabelStandards)
 })
 test_that("SummaryDataLong throws an error when an invalid tableOne is passed", {
   #Invalid tableOne was passed please use the tableone package to create the tableone 
