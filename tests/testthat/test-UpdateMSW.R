@@ -1,15 +1,4 @@
 context("UpdateMSW")
-library(bllflow)
-library(survival)
-data(pbc)
-variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
-newVariables <- read.csv(system.file("extdata/testdata", "PBC-variablesUpdateTest.csv", package = "bllflow"))
-variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
-newVariableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetailsUpdateTest.csv", package = "bllflow"))
-ddiVariableDetails <- read.csv(system.file("extdata/testdata", "ddiPopVariableDetails.csv", package = "bllflow"))
-ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
-newDDI <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDIUpdateTest.xml")
-bllFlowModel <- BLLFlow()
 
 test_that("UpdateMSW updates bllFlow variables", {
   bllFlowModel <- BLLFlow(pbc,variables,variableDetails,ddi)

@@ -1,10 +1,4 @@
 context("WriteDDI")
-library(bllflow)
-library(survival)
-data(pbc)
-variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
-variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
-ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
 
 test_that("WriteDDI should create directory if one does not exist BLLFlow Version", {
   unlink("../testDataFolder", recursive = TRUE)

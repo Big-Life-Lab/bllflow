@@ -1,24 +1,18 @@
 context("SummaryDataLong")
-library(bllflow)
-library(survival)
-data(pbc)
-variables <- read.csv(system.file("extdata/testdata", "PBC-variables.csv", package = "bllflow"))
-variableDetails <- read.csv(system.file("extdata/testdata", "PBC-variableDetails.csv", package = "bllflow"))
-ddi <- ReadDDI(system.file("extdata/testdata", package = "bllflow"), "pbcDDI.xml")
-catVars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
-TableOne <- CreateTableOne(data = pbc,strata = c("trt"), factorVars = catVars)
-LongTableNoLabelStandards <- read.csv(system.file("extdata/testdata", "CompareLongTable.csv", package = "bllflow"), as.is = TRUE)
 
 test_that("SummaryDataLong converts tableOne into a long table", {
-  TableOneLong <- SummaryDataLong(TableOne)
+  TableOneLong <- SetAllColumnsToChars(SummaryDataLong(TableOne1))
   expect_equivalent(TableOneLong, LongTableNoLabelStandards)
   
 })
 test_that("SummaryDataLong appends tableOne to passed long table", {
-  
+  TableOneLong <- SummaryDataLong(TableOne1)
+  appendedLongTable <- SetAllColumnsToChars(SummaryDataLong(tableOne = TableOne2, longTable = TableOneLong))
+  expect_equivalent(appendedLongTable, AppendedLongTableNoLabelStandard)
 })
 test_that("SummaryDataLong append tableOne to passed long table as well as labels from bllFlow object", {
-  
+  TableOneLong <- SummaryDataLong(TableOne1)
+  appendedLongTable <- SummaryDataLong(tableOne = TableOne2, bllFlowModel = model, longTable = TableOneLong)
 })
 test_that("SummaryDataLong converts tableOne into a long table with labels from bllFlow object", {
 
