@@ -1,0 +1,73 @@
+---
+title: "Recode with table"
+author: "Doug Manuel"
+date: "13/06/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# RecWTable - Recode with Table
+
+RecWTable was created to follow sjmisc:rec(), except:
+
+- the transformation rules would be in variableDetails, as opposed to being defined as attributes within rec(). 
+- variable labels, value labels, as.num and suffix would not be availble as function attributes in `RecWTable()`. Rather these features could only be accessed from `variableDetails`. 
+- `RecWTable()` will have additional features to create and print a log.
+
+For consideration: refactor how we define transformation in `variableDetails` to follow sjmic:rec(). 
+For example in `variableDetails`: 
+
+- the headings `low` and `high` would be combined into change to `from`. For example: `low = 20`, `high = 40` would change to `from = 20:40`. 
+- allowable entries would include: `min`, `max`, `else` and `copy`. For example: `else = copy`.
+- I don't think we need `rev`
+
+----------
+
+RecWTable(data, ..., variableDetails, label = TRUE, datasetName, else = NA, append = TRU, log = TRUE, printLog = TRUE, printNote = TRUE, printNote = TRUE, predicate)
+
+data: Data that contains starting variables for recoding. A vector or data frame.
+
+...: The unquoted name(s) of variable(s) that are created during recoding, as defined in `variableDetails`. The variable(s) must exist in `variableDetails`. 
+
+variableDetails: The data.table that contains the variables and corresponding rules and labels for recoding.
+
+label: (@rusty, not sure if this needs to be a quoted character) If TRUE, will set variable label attribute for the returned variable from 'variableDetails$label' (if present).  If unquoted `name` will set variable label attribute from the corresponding string from from `variableDetails$name`. For example, use `shortLabel` to set label from `variableDetails$shortLabel`.  If empty, variable label attributes will be removed.
+
+datasetName: The name of the data for starting variables. This is an optional (but recommended) check to ensure if startVariables correspond to correct data.
+
+else: assigns values all other values (aka out-of-range values) that cannot be recoded according to rules in `variableDetails`. `else` can also be defined as a rule in `variableDetails`. Default = NA, out-of-range values are assigned `NA`. If `copy`, then the out-of-range values are not recoded (maintain their original value).
+
+append: Logical, if TRUE (the default) and `data` is a data frame, `data` including the new variables as additional columns is returned; if FALSE, only the new variables are returned.
+
+log: Logical, if TRUE, creates log of recoding. default = TRUE.
+
+printLog: Logical, if TRUE, prints summary of recoding to the console.
+
+printNote: Logical, if TRUE, prints to console the contents of `variableDetails$notes` for variable. 
+
+(@rusty, I'm not sure if we need `predicate`` in our transformation functions. It is in rjmisc and I am including so that we could our functionality with sjmisc.)
+
+predicate: A predicate function to be applied to the columns. The variables for which predicate returns TRUE are selected.
+
+————-
+
+Notes: 
+1) If a startVariable is not present in the data, should we consider whether it is an intermediary variable, and then transform (recode) that variable? An intermediary variable is a variable that exists as a variable variableDetails (it is created by variables in `data` and then used in a transformation with other)
+
+For initial version, give warnings and errors only.
+If missing intermediary variable: “Error: recoding {variable} requires {startVariable} variable. Recode available in {variableDetails}. Suggest first recoding {startVariable} variable, then try again.”
+
+If missing startVariable (altogether): “Error: missing required starting variable(s): {startingVariable}”
+
+2) Check to make sure all possible values are recoded. What should we do if values cannot be recoded? See outOfRange = NA
+
+3) Return error if any required fields are missing, including: startVarible, type, etc.
+
+4) Log example:
+“{variable} created from: startVariables.
+Observations: {n}
+type: {continuous, factor, etc.}
+(if continuous:) min: {min}, max: {min}, NA: {n of missing} 
+(if factor:) {n} factors, NA: {n of missing}”
