@@ -10,7 +10,7 @@ load(
 
 test_that("ReadDDI creates a proper BLLFlow DDI object", {
   testDDI <- ReadDDI(system.file(
-    "extdata/testdata/ReadDDI/",
+    "extdata/testdata/ReadDDI",
     "Test-1",
     package = "bllflow"
   ),
