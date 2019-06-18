@@ -1,4 +1,5 @@
 context("ReadDDI")
+library(bllflow)
 load(
   system.file(
     "extdata/testdata/ReadDDI",
