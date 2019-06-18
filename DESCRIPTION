@@ -24,7 +24,7 @@ Authors@R: c(
 Depends:
   R (>= 3.2),
   tableone,
-  DDIwR,
+  DDIwR (== 0.2),
   xml2
 Imports:
   rstudioapi,
