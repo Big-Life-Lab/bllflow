@@ -12,8 +12,8 @@ test_that("ReadDDI creates a proper BLLFlow DDI object", {
   testDDI <- ReadDDI(system.file(    "extdata/testdata/ReadDDI",    "Test-1",package = "bllflow"),  "pbcDDI.xml")
   #testDDI <- ReadDDI(system.file("extdata", "testdata", package = "bllflow"), "pbcDDI.xml")
   print(attributes(testDDI$variableMetaData))
-  expect_equal(testDDI, TestEnvironment$`Test-1`$standardDDI)
-  #fail("test")
+  #expect_equal(testDDI, TestEnvironment$`Test-1`$standardDDI)
+  fail("test")
 })
 test_that("ReadDDI throws an error if an invalid path is given", {
   #Invalid path detected Aborting
