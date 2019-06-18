@@ -1,26 +1,22 @@
 context("UpdateMSW")
-
+load(
+  system.file(
+    "extdata/testdata/UpdateMSW",
+    "UpdateMSWData.RData",
+    package = "bllflow"
+  )
+)
 test_that("UpdateMSW updates bllFlow variables", {
-  bllFlowModel <- BLLFlow(pbc,variables,variableDetails,ddi)
-  expect_identical(bllFlowModel[[pkg.globals$argument.Variables]], variables)
-  bllFlowModel <- UpdateMSW(bllFlowModel,newMSWVariables = newVariables)
-  expect(!identical(variables, newVariables),"Two sets of dataframes being tested are equal making the test unable to test")
-  expect_identical(bllFlowModel[[pkg.globals$argument.Variables]], newVariables)
+  bllFlowModel <- UpdateMSW(TestEnvironment$`Test-1`$testModel, newMSWVariables = TestEnvironment$`Test-1`$newVariables)
+  expect_identical(bllFlowModel, TestEnvironment$`Test-1`$updatedTestModel)
 })
 test_that("UpdateMSW updates bllFlow variableDetails", {
-  bllFlowModel <- BLLFlow(pbc,variables,variableDetails,ddi)
-  expect_identical(bllFlowModel[[pkg.globals$bllFlowContent.VariableDetails]], variableDetails)
-  bllFlowModel <- UpdateMSW(bllFlowModel,newMSWVariableDeatails =  newVariableDetails)
-  expect(!identical(variableDetails, newVariableDetails),"Two sets of dataframes being tested are equal making the test unable to test")
-  expect_identical(bllFlowModel[[pkg.globals$bllFlowContent.VariableDetails]], newVariableDetails)
+  bllFlowModel <- UpdateMSW(TestEnvironment$`Test-2`$testModel, newMSWVariableDeatails = TestEnvironment$`Test-2`$newVariableDetails)
+  expect_identical(bllFlowModel, TestEnvironment$`Test-2`$updatedTestModel)
 })
 test_that("UpdateMSW updates bllFlow ddi and populatedVariableDetails", {
-  bllFlowModel <- BLLFlow(pbc,variables,variableDetails)
-  bllFlowModel <- UpdateMSW(bllFlowModel,newDDI  =  newDDI)
-  expect(!identical(ddi, newDDI),"Two sets of dataframes being tested are equal making the test unable to test")
-  expect_identical(bllFlowModel[[pkg.globals$bllFlowContent.DDI]], newDDI)
-  expect_equivalent(bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]], ddiVariableDetails)
-  
+  bllFlowModel <- UpdateMSW(TestEnvironment$`Test-3`$testModel, newDDI = TestEnvironment$`Test-3`$newDDI)
+  expect_identical(bllFlowModel, TestEnvironment$`Test-3`$updatedTestModel)
 })
 test_that("UpdateMSW Throws a warning if no update parameters are passed", {
   # No update paramaters were passed no actions were taken

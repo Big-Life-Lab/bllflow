@@ -1,11 +1,15 @@
 context("GetDDIVariables")
-library(bllflow)
+load(
+  system.file(
+    "extdata/testdata/GetDDIVariables",
+    "GetDDIVariablesData.RData",
+    package = "bllflow"
+  )
+)
 
 test_that("GetDDIVariables returns list of passed vars and their relative metadata", {
-  testDDIVariables <- GetDDIVariables(ddi, "age")
-  expect_is(testDDIVariables, "list")
-  expect_is(testDDIVariables$age, "list")
-  expect_equal(length(testDDIVariables$age), 15)
+  testDDIVariables <- GetDDIVariables(TestEnvironment$`Test-1`$ddi, "age")
+  expect_equal(testDDIVariables, TestEnvironment$`Test-1`$standardDDIVariables)
 })
 test_that("GetDDIVariables throws an error when invalid ddi is passed", {
   #Invalid ddi was passed please make sure to use the ReadDDI to import ddi

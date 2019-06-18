@@ -953,7 +953,7 @@ standardised blood clotting time in participantTEST
 <var ID="V14" name="sex" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
 <location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
 <labl>
-SexTEST
+Sex
 </labl>
 <qstn>
 <qstnLit>

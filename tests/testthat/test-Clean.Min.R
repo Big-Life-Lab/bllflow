@@ -1,14 +1,15 @@
 context("Clean Min for BLLFlow")
-library(bllflow)
+load(
+  system.file(
+    "extdata/testdata/CleanMin",
+    "CleanMinData.RData",
+    package = "bllflow"
+  )
+)
 
 test_that("Clean Min Removes min rows", {
-  
-})
-test_that("Clean Min replaces min rows", {
-  
-})
-test_that("Clean Min logs affected rows", {
-  
+  cleanedModel <- clean.Min(TestEnvironment$`Test-1`$testModel)
+  expect_equal(cleanedModel, TestEnvironment$`Test-1`$cleanedModel)
 })
 test_that("Clean Min throws an error when invalid bllFlow is passed", {
   #Invalid bllFlowObject is passed please make sure you use BLLFlow to construct it

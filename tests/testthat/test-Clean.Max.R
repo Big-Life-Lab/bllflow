@@ -1,14 +1,15 @@
 context("Clean Max for BLLFlow")
-library(bllflow)
+load(
+  system.file(
+    "extdata/testdata/CleanMax",
+    "CleanMaxData.RData",
+    package = "bllflow"
+  )
+)
 
 test_that("Clean Max Removes Max rows", {
-  
-})
-test_that("Clean Max replaces Max rows", {
-  
-})
-test_that("Clean Max logs affected rows", {
-  
+  cleanedModel <- clean.Max(TestEnvironment$`Test-1`$testModel)
+  expect_equal(cleanedModel, TestEnvironment$`Test-1`$cleanedModel)
 })
 test_that("Clean Max throws an error when invalid bllFlow is passed", {
   #Invalid bllFlowObject is passed please make sure you use BLLFlow to construct it

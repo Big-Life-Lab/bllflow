@@ -1,44 +1,42 @@
 context("bllFlow construction")
+load(system.file("extdata/testdata/BLLFlow",
+                 "BLLFlowData.RData",
+                 package = "bllflow"))
 
 test_that("bllFlow can be passed no args", {
   model <- BLLFlow()
-  expect_is(model, "BLLFlow")
-  expect_equal(model$data, NULL)
-  expect_equal(model$variables, NULL)
-  expect_equal(model$variableDetails, NULL)
-  expect_equal(model$additionalDDIMetaData, NULL)
-  expect_equal(model$populatedVariableDetails, NULL)
-  expect_equal(model$ddi, NULL)
+  expect_equal(model, TestEnvironment$`Test-1`$testModel)
 })
 test_that("bllFlow does not populate ddi related vars when no ddi is passed", {
-  model <- BLLFlow(pbc, variables, variableDetails)
-  expect_is(model, "BLLFlow")
-  expect_is(model$data, "data.frame")
-  expect_is(model$variables, "data.frame")
-  expect_is(model$variableDetails, "data.frame")
-  expect_equal(model$additionalDDIMetaData, NULL)
-  expect_equal(model$populatedVariableDetails, NULL)
-  expect_equal(model$ddi, NULL)
+  model <-
+    BLLFlow(
+      data = TestEnvironment$`Test-2`$data,
+      variables =  TestEnvironment$`Test-2`$variables,
+      variableDetails =  TestEnvironment$`Test-2`$variableDetails
+    )
+  expect_equal(model, TestEnvironment$`Test-2`$testModel)
 })
 test_that("bllFlow populates appropriate ddi related vars", {
-  model <- BLLFlow(pbc, variables, variableDetails,ddi)
-  expect_is(model, "BLLFlow")
-  expect_is(model$data, "data.frame")
-  expect_is(model$variables, "data.frame")
-  expect_is(model$variableDetails, "data.frame")
-  expect_is(model$additionalDDIMetaData, "list")
-  expect_is(model$populatedVariableDetails, "data.frame")
-  expect_is(model$ddi, "BLLFlowDDI")
+  model <-
+    BLLFlow(
+      data = TestEnvironment$`Test-3`$data,
+      variables =  TestEnvironment$`Test-3`$variables,
+      variableDetails =  TestEnvironment$`Test-3`$variableDetails,
+      ddi = TestEnvironment$`Test-3`$ddi
+    )
+  expect_equal(model, TestEnvironment$`Test-3`$testModel)
 })
 test_that("bllFlow handles passed args of wrong type", {
-# Display error wrong arg passed? should match the classes that are checked above
+  # Display error wrong arg passed? should match the classes that are checked above
 })
-test_that("bllFlow handles passed args with wrong/innapropriate information", {
-  # This is the check for proper columns being there not cell content/ unless u want it to check column data types
-})
+test_that("bllFlow handles passed args with wrong/innapropriate information",
+          {
+            # This is the check for proper columns being there not cell content/ unless u want it to check column data types
+          })
 test_that("bllFlow handles empty passed args", {
   # What kind of error should it throw if something is passed of right class but its just empty as in empty data frame
 })
-test_that("bllFlow display appropriate warnings when trying to overwrite rows", {
-  # are the current warnings i display the ones we wish to stick with?
-})
+test_that("bllFlow display appropriate warnings when trying to overwrite rows",
+          {
+            # are the current warnings i display the ones we wish to stick with?
+          })

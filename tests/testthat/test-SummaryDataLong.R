@@ -1,23 +1,27 @@
 context("SummaryDataLong")
-
+load(
+  system.file(
+    "extdata/testdata/SummaryDataLong",
+    "SummaryDataLongData.RData",
+    package = "bllflow"
+  )
+)
 test_that("SummaryDataLong converts tableOne into a long table", {
-  TableOneLong <- SummaryDataLong(TableOne1)
-  expect_equivalent(SetAllColumnsToChars(TableOneLong$summaryData), LongTableNoLabelStandards)
+  TableOneLong <- SummaryDataLong(TestEnvironment$`Test-1`$standardTableOne)
+  expect_equal(TableOneLong, TestEnvironment$`Test-1`$standardTable)
   
 })
 test_that("SummaryDataLong appends tableOne to passed long table", {
-  TableOneLong <- SummaryDataLong(TableOne1)
-  appendedLongTable <- SummaryDataLong(tableOne = TableOne2, longTable = TableOneLong)
-  expect_equivalent(SetAllColumnsToChars(appendedLongTable$summaryData), AppendedLongTableNoLabelStandard)
+  appendedLongTable <- SummaryDataLong(tableOne = TestEnvironment$`Test-2`$standardCompareTableOne, longTable = TestEnvironment$`Test-2`$standardTable)
+  expect_equal(appendedLongTable, TestEnvironment$`Test-2`$standardCompareTable)
 })
 test_that("SummaryDataLong append tableOne to passed long table as well as labels from bllFlow object", {
-  TableOneLong <- SummaryDataLong(TableOne1)
-  appendedLongTable <- SummaryDataLong(tableOne = TableOne2, bllFlowModel = model, longTable = TableOneLong)
-  expect_equivalent(SetAllColumnsToChars(appendedLongTable$summaryData), AppendedLongTableLabelStandard)
+  appendedLongTable <- SummaryDataLong(tableOne = TestEnvironment$`Test-3`$standardCompareTableOne, bllFlowModel = TestEnvironment$`Test-3`$testModel, longTable = TestEnvironment$`Test-3`$standardTable)
+  expect_equal(TestEnvironment$`Test-3`$standardCompareTable, appendedLongTable)
 })
 test_that("SummaryDataLong converts tableOne into a long table with labels from bllFlow object", {
-  TableOneLong <- SummaryDataLong(TableOne1, bllFlowModel = model)
-  expect_equivalent(SetAllColumnsToChars(TableOneLong$summaryData), LongTableLabelStandards)
+  TableOneLong <- SummaryDataLong(TestEnvironment$`Test-4`$standardTableOne, bllFlowModel = TestEnvironment$`Test-4`$testModel)
+  expect_equal(TableOneLong, TestEnvironment$`Test-4`$standardTable)
 })
 test_that("SummaryDataLong throws an error when an invalid tableOne is passed", {
   #Invalid tableOne was passed please use the tableone package to create the tableone 

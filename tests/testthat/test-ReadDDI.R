@@ -1,11 +1,21 @@
 context("ReadDDI")
-library(bllflow)
+load(
+  system.file(
+    "extdata/testdata/ReadDDI",
+    "ReadDDIData.RData",
+    package = "bllflow"
+  )
+)
 
 test_that("ReadDDI creates a proper BLLFlow DDI object", {
-  testDDI <- ReadDDI(system.file("extdata", "testdata", package = "bllflow"), "pbcDDI.xml")
-  expect_is(testDDI, "BLLFlowDDI")
-  expect_is(testDDI$variableMetaData, "list")
-  expect_is(testDDI$ddiObject, "list")
+  testDDI <- ReadDDI(system.file(
+    "extdata/testdata/ReadDDI/",
+    "Test-1",
+    package = "bllflow"
+  ),
+  "pbcDDI.xml"
+  )
+  expect_equal(testDDI, TestEnvironment$`Test-1`$standardDDI)
 })
 test_that("ReadDDI throws an error if an invalid path is given", {
   #Invalid path detected Aborting
