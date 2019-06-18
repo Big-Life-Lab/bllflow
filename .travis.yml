@@ -16,6 +16,7 @@ before_script:
   
 script:
   - R -e 'devtools::document()'
+  - R -e 'devtools::load_all(".")'
   - R CMD build .
   - R CMD check *tar.gz
   
