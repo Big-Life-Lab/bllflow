@@ -19,19 +19,17 @@ CheckSmallCells <- function(passedTable, ...) {
 #' @param print Option to print the smallCell table
 #' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #'@export
-CheckSmallCells.LongTable <- function(passedTable,
-                                      smallSize = 6,
-                                      print = FALSE) {
-  newRetTable <- list()
-  newRetTable[[pkg.globals$bllFlowContent.LongTable]] <- passedTable
-  newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]] <-
-    passedTable[passedTable[, pkg.globals$LongTable.Frequency] < smallSize, ]
-  print(paste(nrow(newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]]), "Small cells were found"))
+CheckSmallCells.SummaryData <- function(passedTable,
+                                        smallSize = 6,
+                                        print = FALSE) {
+  passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]] <-
+    passedTable$summaryData[passedTable$summaryData[, pkg.globals$LongTable.Frequency] < smallSize, ]
+  print(paste(nrow(passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]]), "Small cells were found"))
   if (print) {
-    print(newRetTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]])
+    print(passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]])
   }
   
-  return(newRetTable)
+  return(passedTable)
 }
 
 #' Check for Small Cells
