@@ -13,8 +13,8 @@ before_script:
   - R -e "install.packages('knitr')"
   - R -e "install.packages('roxygen2')"
   - R -e "install.packages('devtools')"
-  - Rscript -e 'devtools::install()'
   - R -e "devtools::install_version('DDIwR', version = '0.2-0')"
+  - Rscript -e 'devtools::install()'
   
 script:
   - R -e 'devtools::document()'
