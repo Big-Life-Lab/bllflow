@@ -19,9 +19,9 @@
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
 #' library(bllflow)
-#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
+#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
@@ -48,6 +48,8 @@ SummaryDataLong <-
       longTable[[pkg.globals$LongTable.SD]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile25]] <-  numeric()
       longTable[[pkg.globals$LongTable.Percentile75]] <-  numeric()
+    } else{
+      longTable <- longTable[[pkg.globals$LongTable.LongTable]]
     }
     returnTable <-
       AddToLongTable(tableOne, longTable, bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
@@ -55,17 +57,12 @@ SummaryDataLong <-
       class(returnTable) <-
         append(class(returnTable), pkg.globals$LongTable.ClassName)
     }
-    # Remove duplicate rows
     returnTable <- unique(returnTable)
-    # Remove empty rows made during initialization
-    #returnTable <- returnTable[!apply(is.na(returnTable) | returnTable == "", 1, all),]
-    if (is.null(bllFlowModel)) {
-      return(returnTable)
-    } else {
-      bllFlowModel[[pkg.globals$bllFlowContent.LongTable]] <- returnTable
-      
-      return(bllFlowModel)
-    }
+    returnSummaryData <- list(summaryData = returnTable)
+    class(returnSummaryData) <- "SummaryData"
+    
+    return(returnSummaryData)
+    
   }
 
 #' Create Table One
@@ -100,9 +97,9 @@ CreateTableOne <- function(x = NULL, ...) {
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
 #' library(bllflow)
-#' variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-#' variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-#' ddi <- ReadDDI(file.path(getwd(), '../inst/extdata'),"pbcDDI.xml")
+#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
+#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
+#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
 #' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
@@ -149,18 +146,13 @@ CreateTableOne.default <- tableone::CreateTableOne
 # Function to create a long table one for one tableOne
 AddToLongTable <-
   function(passedTable, longTable, variableDetails) {
-    # ----Step 1: Convert strata into usable format ----
-    # Format Strata values into machine readable format
-    dimNames <- attr(passedTable$ContTable, "dimnames")
-    strataAllCombinationsDataFrame <- expand.grid(dimNames)
-    strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
-    strataValues <- do.call(paste, strataArgs)
-    
-    # ----Step 2: Populate long table from cont and cat tableone tables ----
+    # ----Step 1: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
     returnedLongTables <- list()
     tableCount <- 0
     if (!is.null(passedTable$ContTable)) {
+      dimNames <- attr(passedTable$ContTable, "dimnames")
+      strataValues <- CleanStrataValues(dimNames)
       tableCount <- tableCount + 1
       contTableLongTable <-
         ExtractDataFromContTable(
@@ -173,12 +165,13 @@ AddToLongTable <-
           longTable,
           variableDetails
         )
-      returnedLongTables[[tableCount]] <- contTableLongTable[[1]]
-      longTable <- contTableLongTable[[2]]
+      returnedLongTables[[tableCount]] <- contTableLongTable
     }
     
     # Call Cat table extraction if tableOne contains CatTable
     if (!is.null(passedTable$CatTable)) {
+      dimNames <- attr(passedTable$CatTable, "dimnames")
+      strataValues <- CleanStrataValues(dimNames)
       tableCount <- tableCount + 1
       catTableLongTable <-
         ExtractDataFromCatTable(
@@ -191,17 +184,29 @@ AddToLongTable <-
           longTable,
           variableDetails
         )
-      returnedLongTables[[tableCount]] <- catTableLongTable[[1]]
-      longTable <- catTableLongTable[[2]]
+      returnedLongTables[[tableCount]] <- catTableLongTable
     }
     
-    # ----Step 4: Add any missing columns to the newly created tables----
+    # ----Step 2: Add any missing columns to the newly created tables----
     for (tableToAppend in returnedLongTables) {
       for (columnMissing in colnames(longTable)) {
         if (!columnMissing %in% colnames(tableToAppend)) {
           tableToAppend[[columnMissing]] <- NA
         }
       }
+      for (columnMissing in colnames(tableToAppend)) {
+        if (!columnMissing %in% colnames(longTable)) {
+          # in case of zero row table columns need to be declared in columns <- dataType()
+          # Set data type of missing column to type of append table
+          if (nrow(longTable) == 0) {
+            class(longTable[[columnMissing]]) <-
+              class(tableToAppend[[columnMissing]])
+          } else {
+            longTable[[columnMissing]] <- NA
+          }
+        }
+      }
+      
       longTable <-
         rbind(longTable, tableToAppend,  stringsAsFactors = FALSE)
     }
@@ -227,9 +232,7 @@ ExtractDataFromContTable <-
     }
     
     # ----Step 2: Add columns to long table
-    longTable <-
-      AddGroupByColumns(strataSplitName, longTable, variableDetails)
-    longTableRows <- longTable[0, ]
+    longTableRows <- data.frame()
     
     # loop through each strata columns
     # ----Step 3: Extract information for each new row of the longtable ----
@@ -277,24 +280,22 @@ ExtractDataFromContTable <-
           rowPercentile75
         longTableRow <- append(longTableRow, groupByList)
         
-        # ----Step 5: Add row to the rest of the rows----
-        # If empty longTableRows copy columns from row
-        for (eachElement in 1:length(longTableRow)) {
-          if (length(longTableRow[[eachElement]]) == 0) {
-            longTableRow[[eachElement]] <- NA
+        # ----Step 5: Clean the row
+        for (eachElementIndex in 1:length(longTableRow)) {
+          # remove empty classes to avoid bind conflicts
+          # example character(0)
+          if (length(longTableRow[[eachElementIndex]]) == 0) {
+            longTableRow[[eachElementIndex]] <- NA
           }
         }
-        for (columnMissing in colnames(longTableRows)) {
-          if (!columnMissing %in% names(longTableRow)) {
-            longTableRow[[columnMissing]] <- NA
-          }
-        }
+        
+        # ----Step 6: Add row to the rest of the rows----
         longTableRows <-
           rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
       }
     }
     
-    return(list(longTableRows, longTable))
+    return(longTableRows)
   }
 
 # Create long table from CatTable
@@ -312,27 +313,25 @@ ExtractDataFromCatTable <-
     # Adds group by columns not found in the long table
     
     # ----Step 2: Add columns to long table
-    longTable <-
-      AddGroupByColumns(strataSplitName, longTable, variableDetails)
-    longTableRows <- longTableRows <- longTable[0, ]
+    longTableRows <- data.frame()
     
     # ----Step 3: Extract information for each new row of the longtable ----
     for (strataCounter in 1:length(catTable)) {
       strataSplitValues <-
         unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
       # Loop through the tables of each variable
-      for (selectedVariable in catTable[[strataCounter]]) {
+      for (selectedVariableTable in catTable[[strataCounter]]) {
         variablesChecked <- variablesChecked + 1
         
         # Loop through the levels of each variable
-        for (row in 1:nrow(selectedVariable)) {
-          nMiss <- selectedVariable[row, pkg.globals$tableOne.Miss]
+        for (row in 1:nrow(selectedVariableTable)) {
+          nMiss <- selectedVariableTable[row, pkg.globals$tableOne.Miss]
           frequency <-
-            selectedVariable[row, pkg.globals$tableOne.Freq]
+            selectedVariableTable[row, pkg.globals$tableOne.Freq]
           levName <-
-            selectedVariable[row, pkg.globals$tableOne.Level]
+            selectedVariableTable[row, pkg.globals$tableOne.Level]
           prevalence <-
-            selectedVariable[row, pkg.globals$tableOne.Percent]
+            selectedVariableTable[row, pkg.globals$tableOne.Percent]
           groupByList <- list()
           if (length(strataSplitName) > 0) {
             groupByList <-
@@ -348,9 +347,6 @@ ExtractDataFromCatTable <-
               if (length(groupByList[[pkg.globals$LongTable.VariableCategoryLabel]]) == 0) {
                 groupByList[[pkg.globals$LongTable.VariableCategoryLabel]] <- NA
               }
-              longTable <-
-                AddColumn(pkg.globals$LongTable.VariableCategoryLabel,
-                          longTable)
             }
           }
           
@@ -371,18 +367,14 @@ ExtractDataFromCatTable <-
           longTableRow[[pkg.globals$LongTable.Percentile75]] <-  NA
           longTableRow <- append(longTableRow, groupByList)
           
-          # ----Step 5: Add row to the rest of the rows----
-          # If empty longTableRows copy columns from row
-          for (eachElement in 1:length(longTableRow)) {
-            if (length(longTableRow[[eachElement]]) == 0) {
-              longTableRow[[eachElement]] <- NA
+          # ----Step 5: Clean the row
+          for (eachElementIndex in 1:length(longTableRow)) {
+            if (length(longTableRow[[eachElementIndex]]) == 0) {
+              longTableRow[[eachElementIndex]] <- NA
             }
           }
-          for (columnMissing in colnames(longTableRows)) {
-            if (!columnMissing %in% names(longTableRow)) {
-              longTableRow[[columnMissing]] <- NA
-            }
-          }
+          
+          # ----Step 6: Add row to the rest of the rows----
           longTableRows <-
             rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
         }
@@ -390,8 +382,9 @@ ExtractDataFromCatTable <-
       variablesChecked <- 0
     }
     
-    return(list(longTableRows, longTable))
+    return(longTableRows)
   }
+
 # deprecated ----------------------------------------------------------------------
 #' Creates a "Table One Long" and stores it in the metadata list.
 #' "Table One Long" has the same meaning as a regular table one except it consists
