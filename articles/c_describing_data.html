@@ -219,9 +219,8 @@
 <a href="#add-labels-and-metadata" class="anchor"></a>Add labels and metadata</h2>
 <p>For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents. Initialize the model with the DDI document.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ddi &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bllflow/topics/ReadDDI">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">""</span>, <span class="dt">package =</span> <span class="st">"bllflow"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/UpdateMSW.html">UpdateMSW</a></span>(<span class="dt">bllModel =</span> pbcModel, <span class="dt">newDDI =</span> ddi) </a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">pbcModelWithLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(<span class="dt">tableOne =</span> TableOne, <span class="dt">bllFlowModel =</span> pbcModel, <span class="dt">longTable =</span> TableOneLong)</a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2">pbcModel &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bllflow/topics/UpdateMSW">UpdateMSW</a></span>(<span class="dt">bllModel =</span> pbcModel, <span class="dt">newDDI =</span> ddi) </a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">longTableWithLabels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(<span class="dt">tableOne =</span> TableOne, <span class="dt">bllFlowModel =</span> pbcModel, <span class="dt">longTable =</span> TableOneLong)</a></code></pre></div>
 </div>
 <div id="check-for-small-cells" class="section level2">
 <h2 class="hasAnchor">
@@ -339,10 +338,10 @@
 <a class="sourceLine" id="cb8-49" data-line-number="49"><span class="co">#&gt; 47    stage    trt:stage          1:4    1, 2, 3</span></a>
 <a class="sourceLine" id="cb8-50" data-line-number="50"><span class="co">#&gt; 48    stage    trt:stage          2:4    1, 2, 3</span></a></code></pre></div>
 <p>You can also check small cells inside your Summary Data in case you have multiple tables</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">checkedLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(pbcModelWithLongTable<span class="op">$</span>longTable)</a>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1">checkedLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(longTableWithLabels)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; [1] "3 Small cells were found"</span></a></code></pre></div>
 <p>For a print of the found rows pass print as TRUE</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">checkedLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(pbcModelWithLongTable<span class="op">$</span>longTable, <span class="dt">print =</span> <span class="ot">TRUE</span>)</a>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">checkedLongTable &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(longTableWithLabels, <span class="dt">print =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; [1] "3 Small cells were found"</span></a>
 <a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt;    variableCategory variable prevalence n nMissing mean sd percentile25</span></a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"><span class="co">#&gt; 29                2      trt   0.000000 0        0   NA NA           NA</span></a>
