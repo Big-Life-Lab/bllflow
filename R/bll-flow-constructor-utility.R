@@ -167,17 +167,17 @@ ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   # Loop through every unique variable found in the VariableDetails
   for (variableToCheck in detectedVariables[, 1]) {
     # Check if that variable is recorded in DDI
-    if (variableToCheck %in% names(ddiMetaData$varlab)) {
+    if (variableToCheck %in% names(ddiMetaData$dataDscr)) {
       # Store the label for that variable
       variableStartLabel <-
-        ddiMetaData$varlab[[variableToCheck]]
+        ddiMetaData$dataDscr[[variableToCheck]]$label
       variableValueList <- list()
       # Check if that variable has value labels
-      if (variableToCheck %in% names(ddiMetaData$vallab)) {
+      if (!is.null(ddiMetaData$dataDscr[[variableToCheck]]$values)) {
         # Loop Through all the values that are stored for that variable
-        for (valueLabelToCheck in names(ddiMetaData$vallab[[variableToCheck]])) {
+        for (valueLabelToCheck in names(ddiMetaData$dataDscr[[variableToCheck]]$values)) {
           catStartValue <-
-            ddiMetaData$vallab[[variableToCheck]][[valueLabelToCheck]]
+            ddiMetaData$dataDscr[[variableToCheck]]$values[[valueLabelToCheck]]
           catStartLabel <- valueLabelToCheck
           # Should i function out the population????
           # Needs to be a character because cant access list with decimal value or zero value

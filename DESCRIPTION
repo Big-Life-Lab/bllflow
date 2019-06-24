@@ -23,9 +23,9 @@ Authors@R: c(
     email = "mtuna@ohri.ca", role = c("aut")))
 Depends:
   R (>= 3.2),
-  tableone(== 0.10),
-  DDIwR(== 0.2),
-  xml2(== 1.2)
+  tableone,
+  DDIwR,
+  xml2
 Imports:
   rstudioapi,
   glue,

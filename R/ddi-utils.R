@@ -25,7 +25,6 @@ ReadDDI <- function(ddiPath, ddiFile) {
     SuppressFunctionOutput(DDIwR::getMetadata(paste(ddiPath, ddiFile, sep = "/")))
   additionalDDIMetaData <-
     xml2::as_list(xml2::read_xml(paste(ddiPath, ddiFile, sep = "/")))
-  
   for (singleVariableIndex in 1:length(additionalDDIMetaData$codeBook$dataDscr)) {
     if (!is.null(attr(additionalDDIMetaData$codeBook$dataDscr[[singleVariableIndex]], "name", exact = TRUE))) {
       varName <-
@@ -36,6 +35,7 @@ ReadDDI <- function(ddiPath, ddiFile) {
         varName
     }
   }
+  
   ddiObject <-
     list(variableMetaData = ddiMetaData, ddiObject = additionalDDIMetaData)
   attr(ddiObject, "class") <-
