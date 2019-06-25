@@ -1,18 +1,19 @@
 #' Create Bll Model Object
-#' 
+#'
 #' This object is used to generate the PMML file, for manuscript figures and other uses.
 #'
 #' @param modelObject The object that is returned when a model is created.
 #' @param modelType values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
 #' @param tableOne The object returned by createTableOne().
 #' @param modelData The data used to generate the model.
-#' @param calculateMean default = TRUE. If TRUE and tableOne = missing, then calculate means of variables.
+#' @param calculateMean default = TRUE. If the means should be included in the table
 #' @export
 CreateBLLModelObject <-
   function(modelData,
            modelObject,
            tableOne = NULL,
-           modelType = NULL) {
+           modelType = NULL,
+           calculateMean = TRUE) {
     # ----Step 1: verify input/create not passed input----
     supportedModelTypes <- c("crr")
     varNames <- attr(modelObject$coef, "names")
@@ -46,23 +47,22 @@ CreateBLLModelObject <-
     # ----Step 2: Generate model object ----
     # Obtain the beta coefficient
     betaCoefficient <- modelObject$coef
-    attr(betaCoefficient, "names") <- NULL
     allStrataVarMeans <- list()
     retTable <-
       data.frame(betaCoefficient = betaCoefficient, row.names = varNames)
     
     # Obtain the means
-    if (!is.null(tableOne$ContTable)) {
-      for (strataVar in length(tableOne$ContTable)) {
-        allStrataVarMeans[[strataVar]] <-
-          tableOne$ContTable[[strataVar]][varNames, pkg.globals$tableOne.Mean]
-        attr(allStrataVarMeans[[strataVar]], "names") <- NULL
-        retTable[[pkg.globals$tableOne.Mean]] <-
-          allStrataVarMeans[[strataVar]]
+    if (calculateMean) {
+      if (!is.null(tableOne$ContTable)) {
+        for (strataVar in length(tableOne$ContTable)) {
+          allStrataVarMeans[[strataVar]] <-
+            tableOne$ContTable[[strataVar]][varNames, pkg.globals$tableOne.Mean]
+          retTable[[pkg.globals$tableOne.Mean]] <-
+            allStrataVarMeans[[strataVar]]
+        }
+      } else {
+        warning("The tableOne does not contain cont table therefore means were not calculated")
       }
-    } else {
-      warning("The tableOne does not contain cont table therefore means were not calculated")
     }
-    
     return(retTable)
   }
