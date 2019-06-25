@@ -7,13 +7,15 @@
 #' @param tableOne The object returned by createTableOne().
 #' @param modelData The data used to generate the model.
 #' @param calculateMean default = TRUE. If the means should be included in the table
+#' @param baselineRiskTimeFrame default = 5. The time for the baseline risk make sure to only use years as input
 #' @export
 CreateBLLModelObject <-
   function(modelData,
            modelObject,
            tableOne = NULL,
            modelType = NULL,
-           calculateMean = TRUE) {
+           calculateMean = TRUE,
+           baselineRiskTimeFrame = 5) {
     # ----Step 1: verify input/create not passed input----
     supportedModelTypes <- c("crr")
     varNames <- attr(modelObject$coef, "names")
@@ -64,5 +66,15 @@ CreateBLLModelObject <-
         warning("The tableOne does not contain cont table therefore means were not calculated")
       }
     }
-    return(retTable)
+    baselineRisk <- CalculateBaselineRisk(modelObject, (365.25*baselineRiskTimeFrame))
+    
+    return(list(reference = retTable, baseline = baselineRisk))
   }
+
+CalculateBaselineRisk <- function(model, time) {
+  jumps <- data.frame(time = model$uftime, bfitj = model$bfitj)
+  jumps_time <- jumps[jumps$time <= time, ]
+  b0 <- sum(jumps_time$bfitj)
+  out <- 1-exp(-b0)
+  return(out)
+}

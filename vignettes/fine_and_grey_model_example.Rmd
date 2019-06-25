@@ -104,6 +104,7 @@ baseline.risk <- function(model, time) {
   jumps_time <- jumps[jumps$time <= time, ]
   b0 <- sum(jumps_time$bfitj)
   out <- 1-exp(-b0)
+  return(out)
 }
 ```
 
@@ -129,7 +130,9 @@ TODO: when we create the RCS function, we'll need to have an argument that passe
 ```{r}
 modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
 library(bllflow)
-CreateBLLModelObject(allvars, pbc_crr_model, modelPbcTableOne)
+bllModel <- CreateBLLModelObject(allvars, pbc_crr_model, modelPbcTableOne)
+bllModel$reference
+bllModel$baseline
 ```
 
 # Generate a bllflow model object
@@ -144,7 +147,9 @@ This object is used to generate the PMML file, for manuscript figures and other 
 ```{r}
 
 pbcTableOne = CreateTableOne(data = pbc)
-CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
+bllModel <- CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
+bllModel$reference
+bllModel$baseline
 
 ```
 Note that modelType is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
