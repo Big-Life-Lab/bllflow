@@ -6,7 +6,7 @@ pkg.globals$columnNames.Outlier <- "outlier"
 
 # Variable Details Sheet Column Names
 pkg.globals$argument.Data <- "data"
-pkg.globals$argument.Variables <- "variables"
+pkg.globals$argument.Variables <- "variable"
 pkg.globals$argument.VariableDetailsSheet <- "variableDetailsSheet" 
 pkg.globals$argument.VariableStart <- "variableStart" 
 pkg.globals$argument.VariableStartType <- "variableStartType"
@@ -15,6 +15,8 @@ pkg.globals$argument.VariableStartLow <- "low"
 pkg.globals$argument.CatStartValue <- "value"
 pkg.globals$argument.CatStartLabel <- "valueLabelStart"
 pkg.globals$argument.VariableStartLabel <- "label"
+pkg.globals$argument.From <- "from"
+pkg.globals$argument.Interval <- "interval"
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
