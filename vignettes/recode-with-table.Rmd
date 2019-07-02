@@ -10,11 +10,30 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 # RecWTable - Recode with Table
 
-RecWTable was created to follow sjmisc:rec(), except:
+Recoding variables is a common task in research that is time consuming and error prone. RecWTable compliments sjmisc::rec() and other recoding methods with the following features:
 
-- the transformation rules would be in variableDetails, as opposed to being defined as attributes within rec(). 
-- variable labels, value labels, as.num and suffix would not be availble as function attributes in `RecWTable()`. Rather these features could only be accessed from `variableDetails`. 
-- `RecWTable()` will have additional features to create and print a log.
+- Rules for recoding are contained in a data.table. The data.table (default <- `variableDetails`) contains rules for recoding multiple variables. Each row comprises a category in a newly transformed variable. The syntax for recoding is the same as sjmisc::rec() -- see below -- and contained in variableDetails$from
+- Variable labels and value labels for the newly transformed variable are assigned from `variableDetails`. Defaults: 
+    + variable labels <- variableDetails$label
+    + value (factor) labels <- variableDetails$valueLabel
+    + variable units <- variableDetils$units
+- VariableDetails labels and other metadata can be imported from an accompanying metadata file (DDI supported).
+- Recoding from a continuous or categorical variabe to new categorical variable.
+- Recoding from a categorical variable to either a new continuous or catecategorical variable (todo).
+- Recoding to a common target variable from different variables in different databases. See below 'recoding to a common target variable'.
+- A log of transformations can be printed to console.
+- Additional features are available if `variableDetails` is a bllflow class. That is, `variableDetails `is passed as an attribute when creating a _bllflow_ object using `bllflow()`-- see [Speciying your model](vignettes/b_model_specification.html#reading-the-model-specification-workbook)
+     + the log of recoding is appended to the _bllflow_ object. see....
+
+
+Dataset??
+
+
+RecWTable was created to follow sjmisc::rec(), except:
+
+- the transformation rules are in `variableDetails`, as opposed to being defined as attributes within rec(). 
+- variable labels, value labels, as.num and suffix reference a vector (variable) within `variableDetails`. The value are not directly passed to rec().
+- `RecWTable()` has additional features to create and print a log.
 
 For consideration: refactor how we define transformation in `variableDetails` to follow sjmic:rec(). 
 For example in `variableDetails`: 
@@ -25,7 +44,7 @@ For example in `variableDetails`:
 
 ----------
 
-RecWTable(data, ..., variableDetails, label = TRUE, datasetName, else = NA, append = TRU, log = TRUE, printLog = TRUE, printNote = TRUE, printNote = TRUE, predicate)
+RecWTable(data, ..., variableDetails, label = TRUE, datasetName, else = NA, append = TRUE, log = TRUE, printLog = TRUE, printNote = TRUE, printNote = TRUE, predicate)
 
 data: Data that contains starting variables for recoding. A vector or data frame.
 
@@ -37,7 +56,7 @@ label: (@rusty, not sure if this needs to be a quoted character) If TRUE, will s
 
 datasetName: The name of the data for starting variables. This is an optional (but recommended) check to ensure if startVariables correspond to correct data.
 
-else: assigns values all other values (aka out-of-range values) that cannot be recoded according to rules in `variableDetails`. `else` can also be defined as a rule in `variableDetails`. Default = NA, out-of-range values are assigned `NA`. If `copy`, then the out-of-range values are not recoded (maintain their original value).
+else: assigns values to all other values (aka out-of-range values) that cannot be recoded according to rules in `variableDetails`. `else` can also be defined as a rule in `variableDetails`. Default = NA, out-of-range values are assigned `NA`. If `copy`, then the out-of-range values are not recoded (maintain their original value).
 
 append: Logical, if TRUE (the default) and `data` is a data frame, `data` including the new variables as additional columns is returned; if FALSE, only the new variables are returned.
 
