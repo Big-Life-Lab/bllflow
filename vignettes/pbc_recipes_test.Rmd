@@ -29,9 +29,8 @@ pbcRec <- pbcRec %>%
   step_integer(matches("sex"))
 #pbcRec
 ```
-
+@Doug all the steps can be put into one call or be added at later times
 ##Process the data
-@Doug doing b-spline basis on protime causes an error not sure why. Is it something that can have this spline per
 ```{r}
 pbcRec <- pbcRec %>%
   step_center(everything(),-sex) %>%
@@ -40,7 +39,7 @@ pbcRec <- pbcRec %>%
   step_num2factor(sex,edema)%>%
     step_dummy(sex,edema) %>%
   step_bs(age ,degree = 4) %>%
-  step_bs(bili,albumin,protime,match("edema"))
+  step_bs(bili,albumin,protime,matches("edema"))
 
 #pbcRec
 ```
@@ -49,15 +48,15 @@ pbcRec <- pbcRec %>%
 
 ```{r}
 trainedPBCRec <- prep(pbcRec, training = pbc)
-#trainedPBCRec
+trainedPBCRec
 ```
 
 ```{r}
 bakedPBC <- bake(trainedPBCRec, new_data = pbc)
-#bakedPBC
+bakedPBC
 ```
 OutModel @Doug Im really not sure what the prefered output is since im not sure how models work
 ```{r}
-coxPbcModel <- coxph(Surv(status) ~ age+sex+bili+albumin+protime+edema, data = bakedPBC)
+coxPbcModel <- coxph(Surv(status) ~ bili_x_age+sex_X2, data = bakedPBC)
 coxPbcModel
 ```
