@@ -159,6 +159,23 @@
 <div id="contributing-to-bllflow" class="section level1">
 
 <p>This outlines how to propose a change to bllflow.</p>
+<div id="documentation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#documentation" class="anchor"></a>Documentation</h2>
+<p>Where possible, use the <code>pbc</code> data, from survival package, for examples, vignettes or to demonstrate an issue. <code>bllflow</code> includes a DDI metadata file for the <code>pbc</code> data. See <code>../inst/extdata/pbcDDI.xml</code></p>
+<div id="linking-to-images" class="section level3">
+<h3 class="hasAnchor">
+<a href="#linking-to-images" class="anchor"></a>Linking to Images</h3>
+<p>When linking to images in .Rmd files, make sure to add the relative path to the image in the resource_files section of the .Rmd file. An example is given below,</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">resource_files:</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">  <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Arithmetic">-</a></span> ../man/figures/coding.png</a></code></pre></div>
+</div>
+<div id="linking-to-other--rmd-files" class="section level3">
+<h3 class="hasAnchor">
+<a href="#linking-to-other--rmd-files" class="anchor"></a>Linking to other .Rmd files</h3>
+<p>When linking to other .Rmd files make sure their extension is changed to .html. This ensures that the links continue to work when they are converted to the pkgdown site</p>
+</div>
+</div>
 <div id="filing-an-issue" class="section level2">
 <h2 class="hasAnchor">
 <a href="#filing-an-issue" class="anchor"></a>Filing an issue</h2>
