@@ -85,7 +85,7 @@ prep.step_customStepNamePleaseChange <- function(x, training, info = NULL, ...) 
 }
 
 #The function to run to create the data
-bake.step_percentile <- function(object, new_data, ...) {
+bake.step_customStepNamePleaseChange <- function(object, new_data, ...) {
   require(tibble)
   #Add the function to modify data HERE
   
