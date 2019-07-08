@@ -1,0 +1,96 @@
+---
+title: "operations-test"
+author: "Rostyslav Vyuha"
+date: "July 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Specify the operations to perform on the data
+Using the operations sheet in MSW. The steps are executed from top to bottom row by row.
+The Operation column is used to specify the operation you wish to perform. Use the name after step_. 
+
+The variables columns is used to specify which variables are affected by this operation (I think its a good idea to follow the same format that recipy uses. This bypasses the major issue i saw with my previous implementation where you would copy alot of steps for each variable would get complex and convoluded very quickly). 
+
+Append column specifies what u wish to append to the end of the new variable. (@Doug Should we have default appends or append nothing if nothing is passed or have special value for empty append)
+
+Overwrite StartVariable is the specification on if the variable should be overwritten or a new variable should be created.
+
+##Custom functions
+In case users wish to add custom functions or specify new variable creations they can use this to specify their own custom function. (@Doug I think of providing a template where they can insurt whatever code they wish and just make sure they use the same inputs and outputs. Kinda how we design programs atm where we set their ins and outs and they insert the black box)
+
+I think adding it as steps is a good idea as this allows following the recipy formula and auto generated logs.
+(@Doug @Yulric @Carol is creating a step too much for a basic user? should we just stick to letting them make simple functions?)
+
+##Custom Function Template
+```{r}
+library(recipes)
+
+#New step creation
+step_customStepNamePleaseChange <- function(
+  recipe, ..., 
+  role = NA, 
+  trained = FALSE,
+  #If you wish to add more arguments insert here
+  skip = FALSE,
+  id = rand_id("customStepNamePleaseChange")
+  ) {
+
+  ## The variable selectors are not immediately evaluated by using
+  ##  the `quos` function in `rlang`. `ellipse_check` captures the
+  ##  values and also checks to make sure that they are not empty.  
+  terms <- ellipse_check(...) 
+
+  add_step(
+    recipe, 
+    step_customStepNamePleaseChange_new(
+      terms = terms, 
+      trained = trained,
+      role = role, 
+      skip = skip,
+      id = id
+    )
+  )
+}
+
+#New step decleration
+step_customStepNamePleaseChange_new <- 
+  function(terms, role, trained, skip, id) {
+    step(
+      subclass = "customStepNamePleaseChange", 
+      terms = terms,
+      role = role,
+      trained = trained,
+      #Make sure ur custom args are always present
+      skip = skip,
+      id = id
+    )
+  }
+
+# The prep function
+prep.step_customStepNamePleaseChange <- function(x, training, info = NULL, ...) {
+  # This is where you insert the function u wish to do in the prep stage
+  
+  #After the function make sure to update the recipy object
+  step_customStepNamePleaseChange_new(
+    terms = x$terms, 
+    trained = TRUE,
+    role = x$role, 
+    skip = x$skip,
+    id = x$id
+  )
+}
+
+#The function to run to create the data
+bake.step_percentile <- function(object, new_data, ...) {
+  require(tibble)
+  #Add the function to modify data HERE
+  
+  
+  ## Always convert to tibbles on the way out
+  as_tibble(new_data)
+}
+```
