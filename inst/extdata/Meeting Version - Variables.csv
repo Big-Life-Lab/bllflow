@@ -1,0 +1,7 @@
+variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,operations,centre,interaction,RCS,dummy,impute,min,max,outlier
+age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,"data cleaning, finish data cleaning, impute missing data, transform data, data cleaning_2",TRUE,NA,4,NA,"1::FALSE, TRUE",40,70,delete
+sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,TRUE,"transform data, impute",FALSE,NA,NA,TRUE,FALSE,NA,NA,delete
+bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,FALSE,"finish data cleaning_2,transform data",TRUE,age,3,NA,1::TRUE,NA,NA,missing
+albumin,pbc,Serum albumin,Albumin,g/dl,Lab,Continuous,PBC_demo,FALSE,"finish data cleaning,transform data",TRUE,age,3,NA,TRUE,NA,NA,missing
+protime,pbc,standardised blood clotting time,Prothrombin time,seconds,Lab,Continuous,PBC_demo,FALSE,"finish data cleaning,transform data, impute",TRUE,age,3,NA,TRUE,NA,NA,missing
+edema,pbc,Edema,Edema,,Physical sign,Categorical,PBC_demo,FALSE,"finish data cleaning,transform data, tsq.func(stpo, stpoy)",TRUE,age,3,TRUE,TRUE,NA,NA,missing
