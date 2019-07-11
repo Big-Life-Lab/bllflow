@@ -40,7 +40,7 @@ Suggests:
   magrittr,
   survival,
   rms, 
-  cmprsk
+  cmprsk,
   testthat
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
