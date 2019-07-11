@@ -66,3 +66,9 @@ pkg.globals$LongTable.GroupByValueLabel <- "groupByValueLabel"
 pkg.globals$LongTable.ClassName <- "LongTable"
 pkg.globals$LongTable.MetaData <- "MetaData"
 pkg.globals$LongTable.SmallCells <- "smallCells"
+
+# Module Column names
+pkg.globals$Modules.DefaultOrder <- "DefaultOrder"
+
+# WorkingData contents
+pkg.globals$WorkingData.ModuleSequenceNumber <- "moduleSequenceNumber"
