@@ -1,7 +1,7 @@
 #' CheckSmallCells
 #'
 #' Checks for presence of small cells within the passed table
-#' 
+#'
 #' @param passedTable Table to check currently supported is LongTable and TableOne
 #' @param smallSize Preffered small cell size default <6
 #' @param print Option to print the smallCell table
@@ -13,17 +13,18 @@ CheckSmallCells <- function(passedTable, ...) {
 #' CheckSmallCells for Summary Data
 #'
 #' Checks for presence of small cells within Summary Data
-#' 
+#'
 #' @param passedTable Table to check currently supported is LongTable and TableOne
 #' @param smallSize Preffered small cell size default <6
 #' @param print Option to print the smallCell table
 #' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #'@export
 CheckSmallCells.SummaryData <- function(passedTable,
-                                      smallSize = 6,
-                                      print = FALSE) {
+                                        
+                                        smallSize = 6,
+                                        print = FALSE) {
   passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]] <-
-    passedTable$summaryData[passedTable$summaryData[, pkg.globals$LongTable.Frequency] < smallSize, ]
+    passedTable$summaryData[passedTable$summaryData[, pkg.globals$LongTable.Frequency] < smallSize,]
   print(paste(nrow(passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]]), "Small cells were found"))
   if (print) {
     print(passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]])
@@ -117,7 +118,7 @@ CheckSmallCells.TableOne <- function(passedTable,
         passedTable$MetaData$smallCells$variable,
         passedTable$MetaData$smallCells$stratifiedBy,
         passedTable$MetaData$smallCells$strataValues
-      ),]
+      ), ]
     # reset rowcount
     rownames(passedTable$MetaData$smallCells) <- NULL
   } else {
@@ -127,7 +128,7 @@ CheckSmallCells.TableOne <- function(passedTable,
         smallSizeTable$variable,
         smallSizeTable$stratifiedBy,
         smallSizeTable$strataValues
-      ),]
+      ), ]
     # reset rowcount
     rownames(passedTable$MetaData$smallCells) <- NULL
   }
