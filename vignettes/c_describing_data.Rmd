@@ -55,9 +55,8 @@ For all tables, metadata such as labels are added from the Model Specification W
 Initialize the model with the DDI document.
 ```{r}
 ddi <- bllflow::ReadDDI(system.file("extdata", "", package = "bllflow"), "pbcDDI.xml")
-pbcModel <- UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
-
-pbcModelWithLongTable <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+pbcModel <- bllflow::UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
+longTableWithLabels <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
 ```
 
 ## Check for small cells

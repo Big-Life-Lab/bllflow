@@ -124,17 +124,15 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 WriteDDIPopulatedMSW.BLLFlow <-
   function(x, pathToWriteTo, newFileName, ...) {
     bllFlow <- x
-
+    
     # create new directory if one does not exist
     if (!dir.exists(pathToWriteTo)) {
       dir.create(file.path(getwd(), pathToWriteTo))
     }
     
-    write.csv(
-      bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
-      file = file.path(pathToWriteTo, newFileName),
-      row.names = FALSE
-    )
+    write.csv(bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
+              file = file.path(pathToWriteTo, newFileName),
+              row.names = FALSE)
   }
 
 #' @describeIn WriteDDIPopulatedMSW Updates an existing variable details worksheet
@@ -243,27 +241,27 @@ GetDDIVariables <- function(ddi, varList) {
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, variables, variableDetails)
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, variables)
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, newMSWVariableDeatails = variableDetails)
-UpdateMSW <-
-  function(bllModel,
-           newMSWVariables = NULL,
-           newMSWVariableDeatails = NULL,
-           newDDI = NULL) {
-    if (!is.null(newDDI)) {
-      bllModel[[pkg.globals$bllFlowContent.DDI]] <- newDDI
-      bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
-        ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], bllModel[[pkg.globals$bllFlowContent.VariableDetails]])
-    }
-    if (!is.null(newMSWVariables)) {
-      bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
-    }
-    if (!is.null(newMSWVariableDeatails)) {
-      bllModel[[pkg.globals$bllFlowContent.VariableDetails]] <-
-        newMSWVariableDeatails
-      if (!is.null(bllModel[[pkg.globals$bllFlowContent.DDI]])) {
-        bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
-          ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], newMSWVariableDeatails)
-      }
-    }
-    
-    return(bllModel)
+UpdateMSW <- function(bllModel,
+                      newMSWVariables = NULL,
+                      newMSWVariableDeatails = NULL,
+                      newDDI = NULL) {
+  if (!is.null(newDDI)) {
+    bllModel[[pkg.globals$bllFlowContent.DDI]] <- newDDI
+    bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
+      ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], bllModel[[pkg.globals$bllFlowContent.VariableDetails]])
+    bllModel[[pkg.globals$bllFlowContent.AdditionalMetaData]] <- GetDDIDescription(newDDI)
   }
+  if (!is.null(newMSWVariables)) {
+    bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
+  }
+  if (!is.null(newMSWVariableDeatails)) {
+    bllModel[[pkg.globals$bllFlowContent.VariableDetails]] <-
+      newMSWVariableDeatails
+    if (!is.null(bllModel[[pkg.globals$bllFlowContent.DDI]])) {
+      bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
+        ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], newMSWVariableDeatails)
+    }
+  }
+  
+  return(bllModel)
+}

@@ -41,6 +41,7 @@ Suggests:
   survival,
   rms, 
   cmprsk
+  testthat
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
