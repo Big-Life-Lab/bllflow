@@ -9,16 +9,21 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##Step one initial variable role specification
-Iniside variable details specify which variables are predictors, used in creation of other vars, and which variables are the outcome(this is used to build the initial recipy) @Doug(perhaps we should move created variables into variables as well and move role specification to variables too?)
+##Step one - initial variable role specification
+a) In `variables.csv`, identify final predictors in the model and their transformations. Also identify the model outcome.
+b) In `variableDetails.csv`, specify how to create recode final predictors from the starting variables in the orignial data. If needed, identify intermediate variables, if these are used to generate final predictors. 
 
-##Specify the modules
-Inside the modules csv specify the functions you wish to use for each step
+Defining the final predictors before specifying the details about how to recode those predictors is a reflection that predictors may come from several different starting databases with similar variables that need to recoded into harmonized predictors. That said, the starting point can be `variableDetails.csv`, with the original starting variables. 
 
-##Specify module effects
-Inside the variables csv specify which variables are affected by which modules as well as the arguments for those modules for each variable
+## comment out -- which variables are predictors, used in creation of other vars, and which variables are the outcome(this is used to build initial recipy) @Doug(perhaps we should move created variables into variables as well and move role specification to  variables too?)
 
-##Run the modules
+##Step 2 - Specify the modules
+Sequential steps to generate a model are grouped into modules. Modules represent common steps such as data recoding, data cleaning and transformation. Inside the `modules.csv` specify the transformations and functions to generate the final predictors. Each module is executed in order. 
+
+##Step 3 - Specify module effects
+Inside `variables.csv`, specify which variables are affected by which modules as well as the arguments for each variable and module. 
+
+##Step 4 - Run the modules
 Run the modules sequentially then procced to run checks on each modules as the analyst sees fit
 
 ```{r}
@@ -33,15 +38,18 @@ modules <- read.csv(file.path(getwd(), '../inst/extdata/Meeting Version - Module
 ddi = pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
                 "pbcDDI.xml")
 
+# @Rusty - does the pbc data need to be loaded here into the bllflow Object? NVM. I see further down that it is loaded. 
+
 bllFlowObject <- BLLFlow()
 
-# This updates the working data inside bllFlow to the data returned by RunModule as well as its current module sequence number
+# bllFlow version - This updates the working data inside bllFlow to the data returned by RunModule as well as its current module sequence number
 bllFlowObject <- RunModule(bllObject = bllFlowObject, moduleSequenceNumber = 1)
-#The non bllFlow version
-#Returns a list containing the working data, recipy log, as well as the module number as its elements
+
+#The non bllFlow version - Returns a list containing the working data, recipy log, as well as the module number as its elements
 workingData <- RunModule(variables = variables, variableDetails = variableDetails, modules = modules, data = pbc, moduleSequenceNumber = 1)
 
 # The analyst can then run required analysis on workingData$data to verify the module performed the steps they wished if not they can update module csv module 1 to run what they prefer to do in this step and rerun until they are satisfyid with its output
+# moduleSequenceNumber could, I suppose, have options like  = 1:4, or = all. Similar selection as for Recipe. 
 
 #CHECKS AND ANALYSIS
 #rerun
