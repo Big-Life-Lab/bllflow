@@ -15,8 +15,9 @@ pkg.globals$argument.VariableStartLow <- "low"
 pkg.globals$argument.CatStartValue <- "value"
 pkg.globals$argument.CatStartLabel <- "valueLabelStart"
 pkg.globals$argument.VariableStartLabel <- "label"
-pkg.globals$argument.From <- "from"
+pkg.globals$argument.From <- "From"
 pkg.globals$argument.Interval <- "interval"
+pkg.globals$argument.CatValue <- "catValues"
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
