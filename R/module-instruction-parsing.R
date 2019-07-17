@@ -1,21 +1,92 @@
 #Parse out the functions inside each module returning a list of the functions in it
-ParseModuleFunctions <- function(moduleTable, moduleSequence) {
-  #Check row with module sequence
-  
-  #Seperate each function into seperate list element with 2 elements function name and its arguments
-  
-}
-
-#Uses the function list to parse out its arguments creating a "function" object
-ParseFunctionArguments <- function(functionList) {
-  
-}
+ParseModuleFunctions <-
+  function(moduleTable,
+           moduleSequence,
+           variables,
+           variableDetails) {
+    #Check row with module sequence
+    rawFunc <-
+      as.character(moduleTable[moduleTable[[pkg.globals$Modules.DefaultOrder]] == moduleSequence, pkg.globals$WorkingData.ModuleOperations])
+    
+    funcList <- strsplit(rawFunc, "],")[[1]]
+    #print(funcList)
+    
+    #Seperate each function into seperate list element with 2 elements function name and its arguments
+    refactoredFuncsWithArgs <- list()
+    
+    for (singleFunc in funcList) {
+      funcWithArgs <- as.list(strsplit(singleFunc, "::")[[1]])
+      funcWithArgs[[2]] <-
+        stringr::str_remove_all(funcWithArgs[[2]], "[\\[\\]]")
+      funcWithArgs[[2]] <-
+        as.list(strsplit(funcWithArgs[[2]], ",")[[1]])
+      
+      funcName <- funcWithArgs[[1]]
+      refactoredFuncsWithArgs[[funcName]] <- list()
+      
+      for (argument in funcWithArgs[[2]]) {
+        tmpArg <- as.list(strsplit(argument, "=")[[1]])
+        tmpArg[[2]] <-
+          stringr::str_remove_all(tmpArg[[2]], "[\"\"]")
+        refactoredFuncsWithArgs[[funcName]][[pkg.globals$FunctionList.Arguments]][[tmpArg[[1]]]] <-
+          tmpArg[[2]]
+      }
+    }
+    
+    refactoredFuncsWithArgsAndVars <-
+      ParseFunctionVariables(
+        functionList = refactoredFuncsWithArgs,
+        variables = variables,
+        moduleSequenceNumber = moduleSequence
+      )
+    
+    return(refactoredFuncsWithArgsAndVars)
+  }
 
 #Uses the function object to find the variables for it and find all the applicable variables
 ParseFunctionVariables <-
-  function(functionList, variables, variableDetails) {
+  function(functionList,
+           variables,
+           moduleSequenceNumber) {
+    #Check which rows contain the module currently being ran
+    affectedRows <-
+      variables[grepl(moduleSequenceNumber, variables[[pkg.globals$columnNames.Operations]]),]
+    
+    #Check the additional params for the operations and add to function
+    for (currentFuncName in names(functionList)) {
+      if (currentFuncName %in% colnames(affectedRows)) {
+        columnsToCheck <-
+          affectedRows[affectedRows[[currentFuncName]] != FALSE, c(currentFuncName, pkg.globals$columnNames.Variable)]
+        
+        for (row in 1:nrow(columnsToCheck)) {
+          functionList[[currentFuncName]][[pkg.globals$FunctionList.VariableArguments]][[as.character(columnsToCheck[row, pkg.globals$columnNames.Variable])]] <-
+            columnsToCheck[row, currentFuncName]
+        }
+        
+      } else{
+        warning(
+          paste(
+            "Requested function",
+            currentFuncName,
+            "is not present in variables please verify the function name is correct"
+          ),
+          call. = FALSE
+        )
+      }
+    }
+    #Create new functions in case of additional params being there
     
   }
+
+#Define exact functions depending on variable arguments
+CreateExactFunction <- function(functionList, modelSequenceNumber){
+  #Parse out non TRUE parameters
+  for (funCheck in functionList) {
+    
+  }
+  
+  #Create new functions with the new paramev ters
+}
 
 #Uses the function objects to create a recipy
 CreateRecipy <- function(functionObjectList, workingData) {
@@ -24,31 +95,34 @@ CreateRecipy <- function(functionObjectList, workingData) {
 
 #verify module sequence matches the passed data
 VerifyDataAndSequenceMatch <- function(moduleSequenceNumber, data) {
-  if (moduleSequenceNumber == 1 && class(data) == "workingData") {
+  if (moduleSequenceNumber[[1]] == 1 &&
+      class(data) == "workingData") {
     stop(
       "Working data was passed when sequance is at step 1. Make sure to pass the starting data.
       Aborting operation!"
     )
   } else if (class(data) != "workingData") {
-    stop(
-      paste(
-        "Non workingData was passed to sequence greater then step 1 please make sure ur passing working data that is result of the module sequence before",
-        moduleSequenceNumber,
-        "
-        Aborting operation!"
-      )
-      )
-  } else if (data[[pkg.globals$WorkingData.ModuleSequenceNumber]] + 1 != moduleSequenceNumber) {
-    stop(
-      paste(
-        "The WorkingData passed is not from the previous module please verify that the data passed is from module",
-        moduleSequenceNumber - 1,
-        "
-        Aborting operation!"
-      )
-      )
+    if (moduleSequenceNumber[[1]] != 1) {
+      stop(
+        paste(
+          "Non workingData was passed to sequence greater then step 1 please make sure ur passing working data that is result of the module sequence before",
+          moduleSequenceNumber,
+          "
+          Aborting operation!"
+        )
+        )
+    }
+    } else if (data[[pkg.globals$WorkingData.ModuleSequenceNumber]] + 1 != moduleSequenceNumber[[1]]) {
+      stop(
+        paste(
+          "The WorkingData passed is not from the previous module please verify that the data passed is from module",
+          moduleSequenceNumber - 1,
+          "
+          Aborting operation!"
+        )
+        )
   }
-  }
+    }
 
 #' @export
 RunModule <-
@@ -58,7 +132,7 @@ RunModule <-
            moduleSequenceNumber,
            variableDetails = NULL) {
     #Standardize moduleSequenceNumber
-    if (moduleSequenceNumber == "all") {
+    if (moduleSequenceNumber[[1]] == "all") {
       moduleOrder <- modules[, pkg.globals$Modules.DefaultOrder]
       # Create moduleSequenceNumber out of all default modules
       moduleSequenceNumber <-
@@ -76,7 +150,12 @@ RunModule <-
     workingData <- data
     for (sequenceElement in moduleSequenceNumber) {
       moduleFunctions <-
-        ParseModuleFunctions(moduleTable = modules, moduleSequence = sequenceElement)
+        ParseModuleFunctions(
+          moduleTable = modules,
+          moduleSequence = sequenceElement,
+          variables = variables,
+          variableDetails = variableDetails
+        )
       workingData <- CreateRecipy(moduleFunctions, workingData)
     }
     
