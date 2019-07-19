@@ -25,25 +25,26 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]), ]
+            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]),]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
           
+          # ---- Step 4A: Recode the variables
           recData[[dataName]] <-
             RecodeColumns(
               dataSource = dataSource[[dataName]],
               variablesToProcess = variablesToProcess,
               dataName = dataName
             )
-          
+          # ---- Step 5A: Create the output data
           if (appendToData) {
             dataSource[[dataName]] <-
               cbind(dataSource[[dataName]], recData[[dataName]])
           } else{
             dataSource[[dataName]] <- recData[[dataName]]
           }
-          # ---- Step 4A:
+          
         } else{
           stop(
             paste(
@@ -58,10 +59,10 @@ RecWTable.default <-
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
       variablesToProcess <-
-        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]), ]
+        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]),]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
       
       recData[[datasetName]] <-
         RecodeColumns(
@@ -93,7 +94,7 @@ RecodeColumns <-
   function(dataSource, variablesToProcess, dataName) {
     # Set interval if none is present
     intervalPresent <- TRUE
-    validIntervals <- c("[,]","[,)","(,]")
+    validIntervals <- c("[,]", "[,)", "(,]")
     intervalDefault <- "[,)"
     recodedData <- dataSource[, 0]
     if (is.null(variablesToProcess[[pkg.globals$argument.Interval]])) {
@@ -105,15 +106,15 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       
       recodedData[variableBeingChecked] <- NA
       for (row in 1:nrow(rowsBeingChecked)) {
-        rowBeingChecked <- rowsBeingChecked[row,]
+        rowBeingChecked <- rowsBeingChecked[row, ]
         # find var name for this database
-        varBeingChecked <- character()
+        dataVariableBeingChecked <- character()
         varStartNames <-
           as.character(rowBeingChecked[[pkg.globals$argument.VariableStart]])
         
@@ -123,19 +124,19 @@ RecodeColumns <-
           for (varName in varStartNamesList) {
             if (grepl(dataName, varName)) {
               # seperate dataname from the var name
-              varBeingChecked <-
+              dataVariableBeingChecked <-
                 as.list(strsplit(varName, "::")[[1]])[[2]]
             }
           }
         } else if (grepl("\\[", varStartNames)) {
-          varBeingChecked <-
+          dataVariableBeingChecked <-
             stringr::str_match(varStartNames, "\\[(.*?)\\]")[, 2]
         } else{
           stop(
             paste(
               "The row
               ",
-              rowBeingChecked,
+              row,
               "
               Does not contain the database being checked(",
               dataName,
@@ -154,11 +155,11 @@ RecodeColumns <-
           rowBeingChecked[[pkg.globals$argument.CatValue]]
         if (intervalPresent) {
           interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
-          if (!interval %in% validIntervals){
+          if (!interval %in% validIntervals) {
             interval <- intervalDefault
           }
           validRowIndex <- CompareValueBasedOnInterval(
-            compareColumns = varBeingChecked,
+            compareColumns = dataVariableBeingChecked,
             dataSource = dataSource,
             leftBoundary = fromValues[[1]],
             rightBoundary = fromValues[[2]],
@@ -166,7 +167,7 @@ RecodeColumns <-
           )
         } else{
           validRowIndex <- CompareValueBasedOnInterval(
-            compareColumns = varBeingChecked,
+            compareColumns = dataVariableBeingChecked,
             dataSource = dataSource,
             leftBoundary = fromValues[[1]],
             rightBoundary = fromValues[[2]],
@@ -174,107 +175,17 @@ RecodeColumns <-
           )
         }
         if (is.na(valueRecorded)) {
-          recodedData[validRowIndex, variableBeingChecked] <- dataSource[validRowIndex, varBeingChecked]
-        }else{
-        recodedData[validRowIndex, variableBeingChecked] <-
-          valueRecorded
+          recodedData[validRowIndex, variableBeingChecked] <-
+            dataSource[validRowIndex, dataVariableBeingChecked]
+        } else{
+          recodedData[validRowIndex, variableBeingChecked] <-
+            valueRecorded
         }
       }
     }
     
     return(recodedData)
     }
-
-RecodeVariablesForData <- function(dataSource,
-                                   variableDetails,
-                                   label = NULL,
-                                   datasetName = NULL,
-                                   elseValue = NA,
-                                   appendToData = TRUE,
-                                   log = TRUE,
-                                   printNote = TRUE,
-                                   predicate = NULL) {
-  #---- Step 1: Find all the columns that need to be added by recoding ----
-  tmpVariableNames <-
-    variableDetails[[pkg.globals$argument.Variables]]
-  tmpDataVariableNames <- colnames(dataSource)
-  
-  # select all variables from variable details that are not in dataSource
-  variablesToRecode <-
-    unique(tmpVariableNames[!tmpVariableNames %in% tmpDataVariableNames])
-  
-  # verify that these variables have valid variableStart
-  recDataSpecifications <- list()
-  for (tmpVerifyVariableName in variablesToRecode) {
-    allAffectedRows <-
-      variableDetails[variableDetails[[pkg.globals$argument.Variables]] == tmpVerifyVariableName,]
-    for (singleRow in 1:nrow(allAffectedRows)) {
-      # VariableStart is in the data Proceed as usual
-      if (allAffectedRows[singleRow, pkg.globals$argument.VariableStart] %in% tmpDataVariableNames) {
-        # This is done to create 1 list element instead of a list wit 4 elements
-        appendRecData <- list(
-          list(
-            varStart = as.character(allAffectedRows[singleRow, pkg.globals$argument.VariableStart]),
-            fromValue = as.character(allAffectedRows[singleRow, pkg.globals$argument.From]),
-            intervalValue = as.character(allAffectedRows[singleRow, pkg.globals$argument.Interval]),
-            value = as.character(allAffectedRows[singleRow, pkg.globals$argument.CatStartValue])
-          )
-        )
-        if (length(recDataSpecifications[[tmpVerifyVariableName]]) == 0) {
-          print("Should Be here once")
-          recDataSpecifications[[tmpVerifyVariableName]] <-
-            appendRecData
-        } else{
-          print("and here 3 times")
-          recDataSpecifications[[tmpVerifyVariableName]] <-
-            append(recDataSpecifications[[tmpVerifyVariableName]], appendRecData)
-        }
-        # VariableStart is a recoded variable Display warning for now
-      } else if (allAffectedRows[singleRow, pkg.globals$argument.VariableStart] %in% tmpVariableNames) {
-        stop(
-          paste(
-            "Error: recoding",
-            tmpVerifyVariableName,
-            "requires",
-            allAffectedRows[singleRow, pkg.globals$argument.VariableStart],
-            "variable. Recode available in variableDetails. Suggest first recoding",
-            allAffectedRows[singleRow, pkg.globals$argument.VariableStart],
-            "variable, then try again."
-          )
-        )
-        # VariableStart is not found display error
-      } else {
-        stop(paste(
-          "Error: missing required starting variable(s):",
-          allAffectedRows[singleRow, pkg.globals$argument.VariableStart]
-        ))
-      }
-    }
-  }
-  #TODO add some interval standardization
-  #---- Step 2: Creating the Rec vars
-  if (appendToData) {
-    #---- Step 2A: adding new columns to the data ----
-    for (recVariable in variablesToRecode) {
-      dataSource[[recVariable]] <- elseValue
-      for (recData in recDataSpecifications[[recVariable]]) {
-        checkColumn <- recData$varStart
-        fromValues <- strsplit(recData$fromValue, ":")[[1]]
-        if (!is.na(recData$intervalValue)) {
-          validRowIndex <- CompareValueBasedOnInterval(
-            compareValue = dataSource[[checkColumn]],
-            leftBoundary = fromValues[[1]],
-            rightBoundary = fromValues[[2]],
-            interval = recData$intervalValue
-          )
-          dataSource[validRowIndex, recVariable] <- recData$value
-        }
-      }
-    }
-  } else{
-    #---- Step 2B: Creating new dataFrame with the recVars ----
-  }
-}
 
 CompareValueBasedOnInterval <-
   function(leftBoundary,
@@ -283,15 +194,27 @@ CompareValueBasedOnInterval <-
            compareColumns,
            interval) {
     returnBoolean <- vector()
-      if (interval == "[,]") {
-        returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) <= dataSource[[compareColumns]] & dataSource[[compareColumns]] <= as.numeric(rightBoundary))]
-      } else if (interval == "[,)") {
-        returnBoolean <- returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) <= dataSource[[compareColumns]] & dataSource[[compareColumns]] < as.numeric(rightBoundary))]
-      } else if (interval == "(,]") {
-        returnBoolean <- returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) < dataSource[[compareColumns]] & dataSource[[compareColumns]] <= as.numeric(rightBoundary))]
-      } else{
-        stop("Invalid Argument was passed")
-      }
+    if (interval == "[,]") {
+      returnBoolean <-
+        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
+          as.numeric(leftBoundary) <= dataSource[[compareColumns]] &
+            dataSource[[compareColumns]] <= as.numeric(rightBoundary)
+        )]
+    } else if (interval == "[,)") {
+      returnBoolean <-
+        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
+          as.numeric(leftBoundary) <= dataSource[[compareColumns]] &
+            dataSource[[compareColumns]] < as.numeric(rightBoundary)
+        )]
+    } else if (interval == "(,]") {
+      returnBoolean <-
+        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
+          as.numeric(leftBoundary) < dataSource[[compareColumns]] &
+            dataSource[[compareColumns]] <= as.numeric(rightBoundary)
+        )]
+    } else{
+      stop("Invalid Argument was passed")
+    }
     
     return(returnBoolean)
   }
