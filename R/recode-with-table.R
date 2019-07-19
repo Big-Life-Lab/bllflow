@@ -55,7 +55,7 @@ RecWTable.default <-
         }
       }
       
-    } else if (class(dataSource) == "data.frame" &&
+    } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
       variablesToProcess <-
         variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]), ]
@@ -158,25 +158,27 @@ RecodeColumns <-
             interval <- intervalDefault
           }
           validRowIndex <- CompareValueBasedOnInterval(
-            compareValue = dataSource[[varBeingChecked]],
+            compareColumns = varBeingChecked,
+            dataSource = dataSource,
             leftBoundary = fromValues[[1]],
             rightBoundary = fromValues[[2]],
             interval = interval
           )
         } else{
           validRowIndex <- CompareValueBasedOnInterval(
-            compareValue = dataSource[[varBeingChecked]],
+            compareColumns = varBeingChecked,
+            dataSource = dataSource,
             leftBoundary = fromValues[[1]],
             rightBoundary = fromValues[[2]],
             interval = intervalDefault
           )
         }
         if (is.na(valueRecorded)) {
-          valueRecorded <- dataSource[[varBeingChecked]]
-        }
+          recodedData[validRowIndex, variableBeingChecked] <- dataSource[validRowIndex, varBeingChecked]
+        }else{
         recodedData[validRowIndex, variableBeingChecked] <-
           valueRecorded
-        
+        }
       }
     }
     
@@ -277,29 +279,19 @@ RecodeVariablesForData <- function(dataSource,
 CompareValueBasedOnInterval <-
   function(leftBoundary,
            rightBoundary,
-           compareValues,
+           dataSource,
+           compareColumns,
            interval) {
     returnBoolean <- vector()
-    for (compareValue in compareValues) {
       if (interval == "[,]") {
-        returnBoolean <-
-          c(returnBoolean,
-            leftBoundary < compareValue &&
-              compareValue < rightBoundary)
+        returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) <= dataSource[[compareColumns]] & dataSource[[compareColumns]] <= as.numeric(rightBoundary))]
       } else if (interval == "[,)") {
-        returnBoolean <-
-          c(returnBoolean,
-            leftBoundary < compareValue &&
-              compareValue <= rightBoundary)
+        returnBoolean <- returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) <= dataSource[[compareColumns]] & dataSource[[compareColumns]] < as.numeric(rightBoundary))]
       } else if (interval == "(,]") {
-        returnBoolean <-
-          c(returnBoolean,
-            leftBoundary <= compareValue &&
-              compareValue < rightBoundary)
+        returnBoolean <- returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(as.numeric(leftBoundary) < dataSource[[compareColumns]] & dataSource[[compareColumns]] <= as.numeric(rightBoundary))]
       } else{
         stop("Invalid Argument was passed")
       }
-    }
     
     return(returnBoolean)
   }
