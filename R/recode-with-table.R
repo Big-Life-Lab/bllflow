@@ -158,6 +158,9 @@ RecodeColumns <-
           if (!interval %in% validIntervals) {
             interval <- intervalDefault
           }
+          if (fromValues[[1]]==fromValues[[2]]) {
+            interval <- "[,]"
+          }
           validRowIndex <- CompareValueBasedOnInterval(
             compareColumns = dataVariableBeingChecked,
             dataSource = dataSource,
@@ -166,6 +169,9 @@ RecodeColumns <-
             interval = interval
           )
         } else{
+          if (fromValues[[1]] == fromValues[[2]]) {
+            interval <- "[,]"
+          }
           validRowIndex <- CompareValueBasedOnInterval(
             compareColumns = dataVariableBeingChecked,
             dataSource = dataSource,
