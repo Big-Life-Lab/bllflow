@@ -180,12 +180,20 @@ RecodeColumns <-
             interval = intervalDefault
           )
         }
+<<<<<<< Updated upstream
         if (is.na(valueRecorded)) {
           recodedData[validRowIndex, variableBeingChecked] <-
             dataSource[validRowIndex, dataVariableBeingChecked]
         } else{
           recodedData[validRowIndex, variableBeingChecked] <-
             valueRecorded
+=======
+        if (is.na(valueRecorded)|| valueRecorded == "N/A") {
+          recodedData[validRowIndex, variableBeingChecked] <- dataSource[validRowIndex, varBeingChecked]
+        }else{
+        recodedData[validRowIndex, variableBeingChecked] <-
+          valueRecorded
+>>>>>>> Stashed changes
         }
       }
     }
