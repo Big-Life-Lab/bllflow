@@ -75,16 +75,34 @@ ParseFunctionVariables <-
       }
     }
     #Create new functions in case of additional params being there
+    functionList <- CreateExactFunction(functionList)
     
+    return(functionList)
   }
 
 #Define exact functions depending on variable arguments
-CreateExactFunction <- function(functionList, modelSequenceNumber){
+CreateExactFunction <- function(functionList) {
   #Parse out non TRUE parameters
-  for (funCheck in functionList) {
-    
+  for (funName in names(functionList)) {
+    if (!is.null(functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]])) {
+      for (varName in names(functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]])) {
+        if (functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]] != TRUE) {
+          # create new func and move all the ones with that value there
+          if (is.null(functionList[[paste(funName, "-", functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]], sep = "")]])) {
+            functionList[[paste(funName, "-", functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]], sep = "")]][[pkg.globals$FunctionList.Arguments]] <-
+              functionList[[funName]][[pkg.globals$FunctionList.Arguments]]
+            functionList[[paste(funName, "-", functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]], sep = "")]][[pkg.globals$FunctionList.VariableArguments]][[varName]] <-
+              functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]]
+          } else{
+            functionList[[paste(funName, "-", functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]], sep = "")]][[pkg.globals$FunctionList.VariableArguments]][[varName]] <-
+              functionList[[funName]][[pkg.globals$FunctionList.VariableArguments]][[varName]]
+          }
+        }
+      }
+    }
   }
   
+  return(functionList)
   #Create new functions with the new paramev ters
 }
 
