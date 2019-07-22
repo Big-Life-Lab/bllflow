@@ -2,17 +2,29 @@
 RecWTable <- function(dataSource = NULL, ...) {
   UseMethod("RecWTable", dataSource)
 }
+#' RecWTable default
+#'
+#' Recodes the values in datasource in accordance to the variable details
+#'
+#' @param dataSource a dataframe containing the original data thats being rewritten
+#' @param variableDetails a dataframe containing the specifications on the recoding
+#' @param datasetName the name of the dataset being transformed
+#' @param elseValue the value that is used to replace any values that are outside the specified ranges
+#' @param appendToData the option of appending recoded data to the dataSource
+#' @param log the option to print the log of data being replaced
+#' @param printNote the option to print any content inside the Note column of the variable details
+#'
+#' @return a dataframe that is recoded in accordance of variable details
+#'
 #' @export
 RecWTable.default <-
   function(dataSource,
            variableDetails,
            datasetName,
-           label = NULL,
            elseValue = NA,
            appendToData = TRUE,
-           log = TRUE,
-           printNote = TRUE,
-           predicate = NULL) {
+           log = FALSE,
+           printNote = FALSE) {
     recData <- list()
     # ---- Step 1: Detemine if the passed data is a list or single database
     
@@ -35,7 +47,9 @@ RecWTable.default <-
             RecodeColumns(
               dataSource = dataSource[[dataName]],
               variablesToProcess = variablesToProcess,
-              dataName = dataName
+              dataName = dataName,
+              log = log,
+              printNote = printNote
             )
           # ---- Step 5A: Create the output data
           if (appendToData) {
@@ -68,7 +82,9 @@ RecWTable.default <-
         RecodeColumns(
           dataSource = dataSource,
           variablesToProcess = variablesToProcess,
-          dataName = datasetName
+          dataName = datasetName,
+          log = log,
+          printNote = printNote
         )
       
       if (appendToData) {
@@ -91,7 +107,11 @@ RecWTable.default <-
 
 # Recodes columns from passed row returns just table with those columns and same rows as the dataSource
 RecodeColumns <-
-  function(dataSource, variablesToProcess, dataName) {
+  function(dataSource,
+           variablesToProcess,
+           dataName,
+           log,
+           printNote) {
     # Set interval if none is present
     intervalPresent <- TRUE
     validIntervals <- c("[,]", "[,)", "(,]")
@@ -110,9 +130,20 @@ RecodeColumns <-
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       
-      recodedData[variableBeingChecked] <- NA
+      # check for precense of an else from value if present populate using it-------------------------------------------------------
+      elseValue <- NA
+      recodedData[variableBeingChecked] <- elseValue
+      
+      logTable <- rowsBeingChecked[[, 0]]
+      logTable$valueTo <- NA
+      logTable$From <- NA
+      logTable$rowsRecoded <- NA
       for (row in 1:nrow(rowsBeingChecked)) {
         rowBeingChecked <- rowsBeingChecked[row, ]
+        # If cat go check for label and obtain it
+        
+        # regardless obtain unit and attach
+        
         # find var name for this database
         dataVariableBeingChecked <- character()
         varStartNames <-
@@ -158,7 +189,7 @@ RecodeColumns <-
           if (!interval %in% validIntervals) {
             interval <- intervalDefault
           }
-          if (fromValues[[1]]==fromValues[[2]]) {
+          if (fromValues[[1]] == fromValues[[2]]) {
             interval <- "[,]"
           }
           validRowIndex <- CompareValueBasedOnInterval(
@@ -180,13 +211,39 @@ RecodeColumns <-
             interval = intervalDefault
           )
         }
-        if (is.na(valueRecorded)|| valueRecorded == "N/A") {
-          recodedData[validRowIndex, variableBeingChecked] <-
+        # Start construction of dataframe for log
+        logTable[row, "valueTo"] <- valueRecorded
+        logTable[row, "From"] <-
+          as.character(rowBeingChecked[[pkg.globals$argument.From]])
+        logTable[row, "rows"] <- sum(validRowIndex, na.rm = TRUE)
+        
+        if (valueRecorded == "copy") {
+          valueRecorded <-
             dataSource[validRowIndex, dataVariableBeingChecked]
-        } else{
-          recodedData[validRowIndex, variableBeingChecked] <-
-            valueRecorded
         }
+        
+        recodedData[validRowIndex, variableBeingChecked] <-
+          valueRecorded
+        
+        if (printNote &&
+            !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
+          print(rowBeingChecked[[pkg.globals$argument.Notes]])
+        }
+      }
+      # if log was requested print it
+      if (log) {
+        print(
+          paste(
+            "The variable",
+            dataVariableBeingChecked,
+            "was recoded into",
+            variableBeingChecked,
+            "for the database",
+            dataName,
+            "the following recodes were made:"
+          )
+        )
+        print(logTable)
       }
     }
     
