@@ -168,6 +168,7 @@ RecodeColumns <-
               "The row
               ",
               row,
+              "for the variable", variableBeingChecked,
               "
               Does not contain the database being checked(",
               dataName,
@@ -215,7 +216,7 @@ RecodeColumns <-
         logTable[row, "valueTo"] <- valueRecorded
         logTable[row, "From"] <-
           as.character(rowBeingChecked[[pkg.globals$argument.From]])
-        logTable[row, "rows"] <- sum(validRowIndex, na.rm = TRUE)
+        logTable[row, "rowsRecoded"] <- sum(validRowIndex, na.rm = TRUE)
         
         if (isEqual(valueRecorded,"copy")) {
           valueRecorded <-
