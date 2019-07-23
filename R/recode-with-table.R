@@ -132,6 +132,9 @@ RecodeColumns <-
       # Set factor for all recode values
       
       elseValue <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",pkg.globals$argument.From]
+      if (is.null(elseValue)){
+        elseValue <- NA
+      }
       rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       recodedData[variableBeingChecked] <- elseValue
       levels(recodedData[[variableBeingChecked]]) <- c(levels(recodedData[[variableBeingChecked]]),levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
