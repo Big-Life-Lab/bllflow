@@ -129,6 +129,8 @@ RecodeColumns <-
         variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+      # Set factor for all recode values
+      factor(recodedData[[variableBeingChecked]]) <- levels(rowsBeingChecked[[pkg.globals$argument.CatValue]])
       
       elseValue <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",pkg.globals$argument.From]
       rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
@@ -247,6 +249,7 @@ RecodeColumns <-
         print(logTable)
       }
     }
+    recodedData <- droplevels(recodedData)
     
     return(recodedData)
     }
