@@ -37,10 +37,10 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]),]
+            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]), ]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
+            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
           
           # ---- Step 4A: Recode the variables
           recData[[dataName]] <-
@@ -73,10 +73,10 @@ RecWTable.default <-
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
       variablesToProcess <-
-        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]),]
+        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]), ]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
       
       recData[[datasetName]] <-
         RecodeColumns(
@@ -126,16 +126,22 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       # Set factor for all recode values
       
-      elseValue <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",pkg.globals$argument.From]
-      rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
+      elseValue <-
+        as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.From])
+      if (length(elseValue)) {
+        elseValue <- NA
+      }
+      rowsBeingChecked <-
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
       recodedData[variableBeingChecked] <- elseValue
-      levels(recodedData[[variableBeingChecked]]) <- c(levels(recodedData[[variableBeingChecked]]),levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
-
+      levels(recodedData[[variableBeingChecked]]) <-
+        c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
+      
       
       
       logTable <- rowsBeingChecked[, 0]
@@ -143,7 +149,7 @@ RecodeColumns <-
       logTable$From <- NA
       logTable$rowsRecoded <- NA
       for (row in 1:nrow(rowsBeingChecked)) {
-        rowBeingChecked <- rowsBeingChecked[row, ]
+        rowBeingChecked <- rowsBeingChecked[row,]
         # If cat go check for label and obtain it
         
         # regardless obtain unit and attach
@@ -172,7 +178,8 @@ RecodeColumns <-
               "The row
               ",
               row,
-              "for the variable", variableBeingChecked,
+              "for the variable",
+              variableBeingChecked,
               "
               Does not contain the database being checked(",
               dataName,
@@ -220,9 +227,10 @@ RecodeColumns <-
         logTable[row, "valueTo"] <- valueRecorded
         logTable[row, "From"] <-
           as.character(rowBeingChecked[[pkg.globals$argument.From]])
-        logTable[row, "rowsRecoded"] <- sum(validRowIndex, na.rm = TRUE)
+        logTable[row, "rowsRecoded"] <-
+          sum(validRowIndex, na.rm = TRUE)
         
-        if (isEqual(valueRecorded,"copy")) {
+        if (isEqual(valueRecorded, "copy")) {
           valueRecorded <-
             dataSource[validRowIndex, dataVariableBeingChecked]
         }
