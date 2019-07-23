@@ -134,7 +134,7 @@ RecodeColumns <-
       elseValue <- NA
       recodedData[variableBeingChecked] <- elseValue
       
-      logTable <- rowsBeingChecked[[, 0]]
+      logTable <- rowsBeingChecked[, 0]
       logTable$valueTo <- NA
       logTable$From <- NA
       logTable$rowsRecoded <- NA
@@ -183,7 +183,7 @@ RecodeColumns <-
         fromValues <-
           strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
         valueRecorded <-
-          rowBeingChecked[[pkg.globals$argument.CatValue]]
+          as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
         if (intervalPresent) {
           interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
           if (!interval %in% validIntervals) {
