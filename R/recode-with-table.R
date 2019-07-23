@@ -72,11 +72,12 @@ RecWTable.default <-
       
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
-      variablesToProcess <-
+      allVariablesDetected <-
         variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]), ]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+      nonRecodedVariables <- allVariablesDetected[allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, pkg.globals$argument.Variables]
       
       recData[[datasetName]] <-
         RecodeColumns(
@@ -90,7 +91,7 @@ RecWTable.default <-
       if (appendToData) {
         dataSource <- cbind(dataSource, recData)
       } else{
-        dataSource <- recData
+        dataSource <- cbind(dataSource[,nonRecodedVariables],recData)
       }
     } else{
       stop(
