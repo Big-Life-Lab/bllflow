@@ -135,6 +135,7 @@ RecodeColumns <-
       rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       recodedData[variableBeingChecked] <- elseValue
       levels(recodedData[[variableBeingChecked]]) <- c(levels(recodedData[[variableBeingChecked]]),levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
+
       
       
       logTable <- rowsBeingChecked[, 0]
