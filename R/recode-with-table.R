@@ -130,11 +130,12 @@ RecodeColumns <-
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       # Set factor for all recode values
-      factor(recodedData[[variableBeingChecked]]) <- levels(rowsBeingChecked[[pkg.globals$argument.CatValue]])
       
       elseValue <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",pkg.globals$argument.From]
       rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       recodedData[variableBeingChecked] <- elseValue
+      levels(recodedData[[variableBeingChecked]]) <- levels(rowsBeingChecked[[pkg.globals$argument.CatValue]])
+      
       
       logTable <- rowsBeingChecked[, 0]
       logTable$valueTo <- NA
