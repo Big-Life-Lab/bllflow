@@ -130,8 +130,8 @@ RecodeColumns <-
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       
-      # check for precense of an else from value if present populate using it-------------------------------------------------------
-      elseValue <- NA
+      elseValue <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",pkg.globals$argument.From]
+      rowsBeingChecked <- rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       recodedData[variableBeingChecked] <- elseValue
       
       logTable <- rowsBeingChecked[, 0]
