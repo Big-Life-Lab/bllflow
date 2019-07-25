@@ -280,7 +280,7 @@ RecodeColumns <-
         }
         # Populate value label
         labelList[[variableBeingChecked]]$values <-
-          c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = fromValues[[1]])
+          c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = valueRecorded)
         
         
         recodedData[validRowIndex, variableBeingChecked] <-
