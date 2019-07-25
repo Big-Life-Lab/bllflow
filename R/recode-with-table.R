@@ -282,9 +282,7 @@ RecodeColumns <-
           labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <- valueRecorded
             
         }
-        if (variableBeingChecked == "HUIDHSI"){
-          print("asd")
-        }
+        
         recodedData[validRowIndex, variableBeingChecked] <-
           valueRecorded
         
@@ -309,7 +307,6 @@ RecodeColumns <-
         print(logTable)
       }
     }
-    recodedData <- droplevels(recodedData)
     
     # Populate data Labels
     recodedData <-
