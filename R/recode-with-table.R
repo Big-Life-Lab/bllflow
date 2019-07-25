@@ -37,7 +37,7 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]),]
+            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
             variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
@@ -73,7 +73,7 @@ RecWTable.default <-
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
       allVariablesDetected <-
-        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]),]
+        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
         allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
@@ -279,7 +279,7 @@ RecodeColumns <-
           )
         }
         # Populate value label
-        if (labelList[[variableBeingChecked]]$type == "cat") {
+        if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
           labelList[[variableBeingChecked]]$values <-
             c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = valueRecorded)
         }
@@ -320,15 +320,15 @@ RecodeColumns <-
 LabelData <- function(labelList, dataToLabel) {
   for (variableName in names(labelList)) {
     sjlabelled::set_label(dataToLabel[[variableName]]) <-
-      labelList[[variableName]][["label"]]
-    dataToLabel[[variableName]][["unit"]] <-
-      labelList[[variableName]][["unit"]]
-    if (labelList[[variableName]][["type"]] == "cat") {
+      labelList[[variableName]]$label
+    dataToLabel[[variableName]]$unit <-
+      labelList[[variableName]]$unit
+    if (labelList[[variableName]]$type == pkg.globals$argument.CatType) {
       if (class(dataToLabel[[variableName]]) != "factor") {
         dataToLabel[[variableName]] <- factor(dataToLabel[[variableName]])
       }
       dataToLabel[[variableName]] <-
-        sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]][["values"]])
+        sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]]$values)
     } else{
       if (class(dataToLabel[[variableName]]) == "factor") {
         dataToLabel[[variableName]] <-
