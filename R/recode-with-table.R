@@ -77,7 +77,8 @@ RecWTable.default <-
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
         allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
-      nonRecodedVariables <- allVariablesDetected[allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, pkg.globals$argument.Variables]
+      nonRecodedVariables <-
+        allVariablesDetected[allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, pkg.globals$argument.Variables]
       
       recData[[datasetName]] <-
         RecodeColumns(
@@ -91,7 +92,7 @@ RecWTable.default <-
       if (appendToData) {
         dataSource <- cbind(dataSource, recData)
       } else{
-        dataSource <- cbind(dataSource[,nonRecodedVariables],recData)
+        dataSource <- cbind(dataSource[, nonRecodedVariables], recData)
       }
     } else{
       stop(
@@ -113,6 +114,7 @@ RecodeColumns <-
            dataName,
            log,
            printNote) {
+    labelList <- list()
     # Set interval if none is present
     intervalPresent <- TRUE
     validIntervals <- c("[,]", "[,)", "(,]")
@@ -130,8 +132,15 @@ RecodeColumns <-
         variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+      firstRow <- rowsBeingChecked[1,]
       # Set factor for all recode values
-      
+      labelList[[variableBeingChecked]] <-
+        list(
+          type = as.character(firstRow[[pkg.globals$argument.ToType]]),
+          unit = as.character(firstRow[[pkg.globals$argument.Units]]),
+          label = as.character(firstRow[[pkg.globals$argument.VariableLabel]]),
+          values = c()
+        )
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.From])
       if (length(elseValue)) {
@@ -235,6 +244,44 @@ RecodeColumns <-
           valueRecorded <-
             dataSource[validRowIndex, dataVariableBeingChecked]
         }
+        # Record labels
+        # Verify type stays the same
+        if (labelList[[variableBeingChecked]]$type != as.character(rowBeingChecked[[pkg.globals$argument.ToType]])) {
+          stop(
+            paste(
+              variableBeingChecked,
+              "does not contain all identical",
+              pkg.globals$argument.ToType,
+              "variable cant change variable type for different values"
+            )
+          )
+        }
+        # Verify unit is identical
+        if (labelList[[variableBeingChecked]]$unit != as.character(rowBeingChecked[[pkg.globals$argument.Units]])) {
+          stop(
+            paste(
+              variableBeingChecked,
+              "does not contain all identical",
+              pkg.globals$argument.Units,
+              "variable cant change unit type for different values"
+            )
+          )
+        }
+        # Verify variable label is identical
+        if (labelList[[variableBeingChecked]]$label != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
+          stop(
+            paste(
+              variableBeingChecked,
+              "does not contain all identical",
+              pkg.globals$argument.VariableLabel,
+              "variable cant change variableLabel for different values"
+            )
+          )
+        }
+        # Populate value label
+        labelList[[variableBeingChecked]]$values <-
+          c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = fromValues[[1]])
+        
         
         recodedData[validRowIndex, variableBeingChecked] <-
           valueRecorded
@@ -262,8 +309,36 @@ RecodeColumns <-
     }
     recodedData <- droplevels(recodedData)
     
+    # Populate data Labels
+    recodedData <-
+      LabelData(labelList = labelList, dataToLabel = recodedData)
+    
     return(recodedData)
     }
+
+LabelData <- function(labelList, dataToLabel) {
+  for (variableName in names(labelList)) {
+    sjlabelled::set_label(dataToLabel[[variableName]]) <-
+      labelList[[variableName]][["label"]]
+    dataToLabel[[variableName]][["unit"]] <-
+      labelList[[variableName]][["unit"]]
+    if (labelList[[variableName]][["type"]] == "cat") {
+      if (class(dataToLabel[[variableName]]) != "factor") {
+        dataToLabel[[variableName]] <- factor(dataToLabel[[variableName]])
+      }
+      dataToLabel[[variableName]] <-
+        sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]][["values"]])
+    } else{
+      if (class(dataToLabel[[variableName]]) == "factor") {
+        dataToLabel[[variableName]] <-
+          as.numeric(levels(dataToLabel[[variableName]])[dataToLabel[[variableName]]])
+      }
+    }
+  }
+  
+  return(dataToLabel)
+}
+
 
 CompareValueBasedOnInterval <-
   function(leftBoundary,
