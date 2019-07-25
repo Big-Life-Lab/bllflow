@@ -37,10 +37,10 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]), ]
+            variableDetails[grepl(dataName , variableDetails[["databaseStart"]]),]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
           
           # ---- Step 4A: Recode the variables
           recData[[dataName]] <-
@@ -73,10 +73,10 @@ RecWTable.default <-
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
       allVariablesDetected <-
-        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]), ]
+        variableDetails[grepl(datasetName , variableDetails[["databaseStart"]]),]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
-        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
       nonRecodedVariables <-
         allVariablesDetected[allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, pkg.globals$argument.Variables]
       
@@ -129,10 +129,10 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
-      firstRow <- rowsBeingChecked[1,]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+      firstRow <- rowsBeingChecked[1, ]
       # Set factor for all recode values
       labelList[[variableBeingChecked]] <-
         list(
@@ -147,7 +147,7 @@ RecodeColumns <-
         elseValue <- NA
       }
       rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       recodedData[variableBeingChecked] <- elseValue
       levels(recodedData[[variableBeingChecked]]) <-
         c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
@@ -159,7 +159,7 @@ RecodeColumns <-
       logTable$From <- NA
       logTable$rowsRecoded <- NA
       for (row in 1:nrow(rowsBeingChecked)) {
-        rowBeingChecked <- rowsBeingChecked[row,]
+        rowBeingChecked <- rowsBeingChecked[row, ]
         # If cat go check for label and obtain it
         
         # regardless obtain unit and attach
@@ -279,9 +279,10 @@ RecodeColumns <-
           )
         }
         # Populate value label
-        labelList[[variableBeingChecked]]$values <-
-          c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = valueRecorded)
-        
+        if (labelList[[variableBeingChecked]]$type == "cat") {
+          labelList[[variableBeingChecked]]$values <-
+            c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = valueRecorded)
+        }
         
         recodedData[validRowIndex, variableBeingChecked] <-
           valueRecorded
