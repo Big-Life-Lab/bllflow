@@ -22,7 +22,7 @@ pkg.globals$argument.CatValue <- "RecTo"
 pkg.globals$argument.Notes <- "Notes"
 pkg.globals$argument.ToType <- "ToType"
 pkg.globals$argument.Units <- "units"
-pkg.globals$argument.VariableLabel <- "variableLabel"
+pkg.globals$argument.VariableLabel <- "variableStartLabel"
 pkg.globals$argument.CatLabelLong <- "catLabelLong"
 pkg.globals$argument.CatType <- "cat"
 

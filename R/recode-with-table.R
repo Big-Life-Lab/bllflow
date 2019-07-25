@@ -27,7 +27,6 @@ RecWTable.default <-
            printNote = FALSE) {
     recData <- list()
     # ---- Step 1: Detemine if the passed data is a list or single database
-    
     if (class(dataSource) == "list" &&
         length(datasetName) == length(dataSource)) {
       for (dataName in datasetName) {
@@ -78,9 +77,9 @@ RecWTable.default <-
       variablesToProcess <-
         allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
       nonRecodedVariables <-
-        allVariablesDetected[allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, pkg.globals$argument.Variables]
+        as.character(allVariablesDetected[as.character(allVariablesDetected[[pkg.globals$argument.Variables]]) %in% tmpDataVariableNames, pkg.globals$argument.Variables])
       
-      recData[[datasetName]] <-
+      recData <-
         RecodeColumns(
           dataSource = dataSource,
           variablesToProcess = variablesToProcess,
@@ -257,7 +256,7 @@ RecodeColumns <-
           )
         }
         # Verify unit is identical
-        if (labelList[[variableBeingChecked]]$unit != as.character(rowBeingChecked[[pkg.globals$argument.Units]])) {
+        if (!isEqual(labelList[[variableBeingChecked]]$unit, as.character(rowBeingChecked[[pkg.globals$argument.Units]]))) {
           stop(
             paste(
               variableBeingChecked,
@@ -280,10 +279,12 @@ RecodeColumns <-
         }
         # Populate value label
         if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
-          labelList[[variableBeingChecked]]$values <-
-            c(labelList[[variableBeingChecked]]$values, as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]]) = valueRecorded)
+          labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <- valueRecorded
+            
         }
-        
+        if (variableBeingChecked == "HUIDHSI"){
+          print("asd")
+        }
         recodedData[validRowIndex, variableBeingChecked] <-
           valueRecorded
         
@@ -319,10 +320,8 @@ RecodeColumns <-
 
 LabelData <- function(labelList, dataToLabel) {
   for (variableName in names(labelList)) {
-    sjlabelled::set_label(dataToLabel[[variableName]]) <-
-      labelList[[variableName]]$label
-    dataToLabel[[variableName]]$unit <-
-      labelList[[variableName]]$unit
+    #dataToLabel[[variableName]]$unit <-
+     # labelList[[variableName]]$unit
     if (labelList[[variableName]]$type == pkg.globals$argument.CatType) {
       if (class(dataToLabel[[variableName]]) != "factor") {
         dataToLabel[[variableName]] <- factor(dataToLabel[[variableName]])
@@ -335,6 +334,8 @@ LabelData <- function(labelList, dataToLabel) {
           as.numeric(levels(dataToLabel[[variableName]])[dataToLabel[[variableName]]])
       }
     }
+    sjlabelled::set_label(dataToLabel[[variableName]]) <-
+      labelList[[variableName]]$label
   }
   
   return(dataToLabel)
