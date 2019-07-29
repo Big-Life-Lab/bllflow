@@ -23,7 +23,9 @@ pkg.globals$argument.Notes <- "Notes"
 pkg.globals$argument.ToType <- "ToType"
 pkg.globals$argument.Units <- "units"
 pkg.globals$argument.VariableLabel <- "variableStartLabel"
+pkg.globals$argument.VariableLabelShort <- "variableStartShortLabel"
 pkg.globals$argument.CatLabelLong <- "catLabelLong"
+pkg.globals$argument.CatLabel <- "catLabel"
 pkg.globals$argument.CatType <- "cat"
 
 # DDI object names

@@ -137,8 +137,10 @@ RecodeColumns <-
         list(
           type = as.character(firstRow[[pkg.globals$argument.ToType]]),
           unit = as.character(firstRow[[pkg.globals$argument.Units]]),
-          label = as.character(firstRow[[pkg.globals$argument.VariableLabel]]),
-          values = c()
+          labelLong = as.character(firstRow[[pkg.globals$argument.VariableLabel]]),
+          label = as.character(firstRow[[pkg.globals$argument.VariableLabelShort]]),
+          values = c(),
+          valuesLong = c()
         )
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.From])
@@ -279,8 +281,8 @@ RecodeColumns <-
         }
         # Populate value label
         if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
-          labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <- valueRecorded
-            
+          labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabel]])]] <- valueRecorded
+          labelList[[variableBeingChecked]]$valuesLong[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <- valueRecorded  
         }
         
         recodedData[validRowIndex, variableBeingChecked] <-
@@ -317,14 +319,13 @@ RecodeColumns <-
 
 LabelData <- function(labelList, dataToLabel) {
   for (variableName in names(labelList)) {
-    #dataToLabel[[variableName]]$unit <-
-     # labelList[[variableName]]$unit
     if (labelList[[variableName]]$type == pkg.globals$argument.CatType) {
       if (class(dataToLabel[[variableName]]) != "factor") {
         dataToLabel[[variableName]] <- factor(dataToLabel[[variableName]])
       }
       dataToLabel[[variableName]] <-
         sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]]$values)
+      attr(dataToLabel[[variableName]],"labelsLong") <- labelList[[variableName]]$valuesLong
     } else{
       if (class(dataToLabel[[variableName]]) == "factor") {
         dataToLabel[[variableName]] <-
@@ -333,6 +334,8 @@ LabelData <- function(labelList, dataToLabel) {
     }
     sjlabelled::set_label(dataToLabel[[variableName]]) <-
       labelList[[variableName]]$label
+    attr(dataToLabel[[variableName]],"unit") <- labelList[[variableName]]$unit
+    attr(dataToLabel[[variableName]],"labelLong") <- labelList[[variableName]]$labelLong
   }
   
   return(dataToLabel)
