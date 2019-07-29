@@ -79,7 +79,7 @@ RecWTable.default <-
       variablesToProcess <-
         allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
       nonRecodedVariables <-
-        as.character(allVariablesDetected[as.character(allVariablesDetected[[pkg.globals$argument.Variables]]) %in% tmpDataVariableNames, pkg.globals$argument.Variables])
+        unique(as.character(allVariablesDetected[as.character(allVariablesDetected[[pkg.globals$argument.Variables]]) %in% tmpDataVariableNames, pkg.globals$argument.Variables]))
       
       recData <-
         RecodeColumns(
@@ -89,7 +89,6 @@ RecWTable.default <-
           log = log,
           printNote = printNote
         )
-      
       if (appendNonDBColumns) {
         missedVariables <-
           allPossibleVarNames[!allPossibleVarNames %in% unique(as.character(allVariablesDetected[, pkg.globals$argument.Variables]))]
@@ -285,7 +284,10 @@ RecodeColumns <-
               variableBeingChecked,
               "does not contain all identical",
               pkg.globals$argument.VariableLabel,
-              "variable cant change variableLabel for different values"
+              "variable cant change variableLabel for different values. VAL1:",
+              labelList[[variableBeingChecked]]$labelLong,
+              "VAL2:",
+              as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])
             )
           )
         }
