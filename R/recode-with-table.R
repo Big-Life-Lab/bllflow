@@ -279,7 +279,7 @@ RecodeColumns <-
           )
         }
         # Verify variable label is identical
-        if (labelList[[variableBeingChecked]]$label != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
+        if (labelList[[variableBeingChecked]]$labelLong != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
           stop(
             paste(
               variableBeingChecked,
