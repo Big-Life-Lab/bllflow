@@ -24,7 +24,8 @@ RecWTable.default <-
            elseValue = NA,
            appendToData = TRUE,
            log = FALSE,
-           printNote = FALSE) {
+           printNote = FALSE,
+           appendNonDBColumns = FALSE) {
     recData <- list()
     # ---- Step 1: Detemine if the passed data is a list or single database
     if (class(dataSource) == "list" &&
@@ -71,6 +72,7 @@ RecWTable.default <-
       
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
+      allPossibleVarNames <- unique(as.character(variableDetails[,pkg.globals$argument.Variables]))
       allVariablesDetected <-
         variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
       tmpDataVariableNames <- colnames(dataSource)
@@ -87,6 +89,14 @@ RecWTable.default <-
           log = log,
           printNote = printNote
         )
+      
+      if (appendNonDBColumns) {
+        missedVariables <-
+          allPossibleVarNames[!allPossibleVarNames %in% unique(as.character(allVariablesDetected[, pkg.globals$argument.Variables]))]
+        for (missedVariableName in missedVariables) {
+          recData[[missedVariableName]] <- NA
+        }
+      }
       
       if (appendToData) {
         dataSource <- cbind(dataSource, recData)
