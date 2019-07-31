@@ -73,7 +73,8 @@ RecWTable.default <-
       
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
-      allPossibleVarNames <- unique(as.character(variableDetails[,pkg.globals$argument.Variables]))
+      allPossibleVarNames <-
+        unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
       allVariablesDetected <-
         variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
       tmpDataVariableNames <- colnames(dataSource)
@@ -115,16 +116,70 @@ RecWTable.default <-
     
     return(dataSource)
   }
+#' Get Data Variable Name
+#'
+#' Retrieves the name of the column inside dataSource to use for calculations
+#'
+#' @param dataName name of the database being checked
+#' @param rowBeingChecked the row from variable details that contains information on this variables
+#' @param variableBeingChecked the name of the recoded variable
+#'
+#' @return the dataSource equivalant of variableBeingChecked
+GetDataVariableName <-
+  function(dataName,data,
+           rowBeingChecked,
+           variableBeingChecked) {
+    dataVariableBeingChecked <- character()
+    varStartNames <-
+      as.character(rowBeingChecked[[pkg.globals$argument.VariableStart]])
+    
+    if (grepl(dataName, varStartNames)) {
+      varStartNamesList <- as.list(strsplit(varStartNames, ",")[[1]])
+      # Find exact var Name
+      for (varName in varStartNamesList) {
+        if (grepl(dataName, varName)) {
+          # seperate dataname from the var name
+          dataVariableBeingChecked <-
+            as.list(strsplit(varName, "::")[[1]])[[2]]
+        }
+      }
+    } else if (grepl("\\[", varStartNames)) {
+      dataVariableBeingChecked <-
+        stringr::str_match(varStartNames, "\\[(.*?)\\]")[, 2]
+    } else{
+      stop(
+        paste(
+          "The row
+          ",
+          row,
+          "for the variable",
+          variableBeingChecked,
+          "
+          Does not contain the database being checked(",
+          dataName,
+          ") in its variable start the default is also missing.
+          Please double check if this variable should have this",
+          dataName,
+          "included in its databaseStart"
+          )
+        )
+    }
+    if (is.null(data[[dataVariableBeingChecked]])) {
+      stop(paste("Data",dataName,"does not contain the variable",dataVariableBeingChecked))
+    }
+    
+    return(dataVariableBeingChecked)
+  }
 
 #' RecodeColumns
 #'
 #' Recodes columns from passed row returns just table with those columns and same rows as the dataSource
-#' 
+#'
 #' @param dataSource The source database
 #' @param variablesToProcess rows from variable details that are applicable to this DB
 #' @param log The option of printing log
 #' @param printNote the option of printing the note columns
-#' 
+#'
 #' @return Returns recoded and labeled data
 RecodeColumns <-
   function(dataSource,
@@ -162,173 +217,155 @@ RecodeColumns <-
           valuesLong = c()
         )
       elseValue <-
-        as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.From])
-      if (length(elseValue)) {
-        elseValue <- NA
-      }
+        as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
       rowsBeingChecked <-
         rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-      recodedData[variableBeingChecked] <- elseValue
-      levels(recodedData[[variableBeingChecked]]) <-
-        c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
-      
-      
-      
-      logTable <- rowsBeingChecked[, 0]
-      logTable$valueTo <- NA
-      logTable$From <- NA
-      logTable$rowsRecoded <- NA
-      for (row in 1:nrow(rowsBeingChecked)) {
-        rowBeingChecked <- rowsBeingChecked[row, ]
-        # If cat go check for label and obtain it
+      if (elseValue == "copy") {
+        dataVariableBeingChecked <-
+          GetDataVariableName(
+            dataName = dataName,
+            rowBeingChecked = firstRow,
+            variableBeingChecked = variableBeingChecked,
+            data = dataSource
+          )
+        recodedData[variableBeingChecked] <-
+          dataSource[dataVariableBeingChecked]
+      } else {
+        recodedData[variableBeingChecked] <- elseValue
+      }
+      if (nrow(rowsBeingChecked) > 0) {
+        logTable <- rowsBeingChecked[, 0]
+        logTable$valueTo <- NA
+        logTable$From <- NA
+        logTable$rowsRecoded <- NA
+        levels(recodedData[[variableBeingChecked]]) <-
+          c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
         
-        # regardless obtain unit and attach
-        
-        # find var name for this database
-        dataVariableBeingChecked <- character()
-        varStartNames <-
-          as.character(rowBeingChecked[[pkg.globals$argument.VariableStart]])
-        
-        if (grepl(dataName, varStartNames)) {
-          varStartNamesList <- as.list(strsplit(varStartNames, ",")[[1]])
-          # Find exact var Name
-          for (varName in varStartNamesList) {
-            if (grepl(dataName, varName)) {
-              # seperate dataname from the var name
-              dataVariableBeingChecked <-
-                as.list(strsplit(varName, "::")[[1]])[[2]]
-            }
-          }
-        } else if (grepl("\\[", varStartNames)) {
+        for (row in 1:nrow(rowsBeingChecked)) {
+          rowBeingChecked <- rowsBeingChecked[row, ]
+          # If cat go check for label and obtain it
+          
+          # regardless obtain unit and attach
+          
+          # find var name for this database
           dataVariableBeingChecked <-
-            stringr::str_match(varStartNames, "\\[(.*?)\\]")[, 2]
-        } else{
-          stop(
-            paste(
-              "The row
-              ",
-              row,
-              "for the variable",
-              variableBeingChecked,
-              "
-              Does not contain the database being checked(",
-              dataName,
-              ") in its variable start the default is also missing.
-              Please double check if this variable should have this",
-              dataName,
-              "included in its databaseStart"
+            GetDataVariableName(
+              dataName = dataName,
+              rowBeingChecked = rowBeingChecked,
+              variableBeingChecked = variableBeingChecked,
+              data = dataSource
+            )
+          
+          # Recode the variable
+          fromValues <-
+            strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
+          valueRecorded <-
+            as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
+          if (intervalPresent) {
+            interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
+            if (!interval %in% validIntervals) {
+              interval <- intervalDefault
+            }
+            if (fromValues[[1]] == fromValues[[2]]) {
+              interval <- "[,]"
+            }
+            validRowIndex <- CompareValueBasedOnInterval(
+              compareColumns = dataVariableBeingChecked,
+              dataSource = dataSource,
+              leftBoundary = fromValues[[1]],
+              rightBoundary = fromValues[[2]],
+              interval = interval
+            )
+          } else{
+            if (fromValues[[1]] == fromValues[[2]]) {
+              interval <- "[,]"
+            }
+            validRowIndex <- CompareValueBasedOnInterval(
+              compareColumns = dataVariableBeingChecked,
+              dataSource = dataSource,
+              leftBoundary = fromValues[[1]],
+              rightBoundary = fromValues[[2]],
+              interval = intervalDefault
+            )
+          }
+          # Start construction of dataframe for log
+          logTable[row, "valueTo"] <- valueRecorded
+          logTable[row, "From"] <-
+            as.character(rowBeingChecked[[pkg.globals$argument.From]])
+          logTable[row, "rowsRecoded"] <-
+            sum(validRowIndex, na.rm = TRUE)
+          
+          if (isEqual(valueRecorded, "copy")) {
+            valueRecorded <-
+              dataSource[validRowIndex, dataVariableBeingChecked]
+          }
+          # Record labels
+          # Verify type stays the same
+          if (labelList[[variableBeingChecked]]$type != as.character(rowBeingChecked[[pkg.globals$argument.ToType]])) {
+            stop(
+              paste(
+                variableBeingChecked,
+                "does not contain all identical",
+                pkg.globals$argument.ToType,
+                "variable cant change variable type for different values"
               )
             )
-        }
-        
-        # Recode the variable
-        fromValues <-
-          strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
-        valueRecorded <-
-          as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
-        if (intervalPresent) {
-          interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
-          if (!interval %in% validIntervals) {
-            interval <- intervalDefault
           }
-          if (fromValues[[1]] == fromValues[[2]]) {
-            interval <- "[,]"
+          # Verify unit is identical
+          if (!isEqual(labelList[[variableBeingChecked]]$unit, as.character(rowBeingChecked[[pkg.globals$argument.Units]]))) {
+            stop(
+              paste(
+                variableBeingChecked,
+                "does not contain all identical",
+                pkg.globals$argument.Units,
+                "variable cant change unit type for different values"
+              )
+            )
           }
-          validRowIndex <- CompareValueBasedOnInterval(
-            compareColumns = dataVariableBeingChecked,
-            dataSource = dataSource,
-            leftBoundary = fromValues[[1]],
-            rightBoundary = fromValues[[2]],
-            interval = interval
-          )
-        } else{
-          if (fromValues[[1]] == fromValues[[2]]) {
-            interval <- "[,]"
+          # Verify variable label is identical
+          if (labelList[[variableBeingChecked]]$labelLong != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
+            stop(
+              paste(
+                variableBeingChecked,
+                "does not contain all identical",
+                pkg.globals$argument.VariableLabel,
+                "variable cant change variableLabel for different values. VAL1:",
+                labelList[[variableBeingChecked]]$labelLong,
+                "VAL2:",
+                as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])
+              )
+            )
           }
-          validRowIndex <- CompareValueBasedOnInterval(
-            compareColumns = dataVariableBeingChecked,
-            dataSource = dataSource,
-            leftBoundary = fromValues[[1]],
-            rightBoundary = fromValues[[2]],
-            interval = intervalDefault
-          )
+          # Populate value label
+          if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
+            labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabel]])]] <-
+              valueRecorded
+            labelList[[variableBeingChecked]]$valuesLong[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <-
+              valueRecorded
+          }
+          
+          recodedData[validRowIndex, variableBeingChecked] <-
+            valueRecorded
+          if (printNote &&
+              !is.null(rowBeingChecked[[pkg.globals$argument.Notes]])) {
+            print(rowBeingChecked[[pkg.globals$argument.Notes]])
+          }
         }
-        # Start construction of dataframe for log
-        logTable[row, "valueTo"] <- valueRecorded
-        logTable[row, "From"] <-
-          as.character(rowBeingChecked[[pkg.globals$argument.From]])
-        logTable[row, "rowsRecoded"] <-
-          sum(validRowIndex, na.rm = TRUE)
-        
-        if (isEqual(valueRecorded, "copy")) {
-          valueRecorded <-
-            dataSource[validRowIndex, dataVariableBeingChecked]
-        }
-        # Record labels
-        # Verify type stays the same
-        if (labelList[[variableBeingChecked]]$type != as.character(rowBeingChecked[[pkg.globals$argument.ToType]])) {
-          stop(
+        # if log was requested print it
+        if (log) {
+          print(
             paste(
+              "The variable",
+              dataVariableBeingChecked,
+              "was recoded into",
               variableBeingChecked,
-              "does not contain all identical",
-              pkg.globals$argument.ToType,
-              "variable cant change variable type for different values"
+              "for the database",
+              dataName,
+              "the following recodes were made:"
             )
           )
+          print(logTable)
         }
-        # Verify unit is identical
-        if (!isEqual(labelList[[variableBeingChecked]]$unit, as.character(rowBeingChecked[[pkg.globals$argument.Units]]))) {
-          stop(
-            paste(
-              variableBeingChecked,
-              "does not contain all identical",
-              pkg.globals$argument.Units,
-              "variable cant change unit type for different values"
-            )
-          )
-        }
-        # Verify variable label is identical
-        if (labelList[[variableBeingChecked]]$labelLong != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
-          stop(
-            paste(
-              variableBeingChecked,
-              "does not contain all identical",
-              pkg.globals$argument.VariableLabel,
-              "variable cant change variableLabel for different values. VAL1:",
-              labelList[[variableBeingChecked]]$labelLong,
-              "VAL2:",
-              as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])
-            )
-          )
-        }
-        # Populate value label
-        if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
-          labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabel]])]] <- valueRecorded
-          labelList[[variableBeingChecked]]$valuesLong[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <- valueRecorded  
-        }
-        
-        recodedData[validRowIndex, variableBeingChecked] <-
-          valueRecorded
-        
-        if (printNote &&
-            !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
-          print(rowBeingChecked[[pkg.globals$argument.Notes]])
-        }
-      }
-      # if log was requested print it
-      if (log) {
-        print(
-          paste(
-            "The variable",
-            dataVariableBeingChecked,
-            "was recoded into",
-            variableBeingChecked,
-            "for the database",
-            dataName,
-            "the following recodes were made:"
-          )
-        )
-        print(logTable)
       }
     }
     
@@ -337,15 +374,15 @@ RecodeColumns <-
       LabelData(labelList = labelList, dataToLabel = recodedData)
     
     return(recodedData)
-    }
+  }
 
 #' LabelData
-#' 
+#'
 #' Attaches labels to the DataToLabel to preserve metadata
-#' 
+#'
 #' @param labelList the label list object that contains extracted labels from variable details
 #' @param dataToLabel The data that is to be labeled
-#' 
+#'
 #' @return Returns labeled data
 LabelData <- function(labelList, dataToLabel) {
   for (variableName in names(labelList)) {
@@ -355,7 +392,8 @@ LabelData <- function(labelList, dataToLabel) {
       }
       dataToLabel[[variableName]] <-
         sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]]$values)
-      attr(dataToLabel[[variableName]],"labelsLong") <- labelList[[variableName]]$valuesLong
+      attr(dataToLabel[[variableName]], "labelsLong") <-
+        labelList[[variableName]]$valuesLong
     } else{
       if (class(dataToLabel[[variableName]]) == "factor") {
         dataToLabel[[variableName]] <-
@@ -364,23 +402,25 @@ LabelData <- function(labelList, dataToLabel) {
     }
     sjlabelled::set_label(dataToLabel[[variableName]]) <-
       labelList[[variableName]]$label
-    attr(dataToLabel[[variableName]],"unit") <- labelList[[variableName]]$unit
-    attr(dataToLabel[[variableName]],"labelLong") <- labelList[[variableName]]$labelLong
+    attr(dataToLabel[[variableName]], "unit") <-
+      labelList[[variableName]]$unit
+    attr(dataToLabel[[variableName]], "labelLong") <-
+      labelList[[variableName]]$labelLong
   }
   
   return(dataToLabel)
 }
 
 #' Compare Value Based On Interval
-#' 
+#'
 #' Compare values on the scientific notation interval
-#' 
-#' @param leftBoundary the min value 
+#'
+#' @param leftBoundary the min value
 #' @param rightBoundary the max value
 #' @param dataSource the data that contains values being compared
 #' @param compareColumns The columns inside dataSource being checked
 #' @param interval The scientific notation interval
-#' 
+#'
 #' @return a boolean vector containing true for rows where the comparison is true
 CompareValueBasedOnInterval <-
   function(leftBoundary,
