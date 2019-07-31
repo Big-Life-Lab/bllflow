@@ -13,6 +13,7 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @param appendToData the option of appending recoded data to the dataSource
 #' @param log the option to print the log of data being replaced
 #' @param printNote the option to print any content inside the Note column of the variable details
+#' @param appendNonDBColumns The option to also append columns that dont contain the datasetName in databaseStart
 #'
 #' @return a dataframe that is recoded in accordance of variable details
 #'
@@ -115,7 +116,16 @@ RecWTable.default <-
     return(dataSource)
   }
 
-# Recodes columns from passed row returns just table with those columns and same rows as the dataSource
+#' RecodeColumns
+#'
+#' Recodes columns from passed row returns just table with those columns and same rows as the dataSource
+#' 
+#' @param dataSource The source database
+#' @param variablesToProcess rows from variable details that are applicable to this DB
+#' @param log The option of printing log
+#' @param printNote the option of printing the note columns
+#' 
+#' @return Returns recoded and labeled data
 RecodeColumns <-
   function(dataSource,
            variablesToProcess,
@@ -329,6 +339,14 @@ RecodeColumns <-
     return(recodedData)
     }
 
+#' LabelData
+#' 
+#' Attaches labels to the DataToLabel to preserve metadata
+#' 
+#' @param labelList the label list object that contains extracted labels from variable details
+#' @param dataToLabel The data that is to be labeled
+#' 
+#' @return Returns labeled data
 LabelData <- function(labelList, dataToLabel) {
   for (variableName in names(labelList)) {
     if (labelList[[variableName]]$type == pkg.globals$argument.CatType) {
@@ -353,7 +371,17 @@ LabelData <- function(labelList, dataToLabel) {
   return(dataToLabel)
 }
 
-
+#' Compare Value Based On Interval
+#' 
+#' Compare values on the scientific notation interval
+#' 
+#' @param leftBoundary the min value 
+#' @param rightBoundary the max value
+#' @param dataSource the data that contains values being compared
+#' @param compareColumns The columns inside dataSource being checked
+#' @param interval The scientific notation interval
+#' 
+#' @return a boolean vector containing true for rows where the comparison is true
 CompareValueBasedOnInterval <-
   function(leftBoundary,
            rightBoundary,
