@@ -259,8 +259,7 @@ RecodeColumns <-
         )
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
-      rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
+      elseRow <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       if (length(elseValue) > 0) {
         if (isEqual(elseValue, "copy")) {
           dataVariableBeingChecked <-
@@ -274,10 +273,18 @@ RecodeColumns <-
             dataSource[dataVariableBeingChecked]
         } else {
           recodedData[variableBeingChecked] <- elseValue
+          if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
+            labelList[[variableBeingChecked]]$values[[as.character(elseRow[[pkg.globals$argument.CatLabel]])]] <-
+              elseValue
+            labelList[[variableBeingChecked]]$valuesLong[[as.character(elseRow[[pkg.globals$argument.CatLabelLong]])]] <-
+              elseValue
+          }
         }
       } else{
         recodedData[variableBeingChecked] <- elseDefault
       }
+      rowsBeingChecked <-
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
       if (nrow(rowsBeingChecked) > 0) {
         logTable <- rowsBeingChecked[, 0]
         logTable$valueTo <- NA
