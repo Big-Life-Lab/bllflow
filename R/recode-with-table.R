@@ -407,7 +407,7 @@ RecodeColumns <-
           recodedData[validRowIndex, variableBeingChecked] <-
             valueRecorded
           if (printNote &&
-              !is.null(rowBeingChecked[[pkg.globals$argument.Notes]])) {
+              !is.null(as.character(rowBeingChecked[[pkg.globals$argument.Notes]]))) {
             print(as.character(rowBeingChecked[[pkg.globals$argument.Notes]]))
           }
         }
