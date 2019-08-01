@@ -409,7 +409,7 @@ RecodeColumns <-
             valueRecorded
           if (printNote &&
               !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) && !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]],"")) {
-            print(as.character(rowBeingChecked[[pkg.globals$argument.Notes]]))
+            print(paste("NOTE:",as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
           }
         }
         # if log was requested print it
