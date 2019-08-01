@@ -260,7 +260,7 @@ RecodeColumns <-
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
       elseRow <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-      if (length(elseValue) > 0) {
+      if (length(elseValue) == 1) {
         if (isEqual(elseValue, "copy")) {
           dataVariableBeingChecked <-
             GetDataVariableName(
@@ -280,7 +280,10 @@ RecodeColumns <-
               elseValue
           }
         }
-      } else{
+      }else if (length(elseValue)>1) {
+        stop(paste(variableBeingChecked, " contains", length(elseValue), "rows of else only one else value is allowed"))
+      } 
+      else{
         recodedData[variableBeingChecked] <- elseDefault
       }
       rowsBeingChecked <-
