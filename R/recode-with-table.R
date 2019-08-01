@@ -1,7 +1,3 @@
-#' @export
-RecWTable <- function(dataSource = NULL, ...) {
-  UseMethod("RecWTable", dataSource)
-}
 #' @title Recode with Table
 #'
 #' @name RecWTable
@@ -9,6 +5,38 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table. Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function.
 #'
 #' @seealso \code{sjmisc::rec()}
+#' @export
+RecWTable <- function(dataSource = NULL, ...) {
+  UseMethod("RecWTable", dataSource)
+}
+
+#' @title Recode with Table for dataSource and varDetails
+#'
+#' @name RecWTable.default
+#' 
+#' @details The \code{variableDetails} dataframe has the following variables:
+#'  \describe{
+#'  \item{variable}{name of new (mutated) variable that is recoded}
+#'  \item{databaseStart}{name of dataframe with original variables (\code{variableStart}) to be recoded}
+#'  \item{variableStart}{name of variable to be recoded}
+#'  \ifem{fromType}{variable type of \code{variableStart}. \code{cat} = categorical or factor variable; \code{cont} = continuous variable (real number or integer)}
+#'  \item{catlabel}{label for each category of \code{variable}}
+#'  \item{...  add remaining variables (headers) here}
+#'  }
+#'
+#'  Each row in \code{variableDetails} comprises one category in a newly transformed variable. The rules for each category the new variable are a string in \code{recFrom} and value in \code{recTo}. These recode pairs are the same syntax as \code{sjmisc::rec()}, except in \code{sjmisc::rec()} the pairs are a string for the function attibute \code{rec =}, separated by '\code{=}'. For example in \code{RecWTable} \code{variableDetails$recFrom = 2; variableDetails$recTo = 4} is the same as \code{sjmisc::rec(rec = "2=4")}.
+#'
+#'  the pairs are obtained from the RecFrom and RecTo columns
+#'   \describe{
+#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv}
+#'     \item{multiple values}{multiple old values that should be recoded into a new single value may be separated with comma, e.g. \code{recFrom = "1,2"; recTo = 1}}
+#'     \item{value range}{a value range is indicated by a colon, e.g. \code{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1}
+#'     \item{value range for doubles}{for double vectors (with fractional part), all values within the specified range are recoded; e.g. \code{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1, but 2.55 would not be recoded (since it's not included in the specified range)}
+#'     \item{\code{"min"} and \code{"max"}}{minimum and maximum values are indicates by \emph{min} (or \emph{lo}) and \emph{max} (or \emph{hi}), e.g. \code{recFrom = "min:4"; recTo = 1} (recodes all values from minimum values of \code{x} to 4 into 1)}
+#'     \item{\code{"else"}}{all other values, which have not been specified yet, are indicated by \emph{else}, e.g. \code{recFrom = "else"; recTo = NA} (recode all other values (not specified in other rows) to "NA")}
+#'     \item{\code{"copy"}}{the \code{"else"}-token can be combined with \emph{copy}, indicating that all remaining, not yet recoded values should stay the same (are copied from the original value), e.g. \code{recFrom = "else"; recTo = "copy"}
+#'     \item{\code{NA}'s}{\code{\link{NA}} values are allowed both as old and new value, e.g. \code{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"} (recodes all NA into 1, and all values from 3 to 5 into NA in the new variable)}
+#'
 #'
 #' @param dataSource A dataframe containing the variables to be recoded.
 #' @param variableDetails A dataframe containing the specifications (rules) for recoding.
@@ -20,8 +48,6 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`.
 #'
 #' @return a dataframe that is recoded according to rules in variableDetails.
-#'
-#' @export
 RecWTable.default <-
   function(dataSource,
            variableDetails,
@@ -123,29 +149,7 @@ RecWTable.default <-
     return(dataSource)
   }
 
-#' @details The \code{variableDetails} dataframe has the following variables:
-#'  \describe{
-#'  \item{variable}{name of new (mutated) variable that is recoded}
-#'  \item{databaseStart}{name of dataframe with original variables (\code{variableStart}) to be recoded}
-#'  \item{variableStart}{name of variable to be recoded}
-#'  \ifem{fromType}{variable type of \code{variableStart}. \code{cat} = categorical or factor variable; \code{cont} = continuous variable (real number or integer)}
-#'  \item{catlabel}{label for each category of \code{variable}}
-#'  \item{...  add remaining variables (headers) here}
-#'  }
-#'
-#'  Each row in \code{variableDetails} comprises one category in a newly transformed variable. The rules for each category the new variable are a string in \code{recFrom} and value in \code{recTo}. These recode pairs are the same syntax as \code{sjmisc::rec()}, except in \code{sjmisc::rec()} the pairs are a string for the function attibute \code{rec =}, separated by '\code{=}'. For example in \code{RecWTable} \code{variableDetails$recFrom = 2; variableDetails$recTo = 4} is the same as \code{sjmisc::rec(rec = "2=4")}.
-#'
-#'  the pairs are obtained from the RecFrom and RecTo columns
-#'   \describe{
-#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv}
-#'     \item{multiple values}{multiple old values that should be recoded into a new single value may be separated with comma, e.g. \code{recFrom = "1,2"; recTo = 1}}
-#'     \item{value range}{a value range is indicated by a colon, e.g. \code{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1}
-#'     \item{value range for doubles}{for double vectors (with fractional part), all values within the specified range are recoded; e.g. \code{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1, but 2.55 would not be recoded (since it's not included in the specified range)}
-#'     \item{\code{"min"} and \code{"max"}}{minimum and maximum values are indicates by \emph{min} (or \emph{lo}) and \emph{max} (or \emph{hi}), e.g. \code{recFrom = "min:4"; recTo = 1} (recodes all values from minimum values of \code{x} to 4 into 1)}
-#'     \item{\code{"else"}}{all other values, which have not been specified yet, are indicated by \emph{else}, e.g. \code{recFrom = "else"; recTo = NA} (recode all other values (not specified in other rows) to "NA")}
-#'     \item{\code{"copy"}}{the \code{"else"}-token can be combined with \emph{copy}, indicating that all remaining, not yet recoded values should stay the same (are copied from the original value), e.g. \code{recFrom = "else"; recTo = "copy"}
-#'     \item{\code{NA}'s}{\code{\link{NA}} values are allowed both as old and new value, e.g. \code{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"} (recodes all NA into 1, and all values from 3 to 5 into NA in the new variable)}
-#'
+
 #' @title Get Data Variable Name
 #'
 #' @name GetDataVariableName
