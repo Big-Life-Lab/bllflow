@@ -3,21 +3,21 @@ RecWTable <- function(dataSource = NULL, ...) {
   UseMethod("RecWTable", dataSource)
 }
 #' @title Recode with Table
-#' 
+#'
 #' @name RecWTable
 #'
-#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table. Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function. 
-#' 
-#' @seealso \code{sjmisc::rec()} 
+#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table. Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function.
+#'
+#' @seealso \code{sjmisc::rec()}
 #'
 #' @param dataSource A dataframe containing the variables to be recoded.
 #' @param variableDetails A dataframe containing the specifications (rules) for recoding.
 #' @param datasetName String, the name of the dataset containing the variables to be recoded.
 #' @param elseValue Value (string, number, integer, logical or NA) that is used to replace any values that are outside the specified ranges (no rules for recoding).
 #' @param appendToData Logical, if \code{TRUE} (default), recoded variables will be appended to the dataSource.
-#' @param log Logical, if \code{FALSE} (default), a log of recoding will not be printed. 
+#' @param log Logical, if \code{FALSE} (default), a log of recoding will not be printed.
 #' @param printNote Logical, if \code{FALSE} (default), will not print the content inside the `Note`` column of the variable beinng recoded.
-#' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`. 
+#' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`.
 #'
 #' @return a dataframe that is recoded according to rules in variableDetails.
 #'
@@ -42,10 +42,10 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
+            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
+            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
           
           # ---- Step 4A: Recode the variables
           recData[[dataName]] <-
@@ -54,7 +54,8 @@ RecWTable.default <-
               variablesToProcess = variablesToProcess,
               dataName = dataName,
               log = log,
-              printNote = printNote
+              printNote = printNote,
+              elseDefault = elseValue
             )
           # ---- Step 5A: Create the output data
           if (appendToData) {
@@ -80,10 +81,10 @@ RecWTable.default <-
       allPossibleVarNames <-
         unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
       allVariablesDetected <-
-        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
+        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
       tmpDataVariableNames <- colnames(dataSource)
       variablesToProcess <-
-        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
+        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
       nonRecodedVariables <-
         unique(as.character(allVariablesDetected[as.character(allVariablesDetected[[pkg.globals$argument.Variables]]) %in% tmpDataVariableNames, pkg.globals$argument.Variables]))
       
@@ -93,7 +94,8 @@ RecWTable.default <-
           variablesToProcess = variablesToProcess,
           dataName = datasetName,
           log = log,
-          printNote = printNote
+          printNote = printNote,
+          elseDefault = elseValue
         )
       if (appendNonDBColumns) {
         missedVariables <-
@@ -130,12 +132,12 @@ RecWTable.default <-
 #'  \item{catlabel}{label for each category of \code{variable}}
 #'  \item{...  add remaining variables (headers) here}
 #'  }
-#'  
+#'
 #'  Each row in \code{variableDetails} comprises one category in a newly transformed variable. The rules for each category the new variable are a string in \code{recFrom} and value in \code{recTo}. These recode pairs are the same syntax as \code{sjmisc::rec()}, except in \code{sjmisc::rec()} the pairs are a string for the function attibute \code{rec =}, separated by '\code{=}'. For example in \code{RecWTable} \code{variableDetails$recFrom = 2; variableDetails$recTo = 4} is the same as \code{sjmisc::rec(rec = "2=4")}.
-#'  
+#'
 #'  the pairs are obtained from the RecFrom and RecTo columns
 #'   \describe{
-#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv} 
+#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv}
 #'     \item{multiple values}{multiple old values that should be recoded into a new single value may be separated with comma, e.g. \code{recFrom = "1,2"; recTo = 1}}
 #'     \item{value range}{a value range is indicated by a colon, e.g. \code{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1}
 #'     \item{value range for doubles}{for double vectors (with fractional part), all values within the specified range are recoded; e.g. \code{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1, but 2.55 would not be recoded (since it's not included in the specified range)}
@@ -143,11 +145,11 @@ RecWTable.default <-
 #'     \item{\code{"else"}}{all other values, which have not been specified yet, are indicated by \emph{else}, e.g. \code{recFrom = "else"; recTo = NA} (recode all other values (not specified in other rows) to "NA")}
 #'     \item{\code{"copy"}}{the \code{"else"}-token can be combined with \emph{copy}, indicating that all remaining, not yet recoded values should stay the same (are copied from the original value), e.g. \code{recFrom = "else"; recTo = "copy"}
 #'     \item{\code{NA}'s}{\code{\link{NA}} values are allowed both as old and new value, e.g. \code{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"} (recodes all NA into 1, and all values from 3 to 5 into NA in the new variable)}
-#'  
+#'
 #' @title Get Data Variable Name
-#' 
+#'
 #' @name GetDataVariableName
-#' 
+#'
 #' @description Retrieves the name of the column inside dataSource to use for calculations
 #'
 #' @param dataName name of the database being checked
@@ -156,7 +158,8 @@ RecWTable.default <-
 #'
 #' @return the dataSource equivalant of variableBeingChecked
 GetDataVariableName <-
-  function(dataName,data,
+  function(dataName,
+           data,
            rowBeingChecked,
            variableBeingChecked) {
     dataVariableBeingChecked <- character()
@@ -195,7 +198,14 @@ GetDataVariableName <-
         )
     }
     if (is.null(data[[dataVariableBeingChecked]])) {
-      stop(paste("Data",dataName,"does not contain the variable",dataVariableBeingChecked))
+      stop(
+        paste(
+          "Data",
+          dataName,
+          "does not contain the variable",
+          dataVariableBeingChecked
+        )
+      )
     }
     
     return(dataVariableBeingChecked)
@@ -216,7 +226,8 @@ RecodeColumns <-
            variablesToProcess,
            dataName,
            log,
-           printNote) {
+           printNote,
+           elseDefault) {
     labelList <- list()
     # Set interval if none is present
     intervalPresent <- TRUE
@@ -232,10 +243,10 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      firstRow <- rowsBeingChecked[1, ]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+      firstRow <- rowsBeingChecked[1,]
       # Set factor for all recode values
       labelList[[variableBeingChecked]] <-
         list(
@@ -249,19 +260,23 @@ RecodeColumns <-
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
       rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-      if (isEqual(elseValue,"copy")) {
-        dataVariableBeingChecked <-
-          GetDataVariableName(
-            dataName = dataName,
-            rowBeingChecked = firstRow,
-            variableBeingChecked = variableBeingChecked,
-            data = dataSource
-          )
-        recodedData[variableBeingChecked] <-
-          dataSource[dataVariableBeingChecked]
-      } else {
-        recodedData[variableBeingChecked] <- elseValue
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
+      if (length(elseValue) > 0) {
+        if (isEqual(elseValue, "copy")) {
+          dataVariableBeingChecked <-
+            GetDataVariableName(
+              dataName = dataName,
+              rowBeingChecked = firstRow,
+              variableBeingChecked = variableBeingChecked,
+              data = dataSource
+            )
+          recodedData[variableBeingChecked] <-
+            dataSource[dataVariableBeingChecked]
+        } else {
+          recodedData[variableBeingChecked] <- elseValue
+        }
+      } else{
+        recodedData[variableBeingChecked] <- elseDefault
       }
       if (nrow(rowsBeingChecked) > 0) {
         logTable <- rowsBeingChecked[, 0]
@@ -272,7 +287,7 @@ RecodeColumns <-
           c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
         
         for (row in 1:nrow(rowsBeingChecked)) {
-          rowBeingChecked <- rowsBeingChecked[row, ]
+          rowBeingChecked <- rowsBeingChecked[row,]
           # If cat go check for label and obtain it
           
           # regardless obtain unit and attach
