@@ -280,6 +280,7 @@ RecodeColumns <-
               elseValue
           }
         }
+      # Catch multiple else rows
       }else if (length(elseValue)>1) {
         stop(paste(variableBeingChecked, " contains", length(elseValue), "rows of else only one else value is allowed"))
       } 
