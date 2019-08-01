@@ -408,7 +408,7 @@ RecodeColumns <-
             valueRecorded
           if (printNote &&
               !is.null(rowBeingChecked[[pkg.globals$argument.Notes]])) {
-            print(rowBeingChecked[[pkg.globals$argument.Notes]])
+            print(as.character(rowBeingChecked[[pkg.globals$argument.Notes]]))
           }
         }
         # if log was requested print it
