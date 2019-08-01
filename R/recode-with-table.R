@@ -29,7 +29,7 @@ RecWTable.default <-
            elseValue = NA,
            appendToData = TRUE,
            log = FALSE,
-           printNote = FALSE,
+           printNote = TRUE,
            appendNonDBColumns = FALSE) {
     recData <- list()
     # ---- Step 1: Detemine if the passed data is a list or single database
