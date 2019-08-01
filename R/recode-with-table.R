@@ -250,7 +250,7 @@ RecodeColumns <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
       rowsBeingChecked <-
         rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-      if (elseValue == "copy") {
+      if (isEqual(elseValue,"copy")) {
         dataVariableBeingChecked <-
           GetDataVariableName(
             dataName = dataName,
