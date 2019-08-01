@@ -2,20 +2,24 @@
 RecWTable <- function(dataSource = NULL, ...) {
   UseMethod("RecWTable", dataSource)
 }
-#' RecWTable default
+#' @title Recode with Table
+#' 
+#' @name RecWTable
 #'
-#' Recodes the values in datasource in accordance to the variable details
+#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table. Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function. 
+#' 
+#' @seealso \code{sjmisc::rec()} 
 #'
-#' @param dataSource a dataframe containing the original data thats being rewritten
-#' @param variableDetails a dataframe containing the specifications on the recoding
-#' @param datasetName the name of the dataset being transformed
-#' @param elseValue the value that is used to replace any values that are outside the specified ranges
-#' @param appendToData the option of appending recoded data to the dataSource
-#' @param log the option to print the log of data being replaced
-#' @param printNote the option to print any content inside the Note column of the variable details
-#' @param appendNonDBColumns The option to also append columns that dont contain the datasetName in databaseStart
+#' @param dataSource A dataframe containing the variables to be recoded.
+#' @param variableDetails A dataframe containing the specifications (rules) for recoding.
+#' @param datasetName String, the name of the dataset containing the variables to be recoded.
+#' @param elseValue Value (string, number, integer, logical or NA) that is used to replace any values that are outside the specified ranges (no rules for recoding).
+#' @param appendToData Logical, if \code{TRUE} (default), recoded variables will be appended to the dataSource.
+#' @param log Logical, if \code{FALSE} (default), a log of recoding will not be printed. 
+#' @param printNote Logical, if \code{FALSE} (default), will not print the content inside the `Note`` column of the variable beinng recoded.
+#' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`. 
 #'
-#' @return a dataframe that is recoded in accordance of variable details
+#' @return a dataframe that is recoded according to rules in variableDetails.
 #'
 #' @export
 RecWTable.default <-
@@ -116,9 +120,35 @@ RecWTable.default <-
     
     return(dataSource)
   }
-#' Get Data Variable Name
-#'
-#' Retrieves the name of the column inside dataSource to use for calculations
+
+#' @details The \code{variableDetails} dataframe has the following variables:
+#'  \describe{
+#'  \item{variable}{name of new (mutated) variable that is recoded}
+#'  \item{databaseStart}{name of dataframe with original variables (\code{variableStart}) to be recoded}
+#'  \item{variableStart}{name of variable to be recoded}
+#'  \ifem{fromType}{variable type of \code{variableStart}. \code{cat} = categorical or factor variable; \code{cont} = continuous variable (real number or integer)}
+#'  \item{catlabel}{label for each category of \code{variable}}
+#'  \item{...  add remaining variables (headers) here}
+#'  }
+#'  
+#'  Each row in \code{variableDetails} comprises one category in a newly transformed variable. The rules for each category the new variable are a string in \code{recFrom} and value in \code{recTo}. These recode pairs are the same syntax as \code{sjmisc::rec()}, except in \code{sjmisc::rec()} the pairs are a string for the function attibute \code{rec =}, separated by '\code{=}'. For example in \code{RecWTable} \code{variableDetails$recFrom = 2; variableDetails$recTo = 4} is the same as \code{sjmisc::rec(rec = "2=4")}.
+#'  
+#'  the pairs are obtained from the RecFrom and RecTo columns
+#'   \describe{
+#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv} 
+#'     \item{multiple values}{multiple old values that should be recoded into a new single value may be separated with comma, e.g. \code{recFrom = "1,2"; recTo = 1}}
+#'     \item{value range}{a value range is indicated by a colon, e.g. \code{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1}
+#'     \item{value range for doubles}{for double vectors (with fractional part), all values within the specified range are recoded; e.g. \code{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1, but 2.55 would not be recoded (since it's not included in the specified range)}
+#'     \item{\code{"min"} and \code{"max"}}{minimum and maximum values are indicates by \emph{min} (or \emph{lo}) and \emph{max} (or \emph{hi}), e.g. \code{recFrom = "min:4"; recTo = 1} (recodes all values from minimum values of \code{x} to 4 into 1)}
+#'     \item{\code{"else"}}{all other values, which have not been specified yet, are indicated by \emph{else}, e.g. \code{recFrom = "else"; recTo = NA} (recode all other values (not specified in other rows) to "NA")}
+#'     \item{\code{"copy"}}{the \code{"else"}-token can be combined with \emph{copy}, indicating that all remaining, not yet recoded values should stay the same (are copied from the original value), e.g. \code{recFrom = "else"; recTo = "copy"}
+#'     \item{\code{NA}'s}{\code{\link{NA}} values are allowed both as old and new value, e.g. \code{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"} (recodes all NA into 1, and all values from 3 to 5 into NA in the new variable)}
+#'  
+#' @title Get Data Variable Name
+#' 
+#' @name GetDataVariableName
+#' 
+#' @description Retrieves the name of the column inside dataSource to use for calculations
 #'
 #' @param dataName name of the database being checked
 #' @param rowBeingChecked the row from variable details that contains information on this variables
