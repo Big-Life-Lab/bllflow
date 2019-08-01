@@ -48,6 +48,7 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`.
 #'
 #' @return a dataframe that is recoded according to rules in variableDetails.
+#' @export
 RecWTable.default <-
   function(dataSource,
            variableDetails,
