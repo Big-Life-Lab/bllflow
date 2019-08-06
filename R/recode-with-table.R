@@ -253,12 +253,12 @@ RecodeColumns <-
         rowsBeingChecked[[pkg.globals$argument.From]]
       if (length(unique(allFromValuesForVariable)) != length(allFromValuesForVariable)) {
         for (singleFrom in allFromValuesForVariable) {
-          if (sum(singleFrom %in% allFromValuesForVariable) > 1) {
+          if (sum(allFromValuesForVariable == singleFrom) > 1) {
             stop(
               paste(
                 singleFrom,
                 "was detected more then once in",
-                variablesToProcess,
+                variableBeingChecked,
                 "please make sure only one from value is being recoded"
               )
             )
