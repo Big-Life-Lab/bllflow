@@ -13,7 +13,7 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @title Recode with Table for dataSource and varDetails
 #'
 #' @name RecWTable.default
-#' 
+#'
 #' @details The \code{variableDetails} dataframe has the following variables:
 #'  \describe{
 #'  \item{variable}{name of new (mutated) variable that is recoded}
@@ -69,10 +69,10 @@ RecWTable.default <-
           # ---- Step 3A: Extract variables that match this dataSource
           
           variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
+            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
           tmpDataVariableNames <- colnames(dataSource[[dataName]])
           variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
+            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
           
           # ---- Step 4A: Recode the variables
           recData[[dataName]] <-
@@ -108,17 +108,12 @@ RecWTable.default <-
       allPossibleVarNames <-
         unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
       allVariablesDetected <-
-        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
-      tmpDataVariableNames <- colnames(dataSource)
-      variablesToProcess <-
-        allVariablesDetected[!allVariablesDetected[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames, ]
-      nonRecodedVariables <-
-        unique(as.character(allVariablesDetected[as.character(allVariablesDetected[[pkg.globals$argument.Variables]]) %in% tmpDataVariableNames, pkg.globals$argument.Variables]))
+        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
       
       recData <-
         RecodeColumns(
           dataSource = dataSource,
-          variablesToProcess = variablesToProcess,
+          variablesToProcess = allVariablesDetected,
           dataName = datasetName,
           log = log,
           printNote = printNote,
@@ -135,7 +130,7 @@ RecWTable.default <-
       if (appendToData) {
         dataSource <- cbind(dataSource, recData)
       } else{
-        dataSource <- cbind(dataSource[, nonRecodedVariables], recData)
+        dataSource <- recData
       }
     } else{
       stop(
@@ -248,10 +243,29 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
-      firstRow <- rowsBeingChecked[1,]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+      firstRow <- rowsBeingChecked[1, ]
+      
+      # Check for From column duplicates
+      allFromValuesForVariable <-
+        rowsBeingChecked[[pkg.globals$argument.From]]
+      if (length(unique(allFromValuesForVariable)) != length(allFromValuesForVariable)) {
+        for (singleFrom in allFromValuesForVariable) {
+          if (sum(singleFrom %in% allFromValuesForVariable) > 1) {
+            stop(
+              paste(
+                singleFrom,
+                "was detected more then once in",
+                variablesToProcess,
+                "please make sure only one from value is being recoded"
+              )
+            )
+          }
+        }
+      }
+      
       # Set factor for all recode values
       labelList[[variableBeingChecked]] <-
         list(
@@ -264,7 +278,8 @@ RecodeColumns <-
         )
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
-      elseRow <- rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
+      elseRow <-
+        rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
       if (length(elseValue) == 1) {
         if (isEqual(elseValue, "copy")) {
           dataVariableBeingChecked <-
@@ -285,15 +300,22 @@ RecodeColumns <-
               elseValue
           }
         }
-      # Catch multiple else rows
-      }else if (length(elseValue)>1) {
-        stop(paste(variableBeingChecked, " contains", length(elseValue), "rows of else only one else value is allowed"))
-      } 
+        # Catch multiple else rows
+      } else if (length(elseValue) > 1) {
+        stop(
+          paste(
+            variableBeingChecked,
+            " contains",
+            length(elseValue),
+            "rows of else only one else value is allowed"
+          )
+        )
+      }
       else{
         recodedData[variableBeingChecked] <- elseDefault
       }
       rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       if (nrow(rowsBeingChecked) > 0) {
         logTable <- rowsBeingChecked[, 0]
         logTable$valueTo <- NA
@@ -303,7 +325,7 @@ RecodeColumns <-
           c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
         
         for (row in 1:nrow(rowsBeingChecked)) {
-          rowBeingChecked <- rowsBeingChecked[row,]
+          rowBeingChecked <- rowsBeingChecked[row, ]
           # If cat go check for label and obtain it
           
           # regardless obtain unit and attach
@@ -408,8 +430,9 @@ RecodeColumns <-
           recodedData[validRowIndex, variableBeingChecked] <-
             valueRecorded
           if (printNote &&
-              !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) && !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]],"")) {
-            print(paste("NOTE:",as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
+              !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) &&
+              !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "")) {
+            print(paste("NOTE:", as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
           }
         }
         # if log was requested print it
