@@ -57,8 +57,8 @@ RecWTable.default <-
            appendToData = TRUE,
            log = FALSE,
            printNote = TRUE,
-           appendNonDBColumns = FALSE) {
-    recData <- list()
+           appendNonDBColumns = FALSE,
+           variables = NULL) {
     # ---- Step 1: Detemine if the passed data is a list or single database
     if (class(dataSource) == "list" &&
         length(datasetName) == length(dataSource)) {
@@ -66,32 +66,17 @@ RecWTable.default <-
         # ---- Step 2A: Verify that the passed name exists in the passed data
         
         if (!is.null(dataSource[[dataName]])) {
-          # ---- Step 3A: Extract variables that match this dataSource
-          
-          variablesToProcess <-
-            variableDetails[grepl(dataName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
-          tmpDataVariableNames <- colnames(dataSource[[dataName]])
-          variablesToProcess <-
-            variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] %in% tmpDataVariableNames,]
-          
-          # ---- Step 4A: Recode the variables
-          recData[[dataName]] <-
-            RecodeColumns(
-              dataSource = dataSource[[dataName]],
-              variablesToProcess = variablesToProcess,
-              dataName = dataName,
-              log = log,
-              printNote = printNote,
-              elseDefault = elseValue
-            )
-          # ---- Step 5A: Create the output data
-          if (appendToData) {
-            dataSource[[dataName]] <-
-              cbind(dataSource[[dataName]], recData[[dataName]])
-          } else{
-            dataSource[[dataName]] <- recData[[dataName]]
-          }
-          
+          dataSource[[dataName]] <-  RecodeCall(
+            variables = variables,
+            dataSource = dataSource[[dataName]],
+            datasetName = datasetName,
+            printNote = printNote,
+            elseValue = elseValue,
+            variableDetails = variableDetails,
+            appendToData = appendToData,
+            appendNonDBColumns = appendNonDBColumns,
+            log = log
+          )
         } else{
           stop(
             paste(
@@ -105,33 +90,17 @@ RecWTable.default <-
       
     } else if ("data.frame" %in% class(dataSource) &&
                length(datasetName) == 1) {
-      allPossibleVarNames <-
-        unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
-      allVariablesDetected <-
-        variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
-      
-      recData <-
-        RecodeColumns(
-          dataSource = dataSource,
-          variablesToProcess = allVariablesDetected,
-          dataName = datasetName,
-          log = log,
-          printNote = printNote,
-          elseDefault = elseValue
-        )
-      if (appendNonDBColumns) {
-        missedVariables <-
-          allPossibleVarNames[!allPossibleVarNames %in% unique(as.character(allVariablesDetected[, pkg.globals$argument.Variables]))]
-        for (missedVariableName in missedVariables) {
-          recData[[missedVariableName]] <- NA
-        }
-      }
-      
-      if (appendToData) {
-        dataSource <- cbind(dataSource, recData)
-      } else{
-        dataSource <- recData
-      }
+      dataSource <-  RecodeCall(
+        variables = variables,
+        dataSource = dataSource,
+        datasetName = datasetName,
+        printNote = printNote,
+        elseValue = elseValue,
+        variableDetails = variableDetails,
+        appendToData = appendToData,
+        appendNonDBColumns = appendNonDBColumns,
+        log = log
+      )
     } else{
       stop(
         paste(
@@ -145,6 +114,55 @@ RecWTable.default <-
     return(dataSource)
   }
 
+# Creates inputs and runs recode functions
+RecodeCall <-
+  function(variables,
+           dataSource,
+           datasetName,
+           printNote,
+           elseValue,
+           variableDetails,
+           appendToData ,
+           appendNonDBColumns,
+           log) {
+    if (!is.null(variables) && "data.frame" %in% class(variables)) {
+      variableDetails <-
+        UpdateVariableDetailsBasedOnVariableSheet(variableSheet = variables, variableDetails = variableDetails)
+    } else if (!is.null(variables)) {
+      variableDetails <-
+        variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+    }
+    
+    allPossibleVarNames <-
+      unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
+    allVariablesDetected <-
+      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
+    
+    recData <-
+      RecodeColumns(
+        dataSource = dataSource,
+        variablesToProcess = allVariablesDetected,
+        dataName = datasetName,
+        log = log,
+        printNote = printNote,
+        elseDefault = elseValue
+      )
+    if (appendNonDBColumns) {
+      missedVariables <-
+        allPossibleVarNames[!allPossibleVarNames %in% unique(as.character(allVariablesDetected[, pkg.globals$argument.Variables]))]
+      for (missedVariableName in missedVariables) {
+        recData[[missedVariableName]] <- NA
+      }
+    }
+    
+    if (appendToData) {
+      dataSource <- cbind(dataSource, recData)
+    } else{
+      dataSource <- recData
+    }
+    
+    return(dataSource)
+  }
 
 #' @title Get Data Variable Name
 #'
@@ -243,10 +261,10 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      firstRow <- rowsBeingChecked[1, ]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+      firstRow <- rowsBeingChecked[1,]
       
       # Check for From column duplicates
       allFromValuesForVariable <-
@@ -279,7 +297,7 @@ RecodeColumns <-
       elseValue <-
         as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
       elseRow <-
-        rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
+        rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       if (length(elseValue) == 1) {
         if (isEqual(elseValue, "copy")) {
           dataVariableBeingChecked <-
@@ -315,7 +333,7 @@ RecodeColumns <-
         recodedData[variableBeingChecked] <- elseDefault
       }
       rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
+        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
       if (nrow(rowsBeingChecked) > 0) {
         logTable <- rowsBeingChecked[, 0]
         logTable$valueTo <- NA
@@ -325,7 +343,7 @@ RecodeColumns <-
           c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
         
         for (row in 1:nrow(rowsBeingChecked)) {
-          rowBeingChecked <- rowsBeingChecked[row, ]
+          rowBeingChecked <- rowsBeingChecked[row,]
           # If cat go check for label and obtain it
           
           # regardless obtain unit and attach
@@ -384,7 +402,7 @@ RecodeColumns <-
           }
           # Record labels
           # Verify type stays the same
-          if (labelList[[variableBeingChecked]]$type != as.character(rowBeingChecked[[pkg.globals$argument.ToType]])) {
+          if (!isEqual(labelList[[variableBeingChecked]]$type, as.character(rowBeingChecked[[pkg.globals$argument.ToType]]))) {
             stop(
               paste(
                 variableBeingChecked,
@@ -406,7 +424,8 @@ RecodeColumns <-
             )
           }
           # Verify variable label is identical
-          if (labelList[[variableBeingChecked]]$labelLong != as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])) {
+          if (!isEqual(labelList[[variableBeingChecked]]$labelLong,
+                       as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]]))) {
             stop(
               paste(
                 variableBeingChecked,
@@ -431,7 +450,8 @@ RecodeColumns <-
             valueRecorded
           if (printNote &&
               !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) &&
-              !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "")) {
+              !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "") &&
+              !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
             print(paste("NOTE:", as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
           }
         }
@@ -536,4 +556,42 @@ CompareValueBasedOnInterval <-
     }
     
     return(returnBoolean)
+  }
+
+# Parse out variables csv
+UpdateVariableDetailsBasedOnVariableSheet <-
+  function(variableSheet, variableDetails) {
+    # remove conflicting columns from variable details
+    variableDetails <-
+      variableDetails[,!(
+        names(variableDetails) %in% c(
+          pkg.globals$MSW.Variables.Columns.VariableType,
+          pkg.globals$MSW.Variables.Columns.Label,
+          pkg.globals$MSW.Variables.Columns.LabelLong,
+          pkg.globals$MSW.Variables.Columns.Units
+        )
+      )]
+    # Only keep the needed columns
+    variableSheet <-
+      variableSheet[, c(
+        pkg.globals$MSW.Variables.Columns.Variable,
+        pkg.globals$MSW.Variables.Columns.VariableType,
+        pkg.globals$MSW.Variables.Columns.Label,
+        pkg.globals$MSW.Variables.Columns.LabelLong,
+        pkg.globals$MSW.Variables.Columns.Units
+      )]
+    # merge the labels and data
+    variableDetails <-
+      merge(
+        variableDetails,
+        variableSheet,
+        by.x = pkg.globals$argument.Variables,
+        by.y = pkg.globals$MSW.Variables.Columns.Variable,
+        all.x = TRUE
+      )
+    # remove variables not present in variableSheet
+    variableDetails <-
+      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]], ]
+    
+    return(variableDetails)
   }
