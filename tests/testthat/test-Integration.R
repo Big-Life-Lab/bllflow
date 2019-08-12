@@ -39,7 +39,7 @@ test_that("BllFlowObject can be created empty then populated", {
     )
   testModel <-
     bllflow::UpdateMSW(bllModel = testModel, newDDI = ddi)
-  expect_equal(testModel, TestEnvironment$`Test-1`$testModel)
+  expect_equivalent(testModel, TestEnvironment$`Test-1`$testModel)
 })
 test_that("Long table can be made from a generated bllFlowObject", {
   library(survival)
@@ -117,7 +117,8 @@ test_that("Small cells can be found in bllFlow generated table one as well as it
             testSummaryTable <-
               bllflow::SummaryDataLong(testTableOne, bllFlowModel = testModel)
             testTableOne <- bllflow::CheckSmallCells(testTableOne)
-            testSummaryTable <- bllflow::CheckSmallCells(testSummaryTable)
+            testSummaryTable <-
+              bllflow::CheckSmallCells(testSummaryTable)
             
             expect_equal(testTableOne, TestEnvironment$`Test-3`$testTableOne)
             expect_equal(testSummaryTable,
