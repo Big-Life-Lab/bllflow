@@ -2,6 +2,24 @@
 
 This outlines how to propose a change to bllflow. 
 
+## Documentation
+
+Where possible, use the `pbc` data, from survival package, for examples, vignettes or to demonstrate an issue. `bllflow` includes a DDI metadata file for the `pbc` data. See `../inst/extdata/pbcDDI.xml`
+
+### Linking to Images
+
+When linking to images in .Rmd files, make sure to add the relative path to the image in the resource_files section of the .Rmd file. An example is given below,
+
+```YAML
+resource_files:
+  - ../man/figures/coding.png
+```
+
+### Linking to other .Rmd files
+
+When linking to other .Rmd files make sure their extension is changed to .html. This ensures that the links continue to work when they are converted to the pkgdown site
+
+
 ## Filing an issue
 
 The easiest way to propose a change or new feature is to file an issue. If you've found a
