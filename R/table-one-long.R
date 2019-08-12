@@ -149,6 +149,7 @@ AddToLongTable <-
     # ----Step 1: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
     returnedLongTables <- list()
+    # tableCount is used to populate list and avoid list append issues
     tableCount <- 0
     if (!is.null(passedTable$ContTable)) {
       dimNames <- attr(passedTable$ContTable, "dimnames")
@@ -194,6 +195,7 @@ AddToLongTable <-
           tableToAppend[[columnMissing]] <- NA
         }
       }
+      # synchronizing columns to avoid binding issues
       for (columnMissing in colnames(tableToAppend)) {
         if (!columnMissing %in% colnames(longTable)) {
           # in case of zero row table columns need to be declared in columns <- dataType()
@@ -321,6 +323,7 @@ ExtractDataFromCatTable <-
         unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
       # Loop through the tables of each variable
       for (selectedVariableTable in catTable[[strataCounter]]) {
+        # Used to specify the variable being writen
         variablesChecked <- variablesChecked + 1
         
         # Loop through the levels of each variable
@@ -384,91 +387,3 @@ ExtractDataFromCatTable <-
     
     return(longTableRows)
   }
-
-# deprecated ----------------------------------------------------------------------
-#' Creates a "Table One Long" and stores it in the metadata list.
-#' "Table One Long" has the same meaning as a regular table one except it consists
-#' of several table one's each of which gives summary statistics on a variable
-#' which may or may not be stratified by other variables
-#' A tableVariables spreadsheet specified how each table one within the final
-#' table should be build. An example is available here
-#' https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1336039089.
-#' An example of the output table is available here
-#' https://docs.google.com/spreadsheets/d/1oDcl0Ed-KElO_a_DBWcontVnqyTCZlT63hSPd-gId88/edit#gid=276021298.
-#' @param bllFlowModel A bllFlow model
-#' @param tableVariablesSheet The data frame with information on how to build
-#' the table
-#'
-#' @return A dataframe containing the table one long
-#'
-#' @import tableone
-# tables.CreateTableOneLong <- function(bllFlowModel,
-#                                       tableVariablesSheet) {
-#   # Create empty LongTable to append to
-#   longTable <-
-#     data.frame(
-#       groupBy1 = character(),
-#       groupByValue1 = numeric(),
-#       groupByLabel1 = character(),
-#       groupByValueLabel1 = character(),
-#       groupBy2 = character(),
-#       groupByValue2 = numeric(),
-#       groupByLabel2 = character(),
-#       groupByValueLabel2 = character(),
-#       variableCategory = character(),
-#       variableCategoryLabel = character(),
-#       variable = character(),
-#       prevalence = numeric(),
-#       n = numeric(),
-#       nMissing = numeric(),
-#       mean = numeric(),
-#       sd = numeric(),
-#       percentile25 = numeric(),
-#       percentile75 = numeric(),
-#       stringsAsFactors = FALSE
-#     )
-#   variablesForStrata <-
-#     unique(unlist(tableVariablesSheet[, grepl("pbcSummaryStat", colnames(tableVariablesSheet))]))
-#   variablesForStrata <- variablesForStrata[variablesForStrata != ""]
-#   tableOneTables <-
-#     lapply(variablesForStrata , function(strataValue)
-#       CreateCustomTableOne(strataValue, tableVariablesSheet, bllFlowModel))
-#   for (tableOne in tableOneTables) {
-#     longTable <-
-#       AddToLongTable(tableOne, longTable)
-#   }
-#
-#   return(longTable)
-# }
-#
-# # Create Table Ones from the tableVariablesSheet
-# CreateCustomTableOne <-
-#   function(strataValue, variableNames, bllFlowModel) {
-#     # Create vector of what variables to use
-#     variablesToUseBoolVector <-
-#       apply(variableNames, 1, function(row)
-#         any(row %in% c(as.character(strataValue))))
-#     tableOneVars <-
-#       variableNames$variables[variablesToUseBoolVector]
-#     # Seperate the Variables into continues and categorical
-#     categoricalVariables <- list()
-#     for (variable in tableOneVars) {
-#       variableType <-
-#         bllFlowModel[[pkg.globals$bllFlowContent.VariableDetails]][isEqual(bllFlowModel[[pkg.globals$bllFlowContent.VariableDetails]]$variable,
-#                                                                            variable) , "variableType"]
-#       if (variableType[[1]] == "category") {
-#         categoricalVariables <- c(categoricalVariables, variable)
-#       }
-#     }
-#     strataList <-
-#       unlist(strsplit(as.character(strataValue), split = ", "))
-#     retTable <-
-#       CreateTableOne(
-#         vars = as.character(tableOneVars),
-#         data = bllFlowModel$data,
-#         strata = strataList,
-#         factorVars = as.character(categoricalVariables)
-#       )
-#
-#     return(retTable)
-#   }

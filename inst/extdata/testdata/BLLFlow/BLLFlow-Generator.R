@@ -4,6 +4,7 @@ TestEnvironment <- list()
 # ---- Test for: bllFlow can be passed no args
 SetUpTest1 <- function(TestEnvironment) {
   library(bllflow)
+  # Create empty bllFlow instance
   testModel <- bllflow::BLLFlow()
   
   TestEnvironment[["Test-1"]] <- list(testModel = testModel)
@@ -15,6 +16,7 @@ SetUpTest2 <- function(TestEnvironment) {
   library(bllflow)
   library(survival)
   data(pbc)
+  # Create non DDI populated bllFlow
   variables <-
     read.csv(
       system.file(
