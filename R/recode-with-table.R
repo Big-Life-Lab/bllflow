@@ -134,7 +134,7 @@ RecodeCall <-
     }
     
     allPossibleVarNames <-
-      unique(as.character(variableDetails[, pkg.globals$argument.Variables]))
+      unique(as.character(variableDetails[[pkg.globals$argument.Variables]]))
     allVariablesDetected <-
       variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
     
