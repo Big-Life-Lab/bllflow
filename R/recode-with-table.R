@@ -215,16 +215,6 @@ GetDataVariableName <-
           )
         )
     }
-    if (is.null(data[[dataVariableBeingChecked]])) {
-      stop(
-        paste(
-          "Data",
-          dataName,
-          "does not contain the variable",
-          dataVariableBeingChecked
-        )
-      )
-    }
     
     return(dataVariableBeingChecked)
   }
@@ -265,7 +255,23 @@ RecodeColumns <-
       variablesToProcess <-
         variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       firstRow <- rowsBeingChecked[1,]
-      
+      # Check for varialbe existance in data
+      dataVariableBeingChecked <-
+        GetDataVariableName(
+          dataName = dataName,
+          rowBeingChecked = firstRow,
+          variableBeingChecked = variableBeingChecked,
+          data = dataSource
+        )
+      if (is.null(data[[dataVariableBeingChecked]])) {
+        warning(
+          paste(
+            "Data",
+            dataName,
+            "does not contain the variable",
+            dataVariableBeingChecked
+          )
+        )}else{
       # Check for From column duplicates
       allFromValuesForVariable <-
         rowsBeingChecked[[pkg.globals$argument.From]]
@@ -471,7 +477,9 @@ RecodeColumns <-
           print(logTable)
         }
       }
+    
     }
+      }
     
     # Populate data Labels
     recodedData <-
