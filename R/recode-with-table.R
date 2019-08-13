@@ -128,9 +128,17 @@ RecodeCall <-
     if (!is.null(variables) && "data.frame" %in% class(variables)) {
       variableDetails <-
         UpdateVariableDetailsBasedOnVariableSheet(variableSheet = variables, variableDetails = variableDetails)
-    } else if (!is.null(variables)) {
-      variableDetails <-
-        variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+    } else {
+      if (!is.null(variables)) {
+        variableDetails <-
+          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+      }
+      if (is.null(variableDetails[[pkg.globals$argument.VariableLabel]])) {
+        variableDetails[[pkg.globals$argument.VariableLabel]] <- NA
+      }
+      if (is.null(variableDetails[[pkg.globals$argument.VariableLabelShort]])) {
+        variableDetails[[pkg.globals$argument.VariableLabelShort]] <- NA
+      }
     }
     
     allPossibleVarNames <-
