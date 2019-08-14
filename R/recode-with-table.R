@@ -271,7 +271,7 @@ RecodeColumns <-
           variableBeingChecked = variableBeingChecked,
           data = dataSource
         )
-      if (is.null(data[[dataVariableBeingChecked]])) {
+      if (is.null(dataSource[[dataVariableBeingChecked]])) {
         warning(
           paste(
             "Data",
