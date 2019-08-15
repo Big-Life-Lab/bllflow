@@ -482,6 +482,8 @@ RecodeColumns <-
               "the following recodes were made:"
             )
           )
+          # Reset rowCount to avoid confusion
+          rownames(logTable) <- NULL
           print(logTable)
         }
       }
