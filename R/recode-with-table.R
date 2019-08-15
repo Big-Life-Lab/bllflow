@@ -46,6 +46,8 @@ RecWTable <- function(dataSource = NULL, ...) {
 #' @param log Logical, if \code{FALSE} (default), a log of recoding will not be printed.
 #' @param printNote Logical, if \code{FALSE} (default), will not print the content inside the `Note`` column of the variable beinng recoded.
 #' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`.
+#' @param variables character vector containing variable names to recode or a variables csv containing additional variable info
+#' @param labels named character vector of variable and their label
 #'
 #' @return a dataframe that is recoded according to rules in variableDetails.
 #' @export
@@ -58,7 +60,8 @@ RecWTable.default <-
            log = FALSE,
            printNote = TRUE,
            appendNonDBColumns = FALSE,
-           variables = NULL) {
+           variables = NULL, 
+           varLabels = NULL) {
     # ---- Step 1: Detemine if the passed data is a list or single database
     if (class(dataSource) == "list" &&
         length(datasetName) == length(dataSource)) {
@@ -75,7 +78,8 @@ RecWTable.default <-
             variableDetails = variableDetails,
             appendToData = appendToData,
             appendNonDBColumns = appendNonDBColumns,
-            log = log
+            log = log,
+            varLabels = varLabels
           )
         } else{
           stop(
@@ -99,7 +103,8 @@ RecWTable.default <-
         variableDetails = variableDetails,
         appendToData = appendToData,
         appendNonDBColumns = appendNonDBColumns,
-        log = log
+        log = log,
+        varLabels = varLabels
       )
     } else{
       stop(
@@ -124,7 +129,8 @@ RecodeCall <-
            variableDetails,
            appendToData ,
            appendNonDBColumns,
-           log) {
+           log,
+           varLabels) {
     if (!is.null(variables) && "data.frame" %in% class(variables)) {
       variableDetails <-
         UpdateVariableDetailsBasedOnVariableSheet(variableSheet = variables, variableDetails = variableDetails)
@@ -138,6 +144,16 @@ RecodeCall <-
       }
       if (is.null(variableDetails[[pkg.globals$argument.VariableLabelShort]])) {
         variableDetails[[pkg.globals$argument.VariableLabelShort]] <- NA
+      }
+    }
+    if(!is.null(varLabels)) {
+      if (is.null(names(varLabels))) {
+        stop(
+          "The passed labels was not a named vector please follow the c(varName = varLalbel) format"
+        )
+      } else{
+        variableDetails[[pkg.globals$argument.VariableLabelShort]] <-
+          varLabels[variableDetails[[pkg.globals$argument.Variables]]]
       }
     }
     
