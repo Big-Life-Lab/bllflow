@@ -152,6 +152,9 @@ RecodeCall <-
           "The passed labels was not a named vector please follow the c(varName = varLalbel) format"
         )
       } else{
+        if (is.factor(variableDetails[[pkg.globals$argument.VariableLabelShort]])){
+          variableDetails[[pkg.globals$argument.VariableLabelShort]] <- as.character(variableDetails[[pkg.globals$argument.VariableLabelShort]])
+        }
         for (varName in names(varLabels)) {
           variableDetails[variableDetails[[pkg.globals$argument.Variables]] == varName, pkg.globals$argument.VariableLabelShort] <- varLabels[[varName]]
         }
