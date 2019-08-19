@@ -26,7 +26,8 @@ Depends:
   tableone,
   DDIwR,
   xml2,
-  stringr
+  stringr,
+  recipes
 Imports:
   rstudioapi,
   glue,
