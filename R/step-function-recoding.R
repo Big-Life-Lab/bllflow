@@ -86,6 +86,13 @@ bake.step_meantest <- function(object, new_data, ...) {
   return(as_tibble(new_data))
 }
 
+print.step_meantest <-
+  function(x, width = max(20, options()$width - 30), ...) {
+    cat("Mean Imputation for ", sep = "")
+    recipes:::printer(names(x$means), x$terms, x$trained, width = width)
+    invisible(x)
+  }
+
 #' step_bllflowMeanimpute <-
 #'   function(recipe,
 #'            ...,
