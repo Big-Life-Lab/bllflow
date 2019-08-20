@@ -20,8 +20,8 @@ CheckSmallCells <- function(passedTable, ...) {
 #' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #'@export
 CheckSmallCells.SummaryData <- function(passedTable,
-                                        smallSize = 6,
-                                        print = FALSE) {
+                                      smallSize = 6,
+                                      print = FALSE) {
   passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]] <-
     passedTable$summaryData[passedTable$summaryData[, pkg.globals$LongTable.Frequency] < smallSize, ]
   print(paste(nrow(passedTable[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]]), "Small cells were found"))

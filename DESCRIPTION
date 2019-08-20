@@ -34,11 +34,12 @@ Imports:
   tidyr,
   dplyr
 Suggests:
-  knitr,
-  rmarkdown,
-  DT,
-  magrittr,
-  survival
+    knitr,
+    rmarkdown,
+    DT,
+    magrittr,
+    survival,
+    testthat
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
