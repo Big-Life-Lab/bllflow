@@ -542,6 +542,8 @@ LabelData <- function(labelList, dataToLabel) {
       if (class(dataToLabel[[variableName]]) == "factor") {
         dataToLabel[[variableName]] <-
           as.numeric(levels(dataToLabel[[variableName]])[dataToLabel[[variableName]]])
+      }else{
+        dataToLabel[[variableName]] <- as.numeric(dataToLabel[[variableName]])
       }
     }
     sjlabelled::set_label(dataToLabel[[variableName]]) <-
