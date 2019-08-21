@@ -638,7 +638,6 @@ UpdateVariableDetailsBasedOnVariableSheet <-
 
 RecodeVariableNAFormating <- function(cellValue){
   recodeValue <- NULL
-  #grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]])
   if (grepl( "NA",cellValue)){
     naValueList <- strsplit(cellValue, ":")[[1]]
     recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
