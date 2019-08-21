@@ -333,6 +333,7 @@ RecodeColumns <-
       elseRow <-
         rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
       if (length(elseValue) == 1) {
+        elseValue <- RecodeVariableNAFormating(elseValue)
         if (isEqual(elseValue, "copy")) {
           dataVariableBeingChecked <-
             GetDataVariableName(
@@ -430,6 +431,7 @@ RecodeColumns <-
           logTable[row, "rowsRecoded"] <-
             sum(validRowIndex, na.rm = TRUE)
           
+          valueRecorded <- RecodeVariableNAFormating(valueRecorded)
           if (isEqual(valueRecorded, "copy")) {
             valueRecorded <-
               dataSource[validRowIndex, dataVariableBeingChecked]
@@ -633,3 +635,16 @@ UpdateVariableDetailsBasedOnVariableSheet <-
     
     return(variableDetails)
   }
+
+RecodeVariableNAFormating <- function(cellValue){
+  recodeValue <- NULL
+  #grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]])
+  if (grepl( "NA",cellValue)){
+    naValueList <- strsplit(cellValue, ":")[[1]]
+    recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
+  }else{
+    recodeValue <- cellValue
+  }
+  
+  return(recodeValue)
+}
