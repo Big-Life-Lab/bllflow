@@ -60,7 +60,7 @@ RecWTable.default <-
            log = FALSE,
            printNote = TRUE,
            appendNonDBColumns = FALSE,
-           variables = NULL, 
+           variables = NULL,
            varLabels = NULL) {
     # ---- Step 1: Detemine if the passed data is a list or single database
     if (class(dataSource) == "list" &&
@@ -137,7 +137,7 @@ RecodeCall <-
     } else {
       if (!is.null(variables)) {
         variableDetails <-
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables,]
       }
       if (is.null(variableDetails[[pkg.globals$argument.VariableLabel]])) {
         variableDetails[[pkg.globals$argument.VariableLabel]] <- NA
@@ -146,17 +146,19 @@ RecodeCall <-
         variableDetails[[pkg.globals$argument.VariableLabelShort]] <- NA
       }
     }
-    if(!is.null(varLabels)) {
+    if (!is.null(varLabels)) {
       if (is.null(names(varLabels))) {
         stop(
           "The passed labels was not a named vector please follow the c(varName = varLalbel) format"
         )
       } else{
-        if (is.factor(variableDetails[[pkg.globals$argument.VariableLabelShort]])){
-          variableDetails[[pkg.globals$argument.VariableLabelShort]] <- as.character(variableDetails[[pkg.globals$argument.VariableLabelShort]])
+        if (is.factor(variableDetails[[pkg.globals$argument.VariableLabelShort]])) {
+          variableDetails[[pkg.globals$argument.VariableLabelShort]] <-
+            as.character(variableDetails[[pkg.globals$argument.VariableLabelShort]])
         }
         for (varName in names(varLabels)) {
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] == varName, pkg.globals$argument.VariableLabelShort] <- varLabels[[varName]]
+          variableDetails[variableDetails[[pkg.globals$argument.Variables]] == varName, pkg.globals$argument.VariableLabelShort] <-
+            varLabels[[varName]]
         }
       }
     }
@@ -164,7 +166,7 @@ RecodeCall <-
     allPossibleVarNames <-
       unique(as.character(variableDetails[[pkg.globals$argument.Variables]]))
     allVariablesDetected <-
-      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
+      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
     
     recData <-
       RecodeColumns(
@@ -279,10 +281,10 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
-      firstRow <- rowsBeingChecked[1,]
+        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+      firstRow <- rowsBeingChecked[1, ]
       # Check for varialbe existance in data
       dataVariableBeingChecked <-
         GetDataVariableName(
@@ -299,219 +301,158 @@ RecodeColumns <-
             "does not contain the variable",
             dataVariableBeingChecked
           )
-        )}else{
-      # Check for From column duplicates
-      allFromValuesForVariable <-
-        rowsBeingChecked[[pkg.globals$argument.From]]
-      if (length(unique(allFromValuesForVariable)) != length(allFromValuesForVariable)) {
-        for (singleFrom in allFromValuesForVariable) {
-          if (sum(allFromValuesForVariable == singleFrom) > 1) {
-            stop(
-              paste(
-                singleFrom,
-                "was detected more then once in",
-                variableBeingChecked,
-                "please make sure only one from value is being recoded"
+        )
+      } else{
+        # Check for From column duplicates
+        allFromValuesForVariable <-
+          rowsBeingChecked[[pkg.globals$argument.From]]
+        if (length(unique(allFromValuesForVariable)) != length(allFromValuesForVariable)) {
+          for (singleFrom in allFromValuesForVariable) {
+            if (sum(allFromValuesForVariable == singleFrom) > 1) {
+              stop(
+                paste(
+                  singleFrom,
+                  "was detected more then once in",
+                  variableBeingChecked,
+                  "please make sure only one from value is being recoded"
+                )
               )
-            )
+            }
           }
         }
-      }
-      
-      # Set factor for all recode values
-      labelList[[variableBeingChecked]] <-
-        list(
-          type = as.character(firstRow[[pkg.globals$argument.ToType]]),
-          unit = as.character(firstRow[[pkg.globals$argument.Units]]),
-          labelLong = as.character(firstRow[[pkg.globals$argument.VariableLabel]]),
-          label = as.character(firstRow[[pkg.globals$argument.VariableLabelShort]]),
-          values = c(),
-          valuesLong = c()
-        )
-      elseValue <-
-        as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
-      elseRow <-
-        rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-      if (length(elseValue) == 1) {
-        elseValue <- RecodeVariableNAFormating(elseValue)
-        if (isEqual(elseValue, "copy")) {
-          dataVariableBeingChecked <-
-            GetDataVariableName(
-              dataName = dataName,
-              rowBeingChecked = firstRow,
-              variableBeingChecked = variableBeingChecked,
-              data = dataSource
-            )
-          recodedData[variableBeingChecked] <-
-            dataSource[dataVariableBeingChecked]
-        } else {
-          recodedData[variableBeingChecked] <- elseValue
-          if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
-            labelList[[variableBeingChecked]]$values[[as.character(elseRow[[pkg.globals$argument.CatLabel]])]] <-
-              elseValue
-            labelList[[variableBeingChecked]]$valuesLong[[as.character(elseRow[[pkg.globals$argument.CatLabelLong]])]] <-
-              elseValue
-          }
-        }
-        # Catch multiple else rows
-      } else if (length(elseValue) > 1) {
-        stop(
-          paste(
-            variableBeingChecked,
-            " contains",
-            length(elseValue),
-            "rows of else only one else value is allowed"
-          )
-        )
-      }
-      else{
-        recodedData[variableBeingChecked] <- elseDefault
-      }
-      rowsBeingChecked <-
-        rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
-      if (nrow(rowsBeingChecked) > 0) {
-        logTable <- rowsBeingChecked[, 0]
-        logTable$valueTo <- NA
-        logTable$From <- NA
-        logTable$rowsRecoded <- NA
-        levels(recodedData[[variableBeingChecked]]) <-
-          c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
         
-        for (row in 1:nrow(rowsBeingChecked)) {
-          rowBeingChecked <- rowsBeingChecked[row,]
-          # If cat go check for label and obtain it
-          
-          # regardless obtain unit and attach
-          
-          # find var name for this database
-          dataVariableBeingChecked <-
-            GetDataVariableName(
-              dataName = dataName,
-              rowBeingChecked = rowBeingChecked,
-              variableBeingChecked = variableBeingChecked,
-              data = dataSource
-            )
-          
-          # Recode the variable
-          fromValues <-
-            strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
-          valueRecorded <-
-            as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
-          if (intervalPresent) {
-            interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
-            if (!interval %in% validIntervals) {
-              interval <- intervalDefault
-            }
-            if (fromValues[[1]] == fromValues[[2]]) {
-              interval <- "[,]"
-            }
-            validRowIndex <- CompareValueBasedOnInterval(
-              compareColumns = dataVariableBeingChecked,
-              dataSource = dataSource,
-              leftBoundary = fromValues[[1]],
-              rightBoundary = fromValues[[2]],
-              interval = interval
-            )
-          } else{
-            if (fromValues[[1]] == fromValues[[2]]) {
-              interval <- "[,]"
-            }
-            validRowIndex <- CompareValueBasedOnInterval(
-              compareColumns = dataVariableBeingChecked,
-              dataSource = dataSource,
-              leftBoundary = fromValues[[1]],
-              rightBoundary = fromValues[[2]],
-              interval = intervalDefault
-            )
-          }
-          # Start construction of dataframe for log
-          logTable[row, "valueTo"] <- valueRecorded
-          logTable[row, "From"] <-
-            as.character(rowBeingChecked[[pkg.globals$argument.From]])
-          logTable[row, "rowsRecoded"] <-
-            sum(validRowIndex, na.rm = TRUE)
-          
-          valueRecorded <- RecodeVariableNAFormating(valueRecorded)
-          if (isEqual(valueRecorded, "copy")) {
-            valueRecorded <-
-              dataSource[validRowIndex, dataVariableBeingChecked]
-          }
-          # Record labels
-          # Verify type stays the same
-          if (!isEqual(labelList[[variableBeingChecked]]$type, as.character(rowBeingChecked[[pkg.globals$argument.ToType]]))) {
-            stop(
-              paste(
-                variableBeingChecked,
-                "does not contain all identical",
-                pkg.globals$argument.ToType,
-                "variable cant change variable type for different values"
+        # Set factor for all recode values
+        labelList[[variableBeingChecked]] <- CreateLabelListElement(rowsBeingChecked)
+        elseValue <-
+          as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
+        if (length(elseValue) == 1) {
+          elseValue <- RecodeVariableNAFormating(elseValue, labelList[[variableBeingChecked]]$type)
+          if (isEqual(elseValue, "copy")) {
+            dataVariableBeingChecked <-
+              GetDataVariableName(
+                dataName = dataName,
+                rowBeingChecked = firstRow,
+                variableBeingChecked = variableBeingChecked,
+                data = dataSource
               )
-            )
+            recodedData[variableBeingChecked] <-
+              dataSource[dataVariableBeingChecked]
+          } else {
+            recodedData[variableBeingChecked] <- elseValue
           }
-          # Verify unit is identical
-          if (!isEqual(labelList[[variableBeingChecked]]$unit, as.character(rowBeingChecked[[pkg.globals$argument.Units]]))) {
-            stop(
-              paste(
-                variableBeingChecked,
-                "does not contain all identical",
-                pkg.globals$argument.Units,
-                "variable cant change unit type for different values"
-              )
-            )
-          }
-          # Verify variable label is identical
-          if (!isEqual(labelList[[variableBeingChecked]]$labelLong,
-                       as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]]))) {
-            stop(
-              paste(
-                variableBeingChecked,
-                "does not contain all identical",
-                pkg.globals$argument.VariableLabel,
-                "variable cant change variableLabel for different values. VAL1:",
-                labelList[[variableBeingChecked]]$labelLong,
-                "VAL2:",
-                as.character(rowBeingChecked[[pkg.globals$argument.VariableLabel]])
-              )
-            )
-          }
-          # Populate value label
-          if (labelList[[variableBeingChecked]]$type == pkg.globals$argument.CatType) {
-            labelList[[variableBeingChecked]]$values[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabel]])]] <-
-              valueRecorded
-            labelList[[variableBeingChecked]]$valuesLong[[as.character(rowBeingChecked[[pkg.globals$argument.CatLabelLong]])]] <-
-              valueRecorded
-          }
-          
-          recodedData[validRowIndex, variableBeingChecked] <-
-            valueRecorded
-          if (printNote &&
-              !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) &&
-              !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "") &&
-              !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
-            print(paste("NOTE:", as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
-          }
-        }
-        # if log was requested print it
-        if (log) {
-          print(
+          # Catch multiple else rows
+        } else if (length(elseValue) > 1) {
+          stop(
             paste(
-              "The variable",
-              dataVariableBeingChecked,
-              "was recoded into",
               variableBeingChecked,
-              "for the database",
-              dataName,
-              "the following recodes were made:"
+              " contains",
+              length(elseValue),
+              "rows of else only one else value is allowed"
             )
           )
-          # Reset rowCount to avoid confusion
-          rownames(logTable) <- NULL
-          print(logTable)
         }
+        else{
+          recodedData[variableBeingChecked] <- elseDefault
+        }
+        rowsBeingChecked <-
+          rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
+        if (nrow(rowsBeingChecked) > 0) {
+          logTable <- rowsBeingChecked[, 0]
+          logTable$valueTo <- NA
+          logTable$From <- NA
+          logTable$rowsRecoded <- NA
+          levels(recodedData[[variableBeingChecked]]) <-
+            c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
+          
+          for (row in 1:nrow(rowsBeingChecked)) {
+            rowBeingChecked <- rowsBeingChecked[row, ]
+            # If cat go check for label and obtain it
+            
+            # regardless obtain unit and attach
+            
+            # find var name for this database
+            dataVariableBeingChecked <-
+              GetDataVariableName(
+                dataName = dataName,
+                rowBeingChecked = rowBeingChecked,
+                variableBeingChecked = variableBeingChecked,
+                data = dataSource
+              )
+            
+            # Recode the variable
+            fromValues <-
+              strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
+            valueRecorded <-
+              as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
+            if (intervalPresent) {
+              interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
+              if (!interval %in% validIntervals) {
+                interval <- intervalDefault
+              }
+              if (fromValues[[1]] == fromValues[[2]]) {
+                interval <- "[,]"
+              }
+              validRowIndex <- CompareValueBasedOnInterval(
+                compareColumns = dataVariableBeingChecked,
+                dataSource = dataSource,
+                leftBoundary = fromValues[[1]],
+                rightBoundary = fromValues[[2]],
+                interval = interval
+              )
+            } else{
+              if (fromValues[[1]] == fromValues[[2]]) {
+                interval <- "[,]"
+              }
+              validRowIndex <- CompareValueBasedOnInterval(
+                compareColumns = dataVariableBeingChecked,
+                dataSource = dataSource,
+                leftBoundary = fromValues[[1]],
+                rightBoundary = fromValues[[2]],
+                interval = intervalDefault
+              )
+            }
+            # Start construction of dataframe for log
+            logTable[row, "valueTo"] <- valueRecorded
+            logTable[row, "From"] <-
+              as.character(rowBeingChecked[[pkg.globals$argument.From]])
+            logTable[row, "rowsRecoded"] <-
+              sum(validRowIndex, na.rm = TRUE)
+            
+            valueRecorded <- RecodeVariableNAFormating(valueRecorded, labelList[[variableBeingChecked]]$type)
+            if (isEqual(valueRecorded, "copy")) {
+              valueRecorded <-
+                dataSource[validRowIndex, dataVariableBeingChecked]
+            }
+            recodedData[validRowIndex, variableBeingChecked] <-
+              valueRecorded
+            if (printNote &&
+                !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) &&
+                !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "") &&
+                !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
+              print(paste("NOTE:", as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
+            }
+          }
+          # if log was requested print it
+          if (log) {
+            print(
+              paste(
+                "The variable",
+                dataVariableBeingChecked,
+                "was recoded into",
+                variableBeingChecked,
+                "for the database",
+                dataName,
+                "the following recodes were made:"
+              )
+            )
+            # Reset rowCount to avoid confusion
+            rownames(logTable) <- NULL
+            print(logTable)
+          }
+        }
+        
       }
-    
     }
-      }
     
     # Populate data Labels
     recodedData <-
@@ -519,43 +460,6 @@ RecodeColumns <-
     
     return(recodedData)
   }
-
-#' LabelData
-#'
-#' Attaches labels to the DataToLabel to preserve metadata
-#'
-#' @param labelList the label list object that contains extracted labels from variable details
-#' @param dataToLabel The data that is to be labeled
-#'
-#' @return Returns labeled data
-LabelData <- function(labelList, dataToLabel) {
-  for (variableName in names(labelList)) {
-    if (labelList[[variableName]]$type == pkg.globals$argument.CatType) {
-      if (class(dataToLabel[[variableName]]) != "factor") {
-        dataToLabel[[variableName]] <- factor(dataToLabel[[variableName]])
-      }
-      dataToLabel[[variableName]] <-
-        sjlabelled::set_labels(dataToLabel[[variableName]], labels = labelList[[variableName]]$values)
-      attr(dataToLabel[[variableName]], "labelsLong") <-
-        labelList[[variableName]]$valuesLong
-    } else{
-      if (class(dataToLabel[[variableName]]) == "factor") {
-        dataToLabel[[variableName]] <-
-          as.numeric(levels(dataToLabel[[variableName]])[dataToLabel[[variableName]]])
-      }else{
-        dataToLabel[[variableName]] <- as.numeric(dataToLabel[[variableName]])
-      }
-    }
-    sjlabelled::set_label(dataToLabel[[variableName]]) <-
-      labelList[[variableName]]$label
-    attr(dataToLabel[[variableName]], "unit") <-
-      labelList[[variableName]]$unit
-    attr(dataToLabel[[variableName]], "labelLong") <-
-      labelList[[variableName]]$labelLong
-  }
-  
-  return(dataToLabel)
-}
 
 #' Compare Value Based On Interval
 #'
@@ -605,7 +509,7 @@ UpdateVariableDetailsBasedOnVariableSheet <-
   function(variableSheet, variableDetails) {
     # remove conflicting columns from variable details
     variableDetails <-
-      variableDetails[,!(
+      variableDetails[, !(
         names(variableDetails) %in% c(
           pkg.globals$MSW.Variables.Columns.VariableType,
           pkg.globals$MSW.Variables.Columns.Label,
@@ -633,17 +537,24 @@ UpdateVariableDetailsBasedOnVariableSheet <-
       )
     # remove variables not present in variableSheet
     variableDetails <-
-      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]], ]
+      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]],]
     
     return(variableDetails)
   }
 
-RecodeVariableNAFormating <- function(cellValue){
+RecodeVariableNAFormating <- function(cellValue, varType) {
   recodeValue <- NULL
-  if (grepl( "NA",cellValue)){
+  if (grepl("NA", cellValue)) {
     naValueList <- strsplit(cellValue, ":")[[1]]
-    recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
-  }else{
+    if (isEqual(varType, pkg.globals$argument.CatType)) {
+      recodeValue <- paste("NA(", naValueList[[3]], ")", sep = "")
+    } else{
+      recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
+    }
+  } else{
+    if (!isEqual(varType, pkg.globals$argument.CatType)) {
+      cellValue <- as.numeric(cellValue)
+    }
     recodeValue <- cellValue
   }
   
