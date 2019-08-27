@@ -552,7 +552,7 @@ RecodeVariableNAFormating <- function(cellValue, varType) {
       recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
     }
   } else{
-    if (!isEqual(varType, pkg.globals$argument.CatType)) {
+    if (!isEqual(varType, pkg.globals$argument.CatType) && !isEqual(cellValue, "copy")) {
       cellValue <- as.numeric(cellValue)
     }
     recodeValue <- cellValue
