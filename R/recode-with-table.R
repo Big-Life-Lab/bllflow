@@ -59,7 +59,6 @@ RecWTable.default <-
            appendToData = FALSE,
            log = FALSE,
            printNote = TRUE,
-           appendNonDBColumns = FALSE,
            variables = NULL,
            varLabels = NULL) {
     # ---- Step 1: Detemine if the passed data is a list or single database
