@@ -402,13 +402,15 @@ RecodeColumns <-
             } else{
               if (fromValues[[1]] == fromValues[[2]]) {
                 interval <- "[,]"
+              }else{
+                interval <- intervalDefault
               }
               validRowIndex <- CompareValueBasedOnInterval(
                 compareColumns = dataVariableBeingChecked,
                 dataSource = dataSource,
                 leftBoundary = fromValues[[1]],
                 rightBoundary = fromValues[[2]],
-                interval = intervalDefault
+                interval = interval
               )
             }
             # Start construction of dataframe for log
