@@ -56,7 +56,7 @@ RecWTable.default <-
            variableDetails,
            datasetName,
            elseValue = NA,
-           appendToData = TRUE,
+           appendToData = FALSE,
            log = FALSE,
            printNote = TRUE,
            appendNonDBColumns = FALSE,
