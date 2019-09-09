@@ -84,3 +84,13 @@ FillInGroupByColumns <-
     
     return(longTableRow)
   }
+
+# Cleans strata values
+CleanStrataValues <-
+  function(dimNames) {
+    strataAllCombinationsDataFrame <- expand.grid(dimNames)
+    strataArgs <- c(strataAllCombinationsDataFrame, sep = ":")
+    strataValues <- do.call(paste, strataArgs)
+    
+    return(strataValues)
+  }
