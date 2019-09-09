@@ -27,6 +27,7 @@ pkg.globals$argument.VariableLabelShort <- "label"
 pkg.globals$argument.CatLabelLong <- "catLabelLong"
 pkg.globals$argument.CatLabel <- "catLabel"
 pkg.globals$argument.CatType <- "cat"
+pkg.globals$argument.VariableStartHighLow <- "from" 
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
