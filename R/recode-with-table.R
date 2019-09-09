@@ -266,9 +266,9 @@ RecodeColumns <-
            printNote,
            elseDefault) {
     # Split variables to process into recode map and func
-    mapVariablesToProcess <- variablesToProcess[grepl("",variablesToProcess[pkg.globals$argument.CatValue])]
+    mapVariablesToProcess <- variablesToProcess[grepl("map::",variablesToProcess[pkg.globals$argument.CatValue]),]
     
-    funcVariablesToProcess
+    funcVariablesToProcess <- variablesToProcess[grepl("func::",variablesToProcess[pkg.globals$argument.CatValue]),]
     
     labelList <- list()
     # Set interval if none is present
