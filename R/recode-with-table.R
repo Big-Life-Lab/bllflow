@@ -265,6 +265,11 @@ RecodeColumns <-
            log,
            printNote,
            elseDefault) {
+    # Split variables to process into recode map and func
+    mapVariablesToProcess <- variablesToProcess[grepl("",variablesToProcess[pkg.globals$argument.CatValue])]
+    
+    funcVariablesToProcess
+    
     labelList <- list()
     # Set interval if none is present
     intervalPresent <- TRUE
@@ -275,7 +280,7 @@ RecodeColumns <-
       intervalPresent <- FALSE
     }
     
-    # Loop through the rows
+    # Loop through the rows of recode vars
     while (nrow(variablesToProcess) > 0) {
       variableBeingChecked <-
         as.character(variablesToProcess[1, pkg.globals$argument.Variables])
