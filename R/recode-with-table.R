@@ -2,7 +2,7 @@
 #'
 #' @name RecWTable
 #'
-#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table. Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function.
+#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table (variableDetails). Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function.
 #'
 #' @seealso \code{sjmisc::rec()}
 #' @export
@@ -10,7 +10,7 @@ RecWTable <- function(dataSource = NULL, ...) {
   UseMethod("RecWTable", dataSource)
 }
 
-#' @title Recode with Table for dataSource and varDetails
+#' @title Recode with Table
 #'
 #' @name RecWTable.default
 #'
