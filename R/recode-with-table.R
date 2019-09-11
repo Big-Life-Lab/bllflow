@@ -62,6 +62,7 @@ RecWTable.default <-
            variables = NULL,
            varLabels = NULL) {
     # ---- Step 1: Detemine if the passed data is a list or single database
+    appendNonDBColumns <- FALSE
     if (class(dataSource) == "list" &&
         length(datasetName) == length(dataSource)) {
       for (dataName in datasetName) {
