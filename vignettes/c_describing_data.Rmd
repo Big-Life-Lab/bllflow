@@ -55,9 +55,8 @@ For all tables, metadata such as labels are added from the Model Specification W
 Initialize the model with the DDI document.
 ```{r}
 ddi <- bllflow::ReadDDI(system.file("extdata", "", package = "bllflow"), "pbcDDI.xml")
-pbcModel <- UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
-
-pbcModelWithLongTable <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+pbcModel <- bllflow::UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
+longTableWithLabels <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
 ```
 
 ## Check for small cells
@@ -79,12 +78,12 @@ checkedTableOne$MetaData$smallCells
 
 You can also check small cells inside your Summary Data in case you have multiple tables
 ```{r}
-checkedLongTable <- CheckSmallCells(pbcModelWithLongTable$longTable)
+checkedLongTable <- CheckSmallCells(longTableWithLabels)
 ```
 
 For a print of the found rows pass print as TRUE
 ```{r}
-checkedLongTable <- CheckSmallCells(pbcModelWithLongTable$longTable, print = TRUE)
+checkedLongTable <- CheckSmallCells(longTableWithLabels, print = TRUE)
 ```
 
 Find out which rows and variables contain the small cells.

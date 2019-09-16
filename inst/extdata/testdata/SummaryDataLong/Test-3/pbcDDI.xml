@@ -1,0 +1,1412 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<codeBook version="1.2.2" ID="cchs-82M0013-E-2013-2014-Annual-component" xml-lang="en" xmlns="http://www.icpsr.umich.edu/DDI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.icpsr.umich.edu/DDI http://www.icpsr.umich.edu/DDI/Version1-2-2.xsd">
+<docDscr>
+<citation>
+<titlStmt>
+<titl>
+Mayo Clinic Primary Biliary Cirrhosis Data
+</titl>
+<subTitl>
+conducted between 1974 and 1984
+</subTitl>
+<altTitl>
+PBC 1974:1984
+</altTitl>
+<parTitl>
+Enquête sur la santé dans les collectivités canadiennes, 2013-14
+</parTitl>
+<IDNo>
+cchs-82M0013-E-2013-2014-Annual-component
+</IDNo>
+</titlStmt>
+<rspStmt>
+<AuthEnty affiliation="McMaster University. MapS, Data and GIS Centre">
+Gnanayutham, Rachel
+</AuthEnty>
+</rspStmt>
+<prodStmt>
+<producer abbr="ODESI" affiliation="Scholars Portal">
+Ontario Data Documentation, Extraction Service and Infrastructure
+</producer>
+<copyright>
+Copyright (c) Scholars Portal, Ontario Data Documentation. Extraction Service and Infrastructure (ODESI), 2011
+</copyright>
+<prodDate date="2016-03-08">
+2016-03-08
+</prodDate>
+<prodPlac>
+Ontatio Data Documentation, Extraction Service and Infrastructure, Toronto, Ontario, Canada
+</prodPlac>
+<software version="4.0.9" date="2013-04-23">
+Nesstar Publisher
+</software>
+<fundAg abbr="OCUL">
+Ontario Council of University Libraries
+</fundAg>
+</prodStmt>
+<distStmt>
+<distrbtr abbr="ODESI" affiliation="Scholars Portal" URI="http://odesi.ca">
+Ontario Data Documentation, Extraction Service and Infrastructure
+</distrbtr>
+<contact affiliation="Scholars Potal" URI="http://odesi.ca/" email="odesi-help@scholarsportal.info">
+Ontario Data Documentation, Extraction Service and Infrastructure (ODESI)
+</contact>
+<depositr/>
+</distStmt>
+<serStmt>
+<serName>
+Canadian Community Health Survey
+</serName>
+<serInfo>
+<![CDATA[The Canadian Community Health Survey (CCHS) is a cross-sectional survey that collects information related to health status, health care utilization and health determinants for the Canadian population. The survey's objectives were to: 
+<ul>
+<li> support health surveillance programs by providing health data at the national, provincial and intra-provincial levels; </li>
+<li> provide a single data source for health research on small populations and rare characteristics; </li>
+<li>timely release of information easily accessible to a diverse community of users; and </li>
+<li> create a flexible survey instrument that includes a rapid response option to address emerging issues related to the health of the population.</li>
+</ul>]]>
+</serInfo>
+</serStmt>
+<verStmt>
+<version date="2016-03-08">
+March 08, 2016- Created by McMaster University. Maps, Data and GIS Centre
+</version>
+<notes>
+Version 1.0 - Quickfile
+</notes>
+</verStmt>
+<biblCit>
+Leahey, A. 2016. Canadian Community Health Survey, 2014: Annual Component. [DDI file format]. Scholars Portal, Ontario Council of University Libraries, Toronto, Ontario [producer and distributor].
+</biblCit>
+</citation>
+<docSrc>
+<titlStmt>
+<titl>
+cchs-82M0013-E-2013-2014-Annual-component_F1
+</titl>
+</titlStmt>
+<distStmt>
+<depositr/>
+</distStmt>
+</docSrc>
+</docDscr>
+<stdyDscr>
+<citation>
+<titlStmt>
+<titl>Mayo Clinic Primary Biliary Cirrhosis Data</titl>
+<subTitl>
+conducted between 1974 and 1984
+</subTitl>
+<altTitl>
+conducted 1974:1984
+</altTitl>
+<parTitl>
+Enquête sur la santé dans les collectivités canadiennes, 2013-14
+</parTitl>
+<IDNo>
+cchs-82M0013-E-2013-2014-Annual-component
+</IDNo>
+</titlStmt>
+<rspStmt>
+<AuthEnty affiliation="Statistics Canada">
+Health Statistics Division
+</AuthEnty>
+</rspStmt>
+<prodStmt>
+<producer affiliation="Statistics Canada">
+Health Statistics Division
+</producer>
+<copyright>
+Copyright (c) Statistics Canada
+</copyright>
+<prodDate date="2016-03-08">
+2016-03-08
+</prodDate>
+<prodPlac>
+Statistics Canada, Ottawa, Ontario, Canada
+</prodPlac>
+<software version="4.0.9" date="2013-04-23">
+Nesstar Publisher
+</software>
+</prodStmt>
+<distStmt>
+<distrbtr abbr="DLI" affiliation="Statistics Canada" URI="http://www.statcan.gc.ca/eng/dli/dli">
+Data Liberation Initiative
+</distrbtr>
+<contact affiliation="Statistics Canada" URI="http://www.statcan.gc.ca/eng/dli/dli">
+Data Liberation Initiative (DLI)
+</contact>
+<depositr/>
+</distStmt>
+<serStmt>
+<serName>
+Canadian Community Health Survey
+</serName>
+<serInfo>
+<![CDATA[The Canadian Community Health Survey (CCHS) is a cross-sectional survey that collects information related to health status, health care utilization and health determinants for the Canadian population. The survey's objectives were to: 
+<ul>
+<li> support health surveillance programs by providing health data at the national, provincial and intra-provincial levels; </li>
+<li> provide a single data source for health research on small populations and rare characteristics; </li>
+<li>timely release of information easily accessible to a diverse community of users; and </li>
+<li> create a flexible survey instrument that includes a rapid response option to address emerging issues related to the health of the population.</li>
+</ul>]]>
+</serInfo>
+</serStmt>
+<verStmt>
+<version date="2016-03-08">
+March 08, 2016- Statistics Canada
+</version>
+</verStmt>
+<biblCit>
+Statistics Canada. 2016. Canadian Community Health Survey, 2013-2014: Annual component [public-use microdata file]. Ottawa, Ontario: Statistics Canada. Health Statistics Division, Data Liberation Initiative [producer and distributor].
+</biblCit>
+</citation>
+<stdyInfo>
+<subject>
+<keyword>
+Administration
+</keyword>
+<keyword>
+Alcohal Use
+</keyword>
+<keyword>
+Breast examination
+</keyword>
+<keyword>
+Cancer
+</keyword>
+<keyword>
+Chronic Conditions
+</keyword>
+<keyword>
+Dental visits
+</keyword>
+<keyword>
+Depression
+</keyword>
+<keyword>
+Diabetes
+</keyword>
+<keyword>
+Education
+</keyword>
+<keyword>
+Food Security
+</keyword>
+<keyword>
+Health Care
+</keyword>
+<keyword>
+Income
+</keyword>
+<keyword>
+Labour Force
+</keyword>
+<keyword>
+Mental Health
+</keyword>
+<keyword>
+Smoking
+</keyword>
+<keyword>
+Socio-demographics
+</keyword>
+<keyword>
+Stressors
+</keyword>
+<topcClas>
+Health
+</topcClas>
+</subject>
+<abstract>
+<![CDATA[The CCHS is a cross-sectional survey that collects information related to health status, health care utilization and health determinants for the Canadian population. It relies upon a large sample of respondents and is designed to provide reliable estimates at the health region level. The CCHS has the following objectives:</br>
+<ul>
+
+<li> Support health surveillance programs by providing health data at the national, provincial and intra-provincial levels; </li>
+<li> Provide a single data source for health research on small populations and rare characteristics; </li>
+<li>Timely release of information easily accessible to a diverse community of users; </li>
+<li>Create a flexible survey instrument that includes a rapid response option to address emerging issues related to the health of the population.</li>
+</ul>
+Since 2007, data for the Canadian Community Health Survey (CCHS) are collected yearly instead of every two years. While a sample of approximately 130,000 respondents were interviewed during the reference periods of 2001, 2003 and 2005, the sample size was changed to 65,000 respondents each year starting in 2007.
+</br></br>
+The CCHS produces an annual microdata file and a file combining two years of data. The CCHS collection years can also be combined by users to examine populations or rare characteristics. 
+The 2013-2014 master and PUMF files only contain optional content data for modules that were asked
+in both years, which applies to the vast majority of optional content data]]>
+</abstract>
+<sumDscr>
+<timePrd date="2013" event="start"/>
+<timePrd date="2014" event="end"/>
+<nation abbr="CAN">
+Canada
+</nation>
+<geogCover>
+Canada, Provinces, Territories
+</geogCover>
+<geogUnit>
+Health Regions
+</geogUnit>
+<anlyUnit>
+Health Regions
+</anlyUnit>
+<universe>
+<![CDATA[The CCHS targets persons aged 12 years and older who are living in private dwellings in the ten provinces and three territories. Persons living on Indian Reserves or Crown lands, those residing in institutions, full-time members of the Canadian Forces and residents of certain remote regions are excluded from this survey. The CCHS covers approximately 98% of the Canadian population aged 12 and older.
+
+The optional content is selected from a long list of modules available for inclusion in the CCHS. The content modules selected by a region are asked only of residents in the regions that selected these modules. In reality, since 2005 (cycle 3.1), the regions and provinces have opted to coordinate the optional content selected in order to ensure a uniform selection of optional modules provincially. The optional content may vary annually depending on needs and must be reviewed every two years.]]>
+</universe>
+<dataKind>
+Survey Data
+</dataKind>
+</sumDscr>
+</stdyInfo>
+<method>
+<dataColl>
+<dataCollector>
+Statistics Canada
+</dataCollector>
+<frequenc>
+Annual
+</frequenc>
+<sampProc>
+<![CDATA[<p>This is a sample survey with a cross-sectional design.</p>
+
+<p>To provide reliable estimates to the 110 health regions (HRs), a sample of 65,000 respondents is required on an annual basis. A multi-stage sample allocation strategy gives relatively equal importance to the HRs and the provinces. In the first step, the sample is allocated among the provinces according to the size of their respective populations and the number of HRs they contain. Each province's sample is then allocated among its HRs proportionally to the square root of the population in each HR. </p>
+
+<p>The CCHS uses three sampling frames to select the sample of households: 40.5% of the sample of households are selected from an area frame, 58.5% are selected from a list frame of telephone numbers and the remaining 1% are selected from a Random Digit Dialling (RDD) sampling frame. In the Nord-du-Québec and Prairie North health regions, only the RDD frame is used. In Nunavut, only the area frame is used. In the Yukon and Northwest Territories, most of the sample comes from the area frame but a small RDD sample is also selected in the territorial capitals. </p>
+
+<p>The CCHS uses the area frame designed for the Labour Force Survey (LFS) as its area frame. Thus, the sampling plan of the LFS must be considered in selecting the CCHS dwelling sample. The LFS plan is a complex two stage stratified design in which each stratum is formed of clusters. The LFS first selects clusters using a sampling method with a probability proportional to size (PPS), and then the final sample is chosen using a systematic sampling of dwellings in the cluster. The CCHS uses the LFS clusters, which it then stratifies by HRs. Lastly, it selects a sample of clusters and dwellings in each HR. </p>
+
+<p>The list frame of telephone numbers is used in all but five HRs to complement the area frame. The list frame is an external administrative frame of telephone numbers updated every six months. It is stratified by HR by means of a postal code conversion file in order to match the HRs to the telephone numbers. Telephone numbers are selected using a random sampling process in each HR. </p>
+
+<p>Lastly, in four HRs, a Random Digit Dialling (RDD) sampling frame of telephone numbers is used in accordance with the working banks technique, whereby only 100-number banks with at least one valid residential telephone number are retained. The banks are grouped in RDD strata to encompass, as closely as possible, the HR areas. Within each stratum, a 100-number bank is randomly chosen and a number between 00 and 99 is generated at random to create a complete, ten-digit telephone number. This procedure is repeated until the required sample size is reached. </p>
+
+<p>The size of the sample is enlarged during the selection process to account for non responses and units outside the coverage (for example, vacant dwellings, institutions, telephone numbers not in use, etc.). </p>
+
+<p>Once the dwelling or telephone number sample has been chosen, the next step is to select a member in each household. This decision is made at the time of contact for data collection. All members of the household are listed and a person aged 12 years or over is automatically selected using various selection probabilities based on age and household composition.</p>]]>
+</sampProc>
+<collMode>
+<![CDATA[Between January and December 2014, over 60,000 valid interviews were conducted using computer
+assisted interviewing (CAI). Approximately 40% of the interviews were conducted in person using
+computer assisted personal interviewing (CAPI) and the other 60% were conducted over the phone
+using computer assisted telephone interviewing (CATI).]]>
+</collMode>
+<sources/>
+</dataColl>
+<anlyInfo>
+<respRate>
+<![CDATA[Household-level response rate of 75.9%<br />
+Person-level response rate of 87.3%]]>
+</respRate>
+</anlyInfo>
+</method>
+<dataAccs>
+<useStmt>
+<restrctn>
+The data is restricted to use by current students, faculty and staff of &lt;a href="http://ocul.on.ca/" target="_blank"&gt;Ontario Council of University Libraries (OCUL)&lt;/a&gt; Member Libraries for academic research and teaching only.
+</restrctn>
+<contact affiliation="Statistics Canada" URI="http://www.statcan.gc.ca/eng/dli/dli">
+Data Liberation Initiative (DLI)
+</contact>
+<citReq>
+Under the new Licence agreement, all standard data products in the DLI collection are subject to Statistics Canada's Open Data Licence. The DLI members are now allowed to use the standard data products for non-profit, academic research and instruction. Also under the licence agreement, institutional members of the DLI have access to the entire PUMFs collection, as outlined in the Appendix 1 of the DLI Licence. They can use the PUMFs for statistical and research purposes but they cannot share the data files with non DLI members.
+</citReq>
+<conditions>
+DLI License
+<ExtLink URI="http://www.statcan.gc.ca/eng/dli/caselaw/license" title="DLI License"/>
+</conditions>
+</useStmt>
+</dataAccs>
+</stdyDscr>
+<fileDscr URI="cchs2013-2014.Nesstar?Index=0&amp;Name=CCHS_2013-2014_EN_PUMF">
+<fileTxt>
+<fileName ID="F1">
+CCHS_2013-2014_EN_PUMF.NSDstat
+</fileName>
+<dimensns>
+<caseQnty>
+127462
+</caseQnty>
+<varQnty>
+1003
+</varQnty>
+</dimensns>
+<fileType>
+Nesstar 200801
+</fileType>
+</fileTxt>
+</fileDscr>
+<dataDscr>
+<var ID="V1" name="age" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+in years
+</labl>
+<qstn>
+<qstnLit>
+age of participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V2" name="albumin" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+serum albumin(g/dl)
+</labl>
+<qstn>
+<qstnLit>
+serum albumin(g/dl) of participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V3" name="alk.phos" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+alkaline phosphotase (U/liter)
+</labl>
+<qstn>
+<qstnLit>
+alkaline phosphotase (U/liter) of participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V4" name="ascites" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+presence of ascites
+</labl>
+<qstn>
+<qstnLit>
+presence of ascites in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V5" name="ast" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+aspartate aminotransferase, once called SGOT (U/ml)
+</labl>
+<qstn>
+<qstnLit>
+aspartate aminotransferase, once called SGOT (U/ml) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V6" name="bili" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+serum bilirunbin (mg/dl)
+</labl>
+<qstn>
+<qstnLit>
+serum bilirunbin (mg/dl) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V7" name="chol" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+serum cholesterol (mg/dl)
+</labl>
+<qstn>
+<qstnLit>
+serum cholesterol (mg/dl) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V8" name="copper" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+urine copper (ug/day)
+</labl>
+<qstn>
+<qstnLit>
+urine copper (ug/day) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V9" name="edema" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+edema
+</labl>
+<qstn>
+<qstnLit>
+edema in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<catgry>
+<catValu>
+0
+</catValu>
+<labl>
+no edema
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+0.5
+</catValu>
+<labl>
+untreated or successfully treated
+</labl>
+<catStat type="freq">
+1985
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+125591.4
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+1
+</catValu>
+<labl>
+edema despite diuretic therapy
+</labl>
+<catStat type="freq">
+1985
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+125591.4
+</catStat>
+</catgry>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V10" name="hepato" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+presence of hepatomegaly or enlarged liver
+</labl>
+<qstn>
+<qstnLit>
+presence of hepatomegaly or enlarged liver in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V11" name="id" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+case number
+</labl>
+<qstn>
+<qstnLit>
+participant case number
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V12" name="platelet" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+platelet count
+</labl>
+<qstn>
+<qstnLit>
+platelet count in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V13" name="protime" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+standardised blood clotting time
+</labl>
+<qstn>
+<qstnLit>
+standardised blood clotting time in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V14" name="sex" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+Sex
+</labl>
+<qstn>
+<qstnLit>
+Sex of participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<catgry>
+<catValu>
+1
+</catValu>
+<labl>
+Male
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+2
+</catValu>
+<labl>
+Female
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V15" name="spiders" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+blood vessel malformations in the skin
+</labl>
+<qstn>
+<qstnLit>
+blood vessel malformations in the skin in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V16" name="stage" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+histologic stage of disease (needs biopsy)
+</labl>
+<qstn>
+<qstnLit>
+histologic stage of disease (needs biopsy) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V17" name="status" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+status at endpoint
+</labl>
+<qstn>
+<qstnLit>
+status at endpoint in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<catgry>
+<catValu>
+0
+</catValu>
+<labl>
+censored
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+1
+</catValu>
+<labl>
+transplant
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+2
+</catValu>
+<labl>
+dead
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V18" name="time" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+number of days between registration and the earlier of death,
+transplantion, or study analysis in July, 1986
+</labl>
+<qstn>
+<qstnLit>
+number of days between registration and the earlier of death,
+transplantion, or study analysis in July, 1986 in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V19" name="trt" wgt-var="V1003" files="F1" dcml="0" intrvl="discrete">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+trt
+</labl>
+<qstn>
+<qstnLit>
+trt in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<catgry>
+<catValu>
+1
+</catValu>
+<labl>
+D-penicillmain
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+2
+</catValu>
+<labl>
+placebo
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<catgry>
+<catValu>
+3
+</catValu>
+<labl>
+not randomised
+</labl>
+<catStat type="freq">
+3979
+</catStat>
+<catStat wgtd="wgtd" type="freq">
+452484.6
+</catStat>
+</catgry>
+<varFormat type="numeric" schema="other"/>
+</var>
+<var ID="V20" name="trig" wgt-var="V1003" files="F1" dcml="0" intrvl="contin">
+<location StartPos="9" EndPos="14" width="6" RecSegNo="1"/>
+<labl>
+triglycerides (mg/dl)
+</labl>
+<qstn>
+<qstnLit>
+triglycerides (mg/dl) in participant
+</qstnLit>
+</qstn>
+<valrng>
+<range min="1" max="127462"/>
+</valrng>
+<sumStat type="vald">
+127462
+</sumStat>
+<sumStat wgtd="wgtd" type="vald">
+30002817
+</sumStat>
+<sumStat type="invd">
+0
+</sumStat>
+<sumStat wgtd="wgtd" type="invd">
+0
+</sumStat>
+<sumStat type="min">
+1
+</sumStat>
+<sumStat type="max">
+127462
+</sumStat>
+<sumStat type="mean">
+63731.5
+</sumStat>
+<sumStat wgtd="wgtd" type="mean">
+63720.201
+</sumStat>
+<sumStat type="stdev">
+36795.254
+</sumStat>
+<sumStat wgtd="wgtd" type="stdev">
+36814.963
+</sumStat>
+<varFormat type="numeric" schema="other"/>
+</var>
+</dataDscr>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/2013-14/CCHS_2013-2014_Alpha_Index.pdf">
+<labl>
+Alphabetic Index - PUMF (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/2013-14/CCHS_2013-2014_CV_Tables.pdf">
+<labl>
+Approximate Sampling Variability Tables (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/CCHS_2014_2013-2014_Complement_User_Guide.pdf">
+<labl>
+Complement to the User Guide - PUMF (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/2013-14/CCHS_2013-2014_DataDictionary_Freqs.pdf">
+<labl>
+Data Dictionary (Frequencies) - PUMF (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/CCHS_2013-2014_Derived_Variables.pdf">
+<labl>
+Derived Variables (DV) (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/Microdata_license_agreement.pdf">
+<labl>
+Microdata Licence Agreement (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/QUALIT_E.pdf">
+<labl>
+Quality Assurance (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/CCHS_2014_Questionnaire.pdf">
+<labl>
+Questionnaire (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/2013-14/CCHS_2013-2014_Record_Layout.pdf">
+<labl>
+Record Layout - PUMF (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/2013-14/CCHS_2013-2014_Topical_Index.pdf">
+<labl>
+Topical Index - PUMF (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2013-2014/2013-2014/doc/CCHS_2014_2013-2014_User_Guide.pdf">
+<labl>
+User Guide (pdf)
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2014/doc/2000-2018 CCS-PSA.XLSX">
+<labl>
+<![CDATA[Custom Table - Occurrences of Colorectal Cancer Screening  (CCS) and Prostate Cancer Screening (PSA) (xls)]]>
+</labl>
+</otherMat>
+<otherMat level="study" URI="http://odesi.scholarsportal.info/documentation/CCHS_2014/doc/CCHS Content Selection_ ESCC sélection du contenu 2000-2018.xlsx">
+<labl>
+Custom Table - Modules selected by particular provinces (xls)
+</labl>
+</otherMat>
+</codeBook>

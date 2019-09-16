@@ -25,7 +25,6 @@ ReadDDI <- function(ddiPath, ddiFile) {
     SuppressFunctionOutput(DDIwR::getMetadata(paste(ddiPath, ddiFile, sep = "/")))
   additionalDDIMetaData <-
     xml2::as_list(xml2::read_xml(paste(ddiPath, ddiFile, sep = "/")))
-  
   for (singleVariableIndex in 1:length(additionalDDIMetaData$codeBook$dataDscr)) {
     if (!is.null(attr(additionalDDIMetaData$codeBook$dataDscr[[singleVariableIndex]], "name", exact = TRUE))) {
       varName <-
@@ -36,6 +35,7 @@ ReadDDI <- function(ddiPath, ddiFile) {
         varName
     }
   }
+  
   ddiObject <-
     list(variableMetaData = ddiMetaData, ddiObject = additionalDDIMetaData)
   attr(ddiObject, "class") <-
@@ -124,17 +124,15 @@ WriteDDIPopulatedMSW <- function(x, ...) {
 WriteDDIPopulatedMSW.BLLFlow <-
   function(x, pathToWriteTo, newFileName, ...) {
     bllFlow <- x
-
+    
     # create new directory if one does not exist
     if (!dir.exists(pathToWriteTo)) {
       dir.create(file.path(getwd(), pathToWriteTo))
     }
     
-    write.csv(
-      bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
-      file = file.path(pathToWriteTo, newFileName),
-      row.names = FALSE
-    )
+    write.csv(bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
+              file = file.path(pathToWriteTo, newFileName),
+              row.names = FALSE)
   }
 
 #' @describeIn WriteDDIPopulatedMSW Updates an existing variable details worksheet
@@ -243,27 +241,27 @@ GetDDIVariables <- function(ddi, varList) {
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, variables, variableDetails)
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, variables)
 #' pbcModel <- bllflow::UpdateMSW(pbcModel, newMSWVariableDeatails = variableDetails)
-UpdateMSW <-
-  function(bllModel,
-           newMSWVariables = NULL,
-           newMSWVariableDeatails = NULL,
-           newDDI = NULL) {
-    if (!is.null(newDDI)) {
-      bllModel[[pkg.globals$bllFlowContent.DDI]] <- newDDI
-      bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
-        ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], bllModel[[pkg.globals$bllFlowContent.VariableDetails]])
-    }
-    if (!is.null(newMSWVariables)) {
-      bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
-    }
-    if (!is.null(newMSWVariableDeatails)) {
-      bllModel[[pkg.globals$bllFlowContent.VariableDetails]] <-
-        newMSWVariableDeatails
-      if (!is.null(bllModel[[pkg.globals$bllFlowContent.DDI]])) {
-        bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
-          ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], newMSWVariableDeatails)
-      }
-    }
-    
-    return(bllModel)
+UpdateMSW <- function(bllModel,
+                      newMSWVariables = NULL,
+                      newMSWVariableDeatails = NULL,
+                      newDDI = NULL) {
+  if (!is.null(newDDI)) {
+    bllModel[[pkg.globals$bllFlowContent.DDI]] <- newDDI
+    bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
+      ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], bllModel[[pkg.globals$bllFlowContent.VariableDetails]])
+    bllModel[[pkg.globals$bllFlowContent.AdditionalMetaData]] <- GetDDIDescription(newDDI)
   }
+  if (!is.null(newMSWVariables)) {
+    bllModel[[pkg.globals$bllFlowContent.Variables]] <- newMSWVariables
+  }
+  if (!is.null(newMSWVariableDeatails)) {
+    bllModel[[pkg.globals$bllFlowContent.VariableDetails]] <-
+      newMSWVariableDeatails
+    if (!is.null(bllModel[[pkg.globals$bllFlowContent.DDI]])) {
+      bllModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]] <-
+        ProcessDDIVariableDetails(bllModel[[pkg.globals$bllFlowContent.DDI]], newMSWVariableDeatails)
+    }
+  }
+  
+  return(bllModel)
+}
