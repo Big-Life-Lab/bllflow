@@ -267,9 +267,14 @@ RecodeColumns <-
            printNote,
            elseDefault) {
     # Split variables to process into recode map and func
-    mapVariablesToProcess <- variablesToProcess[grepl("map::",variablesToProcess[pkg.globals$argument.CatValue]),]
+    mapVariablesToProcess <-
+      variablesToProcess[grepl("map::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
     
-    funcVariablesToProcess <- variablesToProcess[grepl("func::",variablesToProcess[pkg.globals$argument.CatValue]),]
+    funcVariablesToProcess <-
+      variablesToProcess[grepl("Func::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
+    
+    recVariablesToProcess <-
+      variablesToProcess[!grepl("Func::|map::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
     
     labelList <- list()
     # Set interval if none is present
@@ -277,18 +282,18 @@ RecodeColumns <-
     validIntervals <- c("[,]", "[,)", "(,]")
     intervalDefault <- "[,)"
     recodedData <- dataSource[, 0]
-    if (is.null(variablesToProcess[[pkg.globals$argument.Interval]])) {
+    if (is.null(recVariablesToProcess[[pkg.globals$argument.Interval]])) {
       intervalPresent <- FALSE
     }
     
     # Loop through the rows of recode vars
-    while (nrow(variablesToProcess) > 0) {
+    while (nrow(recVariablesToProcess) > 0) {
       variableBeingChecked <-
-        as.character(variablesToProcess[1, pkg.globals$argument.Variables])
+        as.character(recVariablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        recVariablesToProcess[recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+      recVariablesToProcess <-
+        recVariablesToProcess[!recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
       firstRow <- rowsBeingChecked[1, ]
       # Check for varialbe existance in data
       dataVariableBeingChecked <-
@@ -327,11 +332,13 @@ RecodeColumns <-
         }
         
         # Set factor for all recode values
-        labelList[[variableBeingChecked]] <- CreateLabelListElement(rowsBeingChecked)
+        labelList[[variableBeingChecked]] <-
+          CreateLabelListElement(rowsBeingChecked)
         elseValue <-
           as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
         if (length(elseValue) == 1) {
-          elseValue <- RecodeVariableNAFormating(elseValue, labelList[[variableBeingChecked]]$type)
+          elseValue <-
+            RecodeVariableNAFormating(elseValue, labelList[[variableBeingChecked]]$type)
           if (isEqual(elseValue, "copy")) {
             dataVariableBeingChecked <-
               GetDataVariableName(
@@ -407,7 +414,7 @@ RecodeColumns <-
             } else{
               if (fromValues[[1]] == fromValues[[2]]) {
                 interval <- "[,]"
-              }else{
+              } else{
                 interval <- intervalDefault
               }
               validRowIndex <- CompareValueBasedOnInterval(
@@ -425,7 +432,8 @@ RecodeColumns <-
             logTable[row, "rowsRecoded"] <-
               sum(validRowIndex, na.rm = TRUE)
             
-            valueRecorded <- RecodeVariableNAFormating(valueRecorded, labelList[[variableBeingChecked]]$type)
+            valueRecorded <-
+              RecodeVariableNAFormating(valueRecorded, labelList[[variableBeingChecked]]$type)
             if (isEqual(valueRecorded, "copy")) {
               valueRecorded <-
                 dataSource[validRowIndex, dataVariableBeingChecked]
@@ -461,6 +469,17 @@ RecodeColumns <-
       }
     }
     
+    # Process funcVars
+    derivedReturn <-
+      RecodeDerivedVariables(
+        recodedData = recodedData,
+        variablesToProcess = funcVariablesToProcess,
+        log = log,
+        printNote = printNote,
+        elseDefault = elseDefault,
+        labelList = labelList,
+        varStack = c()
+      )
     # Populate data Labels
     recodedData <-
       LabelData(labelList = labelList, dataToLabel = recodedData)
@@ -559,11 +578,43 @@ RecodeVariableNAFormating <- function(cellValue, varType) {
       recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
     }
   } else{
-    if (!isEqual(varType, pkg.globals$argument.CatType) && !isEqual(cellValue, "copy")) {
+    if (!isEqual(varType, pkg.globals$argument.CatType) &&
+        !isEqual(cellValue, "copy")) {
       cellValue <- as.numeric(cellValue)
     }
     recodeValue <- cellValue
   }
   
   return(recodeValue)
+}
+
+RecodeDerivedVariables <- function(recodedData,
+                                   variablesToProcess,
+                                   log,
+                                   printNote,
+                                   elseDefault,
+                                   labelList,
+                                   varStack) {
+  # Check for rows present
+  if (nrow(variablesToProcess) > 0) {
+    sampleRow <- variablesToProcess[1, ]
+    varName <- sampleRow[[pkg.globals$argument.Variables]]
+    feederVars <-
+      as.list(strsplit(sampleRow[[pkg.globals$argument.VariableStart]], "::"))[[1]][[2]]
+    feederVars <- gsub("\\[|\\]", "", feederVars)
+    feederVars <- as.list(strsplit(feederVars,","))[[1]]
+    feederVars <- setdiff(feederVars,names(recodedData))
+    # Check for presense in varStack
+    if (varName %in% varStack) {
+      
+    }
+  }else{
+    print("HMMMMMMMMM")
+  }
+  # Get one row to check for vars
+  
+  # if var not in recodeData check stack
+  # if in stack error in not recurse with smaller variable to process
+  # if not in variable to processes error
+  
 }
