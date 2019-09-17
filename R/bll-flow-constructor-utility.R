@@ -56,9 +56,9 @@ PopulateVariableDetails <-
             NULL
           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck, ])
         } else if (!is.null(ddiVariables[[nameBeingChecked]][[nameBeingChecked]]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartLow])) {
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType]) &
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh]) &
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartLow])) {
           contVariableBeingChecked <-
             ddiVariables[[nameBeingChecked]][[nameBeingChecked]]
           if (rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh] == contVariableBeingChecked[[pkg.globals$argument.VariableStartHigh]] &
@@ -235,8 +235,7 @@ AddDDIToList <- function(variableStartType,
   retList[[pkg.globals$argument.CatStartValue]] <- catStartValue
   retList[[pkg.globals$argument.CatStartLabel]] <- catStartLabel
   retList[[pkg.globals$argument.VariableStartLabel]] <- variableStartLabel
-  retList[[pkg.globals$argument.VariableStartLow]] <- variableStartLow
-  retList[[pkg.globals$argument.VariableStartHigh]] <- variableStartHigh
+  retList[[pkg.globals$argument.VariableStartHighLow]] <- paste(variableStartLow, ":",variableStartHigh, sep = "")
   
   return(retList)
 }

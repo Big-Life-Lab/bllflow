@@ -31,9 +31,9 @@ CheckIfCellIsEmpty <-
            columnName,
            ddiValue) {
     isEmpty <- TRUE
-    if (!is.null(cellContent) &
-        !is.na(cellContent) &
-        cellContent != "" & cellContent != ddiValue) {
+    if (!is.null(cellContent) &&
+        !is.na(cellContent) &&
+        cellContent != "" && cellContent != ddiValue) {
       warning(
         paste(
           "Row ",

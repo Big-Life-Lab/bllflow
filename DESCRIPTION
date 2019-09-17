@@ -25,7 +25,9 @@ Depends:
   R (>= 3.2),
   tableone,
   DDIwR,
-  xml2
+  xml2,
+  sjlabelled,
+  haven
 Imports:
   rstudioapi,
   glue,
