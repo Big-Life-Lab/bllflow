@@ -596,25 +596,100 @@ RecodeDerivedVariables <- function(recodedData,
                                    labelList,
                                    varStack) {
   # Check for rows present
-  if (nrow(variablesToProcess) > 0) {
+  while (nrow(variablesToProcess) > 0) {
     sampleRow <- variablesToProcess[1, ]
     varName <- sampleRow[[pkg.globals$argument.Variables]]
+    varStack <- c(varStack, varName)
+    # obtain rows to process and updated variables to Process
+    rowsToProcess <-
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == varName,]
+    variablesToProcess <-
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] != varName,]
+    
+    # Check for presence of feeder variables in data and in the variable being processed stack
     feederVars <-
       as.list(strsplit(sampleRow[[pkg.globals$argument.VariableStart]], "::"))[[1]][[2]]
     feederVars <- gsub("\\[|\\]", "", feederVars)
-    feederVars <- as.list(strsplit(feederVars,","))[[1]]
-    feederVars <- setdiff(feederVars,names(recodedData))
+    feederVars <- as.list(strsplit(feederVars, ","))[[1]]
+    usedFeederVars <- feederVars
+    feederVars <- setdiff(feederVars, names(recodedData))
+    
     # Check for presense in varStack
-    if (varName %in% varStack) {
-      
+    if (length(intersect(feederVars, varStack)) > 0) {
+      conflictVars <- intersect(feederVars, varStack)
+      stop(
+        paste(
+          conflictVars,
+          "is required to create",
+          varName,
+          "but",
+          varName,
+          "is needed to create",
+          conflictVars
+        )
+      )
     }
-  }else{
-    print("HMMMMMMMMM")
+    
+    # # Update varStack and recurse to get the feeder vars
+    # for (oneFeeder in feederVars) {
+    #   # Need to check recoded data again in case a recursion added it
+    #   if (!oneFeeder %in% names(recodedData)) {
+    #     derivedReturn <-
+    #       RecodeDerivedVariables(
+    #         recodedData = recodedData,
+    #         variablesToProcess = variablesToProcess,
+    #         log = log,
+    #         printNote = printNote,
+    #         elseDefault = elseDefault,
+    #         labelList = labelList,
+    #         varStack = varStack
+    #       )
+    #     varStack <- derivedReturn$varStack
+    #     labelList <- derivedReturn$labelList
+    #     recodedData <- derivedReturn$recodedData
+    #     variablesToProcess <- derivedReturn$variablesToProcess
+    #   }
+    # }
+    
+    # Obtain the function for each row
+    for (rowNum in 1:nrow(rowsToProcess)) {
+      rowBeingChecked <- rowsToProcess[rowNum, ]
+      funcCell <- rowBeingChecked[[pkg.globals$argument.CatValue]]
+      functionBeingUsed <-
+        as.list(strsplit(funcCell, "::"))[[1]][[2]]
+      
+      # USE *list to unpack into seperate args
+      
+      # Use from to calculate ranges for values
+      fromCell <- rowBeingChecked[[pkg.globals$argument.From]]
+      fromValues <- as.list(strsplit(fromCell, ","))[[1]]
+      # Catch default and else from values
+      
+      # Seperate the from into variables then find rows with appropriate ranges
+      
+      # Find common rows between all the sets of appropriate rows
+      
+      # Apply function on just those rows
+      columnValue <-
+        apply(
+          recodedData,
+          1,
+          CalculateCustomFunctionRowValue,
+          variableNames = usedFeederVars,
+          customFunctionName = functionBeingUsed
+        )
+    }
   }
-  # Get one row to check for vars
-  
-  # if var not in recodeData check stack
-  # if in stack error in not recurse with smaller variable to process
-  # if not in variable to processes error
-  
 }
+CalculateCustomFunctionRowValue <-
+  function(row, variableNames, customFunctionName) {
+    rowValues <- list()
+    for (singleVarName in variableNames) {
+      rowValues <- append(rowValues, row[[singleVarName]])
+    }
+    
+    customFunctionReturnValue <-
+      do.call(get(customFunctionName), rowValues)
+    
+    return(customFunctionReturnValue)
+  }
