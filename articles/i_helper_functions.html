@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Helper and utility functions • bllflow</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Helper and utility functions">
@@ -47,45 +48,7 @@
 <li>
   <a href="../articles/bllflow.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Workflow
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/a_workflow.html">Workflow overview</a>
-    </li>
-    <li>
-      <a href="../articles/b_model_specification.html">1 - Specifying your model</a>
-    </li>
-    <li>
-      <a href="../articles/c_describing_data.html">2 - Describing the study cohort</a>
-    </li>
-    <li>
-      <a href="../articles/d_clean_data.html">3 - Data cleaning and variable transformation</a>
-    </li>
-    <li>
-      <a href="../articles/e_model_development.html">4 - Developing a (predictive) model</a>
-    </li>
-    <li>
-      <a href="../articles/f_model_performance.html">5 - Reporting the performance of a model</a>
-    </li>
-    <li>
-      <a href="../articles/g_model_description.html">6 - Describing and reporting a model</a>
-    </li>
-    <li>
-      <a href="../articles/h_model_deployment.html">7 - (predictive) Model deployment</a>
-    </li>
-    <li>
-      <a href="../articles/i_helper_functions.html">Helper and utility functions</a>
-    </li>
-    <li>
-      <a href="../articles/j_reference_files.html">Reference files - variable labels and metadata</a>
-    </li>
-  </ul>
-</li>
+<li class="dropdown-header">Workflow</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -101,7 +64,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -115,6 +78,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -145,21 +109,21 @@
 <div id="example-1-read-the-ddi-xml-file-for-your-data-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#example-1-read-the-ddi-xml-file-for-your-data-" class="anchor"></a>Example 1: Read the DDI xml file for your data.</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), <span class="st">"pbcDDI.xml"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), <span class="st">"pbcDDI.xml"</span>)</a></code></pre></div>
 <p>Your metadata is now stored in the <code>pbcDDI</code> object in two formats:</p>
 <ol style="list-style-type: decimal">
 <li>Variable and format labels can be accessed in <code>pbcDDI$variableMetaData</code>. All DDI metadata is brought into the <code>pbcDDI</code> object. For example, variable labels can be accessed as follows:</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(pbcDDI<span class="op">$</span>variableMetaData<span class="op">$</span>varlab) <span class="co"># variable labels</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(pbcDDI<span class="op">$</span>variableMetaData<span class="op">$</span>varlab) <span class="co"># variable labels</span></a></code></pre></div>
 <pre><code>##  NULL</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/str">str</a></span>(pbcDDI<span class="op">$</span>variableMetaData<span class="op">$</span>vallab) <span class="co"># value labels for categorial variables</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(pbcDDI<span class="op">$</span>variableMetaData<span class="op">$</span>vallab) <span class="co"># value labels for categorial variables</span></a></code></pre></div>
 <pre><code>##  NULL</code></pre>
 <p><code>variableMetaData</code> is generated using the <code>DDIwR</code> package.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>All metadata from the DDI document <code>pbcDDI$ddiObject</code>. Careful Get the varialbe metadata for variableDetails sheet from DDI and add that the bllFlow MSW-DDI object. Careful printing: there can be a lot of information! And there can be a lot of nested lists.</li>
 </ol>
 <p>Get the name of the data.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Dataset name: </span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Dataset name: </span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
 <pre><code>## Dataset name:</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">pbcDDI<span class="op">$</span>ddiObject<span class="op">$</span>codeBook<span class="op">$</span>docDscr<span class="op">$</span>citation<span class="op">$</span>titlStmt<span class="op">$</span>titl</a></code></pre></div>
 <pre><code>## [[1]]
@@ -169,47 +133,49 @@
 <a href="#example-2-use-ddi-to-add-variable-labels-and-other-information-for-your-model-variables-" class="anchor"></a>Example 2: Use DDI to add variable labels and other information for your model variables.</h4>
 <p>The MSW <code>variables</code> and <code>variableDetail.csv</code> file contains the variables in your model. Use the <code><a href="../reference/BLLFlow.html">BLLFlow()</a></code> function with the MSW files as attributes to add labels to the BLLFlow object, (<code>variables</code> and <code>variableDetails</code> and the DDI object (<code>pbcDDI</code>).</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># read the MSW files</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2">variables &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
+<a class="sourceLine" id="cb10-3" data-line-number="3">variableDetails &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
 <a class="sourceLine" id="cb10-4" data-line-number="4"></a>
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="co"># create a BLLFlow object and add labels.</span></a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variables, variableDetails, pbcDDI)</a></code></pre></div>
 <pre><code>## Warning: Row 2 : valueLabelStart column has value " male " but DDI value is
 ## " Male ". Not overwriting</code></pre>
+<pre><code>## Warning: Row 2 : from column has value " 1 " but DDI value is " 1:1 ". Not
+## overwriting</code></pre>
 <pre><code>## Warning: Row 1 : valueLabelStart column has value " female " but DDI value
 ## is " Female ". Not overwriting</code></pre>
+<pre><code>## Warning: Row 1 : from column has value " 2 " but DDI value is " 2:2 ". Not
+## overwriting</code></pre>
 <pre><code>## Warning: Row 9 : valueLabelStart column has value " No edema " but DDI
 ## value is " edema despite diuretic therapy ". Not overwriting</code></pre>
 <pre><code>## Warning: Row 9 : label column has value " Edema " but DDI value is " edema
 ## ". Not overwriting</code></pre>
-<pre><code>## Warning: Row 9 : low column has value " 0 " but DDI value is " 1 ". Not
-## overwriting</code></pre>
-<pre><code>## Warning: Row 9 : high column has value " 0 " but DDI value is " 1 ". Not
+<pre><code>## Warning: Row 9 : from column has value " 0 " but DDI value is " 1:1 ". Not
 ## overwriting</code></pre>
 <p>Metadata is added to <code>variables</code> and <code>variableDetails</code>. If labels and other metadata already were in the files, the DDI metadata is added to <code>startLabel</code>, <code>startType</code>, <code>catStartValue</code>, <code>catStartLabel</code>, <code>startLow</code>, <code>startHigh</code> — if that data is in the DDI file.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"Variable labels in the original MSW</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"Variable labels in the original MSW</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
 <pre><code>## Variable labels in the original MSW</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1">variables<span class="op">$</span>label</a></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" data-line-number="1">variables<span class="op">$</span>label</a></code></pre></div>
 <pre><code>## [1] Age (years)      Sex              Bilirubin        Albumin         
 ## [5] Prothrombin time Edema           
 ## Levels: Age (years) Albumin Bilirubin Edema Prothrombin time Sex</code></pre>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">No variable labels from DDI in variable details</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">No variable labels from DDI in variable details</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
 <pre><code>## 
 ## No variable labels from DDI in variable details</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">variableDetails<span class="op">$</span>label</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1">variableDetails<span class="op">$</span>label</a></code></pre></div>
 <pre><code>##  [1] Sex         Sex         Sex         Age (years) Age (years)
 ##  [6] Age (years) Age (years) Age (years) Edema       Edema      
 ## [11] Edema       Edema       Age group   Age group   Age group  
-## [16] Age group  
+## [16] Age group   Age group  
 ## Levels: Age (years) Age group Edema Sex</code></pre>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cat">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">DDI variable lables added to variableDetailsWithDDI</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/cat.html">cat</a></span>(<span class="st">"</span><span class="ch">\n</span><span class="st">DDI variable lables added to variableDetailsWithDDI</span><span class="ch">\n</span><span class="st">"</span>)</a></code></pre></div>
 <pre><code>## 
 ## DDI variable lables added to variableDetailsWithDDI</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">pbcModel<span class="op">$</span>populatedVariableDetails<span class="op">$</span>label</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb28-1" data-line-number="1">pbcModel<span class="op">$</span>populatedVariableDetails<span class="op">$</span>label</a></code></pre></div>
 <pre><code>##  [1] Sex         Sex         Sex         Age (years) Age group  
 ##  [6] Age (years) Age group   Age (years) Age group   Age (years)
-## [11] Age group   Age (years) in years    Edema       Edema      
-## [16] Edema       Edema       edema       edema      
+## [11] Age group   Age (years) Age group   in years    Edema      
+## [16] Edema       Edema       Edema       edema       edema      
 ## Levels: Age (years) Age group Edema Sex in years edema</code></pre>
 </div>
 <div id="example-3-write-msw_ddi-to-msw-csv" class="section level4">
@@ -218,30 +184,32 @@
 <p>Use <code><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW()</a></code> to create a MSW <code>variable details</code> CSV file. (change to new name <code>variableDetailsWithDDI()</code>) using <code>variableDetailsWithDDI()</code>. Then export using <code><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW()</a></code> as a CSV file to help further develop your study protocol.</p>
 <p><code><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW()</a></code> is a handy function at the beginning of your study. First, identify thes ariable you need in your study. Then create a ‘bane bones’ MSW <code>variables</code> CSV sheet, import into R and <code><a href="../reference/BLLFlow.html">BLLFlow()</a></code> to add additional information from the DDI reference file such as labels, variable types, categories.</p>
 <p>Alternatively, 1) directly add metadata to variables in a CSV file (see general utility functions in <em>Example X</em>); or, 2) export a CSV with metadata from an R variable list and a DDI file.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" data-line-number="1"><span class="kw"><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW</a></span>(pbcModel, <span class="st">"../inst/extdata/"</span>, <span class="st">"newMSWvariableDetails.csv"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw"><a href="../reference/WriteDDIPopulatedMSW.html">WriteDDIPopulatedMSW</a></span>(pbcModel, <span class="st">"../inst/extdata/"</span>, <span class="st">"newMSWvariableDetails.csv"</span>)</a></code></pre></div>
 <p>Creates a directory and file (if they don’t already exists). <code>newMSWvariableDetails.csv</code> will be overwritten if the file already exists. <code>newMSWvariableDetails.csv</code> is created from <code>variableDetailsWithDDI</code>. First create <code>variableDetailsWithDDI</code> with either <code>BLLFLow()</code> or <code><a href="../reference/GetDDIVariables.html">GetDDIVariables()</a></code>.</p>
 <p>Create a new file (<code>newName.csv</code>) directly from an existing variableDetails.csv.</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="co"># Writing does not work with pkgdown howver evaluation works on user machine</span></a>
-<a class="sourceLine" id="cb30-2" data-line-number="2"><span class="co">#WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", </span></a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="co">#                  "newMSWvariableDetails.csv", </span></a>
-<a class="sourceLine" id="cb30-4" data-line-number="4"><span class="co">#                  "nonBLLPopulated.csv")</span></a></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1"><span class="co"># Writing does not work with pkgdown howver evaluation works on user machine</span></a>
+<a class="sourceLine" id="cb31-2" data-line-number="2"><span class="co">#WriteDDIPopulatedMSW(pbcDDI, "../inst/extdata/", </span></a>
+<a class="sourceLine" id="cb31-3" data-line-number="3"><span class="co">#                  "newMSWvariableDetails.csv", </span></a>
+<a class="sourceLine" id="cb31-4" data-line-number="4"><span class="co">#                  "nonBLLPopulated.csv")</span></a></code></pre></div>
 </div>
 <div id="example-4-update-bblflow-with-new-variables" class="section level4">
 <h4 class="hasAnchor">
 <a href="#example-4-update-bblflow-with-new-variables" class="anchor"></a>Example 4: Update BBLFLow with new variables</h4>
 <p>Do we need or want this? Rusty, can you write in a vignette? Replaces the models msw with all or either variables or variableDetails. Passing variableDetails also updates the populatedVariableDetails</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/UpdateMSW.html">UpdateMSW</a></span>(pbcModel, variables, variableDetails)</a></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb32-1" data-line-number="1">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/UpdateMSW.html">UpdateMSW</a></span>(pbcModel, variables, variableDetails)</a></code></pre></div>
 <pre><code>## Warning: Row 2 : valueLabelStart column has value " male " but DDI value is
 ## " Male ". Not overwriting</code></pre>
+<pre><code>## Warning: Row 2 : from column has value " 1 " but DDI value is " 1:1 ". Not
+## overwriting</code></pre>
 <pre><code>## Warning: Row 1 : valueLabelStart column has value " female " but DDI value
 ## is " Female ". Not overwriting</code></pre>
+<pre><code>## Warning: Row 1 : from column has value " 2 " but DDI value is " 2:2 ". Not
+## overwriting</code></pre>
 <pre><code>## Warning: Row 9 : valueLabelStart column has value " No edema " but DDI
 ## value is " edema despite diuretic therapy ". Not overwriting</code></pre>
 <pre><code>## Warning: Row 9 : label column has value " Edema " but DDI value is " edema
 ## ". Not overwriting</code></pre>
-<pre><code>## Warning: Row 9 : low column has value " 0 " but DDI value is " 1 ". Not
-## overwriting</code></pre>
-<pre><code>## Warning: Row 9 : high column has value " 0 " but DDI value is " 1 ". Not
+<pre><code>## Warning: Row 9 : from column has value " 0 " but DDI value is " 1:1 ". Not
 ## overwriting</code></pre>
 </div>
 <div id="example-5--more-general-ddi-utily-functions" class="section level4">
@@ -253,15 +221,15 @@
 <p><code><a href="../reference/GetDDIVariables.html">GetDDIVariables()</a></code> returns a dataframe with variable DDI metadata for a list of variables. DDI variable metadata is typical codebook information such as labels, types, valid and invalid categories, category labels, and descriptive statistics, such as number valid responses, missing responses, minimum, maximum and mean values.</p>
 <p>The <em>bllflow</em> workflow creates an ongoing, updated codebook as you perform your study. The oringial data DDI metadata is the starting point for keeping the updated codebook. The <em>bllflow</em> then creates and modifies an new instance of the codebook as you perform analyses. In addition, a log is created that describes the data cleaning and data transformation steps.</p>
 <p>getDDIDescription(DDIPath = ddiPath, DDIFile = ddiFile) # same as calling BLLFlow(pbc, getDDI = c(ddiPath, ddiFile, “description”), but would not add the info to the bllFlow object.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), </a>
-<a class="sourceLine" id="cb38-2" data-line-number="2">                <span class="st">"pbcDDI.xml"</span>)</a>
-<a class="sourceLine" id="cb38-3" data-line-number="3"><span class="co"># all the DDI metadata</span></a>
-<a class="sourceLine" id="cb38-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb38-5" data-line-number="5">varsForPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetDDIVariables.html">GetDDIVariables</a></span>(pbcDDI, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"age"</span>, <span class="st">"sex"</span>))</a>
-<a class="sourceLine" id="cb38-6" data-line-number="6"><span class="co"># all the variable metadata (but no study description infomation)</span></a>
-<a class="sourceLine" id="cb38-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb38-8" data-line-number="8">descrForPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetDDIDescription.html">GetDDIDescription</a></span>(pbcDDI)</a>
-<a class="sourceLine" id="cb38-9" data-line-number="9"><span class="co"># all the study description metadata (but no variable infomation)</span></a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1">pbcDDI &lt;-<span class="st"> </span><span class="kw"><a href="../reference/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">"../inst/extdata"</span>), </a>
+<a class="sourceLine" id="cb40-2" data-line-number="2">                <span class="st">"pbcDDI.xml"</span>)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="co"># all the DDI metadata</span></a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb40-5" data-line-number="5">varsForPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetDDIVariables.html">GetDDIVariables</a></span>(pbcDDI, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"age"</span>, <span class="st">"sex"</span>))</a>
+<a class="sourceLine" id="cb40-6" data-line-number="6"><span class="co"># all the variable metadata (but no study description infomation)</span></a>
+<a class="sourceLine" id="cb40-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb40-8" data-line-number="8">descrForPbc &lt;-<span class="st"> </span><span class="kw"><a href="../reference/GetDDIDescription.html">GetDDIDescription</a></span>(pbcDDI)</a>
+<a class="sourceLine" id="cb40-9" data-line-number="9"><span class="co"># all the study description metadata (but no variable infomation)</span></a></code></pre></div>
 </div>
 </div>
 </div>
@@ -281,13 +249,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Doug Manuel, Rostyslav Vyuha, Meltem Tuna.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

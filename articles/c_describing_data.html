@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2 - Describing the study cohort • bllflow</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="2 - Describing the study cohort">
@@ -47,45 +48,7 @@
 <li>
   <a href="../articles/bllflow.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Workflow
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="../articles/a_workflow.html">Workflow overview</a>
-    </li>
-    <li>
-      <a href="../articles/b_model_specification.html">1 - Specifying your model</a>
-    </li>
-    <li>
-      <a href="../articles/c_describing_data.html">2 - Describing the study cohort</a>
-    </li>
-    <li>
-      <a href="../articles/d_clean_data.html">3 - Data cleaning and variable transformation</a>
-    </li>
-    <li>
-      <a href="../articles/e_model_development.html">4 - Developing a (predictive) model</a>
-    </li>
-    <li>
-      <a href="../articles/f_model_performance.html">5 - Reporting the performance of a model</a>
-    </li>
-    <li>
-      <a href="../articles/g_model_description.html">6 - Describing and reporting a model</a>
-    </li>
-    <li>
-      <a href="../articles/h_model_deployment.html">7 - (predictive) Model deployment</a>
-    </li>
-    <li>
-      <a href="../articles/i_helper_functions.html">Helper and utility functions</a>
-    </li>
-    <li>
-      <a href="../articles/j_reference_files.html">Reference files - variable labels and metadata</a>
-    </li>
-  </ul>
-</li>
+<li class="dropdown-header">Workflow</li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
@@ -101,7 +64,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -115,6 +78,7 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
@@ -133,10 +97,10 @@
 <h2 class="hasAnchor">
 <a href="#create-table-1" class="anchor"></a>Create “Table 1”</h2>
 <p>Create “Table 1- description of study data” for all variables in your database. This method is from the <code>tableone</code> package.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(survival)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(pbc)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(<span class="st">"tableone"</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">catVars &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"status"</span>, <span class="st">"trt"</span>, <span class="st">"ascites"</span>, <span class="st">"hepato"</span>, <span class="st">"spiders"</span>, <span class="st">"edema"</span>, <span class="st">"stage"</span>)</a>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(survival)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(pbc)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"tableone"</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">catVars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"status"</span>, <span class="st">"trt"</span>, <span class="st">"ascites"</span>, <span class="st">"hepato"</span>, <span class="st">"spiders"</span>, <span class="st">"edema"</span>, <span class="st">"stage"</span>)</a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc, <span class="dt">factorVars =</span> catVars)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt;                       </span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt;                        Overall          </span></a>
@@ -176,30 +140,38 @@
 <h2 class="hasAnchor">
 <a href="#create-table-1-using-the-model-specification-workbook" class="anchor"></a>Create Table 1 using the Model Specification Workbook</h2>
 <p>Create a Table 1 with only the variables in your model, using the Model Specification Workbook. First initialize the BLLFlow model.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(bllflow)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(bllflow)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; Loading required package: DDIwR</span></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; Loading required package: xml2</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; Attaching package: 'bllflow'</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; The following object is masked from 'package:tableone':</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt;     CreateTableOne</span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">variablesSheet &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">variablesDetailsSheet &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/read.table">read.csv</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/getwd">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variablesSheet, variablesDetailsSheet)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(pbcModel)</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt;                      </span></a>
-<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt;                       Overall      </span></a>
-<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt;   n                     418        </span></a>
-<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;   age (mean (SD))     50.74 (10.45)</span></a>
-<a class="sourceLine" id="cb2-17" data-line-number="17"><span class="co">#&gt;   sex = f (%)           374 (89.5) </span></a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"><span class="co">#&gt;   bili (mean (SD))     3.22 (4.41) </span></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt;   albumin (mean (SD))  3.50 (0.42) </span></a>
-<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="co">#&gt;   protime (mean (SD)) 10.73 (1.02) </span></a>
-<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;   edema (%)                        </span></a>
-<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;      0                  354 (84.7) </span></a>
-<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;      0.5                 44 (10.5) </span></a>
-<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;      1                   20 ( 4.8)</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; Loading required package: sjlabelled</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; Loading required package: haven</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; Attaching package: 'haven'</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; The following objects are masked from 'package:sjlabelled':</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="co">#&gt;     as_factor, read_sas, read_spss, read_stata, write_sas,</span></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11"><span class="co">#&gt;     zap_labels</span></a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13"><span class="co">#&gt; Attaching package: 'bllflow'</span></a>
+<a class="sourceLine" id="cb2-14" data-line-number="14"><span class="co">#&gt; The following object is masked from 'package:tableone':</span></a>
+<a class="sourceLine" id="cb2-15" data-line-number="15"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16"><span class="co">#&gt;     CreateTableOne</span></a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">variablesSheet &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variables.csv'</span>))</a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">variablesDetailsSheet &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span>(), <span class="st">'../inst/extdata/PBC-variableDetails.csv'</span>))</a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">pbcModel &lt;-<span class="st"> </span><span class="kw"><a href="../reference/BLLFlow.html">BLLFlow</a></span>(pbc, variablesSheet, variablesDetailsSheet)</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20"><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(pbcModel)</a>
+<a class="sourceLine" id="cb2-21" data-line-number="21"><span class="co">#&gt;                      </span></a>
+<a class="sourceLine" id="cb2-22" data-line-number="22"><span class="co">#&gt;                       Overall      </span></a>
+<a class="sourceLine" id="cb2-23" data-line-number="23"><span class="co">#&gt;   n                     418        </span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24"><span class="co">#&gt;   age (mean (SD))     50.74 (10.45)</span></a>
+<a class="sourceLine" id="cb2-25" data-line-number="25"><span class="co">#&gt;   sex = f (%)           374 (89.5) </span></a>
+<a class="sourceLine" id="cb2-26" data-line-number="26"><span class="co">#&gt;   bili (mean (SD))     3.22 (4.41) </span></a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"><span class="co">#&gt;   albumin (mean (SD))  3.50 (0.42) </span></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28"><span class="co">#&gt;   protime (mean (SD)) 10.73 (1.02) </span></a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"><span class="co">#&gt;   edema (%)                        </span></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30"><span class="co">#&gt;      0                  354 (84.7) </span></a>
+<a class="sourceLine" id="cb2-31" data-line-number="31"><span class="co">#&gt;      0.5                 44 (10.5) </span></a>
+<a class="sourceLine" id="cb2-32" data-line-number="32"><span class="co">#&gt;      1                   20 ( 4.8)</span></a></code></pre></div>
 </div>
 <div id="create-table-1-with-stratification" class="section level2">
 <h2 class="hasAnchor">
@@ -208,7 +180,7 @@
 <ol style="list-style-type: decimal">
 <li>Stratify with columns. This is how to describe your data for manuscripts. This method is supported with the <code>CreateTableOne</code> library.</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>), <span class="dt">factorVars =</span> catVars)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"trt"</span>), <span class="dt">factorVars =</span> catVars)</a></code></pre></div>
 <ol start="2" style="list-style-type: decimal">
 <li>Stratify with rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. For example, see an ‘<a href="http://algorithm-viewer.projectbiglife.ca/#/respect">algorithm viewer</a>’ that shows Table 1 stratified for 61 strata (bins).</li>
 </ol>
@@ -218,27 +190,29 @@
 <h2 class="hasAnchor">
 <a href="#add-labels-and-metadata" class="anchor"></a>Add labels and metadata</h2>
 <p>For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents. Initialize the model with the DDI document.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ddi &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bllflow/topics/ReadDDI">ReadDDI</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/system.file">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">""</span>, <span class="dt">package =</span> <span class="st">"bllflow"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">pbcModel &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/bllflow/topics/UpdateMSW">UpdateMSW</a></span>(<span class="dt">bllModel =</span> pbcModel, <span class="dt">newDDI =</span> ddi) </a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">ddi &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bllflow/man/ReadDDI.html">ReadDDI</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">""</span>, <span class="dt">package =</span> <span class="st">"bllflow"</span>), <span class="st">"pbcDDI.xml"</span>)</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">pbcModel &lt;-<span class="st"> </span>bllflow<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/bllflow/man/UpdateMSW.html">UpdateMSW</a></span>(<span class="dt">bllModel =</span> pbcModel, <span class="dt">newDDI =</span> ddi) </a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Warning: Row 2 : valueLabelStart column has value " male " but DDI value is</span></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; " Male ". Not overwriting</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; Warning: Row 1 : valueLabelStart column has value " female " but DDI value</span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; is " Female ". Not overwriting</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Warning: Row 9 : valueLabelStart column has value " No edema " but DDI</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; value is " edema despite diuretic therapy ". Not overwriting</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; Warning: Row 9 : label column has value " Edema " but DDI value is " edema</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; ". Not overwriting</span></a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; Warning: Row 9 : low column has value " 0 " but DDI value is " 1 ". Not</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; overwriting</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; Warning: Row 9 : high column has value " 0 " but DDI value is " 1 ". Not</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; overwriting</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">longTableWithLabels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(<span class="dt">tableOne =</span> TableOne, <span class="dt">bllFlowModel =</span> pbcModel, <span class="dt">longTable =</span> TableOneLong)</a></code></pre></div>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; Warning: Row 2 : from column has value " 1 " but DDI value is " 1:1 ". Not</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; overwriting</span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Warning: Row 1 : valueLabelStart column has value " female " but DDI value</span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; is " Female ". Not overwriting</span></a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; Warning: Row 1 : from column has value " 2 " but DDI value is " 2:2 ". Not</span></a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="co">#&gt; overwriting</span></a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt; Warning: Row 9 : valueLabelStart column has value " No edema " but DDI</span></a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; value is " edema despite diuretic therapy ". Not overwriting</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; Warning: Row 9 : label column has value " Edema " but DDI value is " edema</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="co">#&gt; ". Not overwriting</span></a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co">#&gt; Warning: Row 9 : from column has value " 0 " but DDI value is " 1:1 ". Not</span></a>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="co">#&gt; overwriting</span></a>
+<a class="sourceLine" id="cb5-17" data-line-number="17">longTableWithLabels &lt;-<span class="st"> </span><span class="kw"><a href="../reference/SummaryDataLong.html">SummaryDataLong</a></span>(<span class="dt">tableOne =</span> TableOne, <span class="dt">bllFlowModel =</span> pbcModel, <span class="dt">longTable =</span> TableOneLong)</a></code></pre></div>
 </div>
 <div id="check-for-small-cells" class="section level2">
 <h2 class="hasAnchor">
 <a href="#check-for-small-cells" class="anchor"></a>Check for small cells</h2>
 <p>Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"trt"</span>,<span class="st">"stage"</span>), <span class="dt">factorVars =</span> catVars)</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">TableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CreateTableOne.html">CreateTableOne</a></span>(<span class="dt">data =</span> pbc,<span class="dt">strata =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"trt"</span>,<span class="st">"stage"</span>), <span class="dt">factorVars =</span> catVars)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">checkedTableOne &lt;-<span class="st"> </span><span class="kw"><a href="../reference/CheckSmallCells.html">CheckSmallCells</a></span>(TableOne)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; 8  variables with  160  levels checked.</span></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; </span></a>
@@ -401,13 +375,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Doug Manuel, Rostyslav Vyuha, Meltem Tuna.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

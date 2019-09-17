@@ -22,6 +22,9 @@
     <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCellsInTableOne.html</loc>
   </url>
   <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/CompareValueBasedOnInterval.html</loc>
+  </url>
+  <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/CreateTableOne.BLLFlow.html</loc>
   </url>
   <url>
@@ -34,6 +37,12 @@
     <loc>https://big-life-lab.github.io/bllflow//reference/GetDDIVariables.html</loc>
   </url>
   <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/GetDataVariableName.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/LabelData.html</loc>
+  </url>
+  <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/LogFunctionActivity.html</loc>
   </url>
   <url>
@@ -44,6 +53,15 @@
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/ReadDDI.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/RecWTable.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/RecWTable.default.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/RecodeColumns.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/SummaryDataLong.html</loc>
@@ -95,5 +113,8 @@
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/j_reference_files.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/recode-with-table.html</loc>
   </url>
 </urlset>

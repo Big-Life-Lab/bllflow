@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Check for Small Cells — CheckSmallCells.TableOne • bllflow</title>
+<title>Compare Value Based On Interval — CompareValueBasedOnInterval • bllflow</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -38,10 +38,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Check for Small Cells — CheckSmallCells.TableOne" />
+<meta property="og:title" content="Compare Value Based On Interval — CompareValueBasedOnInterval" />
 
-<meta property="og:description" content="Small Cells Check checks a given table for small sells then adds a
-smallCells table to the MetaData of the table object" />
+<meta property="og:description" content="Compare values on the scientific notation interval" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,93 +122,50 @@ smallCells table to the MetaData of the table object" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Check for Small Cells</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/small-cell-check.R'><code>R/small-cell-check.R</code></a></small>
-    <div class="hidden name"><code>CheckSmallCells.TableOne.Rd</code></div>
+    <h1>Compare Value Based On Interval</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/recode-with-table.R'><code>R/recode-with-table.R</code></a></small>
+    <div class="hidden name"><code>CompareValueBasedOnInterval.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Small Cells Check checks a given table for small sells then adds a
-smallCells table to the MetaData of the table object</p>
+    <p>Compare values on the scientific notation interval</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for TableOne</span>
-<span class='fu'><a href='CheckSmallCells.html'>CheckSmallCells</a></span>(<span class='no'>passedTable</span>, <span class='kw'>smallSize</span> <span class='kw'>=</span> <span class='fl'>6</span>,
-  <span class='kw'>print</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>tableType</span> <span class='kw'>=</span> <span class='st'>"TableOne"</span>)</pre>
+    <pre class="usage"><span class='fu'>CompareValueBasedOnInterval</span>(<span class='no'>leftBoundary</span>, <span class='no'>rightBoundary</span>, <span class='no'>dataSource</span>,
+  <span class='no'>compareColumns</span>, <span class='no'>interval</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>passedTable</th>
-      <td><p>The object outputted by the CreateTableOne function of the tableone package.
-The documentation is available here
-https://cran.r-project.org/web/packages/tableone/index.html.</p></td>
+      <th>leftBoundary</th>
+      <td><p>the min value</p></td>
     </tr>
     <tr>
-      <th>smallSize</th>
-      <td><p>What value constitutes a small size cell. Default value is 6.</p></td>
+      <th>rightBoundary</th>
+      <td><p>the max value</p></td>
     </tr>
     <tr>
-      <th>print</th>
-      <td><p>If TRUE prints the smallSize metadata in a human readable format</p></td>
+      <th>dataSource</th>
+      <td><p>the data that contains values being compared</p></td>
     </tr>
     <tr>
-      <th>tableType</th>
-      <td><p>Specifies the type of the table that is passed to the function</p></td>
+      <th>compareColumns</th>
+      <td><p>The columns inside dataSource being checked</p></td>
+    </tr>
+    <tr>
+      <th>interval</th>
+      <td><p>The scientific notation interval</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The passedTable object with a new object in the Metadata object called smallCells.
-smallCells is a dataframe with 4 columns
-stratifiedBy : the categeries the table was stratified by
-strataValues : the strata value where the small cell is present
-variableName and factors and the rows are all the categorical variables
-whose one or more factors have small cells.</p>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Checks the categorical table within the TableOne param (CatTable field) for
-small cells. A small cell is a category where the number of people
-in the category (n) is less than the value specified by the smallSize param.
-The freq field within each variable has the n values.</p>
+    <p>a boolean vector containing true for rows where the comparison is true</p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Read in the data we will use to generate Table One</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>survival</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>pbc</span>)
-
-<span class='co'># Create the Table One object</span>
-
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"tableone"</span>)
-<span class='co'># The list of variables which are categorical</span>
-<span class='no'>catVars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"status"</span>, <span class='st'>"trt"</span>, <span class='st'>"ascites"</span>, <span class='st'>"hepato"</span>,
-             <span class='st'>"spiders"</span>, <span class='st'>"edema"</span>, <span class='st'>"stage"</span>)
-
-<span class='co'># create table 1 object</span>
-<span class='no'>TableOne</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CreateTableOne.html'>CreateTableOne</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>pbc</span>,<span class='kw'>strata</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"trt"</span>,<span class='st'>"stage"</span>), <span class='kw'>factorVars</span> <span class='kw'>=</span> <span class='no'>catVars</span>)
-
-<span class='co'># by default smallSize is 6 print is set to true and tableType is TableOne</span>
-<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CheckSmallCells.html'>CheckSmallCells</a></span>(<span class='no'>TableOne</span>)</div><div class='output co'>#&gt; 8  variables with  160  levels checked.
-#&gt; 
-#&gt; 8  variables with  79  levels have cells &lt; 6  counts.
-#&gt; </div><div class='input'>
-<span class='co'># increasing the smallSize threshold to 10</span>
-<span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='CheckSmallCells.html'>CheckSmallCells</a></span>(<span class='no'>TableOne</span>, <span class='kw'>smallSize</span><span class='kw'>=</span><span class='fl'>10</span>)</div><div class='output co'>#&gt; 8  variables with  160  levels checked.
-#&gt; 
-#&gt; 8  variables with  90  levels have cells &lt; 10  counts.
-#&gt; </div><div class='input'>
-# currently only TableOne is supported so tableType != TableOne will throw error
-#tmp <- CheckSmallCells(TableOne, tableType="TableTwo")
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -217,11 +173,7 @@ The freq field within each variable has the n values.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>
