@@ -663,6 +663,15 @@ RecodeDerivedVariables <- function(recodedData,
       # Use from to calculate ranges for values
       fromCell <- rowBeingChecked[[pkg.globals$argument.From]]
       fromValues <- as.list(strsplit(fromCell, ","))[[1]]
+      fromList <- list()
+      for (singleFrom in fromValues) {
+        if (grepl("::", singleFrom)) {
+          # Seperate From range and variable
+          varRange <- as.list(strsplit(singleFrom, "::"))[[1]]
+          fromList[[varRange[[1]]]] <- varRange[[2]]
+          # Create list to pass to function
+        }
+      }
       # Catch default and else from values
       
       # Seperate the from into variables then find rows with appropriate ranges
@@ -670,21 +679,30 @@ RecodeDerivedVariables <- function(recodedData,
       # Find common rows between all the sets of appropriate rows
       
       # Apply function on just those rows
+      
       columnValue <-
         apply(
           recodedData,
           1,
           CalculateCustomFunctionRowValue,
           variableNames = usedFeederVars,
-          customFunctionName = functionBeingUsed
+          customFunctionName = functionBeingUsed,
+          fromList = fromList
         )
+      
     }
   }
 }
 CalculateCustomFunctionRowValue <-
-  function(row, variableNames, customFunctionName) {
+  function(row,
+           variableNames,
+           customFunctionName,
+           fromList) {
     rowValues <- list()
     for (singleVarName in variableNames) {
+      if (!is.null(fromList[[singleVarName]])) {
+        
+      }
       rowValues <- append(rowValues, row[[singleVarName]])
     }
     
