@@ -380,8 +380,15 @@ RecodeColumns <-
               )
             
             # Recode the variable
+            fromValues <- list()
+            if (grepl(":", as.character(rowBeingChecked[[pkg.globals$argument.From]]))){
             fromValues <-
               strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
+            }else {
+              # TODO find a more elagant way to handle in the future
+              fromValues[[1]] <- as.character(rowBeingChecked[[pkg.globals$argument.From]])
+              fromValues[[2]] <- fromValues[[1]]
+            }
             valueRecorded <-
               as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
             if (intervalPresent) {
