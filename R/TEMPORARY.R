@@ -1,14 +1,3 @@
-#(
-# TypeOfSmoker2[SMKDSTYb],
-# DHHAGE_cont,
-# SMKG203,
-# SMK_204b,
-# tsq_ds[stpo[SMK_09A], stpoy[SMKG09C]],
-# SMK_208b,
-# SMK_05Bb,
-# agec1[SMK_05Cb],
-# s100[SMKG01C]
-# )
 PackYearRecode <-
   function(SMKDSTY,
            DHHGAGE_cont,
@@ -127,7 +116,7 @@ PackYearRecode <-
       ifelse((SMK_01A == 7), NA,
              ifelse((SMK_01A == 8), NA,
                     ifelse((SMK_01A == 9), NA, SMK_01A)))
-
+    
     packYears <-
       PackYears1.fun(
         TypeOfSmoker2,
@@ -142,4 +131,54 @@ PackYearRecode <-
         s100
       )
     
+    return(packYears)
   }
+PackYears1.fun <-
+  function(TypeOfSmoker2,
+           Age_cont,
+           agecigd,
+           agecigo,
+           cigdayd,
+           tsq_ds,
+           cigdayf,
+           cigdayo,
+           dayocc,
+           agec1,
+           s100) {
+    ifelse2(TypeOfSmoker2 == 1,
+            pmax(((Age_cont - agecigd) * (cigdayd / 20)), 0.0137),
+            ifelse2(
+              TypeOfSmoker2 == 2,
+              pmax(((Age_cont - agecigo - tsq_ds) * (cigdayf / 20)
+              ), 0.0137) + (pmax((
+                cigdayo * dayocc / 30
+              ), 1) * tsq_ds),
+              ifelse2(
+                TypeOfSmoker2 == 3,
+                (pmax((
+                  cigdayo * dayocc / 30
+                ), 1) / 20) * (Age_cont - agec1),
+                ifelse2(
+                  TypeOfSmoker2 == 4,
+                  pmax(((Age_cont - agecigo - tsq_ds) * (cigdayf / 20)
+                  ), 0.0137),
+                  ifelse2(
+                    TypeOfSmoker2 == 5 & s100 == 's1001',
+                    0.0137,
+                    ifelse2(
+                      TypeOfSmoker2 == 5 & s100 == 's1002',
+                      0.007,
+                      ifelse2(TypeOfSmoker2 ==
+                                6, 0, NA)
+                    )
+                  )
+                )
+              )
+            ))
+  }
+ifelse2 <- function(x, a, b) {
+  falseifNA <- function(x) {
+    ifelse(is.na(x), FALSE, x)
+  }
+  ifelse(falseifNA(x), a, b)
+}
