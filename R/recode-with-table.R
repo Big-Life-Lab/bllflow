@@ -480,6 +480,7 @@ RecodeColumns <-
         labelList = labelList,
         varStack = c()
       )
+    recodedData <- derivedReturn
     # Populate data Labels
     recodedData <-
       LabelData(labelList = labelList, dataToLabel = recodedData)
@@ -689,7 +690,9 @@ RecodeDerivedVariables <- function(recodedData,
           customFunctionName = functionBeingUsed,
           fromList = fromList
         )
+      recodedData[[varName]] <- columnValue
       
+      return(recodedData)
     }
   }
 }
@@ -700,10 +703,23 @@ CalculateCustomFunctionRowValue <-
            fromList) {
     rowValues <- list()
     for (singleVarName in variableNames) {
-      if (!is.null(fromList[[singleVarName]])) {
-        
+      # Catch out of bounds
+      if (is.null(row[[singleVarName]])) {
+        stop(
+          paste(
+            singleVarName,
+            "is not in the recoded data please make sure its recoded for this cycle!!"
+          )
+        )
+      } else{
+        if (isEqual(row[[singleVarName]], "NA(a)")) {
+          row[[singleVarName]] <- haven::tagged_na("a")
+        } else if (isEqual(row[[singleVarName]], "NA(b)")) {
+          row[[singleVarName]] <- haven::tagged_na("b")
+        }
+        rowValues <-
+          append(rowValues, as.numeric(row[[singleVarName]]))
       }
-      rowValues <- append(rowValues, row[[singleVarName]])
     }
     
     customFunctionReturnValue <-
