@@ -1,6 +1,12 @@
 # bllFlow (development version)
 
-# bllflow 0.1.1 (current build)
+# bllflow 0.1.2 (current build)
+
+## Features:
+
+- Added support for single from values
+
+# bllflow 0.1.1 
 
 ## Features:
 
