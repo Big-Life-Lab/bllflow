@@ -1,3 +1,4 @@
+# Environment for custom script functions
 #' @title Recode with Table
 #'
 #' @name RecWTable
@@ -60,7 +61,13 @@ RecWTable.default <-
            log = FALSE,
            printNote = TRUE,
            variables = NULL,
-           varLabels = NULL) {
+           varLabels = NULL,
+           customFunctionPath = NULL) {
+    # If custom Functions are passed create new environment and source
+    if(!is.null(customFunctionPath)){
+      source(customFunctionPath)
+    }
+    
     # ---- Step 1: Detemine if the passed data is a list or single database
     appendNonDBColumns <- FALSE
     if (class(dataSource) == "list" &&
@@ -680,7 +687,7 @@ RecodeDerivedVariables <- function(recodedData,
       # Find common rows between all the sets of appropriate rows
       
       # Apply function on just those rows
-      
+      start_time <- Sys.time()
       columnValue <-
         apply(
           recodedData,
@@ -690,6 +697,8 @@ RecodeDerivedVariables <- function(recodedData,
           customFunctionName = functionBeingUsed,
           fromList = fromList
         )
+      end_time <- Sys.time()
+      print(end_time - start_time)
       recodedData[[varName]] <- columnValue
       
       return(recodedData)
@@ -702,25 +711,27 @@ CalculateCustomFunctionRowValue <-
            customFunctionName,
            fromList) {
     rowValues <- list()
-    for (singleVarName in variableNames) {
-      # Catch out of bounds
-      if (is.null(row[[singleVarName]])) {
-        stop(
-          paste(
-            singleVarName,
-            "is not in the recoded data please make sure its recoded for this cycle!!"
-          )
-        )
-      } else{
-        if (isEqual(row[[singleVarName]], "NA(a)")) {
-          row[[singleVarName]] <- haven::tagged_na("a")
-        } else if (isEqual(row[[singleVarName]], "NA(b)")) {
-          row[[singleVarName]] <- haven::tagged_na("b")
-        }
-        rowValues <-
-          append(rowValues, as.numeric(row[[singleVarName]]))
-      }
-    }
+    rowValues <- as.list(row[variableNames])
+    rowValues <- unname(rowValues)
+    # for (singleVarName in variableNames) {
+    #   # Catch out of bounds
+    #   if (is.null(row[[singleVarName]])) {
+    #     stop(
+    #       paste(
+    #         singleVarName,
+    #         "is not in the recoded data please make sure its recoded for this cycle!!"
+    #       )
+    #     )
+    #   } else{
+    #     if (isEqual(row[[singleVarName]], "NA(a)")) {
+    #       row[[singleVarName]] <- haven::tagged_na("a")
+    #     } else if (isEqual(row[[singleVarName]], "NA(b)")) {
+    #       row[[singleVarName]] <- haven::tagged_na("b")
+    #     }
+    #     rowValues <-
+    #       append(rowValues, as.numeric(row[[singleVarName]]))
+    #   }
+    # }
     
     customFunctionReturnValue <-
       do.call(get(customFunctionName), rowValues)
