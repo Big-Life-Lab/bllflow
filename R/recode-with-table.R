@@ -666,8 +666,6 @@ RecodeDerivedVariables <- function(recodedData,
       functionBeingUsed <-
         as.list(strsplit(funcCell, "::"))[[1]][[2]]
       
-      # USE *list to unpack into seperate args
-      
       # Use from to calculate ranges for values
       fromCell <- rowBeingChecked[[pkg.globals$argument.From]]
       fromValues <- as.list(strsplit(fromCell, ","))[[1]]
@@ -688,31 +686,42 @@ RecodeDerivedVariables <- function(recodedData,
       
       # Apply function on just those rows
       start_time <- Sys.time()
-      columnValue <-
-        apply(
-          recodedData,
-          1,
-          CalculateCustomFunctionRowValue,
-          variableNames = usedFeederVars,
-          customFunctionName = functionBeingUsed,
-          fromList = fromList
+      # columnValue <-
+      #   apply(
+      #     recodedData,
+      #     1,
+      #     CalculateCustomFunctionRowValue,
+      #     variableNames = usedFeederVars,
+      #     customFunctionName = functionBeingUsed,
+      #     fromList = fromList
+      #   )
+      assign("counter", 0, envir = .GlobalEnv)
+      columnValue <- recodedData %>% dplyr::rowwise(.) %>% dplyr::select(usedFeederVars) %>%
+        dplyr::do(
+          PackYears = CalculateCustomFunctionRowValue(
+            .,
+            variableNames = usedFeederVars,
+            customFunctionName = functionBeingUsed,
+            fromList = fromList,counter
+          )
         )
+      
       end_time <- Sys.time()
       print(end_time - start_time)
-      recodedData[[varName]] <- columnValue
+      print(counter)
+      #recodedData[[varName]] <- columnValue
       
       return(recodedData)
     }
   }
 }
 CalculateCustomFunctionRowValue <-
-  function(row,
+  function(rowValues,
            variableNames,
            customFunctionName,
-           fromList) {
-    rowValues <- list()
-    rowValues <- as.list(row[variableNames])
+           fromList, counter) {
     rowValues <- unname(rowValues)
+    assign("counter", counter+1, envir = .GlobalEnv)
     # for (singleVarName in variableNames) {
     #   # Catch out of bounds
     #   if (is.null(row[[singleVarName]])) {
