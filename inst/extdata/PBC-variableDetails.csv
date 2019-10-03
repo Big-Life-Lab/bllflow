@@ -1,18 +1,44 @@
-variable,label,labelLong,variableType,variableDummy,valueLabelLong,valueLabel,target,method,reference,databaseStart,variableStart,variableStartType,validCatN,validCatNStart,value,valueLabelStart,units,interval,from
-sex,Sex,Sex,category,sex_cat2_1,Female,Femle,pbcDemo,map1_1,Yes,pbc,sex,cat,2,2,2,female,NA,N/A,2
-sex,Sex,Sex,category,sex_cat2_2,Male,Male,pbcDemo,map1_1,No,pbc,sex,cat,2,2,1,male,N/A,N/A,1
-sex,Sex,Sex,category,sex_cat3_3,missing,missing,pbcDemo,map1_1,N/A,pbc,sex,cat,2,2,NA,N/A,N/A,N/A,N/A
-age,Age (years),Age (years),continuous,age_rcs4_1,Age Restricted Cubic Spline Knot 1,Age RCS 1,pbcDemo,rcs4,NA,pbc,age,cont,N/A,N/A,1,N/A,years,N/A,N/A
-age,Age (years),Age (years),continuous,age_rcs4_2,Age Restricted Cubic Spline Knot 2,Age RCS 2,pbcDemo,rcs4,NA,pbc,age,cont,N/A,N/A,2,N/A,years,N/A,N/A
-age,Age (years),Age (years),continuous,age_rcs4_3,Age Restricted Cubic Spline Knot 3,Age RCS 3,pbcDemo,rcs4,NA,pbc,age,cont,N/A,N/A,3,N/A,years,N/A,N/A
-age,Age (years),Age (years),continuous,age_rcs4_4,Age Restricted Cubic Spline Knot 4,Age RCS 4,pbcDemo,rcs4,NA,pbc,age,cont,N/A,N/A,4,N/A,years,N/A,N/A
-age,Age (years),Age (years),continuous,age_rcs4_4,missing,missing,pbcDemo,rcs4,N/A,pbc,age,cont,N/A,N/A,NA,N/A,years,N/A,NA
-edema,Edema,Edema,category,edema_cat3_1,No edema,No edema,pbcDemo,map1_1,Yes,pbc,edema,cat,3,3,1,No edema,N/A,N/A,0
-edema,Edema,Edema,category,edema_cat3_2,Untreated or successfully treated,Untreated or successfully treated,pbcDemo,map1_1,No,pbc,edema,cat,3,3,2,Untreated or successfully treated,N/A,N/A,0.5
-edema,Edema,Edema,category,edema_cat3_3,Edema despite diuretic therapy,Edema despite diuretic therapy,pbcDemo,map1_1,No,pbc,edema,cat,3,3,3,Edema despite diuretic therapy,N/A,N/A,1
-edema,Edema,Edema,category,edema_cat3_3,missing,missing,pbcDemo,map1_1,N/A,pbc,edema,cat,3,3,NA,Edema despite diuretic therapy,N/A,N/A,NA
-ageGroup,Age group,Age (four categories),category,age_group_cat4_1,< 20 years,< 20,table1,map1_1,yes,pbc,age,cont,4,N/A,1,N/A,years,"[,)",0:20
-ageGroup,Age group,Age (four categories),category,age_group_cat4_2,20 - 40 years,20 - 40,table1,map1_1,no,pbc,age,cont,4,N/A,2,N/A,years,"[,)",20:40
-ageGroup,Age group,Age (four categories),category,age_group_cat4_3,40 - 80 years,40 - 80,table1,map1_1,no,pbc,age,cont,4,N/A,3,N/A,years,"[,)",40:80
-ageGroup,Age group,Age (four categories),category,age_group_cat4_4,80+ years,80+,table1,map1_1,no,pbc,age,cont,4,N/A,4,N/A,years,"[,]",80:105
-ageGroup,Age group,Age (four categories),category,age_group_cat4_4,missing or out of range,missing,table1,map1_1,no,pbc,age,cont,4,N/A,NA,N/A,,,else
+variable,toType,databaseStart,variableStart,fromType,recTo,catLabel,catLabelLong,units,recFrom,catStartLabel,notes,interval
+AGE ,cont,survival-pbc,[age],cont,copy,NA,NA,years,26:79,NA,,"[,]"
+AGE ,cont,survival-pbc,[age],cont,NA,NA,NA,years,else,NA,,"[,]"
+ALBUMIN,cont,survival-pbc,[albumin],cont,copy,NA,NA,g/dl,1:5,NA,,"[,]"
+ALBUMIN,cont,survival-pbc,[albumin],cont,NA,NA,NA,g/dl,else,NA,,"[,]"
+ALK_PHOS,cont,survival-pbc,[alk.phos],cont,copy,NA,NA,U/liter,289:13863,NA,,"[,]"
+ALK_PHOS,cont,survival-pbc,[alk.phos],cont,NA,NA,NA,U/liter,else,NA,,"[,]"
+ASCITES,cat,survival-pbc,[ascites],cat,1,not present,ascites not present,NA,0,ascites not present,,"[,]"
+ASCITES,cat,survival-pbc,[ascites],cat,2,present,ascites present,NA,1,ascites present,,"[,]"
+AST,cont,survival-pbc,[ast],cont,copy,NA,NA,U/ml,26:458,NA,ast was once called SGOT,"[,]"
+AST,cont,survival-pbc,[ast],cont,NA,NA,NA,U/ml,else,NA,,"[,]"
+BILI,cont,survival-pbc,[bili],cont,copy,NA,NA,mg/dl,0:28,NA,,"[,]"
+BILI,cont,survival-pbc,[bili],cont,NA,NA,NA,mg/dl,else,NA,,"[,]"
+CHOL,cont,survival-pbc,[chol],cont,copy,NA,NA,mg/dl,120:1775,NA,,"[,]"
+CHOL,cont,survival-pbc,[chol],cont,NA,NA,NA,mg/dl,else,NA,,"[,]"
+COPPER,cont,survival-pbc,[copper],cont,copy,NA,NA,ug/day,4:588,NA,,"[,]"
+COPPER,cont,survival-pbc,[copper],cont,NA,NA,NA,ug/day,else,NA,,"[,]"
+EDEMA,cat,survival-pbc,[edema],cat,1,no edema,no edema in participent,NA,0,no edema,,"[,]"
+EDEMA,cat,survival-pbc,[edema],cat,2,untreated or successfully treated,untreated or successfully treated,NA,0.5,untreated or successfully treated,,"[,]"
+EDEMA,cat,survival-pbc,[edema],cat,3,edema despite diuretic therapy,edema despite diuretic therapy,NA,1,edema despite diuretic therapy,,"[,]"
+HEPATO,cat,survival-pbc,[hepato],cat,1,not present,no presence of hepatomegaly or enlarged liver,NA,0,no presence of hepatomegaly or enlarged liver,,"[,]"
+HEPATO,cat,survival-pbc,[hepato],cat,2,present,presence of hepatomegaly or enlarged liver,NA,1,presence of hepatomegaly or enlarged liver,,"[,]"
+PLATELET,cont,survival-pbc,[platelet],cont,copy,NA,NA,thousand/microliter of blood,62:721,NA,,"[,]"
+PLATELET,cont,survival-pbc,[platelet],cont,NA,NA,NA,thousand/microliter of blood,else,NA,,"[,]"
+PROTIME,cont,survival-pbc,[protime],cont,copy,NA,NA,minutes,9:18,NA,,"[,]"
+PROTIME,cont,survival-pbc,[protime],cont,NA,NA,NA,minutes,else,NA,,"[,]"
+SEX,cat,survival-pbc,[sex],cat,1,male,male,NA,m,male,,"[,]"
+SEX,cat,survival-pbc,[sex],cat,2,female,female,NA,f,female,,"[,]"
+SPIDERS,cat,survival-pbc,[spiders],cat,1,not present,blood vessel malformations in the skin not present,NA,0,blood vessel malformations in the skin not present,,"[,]"
+SPIDERS,cat,survival-pbc,[spiders],cat,2,present,blood vessel malformations in the skin ,NA,1,blood vessel malformations in the skin,,"[,]"
+STAGE,cat,survival-pbc,[stage],cat,copy,histologic stage of disease,histologic stage of disease(needs biopsy),NA,1:4,histologic stage of disease (needs biopsy),,"[,]"
+STAGE,cat,survival-pbc,[stage],cat,NA,histologic stage of disease,histologic stage of disease(needs biopsy),NA,else,histologic stage of disease (needs biopsy),,"[,]"
+STATUS,cat,survival-pbc,[status],cat,1,censored,status at endpoint for censored,NA,0,status at endpoint for censored,,"[,]"
+STATUS,cat,survival-pbc,[status],cat,2,transplant,status at endpoint for transplant,NA,1,status at endpoint for transplant,,"[,]"
+STATUS,cat,survival-pbc,[status],cat,3,dead,status at endpoint for dead,NA,2,status at endpoint for dead,,"[,]"
+STATUS,cat,survival-pbc,[status],cat,NA,else,else,NA,else,else,,"[,]"
+TIME,cont,survival-pbc,[time],cont,copy,NA,NA,NA,41:4795,NA,,"[,]"
+TIME,cont,survival-pbc,[time],cont,NA,NA,NA,NA,else,NA,,"[,]"
+TRT,cat,survival-pbc,[trt],cat,1,D-penicillmain,D-penicillmain,NA,1,D-penicillmain,,"[,]"
+TRT,cat,survival-pbc,[trt],cat,2,placebo,placebo,NA,2,placebo,,"[,]"
+TRT,cat,survival-pbc,[trt],cat,NA,not randomised,not randomised,NA,else,not randomised,,"[,]"
+TRIG,cont,survival-pbc,[trig],cont,copy,NA,NA,mg/dl,33:598,NA,,"[,]"
+TRIG,cont,survival-pbc,[trig],cont,NA,NA,NA,mg/dl,else,NA,,"[,]"
+AGE_GROUP,cat,survival-pbc,DerivedVar::[AGE],cont,Func::CustomAgeGroupCalculation,NA,NA,NA,else,NA,NA,"[,]"

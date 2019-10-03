@@ -1,0 +1,46 @@
+---
+title: "pbc-recode-with-table"
+author: "Rostyslav Vyuha"
+date: "October 3, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Import pbc msw
+
+```{r, results='hide',message=FALSE}
+library(readr)
+varDetails <- read_csv("../inst/extdata/PBC-variableDetails.csv")
+variables <- read_csv("../inst/extdata/PBC-variables.csv")
+```
+
+## Import the pbc data
+
+```{r, results='hide',message=FALSE}
+library(survival)
+data("pbc")
+```
+
+## Recode data with the msw
+
+```{r, results='hide',message=FALSE}
+library(bllflow)
+recodedPBC <- RecWTable(dataSource = pbc, variableDetails = varDetails, datasetName = "survival-pbc")
+```
+## Compare the recode
+
+```{r}
+print(pbc)
+print(recodedPBC[,c("TIME","STATUS","TRT","AGE","SEX","ASCITES","HEPATO","SPIDERS","EDEMA","BILI","CHOL","ALBUMIN","COPPER","ALK_PHOS","AST","TRIG","PLATELET","PROTIME","STAGE")])
+```
+## Write custom function for calculating age group
+
+```{r}
+CustomAgeGroupCalculation <- function(age){
+  # Feel free to write ur own code this is an example
+  return(trunc(age/10))
+}
+```

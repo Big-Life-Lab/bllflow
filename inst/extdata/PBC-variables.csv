@@ -1,7 +1,22 @@
-variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,centre,interaction,RCS,dummy,impute,min,max,outlier
-age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,TRUE,NA,4,NA,FALSE,40,70,delete
-sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,TRUE,FALSE,NA,NA,TRUE,FALSE,NA,NA,delete
-bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing
-albumin,pbc,Serum albumin,Albumin,g/dl,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing
-protime,pbc,standardised blood clotting time,Prothrombin time,seconds,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing
-edema,pbc,Edema,Edema,,Physical sign,Categorical,PBC_demo,FALSE,TRUE,age,3,TRUE,TRUE,NA,NA,missing
+variable,label,labelLong,variableType,units
+age,Age,Age of participent in years,cont,Year
+sex,Sex,Sex of the participent,cat,NA
+bili,serum bilirunbin,serum bilirunbin(mg/dl),cont,mg/dl
+albumin,serum albumin,serum albumin (g/dl),cont,g/dl
+protime,standardised blood clotting time,standardised blood clotting time in minutes,cont,min
+edema,edema,"0 no edema, 0.5 untreated or successfully treated
+1 edema despite diuretic therapy",cat,NA
+alk.phos,alkaline phosphotase,alkaline phosphotase (U/liter),cont,U/liter
+ascites,presence of ascites,presence of ascites,cat,NA
+ast,aspartate aminotransferase,"aspartate aminotransferase, once called SGOT (U/ml)",cont,U/ml
+chol,serum cholesterol,serum cholesterol (mg/dl),cont,mg/dl
+copper,urine copper,urine copper (ug/day),cont,ug/day
+hepato,presence of hepatomegaly or enlarged liver,presence of hepatomegaly or enlarged liver in participent,cat,NA
+platelet,platelet count,platelet count in thousadnds per microliter of blood,cont,thousand/microliter of blood
+spiders,blood vessel malformations in the skin,blood vessel malformations in the skin of the participent,cat,NA
+stage,histologic stage of disease,histologic stage of disease (needs biopsy),cat,NA
+status,status at endpoint,"status at endpoint, 0/1/2 for censored, transplant, dead",cat,NA
+time,number of days,"number of days between registration and the earlier of death,
+transplantion, or study analysis in July, 1986",cont,days
+trt,trt,"1/2/NA for D-penicillmain, placebo, not randomised",cat,NA
+trig,triglycerides,triglycerides (mg/dl),cont,mg/dl
