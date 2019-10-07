@@ -343,7 +343,8 @@ RecodeColumns <-
           CreateLabelListElement(rowsBeingChecked)
         elseValue <-
           as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
-        if (length(elseValue) == 1&& !isEqual(elseValue,"character(0)")) {
+        if (length(elseValue) == 1 &&
+            !isEqual(elseValue, "character(0)")) {
           elseValue <-
             RecodeVariableNAFormating(elseValue, labelList[[variableBeingChecked]]$type)
           if (isEqual(elseValue, "copy")) {
@@ -486,17 +487,26 @@ RecodeColumns <-
     }
     
     # Process funcVars
-    derivedReturn <-
-      RecodeDerivedVariables(
-        recodedData = recodedData,
-        variablesToProcess = funcVariablesToProcess,
-        log = log,
-        printNote = printNote,
-        elseDefault = elseDefault,
-        labelList = labelList,
-        varStack = c()
-      )
-    recodedData <- derivedReturn
+    while (nrow(funcVariablesToProcess) > 0) {
+      firstRow <- funcVariablesToProcess[1, ]
+      firstRowVariableName <-
+        firstRow[[pkg.globals$argument.Variables]]
+      # get name of var pass to
+      derivedReturn <-
+        RecodeDerivedVariables(
+          variableBeingProcessed = firstRowVariableName,
+          recodedData = recodedData,
+          variablesToProcess = funcVariablesToProcess,
+          log = log,
+          printNote = printNote,
+          elseDefault = elseDefault,
+          labelList = labelList,
+          varStack = c()
+        )
+      labelList <- derivedReturn$labelList
+      recodedData <- derivedReturn$recodedData
+      funcVariablesToProcess <- derivedReturn$variablesToProcess
+    }
     # Populate data Labels
     recodedData <-
       LabelData(labelList = labelList, dataToLabel = recodedData)
@@ -522,8 +532,9 @@ CompareValueBasedOnInterval <-
            compareColumns,
            interval) {
     returnBoolean <- vector()
-    if (is.na(as.numeric(leftBoundary))) {
-      returnBoolean <- dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(leftBoundary == dataSource[[compareColumns]])]
+    if (suppressWarnings(is.na(as.numeric(leftBoundary)))) {
+      returnBoolean <-
+        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(leftBoundary == dataSource[[compareColumns]])]
     } else{
       if (interval == "[,]") {
         returnBoolean <-
@@ -609,29 +620,31 @@ RecodeVariableNAFormating <- function(cellValue, varType) {
   return(recodeValue)
 }
 
-RecodeDerivedVariables <- function(recodedData,
-                                   variablesToProcess,
-                                   log,
-                                   printNote,
-                                   elseDefault,
-                                   labelList,
-                                   varStack) {
-  # Check for rows present
-  while (nrow(variablesToProcess) > 0) {
-    sampleRow <- variablesToProcess[1,]
-    varName <- sampleRow[[pkg.globals$argument.Variables]]
-    varStack <- c(varStack, varName)
+RecodeDerivedVariables <-
+  function(recodedData,
+           variableBeingProcessed,
+           variablesToProcess,
+           log,
+           printNote,
+           elseDefault,
+           labelList,
+           varStack) {
+    if (nrow(variablesToProcess) <= 0) {
+      stop(paste(variableBeingProcessed, "is missing from variableDetails"))
+    }
+    varStack <- c(varStack, variableBeingProcessed)
     # obtain rows to process and updated variables to Process
-    rowsToProcess <-
-      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == varName, ]
+    variableRows <-
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingProcessed, ]
     variablesToProcess <-
-      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] != varName, ]
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] != variableBeingProcessed, ]
     
     # Check for presence of feeder variables in data and in the variable being processed stack
     feederVars <-
-      as.list(strsplit(sampleRow[[pkg.globals$argument.VariableStart]], "::"))[[1]][[2]]
+      as.list(strsplit(variableRows[1, ][[pkg.globals$argument.VariableStart]], "::"))[[1]][[2]]
     feederVars <- gsub("\\[|\\]", "", feederVars)
     feederVars <- as.list(strsplit(feederVars, ","))[[1]]
+    feederVars <- sapply(feederVars, trimws)
     usedFeederVars <- feederVars
     feederVars <- setdiff(feederVars, names(recodedData))
     
@@ -642,122 +655,74 @@ RecodeDerivedVariables <- function(recodedData,
         paste(
           conflictVars,
           "is required to create",
-          varName,
+          variableBeingProcessed,
           "but",
-          varName,
+          variableBeingProcessed,
           "is needed to create",
           conflictVars
         )
       )
     }
     
-    # # Update varStack and recurse to get the feeder vars
-    # for (oneFeeder in feederVars) {
-    #   # Need to check recoded data again in case a recursion added it
-    #   if (!oneFeeder %in% names(recodedData)) {
-    #     derivedReturn <-
-    #       RecodeDerivedVariables(
-    #         recodedData = recodedData,
-    #         variablesToProcess = variablesToProcess,
-    #         log = log,
-    #         printNote = printNote,
-    #         elseDefault = elseDefault,
-    #         labelList = labelList,
-    #         varStack = varStack
-    #       )
-    #     varStack <- derivedReturn$varStack
-    #     labelList <- derivedReturn$labelList
-    #     recodedData <- derivedReturn$recodedData
-    #     variablesToProcess <- derivedReturn$variablesToProcess
-    #   }
-    # }
+    # Update varStack and recurse to get the feeder vars
+    for (oneFeeder in feederVars) {
+      # Need to check recoded data again in case a recursion added it
+      if (!oneFeeder %in% names(recodedData)) {
+        derivedReturn <-
+          RecodeDerivedVariables(
+            variableBeingProcessed = oneFeeder,
+            recodedData = recodedData,
+            variablesToProcess = variablesToProcess,
+            log = log,
+            printNote = printNote,
+            elseDefault = elseDefault,
+            labelList = labelList,
+            varStack = varStack
+          )
+        varStack <- derivedReturn$varStack
+        labelList <- derivedReturn$labelList
+        recodedData <- derivedReturn$recodedData
+        variablesToProcess <- derivedReturn$variablesToProcess
+      }
+    }
     
     # Obtain the function for each row
-    for (rowNum in 1:nrow(rowsToProcess)) {
-      rowBeingChecked <- rowsToProcess[rowNum,]
+    append(labelList, CreateLabelListElement(variableRows))
+    for (rowNum in 1:nrow(variableRows)) {
+      rowBeingChecked <- variableRows[rowNum,]
       funcCell <- rowBeingChecked[[pkg.globals$argument.CatValue]]
       functionBeingUsed <-
         as.list(strsplit(funcCell, "::"))[[1]][[2]]
       
-      # Use from to calculate ranges for values
-      fromCell <- rowBeingChecked[[pkg.globals$argument.From]]
-      fromValues <- as.list(strsplit(fromCell, ","))[[1]]
-      fromList <- list()
-      for (singleFrom in fromValues) {
-        if (grepl("::", singleFrom)) {
-          # Seperate From range and variable
-          varRange <- as.list(strsplit(singleFrom, "::"))[[1]]
-          fromList[[varRange[[1]]]] <- varRange[[2]]
-          # Create list to pass to function
-        }
-      }
-      # Catch default and else from values
-      
-      # Seperate the from into variables then find rows with appropriate ranges
-      
-      # Find common rows between all the sets of appropriate rows
-      
-      # Apply function on just those rows
-      start_time <- Sys.time()
-      # columnValue <-
-      #   apply(
-      #     recodedData,
-      #     1,
-      #     CalculateCustomFunctionRowValue,
-      #     variableNames = usedFeederVars,
-      #     customFunctionName = functionBeingUsed,
-      #     fromList = fromList
-      #   )
-      assign("counter", 0, envir = .GlobalEnv)
       columnValue <-
         recodedData %>% dplyr::rowwise(.) %>% dplyr::select(usedFeederVars) %>%
         dplyr::do(
-          PackYears = CalculateCustomFunctionRowValue(
+          columnBeingAdded = CalculateCustomFunctionRowValue(
             .,
             variableNames = usedFeederVars,
-            customFunctionName = functionBeingUsed,
-            fromList = fromList,
-            counter
+            customFunctionName = functionBeingUsed
           )
         )
-      
-      end_time <- Sys.time()
-      print(end_time - start_time)
-      print(counter)
-      recodedData[[varName]] <- columnValue
-      
-      return(recodedData)
+      recodedData[[variableBeingProcessed]] <- unlist(columnValue[["columnBeingAdded"]])
     }
+    varStack <- varStack[!(varStack == variableBeingProcessed)]
+    
+    return(
+      list(
+        varStack = varStack,
+        labelList = labelList,
+        recodedData = recodedData,
+        variablesToProcess = variablesToProcess
+      )
+    )
+    
   }
-}
 CalculateCustomFunctionRowValue <-
   function(rowValues,
            variableNames,
-           customFunctionName,
-           fromList,
-           counter) {
+           customFunctionName) {
     rowValues <- unname(rowValues)
-    assign("counter", counter + 1, envir = .GlobalEnv)
-    # for (singleVarName in variableNames) {
-    #   # Catch out of bounds
-    #   if (is.null(row[[singleVarName]])) {
-    #     stop(
-    #       paste(
-    #         singleVarName,
-    #         "is not in the recoded data please make sure its recoded for this cycle!!"
-    #       )
-    #     )
-    #   } else{
-    #     if (isEqual(row[[singleVarName]], "NA(a)")) {
-    #       row[[singleVarName]] <- haven::tagged_na("a")
-    #     } else if (isEqual(row[[singleVarName]], "NA(b)")) {
-    #       row[[singleVarName]] <- haven::tagged_na("b")
-    #     }
-    #     rowValues <-
-    #       append(rowValues, as.numeric(row[[singleVarName]]))
-    #   }
-    # }
-    
+    # TODO add ability to process ranges in from column
     customFunctionReturnValue <-
       do.call(get(customFunctionName), rowValues)
     

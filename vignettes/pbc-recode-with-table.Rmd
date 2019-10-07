@@ -44,3 +44,35 @@ CustomAgeGroupCalculation <- function(age){
   return(trunc(age/10))
 }
 ```
+
+## Create a new variable that uses age group
+I will use R code to create  one row for the new variable, then rowbind it with existing variable details feel free to change any elements u wish just make sure its consistent with the function arguments.
+
+```{r}
+newRow <- data.frame(variable = "Age_Group_Using_Custom_Variable", toType = "cont", databaseStart = "survival-pbc", variableStart = "DerivedVar::[AGE_GROUP, SPIDERS]", fromType = "cont", recTo = "Func::CustomRandomFunction", catLabel = "NA", catLabelLong ="NA", units = "NA", recFrom = "else", catStartLabel = NA, notes = NA, interval = NA)
+varDetails <- rbind(varDetails,newRow)
+```
+
+## Create the other custom function
+
+```{r}
+CustomRandomFunction <- function(ageGroup, spiders) {
+  # make sure to account for na since in R anything == NA equaites to NA and causes errors
+  if (is.na(spiders)) {
+  ageGroup <- ageGroup
+  }
+  else if (spiders == "1") {
+  ageGroup = ageGroup + 5
+  } else if (spiders == "2") {
+  ageGroup = ageGroup - 5
+  }
+  
+  return(ageGroup)
+}
+```
+
+## Rerun the recode function to create new variable 
+```{r}
+recodedPBC <- RecWTable(dataSource = pbc, variableDetails = varDetails, datasetName = "survival-pbc")
+print(recodedPBC)
+```
