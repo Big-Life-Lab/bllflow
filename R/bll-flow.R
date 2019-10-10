@@ -56,12 +56,9 @@ BLLFlow <-
     }
     if (!is.null(variables)) {
       CheckIfDataFrame(variables, pkg.globals$argument.Variables)
+      # Change the columns needed for the functions
       CheckForColumnPresence(
-        c(
-          pkg.globals$columnNames.Min,
-          pkg.globals$columnNames.Max,
-          pkg.globals$columnNames.Outlier
-        ),
+        c(),
         variables,
         pkg.globals$argument.Variables
       )
