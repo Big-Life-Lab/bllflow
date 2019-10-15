@@ -11,10 +11,10 @@ CheckForColumnPresence <- function(names, frame, frameName) {
   }
 }
 
-CheckForExistanceOfInList <- function(names, passedList) {
+CheckForExistanceOfInList <- function(names, passedList, listName) {
   for (name.checkRow in names) {
-    if (!(name.checkRow["variable"] %in% passedList)) {
-      stop(paste("The ", name.checkRow["variable"], "column is missing from the data"))
+    if (!(name.checkRow %in% passedList)) {
+      stop(paste("The", name.checkRow, "is missing from the", listName))
     }
   }
 }
