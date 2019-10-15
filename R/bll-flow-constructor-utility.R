@@ -1,4 +1,79 @@
+#' @export
+CreateVariableDetailsTemplate <- function(x = NULL, ...) {
+  UseMethod("CreateVariableDetailsTemplate", x)
+}
 
+#' @export
+CreateVariableDetailsTemplate.BLLFlow <- function(bllFlowObject) {
+  variableDetails <-
+    data.frame(
+      variable = character(),
+      toType = character(),
+      databaseStart = character(),
+      variableStart = character(),
+      fromType = character(),
+      recTo = character(),
+      catLabel = character(),
+      catLabelLong = character(),
+      units = character(),
+      recFrom = character(),
+      catStartLabel = character(),
+      variableStartShortLabel = character(),
+      variableStartLabel = character()
+    )
+  # Collect all the variables in MSW variables
+  detectedVariables <- unique(bllFlowObject[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.Variables]])
+  
+  # Loop through the ddiList and add variables detected
+  for (singleDDI in bllFlowObject[[pkg.globals$bllFlowContent.DDI]]) {
+    variable <- "Please Insert RecodedVariable name"
+    toType <-
+      "Please insert desired recoded variable type supported ones are: cat, cont"
+    databaseStart <-
+      singleDDI[["ddiObject"]][["codeBook"]][["docDscr"]][["docSrc"]][["titlStmt"]][["titl"]][[1]]
+    # loop through detectedVariables
+    for (singleDetectedVariable in detectedVariables) {
+      if (singleDetectedVariable %in% names(singleDDI[["variableMetaData"]][["dataDscr"]])) {
+        variableDDI <-
+          singleDDI[["variableMetaData"]][["dataDscr"]][[singleDetectedVariable]]
+        variableStart <-
+          paste(databaseStart, singleDetectedVariable, sep = "::")
+        fromType <- variableDDI$type
+        recTo <- "Please insert values to recode to"
+        catLabel <- "Please enter the lable"
+        catLabelLong <- "Please enter the long label"
+        units <- "Specify the units"
+        recFrom <- "Specify range to recode from"
+        catStartLabel <- variableDDI$label
+        variableStartShortLabel <- variableDDI$label
+        variableStartLabel <- variableDDI$label
+        
+        newRow <-
+          data.frame(
+            variable = variable,
+            toType,
+            databaseStart,
+            variableStart,
+            fromType,
+            recTo,
+            catLabel,
+            catLabelLong,
+            units,
+            recFrom,
+            catStartLabel,
+            variableStartShortLabel ,
+            variableStartLabel
+          )
+        variableDetails <- rbind(variableDetails, newRow)
+      }
+    }
+    
+    
+  }
+  bllFlowObject$variableDetails <- variableDetails
+  
+  return(bllFlowObject)
+}
 
 # ----------- DEPRICATE NEEDS REMAKING ---------
 #' #' Creates a data frame that holds additional ddi data

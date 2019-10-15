@@ -96,7 +96,7 @@ BLLFlow <-
       #   ProcessDDIVariableDetails(ddi, variableDetails)
       for (ddiIndex in 1:length(ddiList)){
         CheckForExistanceOfInList(c("variableMetaData", "ddiObject"), ddiList[[ddiIndex]], paste(names(ddiList)[[ddiIndex]], "ddi"))
-        ddiHeader[[names(ddiIndex)[[ddiIndex]]]] <- GetDDIDescription(ddiList[[ddiIndex]])
+        ddiHeader[[names(ddiList)[[ddiIndex]]]] <- GetDDIDescription(ddiList[[ddiIndex]])
       }
       
     } else{
