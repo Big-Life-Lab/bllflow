@@ -641,7 +641,7 @@ RecodeDerivedVariables <-
     
     # Check for presence of feeder variables in data and in the variable being processed stack
     feederVars <-
-      as.list(strsplit(variableRows[1, ][[pkg.globals$argument.VariableStart]], "::"))[[1]][[2]]
+      as.list(strsplit(as.character(variableRows[1, ][[pkg.globals$argument.VariableStart]]), "::"))[[1]][[2]]
     feederVars <- gsub("\\[|\\]", "", feederVars)
     feederVars <- as.list(strsplit(feederVars, ","))[[1]]
     feederVars <- sapply(feederVars, trimws)
