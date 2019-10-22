@@ -3,9 +3,9 @@ url: https://big-life-lab.github.io/bllflow/
 template:
   params:
     bootswatch: cosmo
-    docsearch:
-      api_key: 7277d80fe94c128628bf7b3251cf7a5d
-      index_name: bllFlow
+    docsearch: 
+      api_key: ebce673983a3972ea16324f81b978cdc
+      index_name: bllflow
 
 development:
   mode: auto
@@ -26,6 +26,29 @@ navbar:
       href: index.html
     articles:
       text: Workflow
+      menu:
+      - text: Workflow overview
+        href: articles/a_workflow.html
+      - text: 1 - Specifying your model
+        href: articles/b_model_specification.html
+      - text: 2 - Describing the study cohort
+        href: articles/c_describing_data.html
+      - text: 3 - Data cleaning and variable transformation
+        href: articles/d_clean_data.html
+      - text: 4 - Developing a (predictive) model
+        href: articles/e_model_development.html
+      - text: 5 - Reporting the performance of a model
+        href: articles/f_model_performance.html
+      - text: 6 - Describing and reporting a model
+        href: articles/g_model_description.html
+      - text: 7 - (predictive) Model deployment
+        href: articles/h_model_deployment.html
+      - text: Helper and utility functions
+        href: articles/i_helper_functions.html
+      - text: Reference files - variable labels and metadata
+        href: articles/j_reference_files.html
+      - text: Recode with table
+        href: articles/recode-with-table.html
     reference:
       text: Reference
       href: reference/index.html
@@ -38,6 +61,7 @@ navbar:
     github:
       icon: fa-github fa-lg
       href: https://github.com/Big-Life-Lab/bllflow
+
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings

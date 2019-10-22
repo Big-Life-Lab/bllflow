@@ -27,16 +27,20 @@ test_that("bllFlow populates appropriate ddi related vars", {
   expect_equal(model, TestEnvironment$`Test-3`$testModel)
 })
 test_that("bllFlow handles passed args of wrong type", {
+  skip("Not Yet implemented")
   # Display error wrong arg passed? should match the classes that are checked above
 })
 test_that("bllFlow handles passed args with wrong/innapropriate information",
           {
+            skip("Not Yet implemented")
             # This is the check for proper columns being there not cell content/ unless u want it to check column data types
           })
 test_that("bllFlow handles empty passed args", {
+  skip("Not Yet implemented")
   # What kind of error should it throw if something is passed of right class but its just empty as in empty data frame
 })
 test_that("bllFlow display appropriate warnings when trying to overwrite rows",
           {
+            skip("Not Yet implemented")
             # are the current warnings i display the ones we wish to stick with?
           })

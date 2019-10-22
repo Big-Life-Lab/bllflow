@@ -86,18 +86,3 @@ steps of the *bllflow* workflow. Currently on step \#4.
 
 Please follow [this guide](CONTRIBUTING.md) if you like to contribute to
 the *bllflow* package.
-
-## Documentation
-
-### Linking to Images
-
-When linking to images in .Rmd files, make sure to add the relative path to the image in the resource_files section of the .Rmd file. An example is given below,
-
-```YAML
-resource_files:
-  - ../man/figures/coding.png
-```
-
-### Linking to other .Rmd files
-
-When linking to other .Rmd files make sure their extension is changed to .html. This ensures that the links continue to work when they are converted to the pkgdown site

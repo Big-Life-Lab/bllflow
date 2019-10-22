@@ -56,9 +56,9 @@ PopulateVariableDetails <-
             NULL
           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck, ])
         } else if (!is.null(ddiVariables[[nameBeingChecked]][[nameBeingChecked]]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh]) &
-                   !is.na(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartLow])) {
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartType]) &
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh]) &
+                   !is.null(rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartLow])) {
           contVariableBeingChecked <-
             ddiVariables[[nameBeingChecked]][[nameBeingChecked]]
           if (rowsToCheck[rowToCheck, pkg.globals$argument.VariableStartHigh] == contVariableBeingChecked[[pkg.globals$argument.VariableStartHigh]] &
@@ -167,62 +167,44 @@ ProcessDDIVariableDetails <- function(ddi, variableDetails) {
   # Loop through every unique variable found in the VariableDetails
   for (variableToCheck in detectedVariables[, 1]) {
     # Check if that variable is recorded in DDI
-    if (variableToCheck %in% names(ddiMetaData$varlab)) {
+    if (variableToCheck %in% names(ddiMetaData$dataDscr)) {
       # Store the label for that variable
-      variableStartLabel <-
-        ddiMetaData$varlab[[variableToCheck]]
+      variableInfo <-
+        ddiMetaData$dataDscr[[variableToCheck]]
       variableValueList <- list()
-      # Check if that variable has value labels
-      if (variableToCheck %in% names(ddiMetaData$vallab)) {
-        # Loop Through all the values that are stored for that variable
-        for (valueLabelToCheck in names(ddiMetaData$vallab[[variableToCheck]])) {
-          catStartValue <-
-            ddiMetaData$vallab[[variableToCheck]][[valueLabelToCheck]]
-          catStartLabel <- valueLabelToCheck
-          # Should i function out the population????
-          # Needs to be a character because cant access list with decimal value or zero value
-          variableValueList[[as.character(catStartValue)]] <-
+      # Check for pressence of value and their labels
+      if (!is.null(variableInfo$values)) {
+        for (valueLabelToCheck in names(variableInfo$values)) {
+          catValue <- variableInfo$values[[valueLabelToCheck]]
+          variableValueList[[as.character(catValue)]] <-
             AddDDIToList(
               valueForHighLow[[variableToCheck]]$Type,
-              catStartValue,
-              catStartLabel,
-              variableStartLabel,
-              catStartValue,
-              catStartValue
+              catValue,
+              valueLabelToCheck,
+              variableInfo$label,
+              catValue,
+              catValue
             )
         }
-        
-        # different values for high and low as well as cat value and label
-        if (valueForHighLow[[variableToCheck]]$Type == pkg.globals$ddiValueName.Cont) {
-          variableValueList[[as.character(variableToCheck)]] <-
-            AddDDIToList(
-              valueForHighLow[[variableToCheck]]$Type,
-              NA,
-              NA,
-              variableStartLabel,
-              attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Min),
-              attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Max)
-            )
-        }
-        
-        # in case there is no labels for the data
-      } else{
-        variableValueList[[variableToCheck]] <-
-          AddDDIToList(
-            valueForHighLow[[variableToCheck]]$Type,
-            NA,
-            NA,
-            variableStartLabel,
-            attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Min),
-            attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Max)
-          )
       }
+      if (valueForHighLow[[variableToCheck]]$Type != pkg.globals$ddiValueName.Cat){
+      # Record variable info
+      variableValueList[[as.character(variableToCheck)]] <- 
+        AddDDIToList(
+          valueForHighLow[[variableToCheck]]$Type,
+          NA,
+          NA,
+          variableInfo$label,
+          attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Min),
+          attr(valueForHighLow[[variableToCheck]], pkg.globals$ddiValue.Max)
+        )
+    }
       # add the list of value labels to that variable
       ddiVariables[[variableToCheck]] <- variableValueList
     }
   }
   
-  if (!length(ddiVariables)) {
+  if (length(ddiVariables) == 0) {
     populatedVariableDetails <- NULL
   } else{
     populatedVariableDetails <-
@@ -253,8 +235,7 @@ AddDDIToList <- function(variableStartType,
   retList[[pkg.globals$argument.CatStartValue]] <- catStartValue
   retList[[pkg.globals$argument.CatStartLabel]] <- catStartLabel
   retList[[pkg.globals$argument.VariableStartLabel]] <- variableStartLabel
-  retList[[pkg.globals$argument.VariableStartLow]] <- variableStartLow
-  retList[[pkg.globals$argument.VariableStartHigh]] <- variableStartHigh
+  retList[[pkg.globals$argument.VariableStartHighLow]] <- paste(variableStartLow, ":",variableStartHigh, sep = "")
   
   return(retList)
 }

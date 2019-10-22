@@ -27,7 +27,9 @@ Depends:
   DDIwR,
   xml2,
   stringr,
-  recipes
+  recipes,
+  sjlabelled,
+  haven
 Imports:
   rstudioapi,
   glue,
