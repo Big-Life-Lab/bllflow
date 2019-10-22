@@ -121,21 +121,19 @@ CreateRecipy <- function(functionObjectList, workingData,variables) {
     arguments <- functionObjectList[[singleFunction]][[pkg.globals$FunctionList.Arguments]]
     stepFormula <- CreateVariableFormula(variables)
     stepName <- paste("step_",singleFunction, sep = "")
-    recipyObject <- do.call(get(stepName),list(recipyObject, stepFormula, arguments))
+    recipyObject <- do.call(get(stepName),list(recipe = recipyObject, unlist(stepFormula)))
   }
-  recipyObject <- recipes::prep(recipyObject, workingData)
+  recipyObject <- recipes::prep(recipyObject, training = workingData)
   
   return(recipyObject)
 }
 
 #Function for creating formula for variable selection
 CreateVariableFormula <- function(varList){
-  returnFormula <- character()
+  returnFormula <- list()
   for (variable in varList) {
-    returnFormula <- paste(returnFormula, variable, "+")
+    returnFormula <- append(returnFormula, variable)
   }
-  returnFormula <- trimws(returnFormula)
-  returnFormula <- substr(returnFormula,1,nchar(returnFormula)-2)
   
   return(returnFormula)
 }
