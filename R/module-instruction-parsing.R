@@ -107,8 +107,37 @@ CreateExactFunction <- function(functionList) {
 }
 
 #Uses the function objects to create a recipy
-CreateRecipy <- function(functionObjectList, workingData) {
+CreateRecipy <- function(functionObjectList, workingData,variables) {
+  # Check variable roles for the recipy creation
+  # TODO bllflow support make this add to overall recipy
+  outcomeVariable <- as.character(variables[variables[[pkg.globals$argument.Role]] == "outcome",pkg.globals$argument.Variables])
+  # TODO add a function for creating a proper formula
+  recipeFormula <- paste(outcomeVariable, "~ .")
   
+  recipyObject <- recipes::recipe(formula = recipeFormula, data = workingData, x = workingData)
+  
+  for (singleFunction in names(functionObjectList)) {
+    variables <- names(functionObjectList[[singleFunction]][[pkg.globals$FunctionList.VariableArguments]])
+    arguments <- functionObjectList[[singleFunction]][[pkg.globals$FunctionList.Arguments]]
+    stepFormula <- CreateVariableFormula(variables)
+    stepName <- paste("step_",singleFunction, sep = "")
+    recipyObject <- do.call(get(stepName),list(recipyObject, stepFormula, arguments))
+  }
+  recipyObject <- recipes::prep(recipyObject, workingData)
+  
+  return(recipyObject)
+}
+
+#Function for creating formula for variable selection
+CreateVariableFormula <- function(varList){
+  returnFormula <- character()
+  for (variable in varList) {
+    returnFormula <- paste(returnFormula, variable, "+")
+  }
+  returnFormula <- trimws(returnFormula)
+  returnFormula <- substr(returnFormula,1,nchar(returnFormula)-2)
+  
+  return(returnFormula)
 }
 
 #verify module sequence matches the passed data
@@ -174,8 +203,9 @@ RunModule <-
           variables = variables,
           variableDetails = variableDetails
         )
-      workingData <- CreateRecipy(moduleFunctions, workingData)
+      workingData <- CreateRecipy(moduleFunctions, workingData, variables)
     }
+    processedData <- recipes::bake(workingData, data)
     
-    return(workingData)
+    return(processedData)
   }
