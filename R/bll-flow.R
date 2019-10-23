@@ -116,3 +116,14 @@ BLLFlow <-
     
     return(bllFlowModel)
   }
+
+#' @export
+ReadData <- function(bllFlow, dataName, pathToData) {
+  # calculate the rows to set to null 
+  variablesToRead <- bllFlow[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.VariableStart]]
+  # Process out the database start using dataName
+  
+  # Read just the header of the csv to find the variables positions set rest to NULL
+  read.csv(file=pathToData, sep=" ", colClasses=c("NULL", NA, NA))
+  # Use numeric vector to read only those specific colums
+}
