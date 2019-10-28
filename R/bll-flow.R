@@ -121,7 +121,7 @@ BLLFlow <-
   }
 
 #' @export
-ReadData <- function(bllFlow, dataName, pathToData) {
+ReadData <- function(bllFlow, dataName, pathToData, rowsToRead = -1) {
   # calculate the rows to set to null
   firstRowOfData <- read.csv(file = pathToData, nrows = 1)
   
@@ -161,7 +161,7 @@ ReadData <- function(bllFlow, dataName, pathToData) {
   columnsToKeep <- colnames(firstRowOfData) %in% varNamesForThisData
   columnClasses <- sapply(columnsToKeep, BooleanConversion)
   
-  dataToSave <- read.csv(file = pathToData,
+  dataToSave <- read.csv(file = pathToData,nrows = rowsToRead,
            colClasses = columnClasses)
   # Use numeric vector to read only those specific colums
 }
