@@ -713,7 +713,7 @@ RecodeDerivedVariables <-
     append(labelList, CreateLabelListElement(variableRows))
     for (rowNum in 1:nrow(variableRows)) {
       rowBeingChecked <- variableRows[rowNum, ]
-      funcCell <- rowBeingChecked[[pkg.globals$argument.CatValue]]
+      funcCell <- as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
       functionBeingUsed <-
         as.list(strsplit(funcCell, "::"))[[1]][[2]]
       
