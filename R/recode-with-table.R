@@ -490,7 +490,7 @@ RecodeColumns <-
     while (nrow(funcVariablesToProcess) > 0) {
       firstRow <- funcVariablesToProcess[1,]
       firstRowVariableName <-
-        firstRow[[pkg.globals$argument.Variables]]
+        as.character(firstRow[[pkg.globals$argument.Variables]])
       # get name of var pass to
       derivedReturn <-
         RecodeDerivedVariables(
