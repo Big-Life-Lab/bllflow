@@ -3,6 +3,8 @@ pkg.globals <- new.env()
 pkg.globals$columnNames.Min <- "min"
 pkg.globals$columnNames.Max <- "max"
 pkg.globals$columnNames.Outlier <- "outlier"
+pkg.globals$columnNames.Operations <- "operations"
+pkg.globals$columnNames.Variable <- "variable"
 
 # Variable Details Sheet Column Names
 pkg.globals$argument.Data <- "data"
@@ -28,6 +30,7 @@ pkg.globals$argument.CatLabelLong <- "catLabelLong"
 pkg.globals$argument.CatLabel <- "catLabel"
 pkg.globals$argument.CatType <- "cat"
 pkg.globals$argument.VariableStartHighLow <- "from" 
+pkg.globals$argument.Role <- "role"
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
@@ -41,7 +44,7 @@ pkg.globals$bllFlowContent.Data <- "data"
 pkg.globals$bllFlowContent.Variables <- "variables"
 pkg.globals$bllFlowContent.VariableDetails <- "variableDetails"
 pkg.globals$bllFlowContent.PopulatedVariableDetails <- "populatedVariableDetails"
-pkg.globals$bllFlowContent.DDI <- "ddi"
+pkg.globals$bllFlowContent.DDI <- "ddiList"
 pkg.globals$bllFlowContent.LongTable <- "longTable"
 pkg.globals$bllFlowContent.AdditionalMetaData <- "additionalDDIMetaData"
 
@@ -63,6 +66,7 @@ pkg.globals$tableOne.Level <- "level"
 pkg.globals$tableOne.Percent <- "percent"
 pkg.globals$tableOne.StrataVarName <- "strataVarName"
 pkg.globals$tableOne.N <- "n"
+pkg.globals$tableOne.Vars <- "vars"
 
 # Long table column names
 pkg.globals$LongTable.VariableCategory <- "variableCategory"
@@ -83,3 +87,14 @@ pkg.globals$LongTable.ClassName <- "LongTable"
 pkg.globals$LongTable.MetaData <- "MetaData"
 pkg.globals$LongTable.SmallCells <- "smallCells"
 pkg.globals$LongTable.LongTable <- "summaryData"
+
+# Module Column names
+pkg.globals$Modules.DefaultOrder <- "DefaultOrder"
+
+# WorkingData contents
+pkg.globals$WorkingData.ModuleSequenceNumber <- "moduleSequenceNumber" 
+pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
+
+#FunctionList contents
+pkg.globals$FunctionList.Arguments <- "arguments"
+pkg.globals$FunctionList.VariableArguments <- "variablesArguments"

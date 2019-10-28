@@ -4,11 +4,11 @@
 \alias{BLLFlow}
 \title{Creates a bllflow model}
 \usage{
-BLLFlow(data = NULL, variables = NULL, variableDetails = NULL,
-  ddi = NULL)
+BLLFlow(dataList = NULL, variables = NULL, variableDetails = NULL,
+  ddiList = NULL)
 }
 \arguments{
-\item{data}{A dataframe that represents the dataset the model will be developed
+\item{dataList}{A dataframe list that represents the datasets the model will be developed
 on}
 
 \item{variables}{A dataframe that has the specification sheet for this model. An example
@@ -19,26 +19,27 @@ of this worksheet is available here
 of this worksheet is available here
 \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036}.}
 
-\item{ddi}{An optinal string that contains the path to a ddi document}
+\item{ddiList}{A named list that contains the ddi documents}
 }
 \value{
 A named list which is an instance of the bllflow class. The items
 in the list are specified below: \cr
-1. data - A dataframe that contains the passed data argument \cr
+1. dataList - A dataframe that contains the passed dataList argument \cr
 2. variables - A dataframe that contains the passed variables argument \cr
 3. variableDetails - A dataframe that contains the passed variableDetails argument \cr
-4. ddi - A string that contains the passed ddi argument \cr
+4. ddiList - A named list that contains the ddi found on the passed path \cr
 5. additionalDDIMetaData - A named list. See the return type of the \code{\link{GetDDIDescription}} function \cr
 6. populatedVariableDetails - A dataframe that contains the rows in the variableDetails \cr
 argument but with additional data filled in using the ddi argument it's specified
 }
 \description{
-Wraps up the data, variables and variableDetails arguments in an R object, 
+Wraps up the data, variables and variableDetails arguments in an R object,
 making it an instance of a bllflow class and returning the resulting object.
-If a ddi argument is provided, all the metadata from the DDI document is 
+If a ddi argument is provided, all the metadata from the DDI document is
 imported into the R object
 }
 \examples{
+#TODO Update with lists
 # ALl the libraries we will be using
 library(bllflow)
 library(survival)
@@ -46,7 +47,7 @@ library(survival)
 # Read in the data we will use for this example
 data(pbc)
 
-# Read in the variables and variable details CSV sheets which are part of the 
+# Read in the variables and variable details CSV sheets which are part of the
 # master specification workbook
 variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
 variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))

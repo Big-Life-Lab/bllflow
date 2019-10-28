@@ -1,0 +1,62 @@
+---
+title: "pbc_recipes_test"
+author: "Rostyslav Vyuha"
+date: '2019-07-03'
+output: html_document
+---
+
+
+```{r, collapse=TRUE}
+library(survival) #pcb data
+library(recipes) #recipes library
+```
+```{r}
+data(pbc)
+```
+
+##Overview
+Here I am going to show an example of using the primary billary cirrhosis (PBC) data to create a coxhp model to evalute all-cause mortality.
+Age will be modelled as a b spline with 5 knots, and bilirubin as an b spline with 3 knots.
+
+```{r}
+# Doug i assume status is the mortality since its related to patience death??
+pbcRec <- recipe(status ~ age+sex+bili+albumin+protime+edema, data = pbc)
+```
+
+##Prepare the data
+```{r}
+pbcRec <- pbcRec %>%
+  step_integer(matches("sex"))
+#pbcRec
+```
+@Doug all the steps can be put into one call or be added at later times
+##Process the data
+```{r}
+pbcRec <- pbcRec %>%
+  step_center(everything(),-sex) %>%
+  step_interact(terms = ~(bili+albumin+protime+edema):age) %>%
+  step_meanimpute(everything(), -contains("age"), -contains("sex")) %>%
+  step_num2factor(sex,edema)%>%
+    step_dummy(sex,edema) %>%
+  step_bs(age ,degree = 4) %>%
+  step_bs(bili,albumin,protime,matches("edema"))
+
+#pbcRec
+```
+@Doug im not sure which impute to use 
+
+
+```{r}
+trainedPBCRec <- prep(pbcRec, training = pbc)
+trainedPBCRec
+```
+
+```{r}
+bakedPBC <- bake(trainedPBCRec, new_data = pbc)
+bakedPBC
+```
+OutModel @Doug Im really not sure what the prefered output is since im not sure how models work
+```{r}
+coxPbcModel <- coxph(Surv(status) ~ bili_x_age+sex_X2, data = bakedPBC)
+coxPbcModel
+```

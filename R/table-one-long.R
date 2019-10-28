@@ -20,9 +20,9 @@
 #'
 #' library(bllflow)
 #' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
-#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+#' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
 #' pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
@@ -98,9 +98,9 @@ CreateTableOne <- function(x = NULL, ...) {
 #'
 #' library(bllflow)
 #' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
-#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
+#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+#' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
+#' pbcModel <- BLLFlow(pbc, variablesSheet, variableDetails, ddi)
 #'
 #' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
 #'

@@ -1,0 +1,14 @@
+Operation,Variables,Append,CreateNewVariable
+recodeVars,"ageGroup","DEFAULT",True
+tableOne,"everything()",NA,NA
+impute,"all_predictors(),-age,-sex","_imp",False
+createVars::packYear,"packyears","DEFAULT",True
+recodeVars,"packyears","DEFAULT",True
+cleanExclusions,"age","_Clean",False
+tableOne,"everything()",NA,NA
+impute,"packyears","_imp",False
+tableOne,"everything()",NA,NA
+center,"all_predictors(),-sex","_C",False
+RCS::4,"age","_rcs",True
+RCS::3,"all_predictors(),-age,-sex","_rcs",True
+interaction::age,"all_predictors(),-age,-sex",_X_age,True

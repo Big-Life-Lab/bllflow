@@ -1,0 +1,57 @@
+---
+title: "pbc-operations-test"
+author: "Rostyslav Vyuha"
+date: "July 11, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Step one initial variable role specification
+Iniside variable details specify which variables are predictors, used in creation of other vars, and which variables are the outcome(this is used to build the initial recipy) @Doug(perhaps we should move created variables into variables as well and move role specification to variables too?)
+
+##Specify the modules
+Inside the modules csv specify the functions you wish to use for each step
+
+##Specify module effects
+Inside the variables csv specify which variables are affected by which modules as well as the arguments for those modules for each variable
+
+##Run the modules
+Run the modules sequentially then procced to run checks on each modules as the analyst sees fit
+
+```{r}
+library(survival)
+library(bllflow)
+data(pbc)
+
+#Import the ddi,variables,variableDetails,modules
+variables <- read.csv(file.path(getwd(), '../inst/extdata/Meeting Version - Variables.csv'))
+variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/Meeting Version - variableDetails.csv'))
+modules <- read.csv(file.path(getwd(), '../inst/extdata/Meeting Version - Modules.csv'))
+ddi = pbcDDI <- ReadDDI(file.path(getwd(), "../inst/extdata"), 
+                "pbcDDI.xml")
+
+bllFlowObject <- BLLFlow()
+
+# This updates the working data inside bllFlow to the data returned by RunModule as well as its current module sequence number
+bllFlowObject <- RunModule(bllObject = bllFlowObject, moduleSequenceNumber = 1)
+#The non bllFlow version
+#Returns a list containing the working data, recipy log, as well as the module number as its elements
+workingData <- RunModule(variables = variables, variableDetails = variableDetails, modules = modules, data = pbc, moduleSequenceNumber = 1)
+
+# The analyst can then run required analysis on workingData$data to verify the module performed the steps they wished if not they can update module csv module 1 to run what they prefer to do in this step and rerun until they are satisfyid with its output
+
+#CHECKS AND ANALYSIS
+#rerun
+workingData <- RunModule(variables = variables, variableDetails = variableDetails, modules = modules, data = pbc, moduleSequenceNumber = 1)
+
+#Once the step is satisfied next module is ran with the first module output
+workingData <- RunModule(variables = variables, variableDetails = variableDetails, modules = modules, data = workingData, moduleSequenceNumber = 2)
+
+#This is then continued for as many default modules as there are created or however many the analyst wishes to run
+#The working data/bllflow object will store a log for each module ran however will overwrite if the same module number is ran twice
+```
+
+

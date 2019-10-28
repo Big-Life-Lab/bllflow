@@ -1,0 +1,5 @@
+ModuleName,ModuleOperations,DefaultOrder
+data cleaning,"RecWTable",1
+finish data cleaning,"impute,RecWTable,Min,Max",2
+impute missing data, "impute",3
+transform data,"center,RCS,interactions",4
