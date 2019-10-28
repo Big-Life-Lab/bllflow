@@ -94,9 +94,12 @@ BLLFlow <-
       # TODO redisign to create template rather then populate add a check to verify proper structure
       # processedVariableDetails <-
       #   ProcessDDIVariableDetails(ddi, variableDetails)
-      for (ddiIndex in 1:length(ddiList)){
-        CheckForExistanceOfInList(c("variableMetaData", "ddiObject"), ddiList[[ddiIndex]], paste(names(ddiList)[[ddiIndex]], "ddi"))
-        ddiHeader[[names(ddiList)[[ddiIndex]]]] <- GetDDIDescription(ddiList[[ddiIndex]])
+      for (ddiIndex in 1:length(ddiList)) {
+        CheckForExistanceOfInList(c("variableMetaData", "ddiObject"),
+                                  ddiList[[ddiIndex]],
+                                  paste(names(ddiList)[[ddiIndex]], "ddi"))
+        ddiHeader[[names(ddiList)[[ddiIndex]]]] <-
+          GetDDIDescription(ddiList[[ddiIndex]])
       }
       
     } else{
@@ -119,11 +122,42 @@ BLLFlow <-
 
 #' @export
 ReadData <- function(bllFlow, dataName, pathToData) {
-  # calculate the rows to set to null 
-  variablesToRead <- bllFlow[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.VariableStart]]
+  # calculate the rows to set to null
+  firstRowOfData <- read.csv(file = pathToData, nrows = 1)
+  
+  varDetails <- bllFlow[[pkg.globals$bllFlowContent.Variables]]
+  
+  variablesToReadList <-
+    varDetails[grepl(dataName, varDetails[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.VariableStart]
+  
+  varNamesForThisData <- list()
+  
+  for (variableToReadRow in 1:nrow(variablesToReadList)) {
+    variableToRead <- as.character(variablesToReadList[variableToReadRow,])
+    dataVariableBeingChecked <- character()
+    if (grepl(dataName, variableToRead)) {
+      varStartNamesList <- as.list(strsplit(variableToRead, ",")[[1]])
+      # Find exact var Name
+      for (varName in varStartNamesList) {
+        if (grepl(dataName, varName)) {
+          # seperate dataname from the var name
+          dataVariableBeingChecked <-
+            as.list(strsplit(varName, "::")[[1]])[[2]]
+        }
+      }
+    } else if (grepl("\\[", variableToRead)) {
+      dataVariableBeingChecked <-
+        stringr::str_match(variableToRead, "\\[(.*?)\\]")[, 2]
+    }
+    
+    varNamesForThisData <- append(varNamesForThisData, dataVariableBeingChecked)
+  }
+  varNamesForThisData <- unique(varNamesForThisData)
   # Process out the database start using dataName
   
   # Read just the header of the csv to find the variables positions set rest to NULL
-  read.csv(file=pathToData, sep=" ", colClasses=c("NULL", NA, NA))
+  read.csv(file = pathToData,
+           sep = " ",
+           colClasses = c("NULL", NA, NA))
   # Use numeric vector to read only those specific colums
 }
