@@ -1,19 +1,19 @@
-url: https://big-life-lab.github.io/bllFlow/
+url: https://big-life-lab.github.io/bllflow/
 
 template:
   params:
     bootswatch: cosmo
-    docsearch:
-      api_key: 7277d80fe94c128628bf7b3251cf7a5d
-      index_name: bllFlow
+    docsearch: 
+      api_key: ebce673983a3972ea16324f81b978cdc
+      index_name: bllflow
 
 development:
   mode: auto
-  
+
 home:
   links:
-  - text: Calculators at
-    href: https://projectbiglife.ca
+    - text: Calculators at
+      href: https://www.projectbiglife.ca
 
 # modified from 'template_navbar()' to add the 'data' tab
 navbar:
@@ -26,38 +26,71 @@ navbar:
       href: index.html
     articles:
       text: Workflow
+      menu:
+      - text: Workflow overview
+        href: articles/a_workflow.html
+      - text: 1 - Specifying your model
+        href: articles/b_model_specification.html
+      - text: 2 - Describing the study cohort
+        href: articles/c_describing_data.html
+      - text: 3 - Data cleaning and variable transformation
+        href: articles/d_clean_data.html
+      - text: 4 - Developing a (predictive) model
+        href: articles/e_model_development.html
+      - text: 5 - Reporting the performance of a model
+        href: articles/f_model_performance.html
+      - text: 6 - Describing and reporting a model
+        href: articles/g_model_description.html
+      - text: 7 - (predictive) Model deployment
+        href: articles/h_model_deployment.html
+      - text: Helper and utility functions
+        href: articles/i_helper_functions.html
+      - text: Reference files - variable labels and metadata
+        href: articles/j_reference_files.html
+      - text: Recode with table
+        href: articles/recode-with-table.html
     reference:
       text: Reference
       href: reference/index.html
     intro:
       text: Get started
-      href: articles/bllFlow.html
+      href: articles/bllflow.html
     news:
       text: Changelog
       href: news/index.html
     github:
       icon: fa-github fa-lg
-      href: https://github.com/Big-Life-Lab/bllFlow
+      href: https://github.com/Big-Life-Lab/bllflow
+
 
 # use 'template_reference()' to generate a template with all package functions
 # and then place the functions in the different section headings
 
 reference:
-- title: "Clean and tranfrom variables"
-  desc: Functions for cleaning and transforming variables
-  contents:
-  - '`bll_flow`'
-  - '`buildInteractionsList`'
-  - '`buildProjectFiles`'
-  - '`center.bll_flow`'
-  - '`formatInteractionVariable`'
-  - '`getCodeForCenteredVariable`'
-  - '`getCodeForDummyVariable`'
-  - '`getCodeForInteraction`'
-  - '`isInInteractionsList`'
-  - '`isPortWebSpecFile`'
-- title: "Making test data"
-  desc: A bllFlow ....
-  contents:
-  - '`assign_first_event`'
-  - '`make_event_dates`'
+  - title: "Model specification"
+    desc: Functions for reading the Model Specification Workbook and addint metatdata
+    contents:
+      - BLLFlow
+      - ProcessDDIVariableDetails
+      - UpdateMSW
+      - WriteDDIPopulatedMSW
+  - title: "DDI functions"
+    desc: Functions to parse, read and extract metadata from DDI documents
+    contents:
+      - ReadDDI
+      - GetDDIDescription
+      - GetDDIVariables
+  - title: "Describe data"
+    desc: Create summary tables
+    contents:
+      - CreateTableOne
+      - SummaryDataLong
+  - title: "Clean and transfrom variables"
+    desc: Functions for cleaning and transforming variables
+    contents:
+      - clean.Max
+      - clean.Min
+  - title: "Utility Functions"
+    contents:
+      - CheckSmallCells
+      - print.metaDataLog

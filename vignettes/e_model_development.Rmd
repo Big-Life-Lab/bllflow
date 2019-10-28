@@ -13,6 +13,12 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
-**bllFlow** supports pre-specifying model development as described by Harrell 
-and others.[ref]
+## Introduction
 
+This section is in progress. _bllflow_ supports a pre-specified approach to 
+model development, but otherwise does not have an opinionated model development 
+approach. 
+
+Vignette examples will develop the `pbc` model following the original study's 
+cox proportional hazard approach using functions in base R and the 'Hmisc' 
+package. 

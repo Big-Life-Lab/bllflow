@@ -38,6 +38,6 @@ Labels and metadata are used in five key areas of research reporting:
 ```{r, echo=FALSE, results='asis'}
 library(DT)
 
-dt <- read.csv(system.file("extdata", "bllFlow-variables.csv", package = "bllFlow"))
+dt <- read.csv(file.path(getwd(), '../inst/extdata/bllFlow-variables.csv'))
 datatable(dt, options = list(pageLength = 5))
 ```

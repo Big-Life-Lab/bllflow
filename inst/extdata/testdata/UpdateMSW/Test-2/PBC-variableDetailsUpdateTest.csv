@@ -1,0 +1,5 @@
+variable,label,labelLong,variableType,variableDummy,valueLabelLong,valueLabel,target,method,reference,databaseStart,variableStart,variableStartType,validCatN,validCatNStart,value,valueLabelStart,units,interval,from
+sex,Sex,Sex,category,sex_cat2_1,Female,Femle,pbcDemo,map1_1,Yes,pbc,sex,cat,2,2,2,,NA,N/A,2:2
+sex,Sex,Sex,category,sex_cat2_2,Male,Male,pbcDemo,map1_1,No,pbc,sex,cat,2,2,1,,N/A,N/A,1:1
+sex,Sex,Sex,category,sex_cat3_3,missing,missing,pbcDemo,map1_1,N/A,pbc,sex,cat,2,2,NA,N/A,N/A,N/A,N/A
+age,Age (years),Age (years),continuous,age_rcs4_1,Age Restricted Cubic Spline Knot 1,Age RCS 1,pbcDemo,rcs4,NA,pbc,age,cont,N/A,N/A,1,N/A,years,N/A,N/A

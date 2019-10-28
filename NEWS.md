@@ -1,25 +1,23 @@
 # bllFlow (development version)
 
-# bllFlow 0.1.1
-2018-12-14
+# bllflow 0.1.2 (current build)
 
-<span style="color:green">0 errors ✔ </span> | 
-<span style="color:green">0 warnings ✔ </span> | 
-<span style="color:green">0 notes ✔ </span> 
- `R CMD check succeeded`
+## Features:
 
-### Functions included
-See [documentation](https://big-life-lab.github.io/bllFlow/docs/reference/index.html) for more details.
+- Added support for single from values
 
-    - `assign_first_event()`
-    - `bll_flow()`
-    - `buildInteractionsList()`
-    - `buildProjectFiles()`
-    - `center.bll_flow()`
-    - `formatInteractionVariable()`
-    - `getCodeForCenteredVariable()`
-    - `getCodeForDummyVariable()`
-    - `getCodeForInteraction()`
-    - `isInInteractionsList()`
-    - `isPortWebSpecFile()`
-    - `make_event_dates()`
+# bllflow 0.1.1 
+
+## Features:
+
+- Added new function RecWTable. Responsible for recoding data using variable details
+- Added new function SetDataLabels. Responsible for using variable details and well as variables to set data labels
+
+## Bugs
+
+- Fixed DDIwR newest version not being compadible
+- Fixed old functions to work with new variable details
+
+# bllflow 0.1.0 (First Version)
+
+2019-04-25
