@@ -121,14 +121,13 @@ BLLFlow <-
   }
 
 #' @export
-ReadData <- function(bllFlow, dataName, pathToData, rowsToRead = -1) {
+ReadData <- function(variables, dataName, pathToData) {
   # calculate the rows to set to null
   firstRowOfData <- read.csv(file = pathToData, nrows = 1)
   
-  varDetails <- bllFlow[[pkg.globals$bllFlowContent.Variables]]
   
   variablesToReadList <-
-    varDetails[grepl(dataName, varDetails[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.VariableStart]
+    variables[grepl(dataName, variables[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.VariableStart]
   
   varNamesForThisData <- list()
   
@@ -161,7 +160,7 @@ ReadData <- function(bllFlow, dataName, pathToData, rowsToRead = -1) {
   columnsToKeep <- colnames(firstRowOfData) %in% varNamesForThisData
   columnClasses <- sapply(columnsToKeep, BooleanConversion)
   
-  dataToSave <- read.csv(file = pathToData,nrows = rowsToRead,
+  dataToSave <- read.csv(file = pathToData,
            colClasses = columnClasses)
   # Use numeric vector to read only those specific colums
 }
