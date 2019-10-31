@@ -53,7 +53,7 @@ BLLFlow <-
            ddiList = NULL) {
     ddiHeader <- list()
     # Verify passed arg integrity for future functions
-    if (!is.null(data)) {
+    if (!is.null(dataList)) {
       for (singleDataIndex in 1:length(dataList)) {
         CheckIfDataFrame(dataList[[singleDataIndex]], names(dataList)[[singleDataIndex]])
       }
@@ -125,15 +125,46 @@ ReadData <- function(variables, dataName, pathToData) {
   # calculate the rows to set to null
   firstRowOfData <- read.csv(file = pathToData, nrows = 1)
   
+  varNamesForThisData <- GetVariables.default(variables, dataName)
   
+  columnsToKeep <- colnames(firstRowOfData) %in% varNamesForThisData
+  columnClasses <- sapply(columnsToKeep, BooleanConversion)
+  
+  dataToSave <- read.csv(file = pathToData,
+           colClasses = columnClasses)
+  
+  return(dataToSave)
+}
+BooleanConversion <- function(boolValue) {
+  retValue <- character()
+  if (boolValue) {
+    retValue <- NA
+  } else {
+    retValue <- "NULL"
+  }
+  
+  return(retValue)
+}
+#' @export
+GetVariables <- function(variableSource = NULL, ...){
+  UseMethod("GetVariables", variableSource)
+}
+#' @export
+GetVariables.BLLFlow <- function(bllFlow, dataName){
+  variables <- bllFlow[[pkg.globals$bllFlowContent.Variables]]
+  
+  return(GetVariables.default(variables, dataName))
+}
+#' @export
+GetVariables.default <- function(variables, dataName){
   variablesToReadList <-
-    variables[grepl(dataName, variables[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.VariableStart]
-  
+    variables[grepl(dataName, variables[[pkg.globals$argument.DatabaseStart]]), ]
+
   varNamesForThisData <- list()
   
   for (variableToReadRow in 1:nrow(variablesToReadList)) {
     variableToRead <-
-      as.character(variablesToReadList[variableToReadRow, ])
+      as.character(variablesToReadList[variableToReadRow, pkg.globals$argument.VariableStart])
     dataVariableBeingChecked <- character()
     if (!grepl("DerivedVar", variableToRead)) {
       if (grepl(dataName, variableToRead)) {
@@ -157,20 +188,5 @@ ReadData <- function(variables, dataName, pathToData) {
   }
   varNamesForThisData <- unique(varNamesForThisData)
   
-  columnsToKeep <- colnames(firstRowOfData) %in% varNamesForThisData
-  columnClasses <- sapply(columnsToKeep, BooleanConversion)
-  
-  dataToSave <- read.csv(file = pathToData,
-           colClasses = columnClasses)
-  # Use numeric vector to read only those specific colums
-}
-BooleanConversion <- function(boolValue) {
-  retValue <- character()
-  if (boolValue) {
-    retValue <- NA
-  } else {
-    retValue <- "NULL"
-  }
-  
-  return(retValue)
+  return(varNamesForThisData)
 }

@@ -19,5 +19,5 @@ varDetails <- read.csv("../inst/extdata/CCHS MSW/Study Specifications/PoRT MSW -
 
 ```{r}
 library(bllflow)
-cchsBllFlow <- BLLFlow(variables = variablesMSW)
+cchsBllFlow <- BLLFlow(variables = variablesMSW, variableDetails = varDetails)
 ```

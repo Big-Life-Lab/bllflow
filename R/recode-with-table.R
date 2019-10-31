@@ -145,6 +145,11 @@ RecodeCall <-
       if (!is.null(variables)) {
         variableDetails <-
           variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables,]
+        varsBeingRecoded <- as.character(unique(variableDetails[[pkg.globals$argument.Variables]]))
+        if (length(varsBeingRecoded) != length(variables)){
+          missingVars <- setdiff(variables,varsBeingRecoded )
+          warning(paste(missingVars),"is missing from variable details therefore cannot be recoded")
+        }
       }
       if (is.null(variableDetails[[pkg.globals$argument.VariableLabel]])) {
         variableDetails[[pkg.globals$argument.VariableLabel]] <- NA
