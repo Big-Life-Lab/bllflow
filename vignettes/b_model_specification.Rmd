@@ -61,6 +61,17 @@ _bllflow_ supports importing metadata into the workbook from:
 similar packages); or,
 - manually added added to the MSW.
 
+### Variabe roles
+`bllflow` can assign one or more roles to each variable in the data. We add a role for each variable that is used in our study. Suggested can be named anything and be used or reused for any purpose. Variables can have multiple roles. Suggested roles include:
+
+- predictor - a variable or feature used in a model
+- outcome-primary - there should be only one primary outcome
+- outcome-secondary - a secondary outcome
+- strata - used to stratify the development of a mode. e.g. create two different models for males and females, or split the sample into development and validation sub-samples.
+- descriptor - used to describe a study population such as in Table 1 or 2, or report the performance of a model
+- intermediate -  to only to creating other (derived) variables
+- filter  - inclusion or exclusion criteria to create a study population
+
 ### Example 2: Variable details
 The `variableDetails.csv` contains additional variable details. For categorical variables there are rows for each category (factor). Included for each row are factor levels and lablels. Again, this information can be added through helper functions if there is a DDI file or the labels are already in your data. 
 
