@@ -144,11 +144,15 @@ RecodeCall <-
     } else {
       if (!is.null(variables)) {
         variableDetails <-
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables,]
-        varsBeingRecoded <- as.character(unique(variableDetails[[pkg.globals$argument.Variables]]))
-        if (length(varsBeingRecoded) != length(variables)){
-          missingVars <- setdiff(variables,varsBeingRecoded )
-          warning(paste(missingVars),"is missing from variable details therefore cannot be recoded")
+          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+        varsBeingRecoded <-
+          as.character(unique(variableDetails[[pkg.globals$argument.Variables]]))
+        if (length(varsBeingRecoded) != length(variables)) {
+          missingVars <- setdiff(variables, varsBeingRecoded)
+          warning(
+            paste(missingVars),
+            "is missing from variable details therefore cannot be recoded"
+          )
         }
       }
       if (is.null(variableDetails[[pkg.globals$argument.VariableLabel]])) {
@@ -178,7 +182,7 @@ RecodeCall <-
     allPossibleVarNames <-
       unique(as.character(variableDetails[[pkg.globals$argument.Variables]]))
     allVariablesDetected <-
-      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
+      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]), ]
     
     recData <-
       RecodeColumns(
@@ -280,13 +284,13 @@ RecodeColumns <-
            elseDefault) {
     # Split variables to process into recode map and func
     mapVariablesToProcess <-
-      variablesToProcess[grepl("map::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
+      variablesToProcess[grepl("map::", variablesToProcess[[pkg.globals$argument.CatValue]]), ]
     
     funcVariablesToProcess <-
-      variablesToProcess[grepl("Func::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
+      variablesToProcess[grepl("Func::", variablesToProcess[[pkg.globals$argument.CatValue]]), ]
     
     recVariablesToProcess <-
-      variablesToProcess[!grepl("Func::|map::", variablesToProcess[[pkg.globals$argument.CatValue]]),]
+      variablesToProcess[!grepl("Func::|map::", variablesToProcess[[pkg.globals$argument.CatValue]]), ]
     
     labelList <- list()
     # Set interval if none is present
@@ -303,10 +307,10 @@ RecodeColumns <-
       variableBeingChecked <-
         as.character(recVariablesToProcess[1, pkg.globals$argument.Variables])
       rowsBeingChecked <-
-        recVariablesToProcess[recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
+        recVariablesToProcess[recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
       recVariablesToProcess <-
-        recVariablesToProcess[!recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      firstRow <- rowsBeingChecked[1, ]
+        recVariablesToProcess[!recVariablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked, ]
+      firstRow <- rowsBeingChecked[1,]
       # Check for varialbe existance in data
       dataVariableBeingChecked <-
         GetDataVariableName(
@@ -380,7 +384,7 @@ RecodeColumns <-
           recodedData[variableBeingChecked] <- elseDefault
         }
         rowsBeingChecked <-
-          rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
+          rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else", ]
         if (nrow(rowsBeingChecked) > 0) {
           logTable <- rowsBeingChecked[, 0]
           logTable$valueTo <- NA
@@ -390,7 +394,7 @@ RecodeColumns <-
             c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
           
           for (row in 1:nrow(rowsBeingChecked)) {
-            rowBeingChecked <- rowsBeingChecked[row, ]
+            rowBeingChecked <- rowsBeingChecked[row,]
             # If cat go check for label and obtain it
             
             # regardless obtain unit and attach
@@ -493,7 +497,7 @@ RecodeColumns <-
     
     # Process funcVars
     while (nrow(funcVariablesToProcess) > 0) {
-      firstRow <- funcVariablesToProcess[1,]
+      firstRow <- funcVariablesToProcess[1, ]
       firstRowVariableName <-
         as.character(firstRow[[pkg.globals$argument.Variables]])
       # get name of var pass to
@@ -572,7 +576,7 @@ UpdateVariableDetailsBasedOnVariableSheet <-
   function(variableSheet, variableDetails) {
     # remove conflicting columns from variable details
     variableDetails <-
-      variableDetails[, !(
+      variableDetails[,!(
         names(variableDetails) %in% c(
           pkg.globals$MSW.Variables.Columns.VariableType,
           pkg.globals$MSW.Variables.Columns.Label,
@@ -600,7 +604,7 @@ UpdateVariableDetailsBasedOnVariableSheet <-
       )
     # remove variables not present in variableSheet
     variableDetails <-
-      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]],]
+      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]], ]
     
     return(variableDetails)
   }
@@ -640,85 +644,86 @@ RecodeDerivedVariables <-
     varStack <- c(varStack, variableBeingProcessed)
     # obtain rows to process and updated variables to Process
     variableRows <-
-      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingProcessed,]
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingProcessed, ]
     variablesToProcess <-
-      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] != variableBeingProcessed,]
-    
-    # Check for presence of feeder variables in data and in the variable being processed stack
-    feederVars <-
-      as.list(strsplit(as.character(variableRows[1,][[pkg.globals$argument.VariableStart]]), "::"))[[1]][[2]]
-    feederVars <- gsub("\\[|\\]", "", feederVars)
-    feederVars <- as.list(strsplit(feederVars, ","))[[1]]
-    feederVars <- sapply(feederVars, trimws)
-    usedFeederVars <- feederVars
-    feederVars <- setdiff(feederVars, names(recodedData))
-    
-    # Check if the variable has a function to recode
-    nonFuncMissingVariables <-
-      setdiff(feederVars, unique(as.character(variablesToProcess[[pkg.globals$argument.Variables]])))
-    if (length(nonFuncMissingVariables) > 0) {
-      warning(
-        paste(
-          variableBeingProcessed,
-          "could not be calculated because",
-          feederVars,
-          "was never recoded and is not a function variable"
-        )
-      )
-      varStack <- varStack[!(varStack == variableBeingProcessed)]
-      
-      return(
-        list(
-          varStack = varStack,
-          labelList = labelList,
-          recodedData = recodedData,
-          variablesToProcess = variablesToProcess
-        )
-      )
-    }
-    # Check for presense in varStack
-    if (length(intersect(feederVars, varStack)) > 0) {
-      conflictVars <- intersect(feederVars, varStack)
-      stop(
-        paste(
-          conflictVars,
-          "is required to create",
-          variableBeingProcessed,
-          "but",
-          variableBeingProcessed,
-          "is needed to create",
-          conflictVars
-        )
-      )
-    }
-    
-    # Update varStack and recurse to get the feeder vars
-    for (oneFeeder in feederVars) {
-      # Need to check recoded data again in case a recursion added it
-      if (!oneFeeder %in% names(recodedData)) {
-        derivedReturn <-
-          RecodeDerivedVariables(
-            variableBeingProcessed = oneFeeder,
-            recodedData = recodedData,
-            variablesToProcess = variablesToProcess,
-            log = log,
-            printNote = printNote,
-            elseDefault = elseDefault,
-            labelList = labelList,
-            varStack = varStack
-          )
-        varStack <- derivedReturn$varStack
-        labelList <- derivedReturn$labelList
-        recodedData <- derivedReturn$recodedData
-        variablesToProcess <- derivedReturn$variablesToProcess
-      }
-    }
-    
-    # Obtain the function for each row
-    append(labelList, CreateLabelListElement(variableRows))
+      variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] != variableBeingProcessed, ]
     for (rowNum in 1:nrow(variableRows)) {
-      rowBeingChecked <- variableRows[rowNum, ]
-      funcCell <- as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
+      # Check for presence of feeder variables in data and in the variable being processed stack
+      feederVars <-
+        as.list(strsplit(as.character(variableRows[rowNum, ][[pkg.globals$argument.VariableStart]]), "::"))[[1]][[2]]
+      feederVars <- gsub("\\[|\\]", "", feederVars)
+      feederVars <- as.list(strsplit(feederVars, ","))[[1]]
+      feederVars <- sapply(feederVars, trimws)
+      usedFeederVars <- feederVars
+      feederVars <- setdiff(feederVars, names(recodedData))
+      
+      # Check if the variable has a function to recode
+      nonFuncMissingVariables <-
+        setdiff(feederVars, unique(as.character(variablesToProcess[[pkg.globals$argument.Variables]])))
+      if (length(nonFuncMissingVariables) > 0) {
+        warning(
+          paste(
+            variableBeingProcessed,
+            "could not be calculated because",
+            feederVars,
+            "was never recoded and is not a function variable"
+          )
+        )
+        varStack <- varStack[!(varStack == variableBeingProcessed)]
+        
+        return(
+          list(
+            varStack = varStack,
+            labelList = labelList,
+            recodedData = recodedData,
+            variablesToProcess = variablesToProcess
+          )
+        )
+      }
+      # Check for presense in varStack
+      if (length(intersect(feederVars, varStack)) > 0) {
+        conflictVars <- intersect(feederVars, varStack)
+        stop(
+          paste(
+            conflictVars,
+            "is required to create",
+            variableBeingProcessed,
+            "but",
+            variableBeingProcessed,
+            "is needed to create",
+            conflictVars
+          )
+        )
+      }
+      
+      # Update varStack and recurse to get the feeder vars
+      for (oneFeeder in feederVars) {
+        # Need to check recoded data again in case a recursion added it
+        if (!oneFeeder %in% names(recodedData)) {
+          derivedReturn <-
+            RecodeDerivedVariables(
+              variableBeingProcessed = oneFeeder,
+              recodedData = recodedData,
+              variablesToProcess = variablesToProcess,
+              log = log,
+              printNote = printNote,
+              elseDefault = elseDefault,
+              labelList = labelList,
+              varStack = varStack
+            )
+          varStack <- derivedReturn$varStack
+          labelList <- derivedReturn$labelList
+          recodedData <- derivedReturn$recodedData
+          variablesToProcess <- derivedReturn$variablesToProcess
+        }
+      }
+      
+      # Obtain the function for each row
+      append(labelList, CreateLabelListElement(variableRows))
+      
+      rowBeingChecked <- variableRows[rowNum,]
+      funcCell <-
+        as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
       functionBeingUsed <-
         as.list(strsplit(funcCell, "::"))[[1]][[2]]
       
@@ -733,8 +738,9 @@ RecodeDerivedVariables <-
         )
       recodedData[[variableBeingProcessed]] <-
         unlist(columnValue[["columnBeingAdded"]])
+      
+      varStack <- varStack[!(varStack == variableBeingProcessed)]
     }
-    varStack <- varStack[!(varStack == variableBeingProcessed)]
     
     return(
       list(
