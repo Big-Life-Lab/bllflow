@@ -138,20 +138,21 @@ RecodeCall <-
            appendNonDBColumns,
            log,
            varLabels) {
+    variableDetails[[pkg.globals$argument.Variables]] <- trimws(variableDetails[[pkg.globals$argument.Variables]])
     if (!is.null(variables) && "data.frame" %in% class(variables)) {
       variableDetails <-
         UpdateVariableDetailsBasedOnVariableSheet(variableSheet = variables, variableDetails = variableDetails)
     } else {
       if (!is.null(variables)) {
         variableDetails <-
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables, ]
+          variableDetails[trimws(variableDetails[[pkg.globals$argument.Variables]]) %in% variables, ]
         varsBeingRecoded <-
           as.character(unique(variableDetails[[pkg.globals$argument.Variables]]))
         if (length(varsBeingRecoded) != length(variables)) {
           missingVars <- setdiff(variables, varsBeingRecoded)
           warning(
-            paste(missingVars),
-            "is missing from variable details therefore cannot be recoded"
+            paste(missingVars,
+            "is missing from variable details therefore cannot be recoded")
           )
         }
       }

@@ -47,6 +47,7 @@ pkg.globals$bllFlowContent.PopulatedVariableDetails <- "populatedVariableDetails
 pkg.globals$bllFlowContent.DDI <- "ddiList"
 pkg.globals$bllFlowContent.LongTable <- "longTable"
 pkg.globals$bllFlowContent.AdditionalMetaData <- "additionalDDIMetaData"
+pkg.globals$bllFlowContent.WorkingData <- "workingData"
 
 # MSW Column Names
 pkg.globals$MSW.Variables.Columns.Variable <- "variable"
