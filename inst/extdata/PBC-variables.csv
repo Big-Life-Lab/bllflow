@@ -11,7 +11,7 @@ hepato,pbc,presence of hepatomegaly or enlarged liver,presence of hepatomegaly o
 platelet,pbc,platelet count,platelet count in thousadnds per microliter of blood,,thousand/microliter of blood,cont,,table1,,,,,,,,,,
 spiders,pbc,blood vessel malformations in the skin,blood vessel malformations in the skin of the participent,,NA,cat,,table1,,,,,,,,,,
 stage,pbc,histologic stage of disease,histologic stage of disease (needs biopsy),,NA,cat,,table1,,,,,,,,,,
-status,pbc,status at endpoint,"status at endpoint, 0/1/2 for censored, transplant, dead",,NA,cat,,table1,,,,,,,,,,
+status,pbc,status at endpoint,"status at endpoint, 0/1/2 for censored, transplant, dead",,NA,cat,,,,,,,,,,,,
 time,pbc,number of days,"number of days between registration and the earlier of death,
 transplantion, or study analysis in July, 1986",,days,cont,PBC_demo,outcome,,,,,,,,,,
 trt,pbc,trt,"1/2/NA for D-penicillmain, placebo, not randomised",,NA,cat,,filer,,,,,,,,,,
