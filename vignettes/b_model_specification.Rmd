@@ -62,7 +62,9 @@ similar packages); or,
 - manually added added to the MSW.
 
 ### Variable roles
-`bllflow` can assign one or more roles to each variable in the data (i.e., variables can have multiple roles). We add a role for each variable that is used in our study. Suggested can be named anything and be used or reused for any purpose. Suggested roles include:
+`bllflow` can assign one or more roles to each variable in the data (i.e., variables can have multiple roles). We add a role for each variable that is used in our study. You can define your own role or use suggested roles below. You can use or reuse roles for any purpose, such as using as building a model using the role 'predictors' as a selection, or generate Table 1 using a role 'table-1'.
+
+Suggested roles include:
 
 - predictor - a variable or feature used in a model
 - outcome-primary - there should be only one primary outcome
