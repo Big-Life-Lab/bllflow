@@ -1,7 +1,17 @@
-variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,centre,interaction,RCS,dummy,impute,min,max,outlier,operations
-age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,TRUE,NA,4,NA,FALSE,40,70,delete,"data cleaning, finish data cleaning, impute missing data, transform data"
-sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,TRUE,FALSE,NA,NA,TRUE,FALSE,NA,NA,delete,"transform data"
-bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
-albumin,pbc,Serum albumin,Albumin,g/dl,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
-protime,pbc,standardised blood clotting time,Prothrombin time,seconds,Lab,Continuous,PBC_demo,FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
-edema,pbc,Edema,Edema,,Physical sign,Categorical,PBC_demo,FALSE,TRUE,age,3,TRUE,TRUE,NA,NA,missing,"finish data cleaning,transform data"
+variable,dataStart,labelLong,label,units,type,variableType,algorithm,role,required,centre,interaction,RCS,dummy,impute,min,max,outlier,operations
+age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,"predictor, table1",TRUE,TRUE,NA,4,NA,FALSE,40,70,delete,"data cleaning, finish data cleaning, impute missing data, transform data"
+sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,"strata, table1-strata",TRUE,FALSE,NA,NA,TRUE,FALSE,NA,NA,delete,transform data
+bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,"predictor, table1",FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
+albumin,pbc,Serum albumin,Albumin,g/dl,Lab,Continuous,PBC_demo,"predictor, table2",FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
+protime,pbc,standardised blood clotting time,Prothrombin time,seconds,Lab,Continuous,PBC_demo,"predictor, table3",FALSE,TRUE,age,3,NA,TRUE,NA,NA,missing,"finish data cleaning,transform data"
+edema,pbc,Edema,Edema,,Physical sign,Categorical,PBC_demo,"predictor, table4",FALSE,TRUE,age,3,TRUE,TRUE,NA,NA,missing,"finish data cleaning,transform data"
+alk.phos,pbc,alkaline phosphotase,alkaline phosphotase (U/liter),,U/liter,cont,,"intermdiate, table1",,,,,,,,,,
+ascites,pbc,presence of ascites,presence of ascites,,NA,cat,,table1,,,,,,,,,,
+hepato,pbc,presence of hepatomegaly or enlarged liver,presence of hepatomegaly or enlarged liver in participent,,NA,cat,,table1,,,,,,,,,,
+platelet,pbc,platelet count,platelet count in thousadnds per microliter of blood,,thousand/microliter of blood,cont,,table1,,,,,,,,,,
+spiders,pbc,blood vessel malformations in the skin,blood vessel malformations in the skin of the participent,,NA,cat,,table1,,,,,,,,,,
+stage,pbc,histologic stage of disease,histologic stage of disease (needs biopsy),,NA,cat,,table1,,,,,,,,,,
+status,pbc,status at endpoint,"status at endpoint, 0/1/2 for censored, transplant, dead",,NA,cat,,,,,,,,,,,,
+time,pbc,number of days,"number of days between registration and the earlier of death,
+transplantion, or study analysis in July, 1986",,days,cont,PBC_demo,outcome,,,,,,,,,,
+trt,pbc,trt,"1/2/NA for D-penicillmain, placebo, not randomised",,NA,cat,,filer,,,,,,,,,,
