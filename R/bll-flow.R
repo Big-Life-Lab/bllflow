@@ -121,7 +121,7 @@ BLLFlow <-
   }
 
 #' @export
-ReadData <- function(variables, dataName, pathToData) {
+ReadData <- function(variables, dataName, pathToData, nrows = -1) {
   # calculate the rows to set to null
   firstRowOfData <- read.csv(file = pathToData, nrows = 1)
   
@@ -131,7 +131,7 @@ ReadData <- function(variables, dataName, pathToData) {
   columnClasses <- sapply(columnsToKeep, BooleanConversion)
   
   dataToSave <- read.csv(file = pathToData,
-           colClasses = columnClasses)
+           colClasses = columnClasses, nrows = nrows)
   
   return(dataToSave)
 }
