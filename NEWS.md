@@ -1,4 +1,7 @@
 # bllFlow (development version)
+## Temp dump of changes
+- ReadData function
+- changed table one to use working data
 
 # bllflow 0.1.2 (current build)
 
