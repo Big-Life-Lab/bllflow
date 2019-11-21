@@ -2,10 +2,6 @@
 ## Temp dump of changes
 - ReadData function
 - changed table one to use working data
-- changed naming convention to snake case in recode-wit-table.R
-- changed naming convention to snake case in small-cell-check.R
-- changed naming convention to snake case in table-one-long.R
-- changed naming convention to snake case in util-funcs.R
 
 # bllflow 0.1.2 (current build)
 
