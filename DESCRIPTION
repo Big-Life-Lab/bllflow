@@ -29,7 +29,9 @@ Depends:
   stringr,
   recipes,
   sjlabelled,
-  haven
+  haven,
+  magrittr,
+  rms
 Imports:
   rstudioapi,
   glue,
@@ -52,5 +54,5 @@ Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 VignetteBuilder: knitr

@@ -1,27 +1,27 @@
 #' Creates a bllflow model
 #'
-#' Wraps up the data, variables and variableDetails arguments in an R object,
+#' Wraps up the data, variables and variable_details arguments in an R object,
 #' making it an instance of a bllflow class and returning the resulting object.
 #' If a ddi argument is provided, all the metadata from the DDI document is
 #' imported into the R object
 #'
-#' @param dataList A dataframe list that represents the datasets the model will be developed
+#' @param data_list A dataframe list that represents the datasets the model will be developed
 #' on
 #' @param variables A dataframe that has the specification sheet for this model. An example
 #' of this worksheet is available here
 #' \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0}.
-#' @param variableDetails A dataframe that is the variable details worksheet. An example
+#' @param variable_details A dataframe that is the variable details worksheet. An example
 #' of this worksheet is available here
 #' \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036}.
-#' @param ddiList A named list that contains the ddi documents
+#' @param ddi_list A named list that contains the ddi documents
 #' @return A named list which is an instance of the bllflow class. The items
 #' in the list are specified below: \cr
-#' 1. dataList - A dataframe that contains the passed dataList argument \cr
+#' 1. data_list - A dataframe that contains the passed data_list argument \cr
 #' 2. variables - A dataframe that contains the passed variables argument \cr
-#' 3. variableDetails - A dataframe that contains the passed variableDetails argument \cr
-#' 4. ddiList - A named list that contains the ddi found on the passed path \cr
-#' 5. additionalDDIMetaData - A named list. See the return type of the \code{\link{GetDDIDescription}} function \cr
-#' 6. populatedVariableDetails - A dataframe that contains the rows in the variableDetails \cr
+#' 3. variable_details - A dataframe that contains the passed variable_details argument \cr
+#' 4. ddi_list - A named list that contains the ddi found on the passed path \cr
+#' 5. additional_DDI_meta_data - A named list. See the return type of the \code{\link{get_DDI_description}} function \cr
+#' 6. populated_variable_details - A dataframe that contains the rows in the variable_details \cr
 #' argument but with additional data filled in using the ddi argument it's specified
 #'
 #' @export
@@ -38,40 +38,40 @@
 #' # Read in the variables and variable details CSV sheets which are part of the
 #' # master specification workbook
 #' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+#' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #'
 #' # Create a bllFlow R object for the PBC model using the above variables as args
 #' # and store it in the pbcModel variable
-#' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetails)
+#' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variable_details)
 #'
 #' # The pbcModel variable is an R object of instance BLLFlow
 #' print(attr(pbcModel, 'class'))
 BLLFlow <-
-  function(dataList = NULL,
+  function(data_list = NULL,
            variables = NULL,
-           variableDetails = NULL,
-           ddiList = NULL) {
-    ddiHeader <- list()
+           variable_details = NULL,
+           ddi_list = NULL) {
+    ddi_header <- list()
     # Verify passed arg integrity for future functions
-    if (!is.null(dataList)) {
-      for (singleDataIndex in 1:length(dataList)) {
-        CheckIfDataFrame(dataList[[singleDataIndex]], names(dataList)[[singleDataIndex]])
+    if (!is.null(data_list)) {
+      for (single_data_index in 1:length(data_list)) {
+        check_if_data_frame(data_list[[single_data_index]], names(data_list)[[single_data_index]])
       }
       
     }
     if (!is.null(variables)) {
-      CheckIfDataFrame(variables, pkg.globals$argument.Variables)
+      check_if_data_frame(variables, pkg.globals$argument.Variables)
       # Change the columns needed for the functions
-      CheckForColumnPresence(
+      check_for_column_presence(
         c("variable", "label", "labelLong", "variableType", "units"),
         variables,
         pkg.globals$argument.Variables
       )
     }
-    if (!is.null(variableDetails)) {
-      CheckIfDataFrame(variableDetails,
+    if (!is.null(variable_details)) {
+      check_if_data_frame(variable_details,
                        pkg.globals$argument.VariableDetailsSheet)
-      CheckForColumnPresence(
+      check_for_column_presence(
         c(
           "variable",
           "toType",
@@ -84,109 +84,109 @@ BLLFlow <-
           "recFrom",
           "units"
         ),
-        variableDetails,
+        variable_details,
         pkg.globals$argument.VariableDetailsSheet
       )
     }
     
     
-    if (!is.null(ddiList)) {
+    if (!is.null(ddi_list)) {
       # TODO redisign to create template rather then populate add a check to verify proper structure
       # processedVariableDetails <-
-      #   ProcessDDIVariableDetails(ddi, variableDetails)
-      for (ddiIndex in 1:length(ddiList)) {
-        CheckForExistanceOfInList(c("variableMetaData", "ddiObject"),
-                                  ddiList[[ddiIndex]],
-                                  paste(names(ddiList)[[ddiIndex]], "ddi"))
-        ddiHeader[[names(ddiList)[[ddiIndex]]]] <-
-          GetDDIDescription(ddiList[[ddiIndex]])
+      #   ProcessDDIVariableDetails(ddi, variable_details)
+      for (ddi_index in 1:length(ddi_list)) {
+        check_for_existance_of_in_list(c("variableMetaData", "ddiObject"),
+                                  ddi_list[[ddi_index]],
+                                  paste(names(ddi_list)[[ddi_index]], "ddi"))
+        ddi_header[[names(ddi_list)[[ddi_index]]]] <-
+          get_DDI_description(ddi_list[[ddi_index]])
       }
       
     } else{
-      ddiHeader <- NULL
+      ddi_header <- NULL
     }
-    bllFlowModel <-
+    bll_flow_model <-
       list(
-        dataList = dataList,
+        data_list = data_list,
         variables = variables,
-        variableDetails = variableDetails,
-        additionalDDIMetaData = ddiHeader,
-        populatedVariableDetails = NULL,
-        ddiList = ddiList
+        variable_details = variable_details,
+        additional_DDI_meta_data = ddi_header,
+        populated_variable_details = NULL,
+        ddi_list = ddi_list
         
       )
-    attr(bllFlowModel, "class") <- "BLLFlow"
+    attr(bll_flow_model, "class") <- "BLLFlow"
     
-    return(bllFlowModel)
+    return(bll_flow_model)
   }
 
 #' @export
-ReadData <- function(variables, dataName, pathToData, nrows = -1) {
+read_data <- function(variables, data_name, path_to_data, nrows = -1) {
   # calculate the rows to set to null
-  firstRowOfData <- read.csv(file = pathToData, nrows = 1)
+  first_row_of_data <- read.csv(file = path_to_data, nrows = 1)
   
-  varNamesForThisData <- GetVariables.default(variables, dataName)
+  var_names_for_this_data <- get_variables.default(variables, data_name)
   
-  columnsToKeep <- colnames(firstRowOfData) %in% varNamesForThisData
-  columnClasses <- sapply(columnsToKeep, BooleanConversion)
+  columns_to_keep <- colnames(first_row_of_data) %in% var_names_for_this_data
+  column_classes <- sapply(columns_to_keep, boolean_conversion)
   
-  dataToSave <- read.csv(file = pathToData,
-           colClasses = columnClasses, nrows = nrows)
+  data_to_save <- read.csv(file = path_to_data,
+           colClasses = column_classes, nrows = nrows)
   
-  return(dataToSave)
+  return(data_to_save)
 }
-BooleanConversion <- function(boolValue) {
-  retValue <- character()
-  if (boolValue) {
-    retValue <- NA
+boolean_conversion <- function(bool_value) {
+  ret_value <- character()
+  if (bool_value) {
+    ret_value <- NA
   } else {
-    retValue <- "NULL"
+    ret_value <- "NULL"
   }
   
-  return(retValue)
+  return(ret_value)
 }
 #' @export
-GetVariables <- function(variableSource = NULL, ...){
-  UseMethod("GetVariables", variableSource)
+get_variables <- function(variable_source = NULL, ...){
+  UseMethod("get_variables", variable_source)
 }
 #' @export
-GetVariables.BLLFlow <- function(bllFlow, dataName){
+get_variables.BLLFlow <- function(bllFlow, data_name){
   variables <- bllFlow[[pkg.globals$bllFlowContent.Variables]]
   
-  return(GetVariables.default(variables, dataName))
+  return(get_variables.default(variables, data_name))
 }
 #' @export
-GetVariables.default <- function(variables, dataName){
-  variablesToReadList <-
-    variables[grepl(dataName, variables[[pkg.globals$argument.DatabaseStart]]), ]
+get_variables.default <- function(variables, data_name){
+  variables_to_read_list <-
+    variables[grepl(data_name, variables[[pkg.globals$argument.DatabaseStart]]), ]
 
-  varNamesForThisData <- list()
+  var_names_for_this_data <- list()
   
-  for (variableToReadRow in 1:nrow(variablesToReadList)) {
-    variableToRead <-
-      as.character(variablesToReadList[variableToReadRow, pkg.globals$argument.VariableStart])
-    dataVariableBeingChecked <- character()
-    if (!grepl("DerivedVar", variableToRead)) {
-      if (grepl(dataName, variableToRead)) {
-        varStartNamesList <- as.list(strsplit(variableToRead, ",")[[1]])
+  for (variable_to_read_row in 1:nrow(variables_to_read_list)) {
+    variable_to_read <-
+      as.character(variables_to_read_list[variable_to_read_row, pkg.globals$argument.VariableStart])
+    data_variable_being_checked <- character()
+    if (!grepl("DerivedVar", variable_to_read)) {
+      if (grepl(data_name, variable_to_read)) {
+        var_start_names_list <- as.list(strsplit(variable_to_read, ",")[[1]])
         # Find exact var Name
-        for (varName in varStartNamesList) {
-          if (grepl(dataName, varName)) {
+        for (var_name in var_start_names_list) {
+          if (grepl(data_name, var_name)) {
             # seperate dataname from the var name
-            dataVariableBeingChecked <-
-              as.list(strsplit(varName, "::")[[1]])[[2]]
+            data_variable_being_checked <-
+              as.list(strsplit(var_name, "::")[[1]])[[2]]
           }
         }
-      } else if (grepl("\\[", variableToRead)) {
-        dataVariableBeingChecked <-
-          stringr::str_match(variableToRead, "\\[(.*?)\\]")[, 2]
+      } else if (grepl("\\[", variable_to_read)) {
+        data_variable_being_checked <-
+          stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
       }
     }
     
-    varNamesForThisData <-
-      append(varNamesForThisData, dataVariableBeingChecked)
+    var_names_for_this_data <-
+      append(var_names_for_this_data, data_variable_being_checked)
   }
-  varNamesForThisData <- unique(varNamesForThisData)
+  var_names_for_this_data <- unique(var_names_for_this_data)
   
-  return(varNamesForThisData)
+  return(var_names_for_this_data)
 }

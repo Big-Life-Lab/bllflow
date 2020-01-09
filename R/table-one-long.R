@@ -21,12 +21,12 @@
 #' library(bllflow)
 #' variables_sheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
 #' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
-#' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variables_sheet, variable_details, ddi)
+#' ddi <- read_DDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
+#' pbc_model <- BLLFlow(pbc, variables_sheet, variable_details, ddi)
 #'
-#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
-#' pbcSummaryTableNoLabels <- summary_data_long(pbcTableOne)
-#' pbcLongTableWithLabel <- summary_data_long(pbcTableOne, bll_flow_model = pbcModel, long_table = pbcSummaryTableNoLabels)
+#' pbc_table_one <- CreateTableOne(pbc_model, strata = "edema")
+#' pbc_summary_table_no_labels <- summary_data_long(pbc_table_one)
+#' pbc_long_table_with_label <- summary_data_long(pbc_table_one, bll_flow_model = pbc_model, long_table = pbc_summary_table_no_labels)
 #'@export
 summary_data_long <-
   function(table_one,
@@ -76,16 +76,17 @@ CreateTableOne <- function(x = NULL, ...) {
 #' Create Table One using BLLFlow Object
 #'
 #' Creates table one using the information present in the passed bllFlow object
+#' specifically uses working data as the data,
 #' additional arguments can be passed to create a specific table one.
 #' However if no optional args are passed the variable info stored in variables MSW is used.
 #'
-#' @param bll_flow_model The bllflow object
+#' @param bll_flow_model The bllFlow object
 #' @param vars The optional vars to use in creation of table one if no vars are passed then vars in MSW variables is used
 #' @param strata The optional strata to use in creation of table one if no strata is passed no strata is used
 #' @param factor_vars The optional factor_vars (categorical variables) used in creation of table one if nothing is passed
 #' the MSW variables sheet is used to determine variable types
 #'
-#' @return returns a table one tableOne object
+#' @return returns a table one \href{https://cran.r-project.org/web/packages/tableone/index.html}{tableone} object
 #'
 #' @examples
 #' library(survival)
@@ -100,9 +101,9 @@ CreateTableOne <- function(x = NULL, ...) {
 #' variables_sheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
 #' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 #' ddi <- ReadDDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variables_sheet, variable_details, ddi)
+#' pbc_model <- BLLFlow(pbc, variables_sheet, variable_details, ddi)
 #'
-#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
+#' pbc_table_one <- CreateTableOne(pbc_model, strata = "edema")
 #'
 #' @export
 CreateTableOne.BLLFlow <- function(bll_flow_model,

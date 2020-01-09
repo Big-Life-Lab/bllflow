@@ -2,44 +2,44 @@
 #'
 #' This object is used to generate the PMML file, for manuscript figures and other uses.
 #'
-#' @param modelObject The object that is returned when a model is created.
-#' @param modelType values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
-#' @param tableOne The object returned by createTableOne().
-#' @param modelData The data used to generate the model.
-#' @param calculateMean default = TRUE. If the means should be included in the table
-#' @param baselineRiskTimeFrame default = 5. The time for the baseline risk make sure to only use years as input
+#' @param model_object The object that is returned when a model is created.
+#' @param model_type values = crr, NULL. The class name of the model_object. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
+#' @param table_one The object returned by createTableOne().
+#' @param model_data The data used to generate the model.
+#' @param calculate_mean default = TRUE. If the means should be included in the table
+#' @param baseline_risk_time_frame default = 5. The time for the baseline risk make sure to only use years as input
 #' @export
-CreateBLLModelObject <-
-  function(modelData,
-           modelObject,
-           tableOne = NULL,
-           modelType = NULL,
-           calculateMean = TRUE,
-           baselineRiskTimeFrame = 5) {
+create_BLL_model_object <-
+  function(model_data,
+           model_object,
+           table_one = NULL,
+           model_type = NULL,
+           calculate_mean = TRUE,
+           baseline_risk_time_frame = 5) {
     # ----Step 1: verify input/create not passed input----
-    supportedModelTypes <- c("crr")
-    varNames <- attr(modelObject$coef, "names")
+    supported_model_types <- c("crr")
+    var_names <- attr(model_object$coef, "names")
     
-    if (!class(modelObject) %in% supportedModelTypes) {
+    if (!class(model_object) %in% supported_model_types) {
       stop("Passed model type is not yet supported. Aborting!")
     }
-    if (is.null(tableOne)) {
-      tableOne <-
-        tableone::CreateTableOne(data = modelData, vars = varNames)
+    if (is.null(table_one)) {
+      table_one <-
+        tableone::CreateTableOne(data = model_data, vars = var_names)
     } else {
-      for (varName in varNames) {
-        if (!varName %in% tableOne[[pkg.globals$LongTable.MetaData]][[pkg.globals$tableOne.Vars]]) {
+      for (var_name in var_names) {
+        if (!var_name %in% table_one[[pkg.globals$LongTable.MetaData]][[pkg.globals$tableOne.Vars]]) {
           # Issue warning before creating table one
           warning(
             "Passed table one does not contain the vars in the passed model. Creating new TableOne \n"
           )
-          # Verify data contains the varNames
-          varInData <- varNames %in% colnames(modelData)
-          if (all(varInData)) {
-            tableOne <-
-              tableone::CreateTableOne(data = modelData, vars = varNames)
+          # Verify data contains the var_names
+          var_in_data <- var_names %in% colnames(model_data)
+          if (all(var_in_data)) {
+            table_one <-
+              tableone::CreateTableOne(data = model_data, vars = var_names)
           } else {
-            stop("The modelData does not contain all the variables from the model. Aborting!")
+            stop("The model_data does not contain all the variables from the model. Aborting!")
           }
           break()
         }
@@ -48,30 +48,30 @@ CreateBLLModelObject <-
     
     # ----Step 2: Generate model object ----
     # Obtain the beta coefficient
-    betaCoefficient <- modelObject$coef
-    allStrataVarMeans <- list()
-    retTable <-
-      data.frame(betaCoefficient = betaCoefficient, row.names = varNames)
+    beta_coefficient <- model_object$coef
+    all_strata_var_means <- list()
+    ret_table <-
+      data.frame(beta_coefficient = beta_coefficient, row.names = var_names)
     
     # Obtain the means
-    if (calculateMean) {
-      if (!is.null(tableOne$ContTable)) {
-        for (strataVar in length(tableOne$ContTable)) {
-          allStrataVarMeans[[strataVar]] <-
-            tableOne$ContTable[[strataVar]][varNames, pkg.globals$tableOne.Mean]
-          retTable[[pkg.globals$tableOne.Mean]] <-
-            allStrataVarMeans[[strataVar]]
+    if (calculate_mean) {
+      if (!is.null(table_one$ContTable)) {
+        for (strataVar in length(table_one$ContTable)) {
+          all_strata_var_means[[strataVar]] <-
+            table_one$ContTable[[strataVar]][var_names, pkg.globals$tableOne.Mean]
+          ret_table[[pkg.globals$tableOne.Mean]] <-
+            all_strata_var_means[[strataVar]]
         }
       } else {
-        warning("The tableOne does not contain cont table therefore means were not calculated")
+        warning("The table_one does not contain cont table therefore means were not calculated")
       }
     }
-    baselineRisk <- CalculateBaselineRisk(modelObject, (365.25*baselineRiskTimeFrame))
+    baseline_risk <- calculate_baseline_risk(model_object, (365.25*baseline_risk_time_frame))
     
-    return(list(reference = retTable, baseline = baselineRisk))
+    return(list(reference = ret_table, baseline = baseline_risk))
   }
 
-CalculateBaselineRisk <- function(model, time) {
+calculate_baseline_risk <- function(model, time) {
   jumps <- data.frame(time = model$uftime, bfitj = model$bfitj)
   jumps_time <- jumps[jumps$time <= time, ]
   b0 <- sum(jumps_time$bfitj)

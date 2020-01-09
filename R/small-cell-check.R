@@ -2,8 +2,8 @@
 #'
 #' Checks for presence of small cells within the passed table
 #'
-#' @param passed_table Table to check currently supported is LongTable and TableOne
-#' @param small_size Preffered small cell size default <6
+#' @param passed_table Table to check, currently supported tables are LongTable and TableOne
+#' @param small_size Preffered small cell size, default <6
 #' @param print Option to print the smallCell table
 #' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #' @export
@@ -14,8 +14,8 @@ check_small_cells <- function(passed_table, ...) {
 #'
 #' Checks for presence of small cells within Summary Data
 #'
-#' @param passed_table Table to check currently supported is LongTable and TableOne
-#' @param small_size Preffered small cell size default <6
+#' @param passed_table Table to check, currently supported is LongTable and TableOne
+#' @param small_size Preffered small cell size, default <6
 #' @param print Option to print the smallCell table
 #' @return Returns passed table with smallcells attached inside MetaData$smallCells
 #'@export
@@ -34,8 +34,8 @@ check_small_cells.SummaryData <- function(passed_table,
 
 #' Check for Small Cells
 #'
-#' Small Cells Check checks a given table for small sells then adds a
-#' smallCells table to the MetaData of the table object
+#' check_small_cells checks a given table for small sells then adds a
+#' smallCells table to the MetaData of the tableone object
 #'
 #' Checks the categorical table within the TableOne param (CatTable field) for
 #' small cells. A small cell is a category where the number of people
@@ -47,7 +47,6 @@ check_small_cells.SummaryData <- function(passed_table,
 #' https://cran.r-project.org/web/packages/tableone/index.html.
 #' @param small_size What value constitutes a small size cell. Default value is 6.
 #' @param print If TRUE prints the small_size metadata in a human readable format
-#' @param table_type Specifies the type of the table that is passed to the function
 #'
 #' @return The passed_table object with a new object in the Metadata object called smallCells.
 #' smallCells is a dataframe with 4 columns
@@ -79,31 +78,13 @@ check_small_cells.SummaryData <- function(passed_table,
 #' # increasing the small_size threshold to 10
 #' tmp <- check_small_cells(TableOne, small_size=10)
 #'
-#' # currently only TableOne is supported so table_type != TableOne will throw error
-#' #tmp <- check_small_cells(TableOne, table_type="TableTwo")
-#'
 #' @export
 check_small_cells.TableOne <- function(passed_table,
                                        small_size = 6,
-                                       print = FALSE,
-                                       table_type = "TableOne") {
-  # Chosing Table procesing function -------------------------------------------
-  
+                                       print = FALSE) {
   # Handles TableOne type tables
-  if (table_type == "TableOne") {
     small_size_table <-
       check_small_cells_in_table_one(passed_table, small_size)
-    # In case an unsupported table type is used this error is thrown
-  } else {
-    stop(
-      cat(
-        "Table type ",
-        table_type,
-        " is not a valid table type or is not yet supported "
-      ),
-      "Unsupported Type"
-    )
-  }
   
   # Outputing the created Table function ---------------------------------------
   
@@ -142,6 +123,21 @@ check_small_cells.TableOne <- function(passed_table,
   }
   
   return(passed_table)
+}
+
+#' Only summary table and table one is currently supported every other type of
+#' table will throw this error
+#' @export
+check_small_cells.Default <- function(passed_table, ...){
+  # In case an unsupported table type is used this error is thrown
+  stop(
+    cat(
+      "Table type ",
+      class(passed_table),
+      " is not a valid table type or is not yet supported "
+    ),
+    "Unsupported Type"
+  )
 }
 
 # Table Parsing Functions -----------------------------------------------------------------------

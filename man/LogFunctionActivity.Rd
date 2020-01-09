@@ -4,8 +4,17 @@
 \alias{LogFunctionActivity}
 \title{LogFunctionActivity}
 \usage{
-LogFunctionActivity(bllFlow, rowsChecked, rowsAffected, actionTaken,
-  reason, executedFunction, variable, value, print)
+LogFunctionActivity(
+  bllFlow,
+  rowsChecked,
+  rowsAffected,
+  actionTaken,
+  reason,
+  executedFunction,
+  variable,
+  value,
+  print
+)
 }
 \arguments{
 \item{bllFlow}{BllFlow object containing data and related MetaData}

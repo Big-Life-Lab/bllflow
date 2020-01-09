@@ -4,36 +4,40 @@
 \alias{BLLFlow}
 \title{Creates a bllflow model}
 \usage{
-BLLFlow(dataList = NULL, variables = NULL, variableDetails = NULL,
-  ddiList = NULL)
+BLLFlow(
+  data_list = NULL,
+  variables = NULL,
+  variable_details = NULL,
+  ddi_list = NULL
+)
 }
 \arguments{
-\item{dataList}{A dataframe list that represents the datasets the model will be developed
+\item{data_list}{A dataframe list that represents the datasets the model will be developed
 on}
 
 \item{variables}{A dataframe that has the specification sheet for this model. An example
 of this worksheet is available here
 \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0}.}
 
-\item{variableDetails}{A dataframe that is the variable details worksheet. An example
+\item{variable_details}{A dataframe that is the variable details worksheet. An example
 of this worksheet is available here
 \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036}.}
 
-\item{ddiList}{A named list that contains the ddi documents}
+\item{ddi_list}{A named list that contains the ddi documents}
 }
 \value{
 A named list which is an instance of the bllflow class. The items
 in the list are specified below: \cr
-1. dataList - A dataframe that contains the passed dataList argument \cr
+1. data_list - A dataframe that contains the passed data_list argument \cr
 2. variables - A dataframe that contains the passed variables argument \cr
-3. variableDetails - A dataframe that contains the passed variableDetails argument \cr
-4. ddiList - A named list that contains the ddi found on the passed path \cr
-5. additionalDDIMetaData - A named list. See the return type of the \code{\link{GetDDIDescription}} function \cr
-6. populatedVariableDetails - A dataframe that contains the rows in the variableDetails \cr
+3. variable_details - A dataframe that contains the passed variable_details argument \cr
+4. ddi_list - A named list that contains the ddi found on the passed path \cr
+5. additional_DDI_meta_data - A named list. See the return type of the \code{\link{get_DDI_description}} function \cr
+6. populated_variable_details - A dataframe that contains the rows in the variable_details \cr
 argument but with additional data filled in using the ddi argument it's specified
 }
 \description{
-Wraps up the data, variables and variableDetails arguments in an R object,
+Wraps up the data, variables and variable_details arguments in an R object,
 making it an instance of a bllflow class and returning the resulting object.
 If a ddi argument is provided, all the metadata from the DDI document is
 imported into the R object
@@ -50,11 +54,11 @@ data(pbc)
 # Read in the variables and variable details CSV sheets which are part of the
 # master specification workbook
 variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-variableDetails <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
+variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
 
 # Create a bllFlow R object for the PBC model using the above variables as args
 # and store it in the pbcModel variable
-pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variableDetails)
+pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variable_details)
 
 # The pbcModel variable is an R object of instance BLLFlow
 print(attr(pbcModel, 'class'))

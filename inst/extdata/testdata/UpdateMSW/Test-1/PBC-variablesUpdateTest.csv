@@ -1,2 +1,0 @@
-variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,centre,interaction,RCS,dummy,impute,min,max,outlier,from
-age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,TRUE,NA,4,NA,FALSE,40,70,delete,40:70
