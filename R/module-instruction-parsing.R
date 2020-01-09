@@ -215,7 +215,7 @@ run_module <-
       working_data <-
         create_recipy(module_functions, working_data, variables)
     }
-    processed_data <- recipes::bake(working_data, data)
+    processed_data <- recipes::bake(working_data, new_data = data)
     
     return(processed_data)
   }
