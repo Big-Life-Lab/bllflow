@@ -1,0 +1,3 @@
+"ModuleName","ModuleOperations","DefaultOrder","ModuleID","ModuleDescription"
+"StandardizeToInteger","z::[append=TRUE],integer::[append=FALSE,suffix=FALSE]",1,1,"Converts string values to integer values"
+"PrepareForModel","center::[append=TRUE,suffix=""_C""],interact::[append=TRUE,suffix=""_X-{var}""],impute::[append=false,imputeOn=mean,suffix=FALSE],num2factor::[append=FALSE,suffix=FALSE],dummy::[append=TRUE,suffix=""_Dummy""],bs::[append=TRUE,suffix=""_bs{num}""]",2,2,"Prepares the module for coxhp model creation"

@@ -1,7 +1,7 @@
 #' @export
 step_z <- function(recipe,
                           ...,
-                          role = NA,
+                          role = 'predictor',
                           trained = FALSE,
                           skip = FALSE,
                           id = recipes::rand_id("Z"),
@@ -43,7 +43,7 @@ step_z_new <-
            skip,
            id) {
     step(
-      subclass = "zScore",
+      subclass = "z",
       terms = terms,
       role = role,
       trained = trained,
@@ -59,7 +59,7 @@ step_z_new <-
   }
 #' @export
 prep.step_z <- function(x, training, info = NULL, ...) {
-  for (variable_name in x$terms) {
+  for (variable_name in recipes::terms_select(x$terms, info = info)) {
     # Verify the training data variable
     if (is.null(training[[variable_name]])) {
       stop(paste(variable_name, 'is missing from the training data'))
