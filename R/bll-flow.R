@@ -109,6 +109,7 @@ build_bllflow <-
     bll_flow_model <-
       list(
         data = data,
+        workingData = data,
         variables = variables,
         variable_details = variable_details,
         additional_DDI_meta_data = ddi_header,

@@ -152,12 +152,12 @@ create_variable_formula <- function(var_list) {
 #verify module sequence matches the passed data
 verify_data_and_sequence_match <- function(module_sequence_number, data) {
   if (module_sequence_number[[1]] == 1 &&
-      class(data) == "working_data") {
+      "working_data" %in% class(data)) {
     stop(
       "Working data was passed when sequance is at step 1. Make sure to pass the starting data.
       Aborting operation!"
     )
-  } else if (class(data) != "working_data") {
+  } else if (!"working_data" %in% class(data)) {
     if (module_sequence_number[[1]] != 1) {
       stop(
         paste(
@@ -168,7 +168,7 @@ verify_data_and_sequence_match <- function(module_sequence_number, data) {
         )
         )
     }
-    } else if (data[[pkg.globals$WorkingData.ModuleSequenceNumber]] + 1 != module_sequence_number[[1]]) {
+    } else if (attr(data, pkg.globals$WorkingData.ModuleSequenceNumber) + 1 != module_sequence_number[[1]]) {
       stop(
         paste(
           "The WorkingData passed is not from the previous module please verify that the data passed is from module",
