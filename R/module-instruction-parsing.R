@@ -25,6 +25,7 @@ parse_module_functions <-
       refactored_funcs_with_args[[func_name]] <- list()
       
       for (argument in func_with_args[[2]]) {
+        # Insert check for formula presense
         tmp_arg <- as.list(strsplit(argument, "=")[[1]])
         tmp_arg[[2]] <-
           stringr::str_remove_all(tmp_arg[[2]], "[\"\"]")
@@ -181,7 +182,24 @@ verify_data_and_sequence_match <- function(module_sequence_number, data) {
     }
 
 #' @export
-run_module <-
+run_module <- function(x, ...) {
+  UseMethod("run_module", x)
+}
+
+#' @export
+run_module.BLLFlow <- function(bll_model, module_sequence_number){
+  processed_data <-
+    run_module.default(
+      variables = bll_model$variables,
+      modules = bll_model$modules,
+      data = bll_model$working_data,
+      module_sequence_number = module_sequence_number,
+      variable_details = bll_model$variable_details
+    )
+}
+
+#' @export
+run_module.default <-
   function(variables,
            modules,
            data,
@@ -219,3 +237,4 @@ run_module <-
     
     return(processed_data)
   }
+
