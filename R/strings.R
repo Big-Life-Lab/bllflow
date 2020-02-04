@@ -91,6 +91,13 @@ pkg.globals$LongTable.LongTable <- "summaryData"
 
 # Module Column names
 pkg.globals$Modules.DefaultOrder <- "DefaultOrder"
+pkg.globals$Modules.ModuleID <- "ModuleID"
+pkg.globals$Modules.OperationsType <- "OperationsType"
+
+# Module Types
+pkg.globals$ModuleTypes.FormulaStep <- "step_with_formula"
+pkg.globals$ModuleTypes.DefaultStep <- "step"
+pkg.globals$ModuleTypes.Function <- "function"
 
 # WorkingData contents
 pkg.globals$WorkingData.ModuleSequenceNumber <- "moduleSequenceNumber" 
