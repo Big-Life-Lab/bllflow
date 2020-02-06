@@ -40,14 +40,16 @@ pkg.globals$ddiValueName.Cat <- "cat"
 pkg.globals$ddiValueName.Categorical <- "Categorical" 
 
 # BLLFlow object content
-pkg.globals$bllFlowContent.Data <- "data"
+pkg.globals$bllFlowContent.Data <- "working_data"
 pkg.globals$bllFlowContent.Variables <- "variables"
 pkg.globals$bllFlowContent.VariableDetails <- "variableDetails"
 pkg.globals$bllFlowContent.PopulatedVariableDetails <- "populatedVariableDetails"
 pkg.globals$bllFlowContent.DDI <- "ddiList"
 pkg.globals$bllFlowContent.LongTable <- "longTable"
 pkg.globals$bllFlowContent.AdditionalMetaData <- "additionalDDIMetaData"
-pkg.globals$bllFlowContent.WorkingData <- "workingData"
+pkg.globals$bllFlowContent.WorkingData <- "working_data"
+pkg.globals$bllFlowContent.PreviousData <- "previous_module_data"
+pkg.globals$bllFlowContent.Sequence <- "sequence_number"
 
 # MSW Column Names
 pkg.globals$MSW.Variables.Columns.Variable <- "variable"

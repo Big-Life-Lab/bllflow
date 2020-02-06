@@ -108,7 +108,7 @@ build_bllflow <-
     # TODO Add Verification for modules
     bll_flow_model <-
       list(
-        data = data,
+        previous_module_data = data,
         working_data = data,
         variables = variables,
         variable_details = variable_details,
@@ -119,6 +119,7 @@ build_bllflow <-
         
       )
     attr(bll_flow_model, "class") <- "BLLFlow"
+    attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <- 0
     
     return(bll_flow_model)
   }

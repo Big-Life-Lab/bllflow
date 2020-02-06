@@ -115,11 +115,11 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
     bll_flow_model[[pkg.globals$bllFlowContent.Variables]]
   if (is.null(vars)) {
     vars <-
-      as.character(bll_flow_model[[pkg.globals$bllFlowContent.Variables]][, pkg.globals$MSW.Variables.Columns.Variable])
+      as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
   }
   if (is.null(factor_vars)) {
     factor_vars <-
-      as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
+      as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable][[pkg.globals$MSW.Variables.Columns.Variable]])
   }
   
   # ----Step 2: Create the tableone ----
