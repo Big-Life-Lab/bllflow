@@ -109,13 +109,19 @@ CreateTableOne <- function(x = NULL, ...) {
 CreateTableOne.BLLFlow <- function(bll_flow_model,
                                    vars = NULL,
                                    strata = NULL,
-                                   factor_vars = NULL) {
+                                   factor_vars = NULL,
+                                   select_role = NULL) {
   # ----Step 1: pull from variables in bll_flow_model ----
   variables_sheet <-
     bll_flow_model[[pkg.globals$bllFlowContent.Variables]]
   if (is.null(vars)) {
-    vars <-
-      as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
+    if (is.null(select_role)) {
+      vars <-
+        as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
+    }else {
+      vars <-
+        as.character(variables_sheet[variables_sheet[[pkg.globals$argument.Role]] == select_role, pkg.globals$MSW.Variables.Columns.Variable])
+    }
   }
   if (is.null(factor_vars)) {
     factor_vars <-
