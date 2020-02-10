@@ -120,8 +120,9 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
         as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
     }else {
       vars <-
-        as.character(variables_sheet[variables_sheet[[pkg.globals$argument.Role]] == select_role, pkg.globals$MSW.Variables.Columns.Variable])
+        as.character(variables_sheet[grepl(select_role,variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
     }
+    vars <- trimws(vars)
   }
   if (is.null(factor_vars)) {
     if (is.null(select_role)) {
@@ -129,8 +130,9 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
         as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
     }else {
       factor_vars <-
-        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && variables_sheet[[pkg.globals$argument.Role]] == select_role , pkg.globals$MSW.Variables.Columns.Variable])
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && grepl(select_role,variables_sheet[[pkg.globals$argument.Role]]) , pkg.globals$MSW.Variables.Columns.Variable])
     }
+    factor_vars <- trimws(factor_vars)
   }
   
   # ----Step 2: Create the tableone ----
