@@ -124,8 +124,13 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
     }
   }
   if (is.null(factor_vars)) {
-    factor_vars <-
-      as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable][[pkg.globals$MSW.Variables.Columns.Variable]])
+    if (is.null(select_role)) {
+      factor_vars <-
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
+    }else {
+      factor_vars <-
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && variables_sheet[[pkg.globals$argument.Role]] == select_role , pkg.globals$MSW.Variables.Columns.Variable])
+    }
   }
   
   # ----Step 2: Create the tableone ----
