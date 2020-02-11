@@ -137,7 +137,7 @@ create_recipy <-
     # Check variable roles for the recipy creation
     # TODO bllflow support make this add to overall recipy
     outcome_variable <-
-      as.character(variables[variables[[pkg.globals$argument.Role]] == "outcome", pkg.globals$argument.Variables])
+      as.character(variables[grepl( "outcome", variables[[pkg.globals$argument.Role]]), pkg.globals$argument.Variables])
     # TODO add a function for creating a proper formula
     recipe_formula <- paste(outcome_variable, "~ .")
     
