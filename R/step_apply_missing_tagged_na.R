@@ -57,7 +57,10 @@ bake.step_apply_missing_tagged_na <- function(object, new_data, ...) {
       new_data[true_NA_index, variable] <-
         haven::tagged_na(object$tag_type)
     }else{
-      new_data[true_NA_index, variable] <- paste("NA(",object$tag_type,")",sep = "")
+      if (!paste("NA(", object$tag_type, ")", sep = "") %in% levels(new_data[[variable]])) {
+        levels(new_data[[variable]]) <- c(levels(new_data[[variable]]), paste("NA(", object$tag_type, ")", sep = ""))
+      }
+      new_data[true_NA_index, variable] <- paste("NA(", object$tag_type, ")", sep = "")
     }
   }
   tibble::as.tibble(new_data)
