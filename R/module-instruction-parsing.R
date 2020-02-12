@@ -47,6 +47,8 @@ run_module.BLLFlow <- function(bll_model, module_sequence_number) {
       module_sequence_number = module_sequence_number,
       variable_details = bll_model$variable_details
     )
+  processed_data[[1]] <- as.data.frame(processed_data[[1]])
+  processed_data[[1]] <- set_data_labels(processed_data[[1]], bll_model$variable_details, bll_model$variables)
   bll_model[[pkg.globals$bllFlowContent.PreviousData]] <- processed_data[[2]]
   bll_model[[pkg.globals$bllFlowContent.WorkingData]] <- processed_data[[1]]
   return(bll_model)

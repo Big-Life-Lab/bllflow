@@ -114,7 +114,7 @@ is_equal <- function(v1, v2) {
 #' will be appended to the data.
 #' @param log Logical, if \code{FALSE} (default), a log of recoding will
 #' not be printed.
-#' @param print_note Logical, if \code{FALSE} (default), will not print the
+#' @param notes Logical, if \code{FALSE} (default), will not print the
 #' content inside the `Note`` column of the variable being recoded.
 #' @param var_labels labels vector to attach to variables in variables
 #' @param custom_function_path path to location of the function to load
@@ -124,7 +124,7 @@ is_equal <- function(v1, v2) {
 #' @examples
 #' library(cchsflow)
 #' bmi2010 <- rec_with_table(
-#'   data = cchs2010, c(
+#'   data = cchs2010_p, c(
 #'     "HWTGHTM",
 #'     "HWTGWTK", "HWTGBMI_der"
 #'   )
@@ -133,7 +133,7 @@ is_equal <- function(v1, v2) {
 #' head(bmi2010)
 #'
 #' bmi2012 <- rec_with_table(
-#'   data = cchs2012,  c(
+#'   data = cchs2012_p,  c(
 #'     "HWTGHTM",
 #'     "HWTGWTK", "HWTGBMI_der"
 #'   )
@@ -158,7 +158,7 @@ rec_with_table <-
            else_value = NA,
            append_to_data = FALSE,
            log = FALSE,
-           print_note = TRUE,
+           notes = TRUE,
            var_labels = NULL,
            custom_function_path = NULL) {
     # If custom Functions are passed create new environment and source
@@ -189,7 +189,7 @@ rec_with_table <-
             variables = variables,
             data = data[[data_name]],
             database_name = database_name,
-            print_note = print_note,
+            print_note = notes,
             else_value = else_value,
             variable_details = variable_details,
             append_to_data = append_to_data,
@@ -214,7 +214,7 @@ rec_with_table <-
           variables = variables,
           data = data,
           database_name = database_name,
-          print_note = print_note,
+          print_note = notes,
           else_value = else_value,
           variable_details = variable_details,
           append_to_data = append_to_data,
@@ -439,7 +439,7 @@ recode_columns <-
     # Set interval if none is present
     interval_present <- TRUE
     valid_intervals <- c("[,]", "[,)", "(,]")
-    interval_default <- "[,)"
+    interval_default <- "[,]"
     recoded_data <- data[, 0]
     if (is.null(rec_variables_to_process[[pkg.globals$argument.Interval]])) {
       interval_present <- FALSE
@@ -626,8 +626,8 @@ recode_columns <-
                 !is.null(row_being_checked[[pkg.globals$argument.Notes]]) &&
                 !is_equal(row_being_checked[[pkg.globals$argument.Notes]], "") &&
                 !is.na(row_being_checked[[pkg.globals$argument.Notes]])) {
-              message("NOTE for", variable_being_checked,
-                      ":",
+              message("NOTE for ", variable_being_checked,
+                      ": ",
                       as.character(row_being_checked[[
                         pkg.globals$argument.Notes]]))
             }
@@ -913,8 +913,14 @@ recode_derived_variables <-
             custom_function_name = function_being_used
           )
         )
+      # Set type of var
+      if(as.character(row_being_checked[[pkg.globals$argument.ToType]]) != pkg.globals$argument.CatType) {
+        column_value <- as.numeric(unlist(column_value[["column_being_added"]]))
+      }else{
+        column_value <- as.factor(unlist(column_value[["column_being_added"]]))
+      }
       recoded_data[[variable_being_processed]] <-
-        unlist(column_value[["column_being_added"]])
+        column_value
       
       var_stack <-
         var_stack[!(var_stack == variable_being_processed)]
