@@ -110,7 +110,7 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
                                    vars = NULL,
                                    strata = NULL,
                                    factor_vars = NULL,
-                                   select_role = NULL) {
+                                   select_role = NULL,...) {
   # ----Step 1: pull from variables in bll_flow_model ----
   variables_sheet <-
     bll_flow_model[[pkg.globals$bllFlowContent.Variables]]
@@ -140,14 +140,14 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
     final_table <-
       tableone::CreateTableOne(data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
                                vars = vars,
-                               factorVars = factor_vars)
+                               factorVars = factor_vars,...)
   } else{
     final_table <-
       tableone::CreateTableOne(
         data = bll_flow_model[[pkg.globals$bllFlowContent.Data]],
         vars = vars,
         factorVars = factor_vars,
-        strata = strata
+        strata = strata,...
       )
   }
   
