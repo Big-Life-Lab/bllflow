@@ -138,12 +138,12 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
   # ----Step 2: Create the tableone ----
   if (is.null(strata)) {
     final_table <-
-      tableone::CreateTableOne(data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
+      tableoneTEST::CreateTableOne(data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
                                vars = vars,
                                factorVars = factor_vars,...)
   } else{
     final_table <-
-      tableone::CreateTableOne(
+      tableoneTEST::CreateTableOne(
         data = bll_flow_model[[pkg.globals$bllFlowContent.Data]],
         vars = vars,
         factorVars = factor_vars,
