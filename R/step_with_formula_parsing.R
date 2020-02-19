@@ -1,3 +1,4 @@
+# 
 parse_formula_step <- function(data,
                                sequence_element,
                                modules,

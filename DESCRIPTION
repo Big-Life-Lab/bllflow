@@ -23,7 +23,7 @@ Authors@R: c(
     email = "mtuna@ohri.ca", role = c("aut")))
 Depends:
   R (>= 3.2),
-  tableoneTEST,
+  tableone,
   DDIwR,
   xml2,
   stringr,
