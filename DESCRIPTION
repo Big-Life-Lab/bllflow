@@ -32,21 +32,11 @@ Depends:
   haven,
   magrittr,
   rms
-Imports:
-  rstudioapi,
-  glue,
-  plotly,
-  Hmisc,
-  tidyr,
-  dplyr
 Suggests:
   knitr,
   rmarkdown,
-  DT,
   magrittr,
   survival,
-  rms, 
-  cmprsk,
   testthat
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
