@@ -1,0 +1,16 @@
+# @Doug add anything u wish here
+default:
+  variables: !expr cchsflow::variables
+  variable_details: !expr cchsflow::variable_details
+  modules: NULL
+  data:
+    cchs2001: !expr cchsflow::cchs2001_p
+    cchs2003: !expr cchsflow::cchs2003_p
+    cchs2005: !expr cchsflow::cchs2005_p
+    cchs2007_2008: !expr cchsflow::cchs2007_2008_p
+    cchs2009_2010: !expr cchsflow::cchs2009_2010_p
+    cchs2010: !expr cchsflow::cchs2010_p
+    cchs2011_2012: !expr cchsflow::cchs2011_2012_p
+    cchs2012: !expr cchsflow::cchs2012_p
+    cchs2013_2014: !expr cchsflow::cchs2013_2014_p
+    cchs2014: !expr cchsflow::cchs2014_p

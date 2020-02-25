@@ -31,7 +31,8 @@ Depends:
   sjlabelled,
   haven,
   magrittr,
-  rms
+  rms,
+  config
 Suggests:
   knitr,
   rmarkdown,
