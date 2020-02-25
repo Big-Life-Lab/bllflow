@@ -81,6 +81,41 @@ bllflow_config_rec_data <- function(bllflow_object, config_name = NULL){
     save(list = data_name, file = file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
   }
 }
+
+#' Combine data based on config location
+#' 
+#' Combines recoded data and applies labels before attaching the object to bllflow
+#' 
+#' @param bllflow_object passed bllflow object to read variables from
+#' @param config_name = NULL optional passing of config if you wish to load data
+#' from a specific config
+#' 
+#' @return modified bllflow object containing labelled combined data
+#' @export
+bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
+  if (!is.null(config_name)){
+    Sys.setenv(R_CONFIG_ACTIVE = config_name)
+  }
+  config <- config::get()
+  tmp_working_data <- NULL
+  for (data_name in names(config$data)) {
+    load(file.path(config$data_dir, paste0( data_name, "_recoded", ".RData")))
+    tmp_mod_data <- base::get(data_name)
+    tmp_mod_data[["data_name"]] <- data_name
+    if (is.null(tmp_working_data)){
+      tmp_working_data <- tmp_mod_data
+    }else{
+      tmp_working_data <- dplyr::bind_rows(tmp_working_data, tmp_mod_data)
+    }
+  }
+  tmp_working_data <- bllflow::set_data_labels(tmp_working_data, bllflow_object$variable_details, bllflow_object$variables)
+  bllflow_object[[pkg.globals$bllFlowContent.WorkingData]] <- tmp_working_data
+  bllflow_object[["previous_module_data"]] <- tmp_working_data
+  attr(bllflow_object[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <-
+    0
+  
+  return(bllflow_object)
+}
 # ----------- WIP NOT FULLY IMPLEMENTED ON TODO ---------
 #' #' @export
 #' create_variable_details_template <- function(x = NULL, ...) {

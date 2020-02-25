@@ -32,7 +32,8 @@ Depends:
   haven,
   magrittr,
   rms,
-  config
+  config,
+  dplyr
 Suggests:
   knitr,
   rmarkdown,
