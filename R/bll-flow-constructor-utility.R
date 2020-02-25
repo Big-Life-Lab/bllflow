@@ -1,79 +1,162 @@
+#' Initialize bllflow from provided config file
+#' 
+#' Used the provided config file and matching name to load the correct config 
+#' type
+#' 
+#' @param config_name = NULL name of the config environment to use for
+#' initialization
+#' 
+#' @return constructed bllflow object
 #' @export
-create_variable_details_template <- function(x = NULL, ...) {
-  UseMethod("create_variable_details_template", x)
+bllflow_config_init <-
+  function(config_name = NULL) {
+    # Idea let them pass config or config name? @Doug, @Warsame
+    if (!is.null(config_name)) {
+      Sys.setenv(R_CONFIG_ACTIVE = config_name)
+    }
+    config <- config::get()
+    ret_bllflow <-
+      build_bllflow(variables = as.data.frame(config$variables),
+                    variable_details = as.data.frame(config$variable_details))
+    
+    return(ret_bllflow)
 }
 
+#' Read in data according to config specified data type
+#' 
+#' Uses bllflow to read_data based on config specifications. Currently supported
+#' formats are: .RData, .csv
+#' 
+#' @param bllflow_object passed bllflow object to read variables from
+#' @param config_name = NULL optional passing of config if you wish to load data
+#' from a specific config
+#' 
+#' @return NULL since no modifications are made and read data is just stored in 
+#' pre specified location
 #' @export
-create_variable_details_template.BLLFlow <- function(bllFlow_object) {
-  variable_details <-
-    data.frame(
-      variable = character(),
-      toType = character(),
-      databaseStart = character(),
-      variableStart = character(),
-      fromType = character(),
-      recTo = character(),
-      catLabel = character(),
-      catLabelLong = character(),
-      units = character(),
-      recFrom = character(),
-      catStartLabel = character(),
-      variableStartShortLabel = character(),
-      variableStartLabel = character()
-    )
-  # Collect all the variables in MSW variables
-  detected_variables <- unique(bllFlow_object[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.Variables]])
-  
-  # Loop through the ddiList and add variables detected
-  for (single_DDI in bllFlow_object[[pkg.globals$bllFlowContent.DDI]]) {
-    variable <- "Please Insert RecodedVariable name"
-    toType <-
-      "Please insert desired recoded variable type supported ones are: cat, cont"
-    databaseStart <-
-      single_DDI[["ddiObject"]][["codeBook"]][["docDscr"]][["docSrc"]][["titlStmt"]][["titl"]][[1]]
-    # loop through detected_variables
-    for (singleDetectedVariable in detected_variables) {
-      if (singleDetectedVariable %in% names(single_DDI[["variableMetaData"]][["dataDscr"]])) {
-        variableDDI <-
-          single_DDI[["variableMetaData"]][["dataDscr"]][[singleDetectedVariable]]
-        variableStart <-
-          paste(databaseStart, singleDetectedVariable, sep = "::")
-        fromType <- variableDDI$type
-        recTo <- "Please insert values to recode to"
-        catLabel <- "Please enter the lable"
-        catLabelLong <- "Please enter the long label"
-        units <- "Specify the units"
-        recFrom <- "Specify range to recode from"
-        catStartLabel <- variableDDI$label
-        variableStartShortLabel <- variableDDI$label
-        variableStartLabel <- variableDDI$label
-        
-        newRow <-
-          data.frame(
-            variable = variable,
-            toType,
-            databaseStart,
-            variableStart,
-            fromType,
-            recTo,
-            catLabel,
-            catLabelLong,
-            units,
-            recFrom,
-            catStartLabel,
-            variableStartShortLabel ,
-            variableStartLabel
-          )
-        variable_details <- rbind(variable_details, newRow)
-      }
-    }
-    
-    
+bllflow_config_read_data <- function(bllflow_object, config_name = NULL){
+  if (!is.null(config_name)){
+    Sys.setenv(R_CONFIG_ACTIVE = config_name)
   }
-  bllFlow_object$variable_details <- variable_details
-  
-  return(bllFlow_object)
+  config <- config::get()
+  if (config$data_type == ".RData") {
+    # use variables to only read the specified variables??
+  } else if (config$data_type == ".csv") {
+    for (data_name in names(config$data)) {
+      tmp_data <-
+        read_data(
+          variables = bllflow_object$variables,
+          data_name = data_name,
+          path_to_data = config$data[[data_name]]
+        )
+      assign(data_name, tmp_data)
+      save(list = data_name, file = paste0(config$data_dir, data_name, ".RData"))
+    }
+  }
 }
+
+#' Recode data using config data
+#' 
+#' Recodes data according to the config then saves it as RData file at a 
+#' specified location
+#' 
+#' @param bllflow_object passed bllflow object to read variables from
+#' @param config_name = NULL optional passing of config if you wish to load data
+#' from a specific config
+#' 
+#' @return NULL since no modifications are made and read data is just stored in 
+#' pre specified location
+#' @export
+bllflow_config_rec_data <- function(bllflow_object, config_name = NULL){
+  # Consider making this into a function or let user pass loaded config
+  if (!is.null(config_name)){
+    Sys.setenv(R_CONFIG_ACTIVE = config_name)
+  }
+  config <- config::get()
+  for (data_name in names(config$data)) {
+    load(file.path(config$data_dir, paste0( data_name, ".RData")))
+    tmp_rec_data <- rec_with_table(base::get(data_name), variables = bllflow_object$variables)
+    assign(data_name, tmp_rec_data)
+    save(list = data_name, file = file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
+  }
+}
+# ----------- WIP NOT FULLY IMPLEMENTED ON TODO ---------
+#' #' @export
+#' create_variable_details_template <- function(x = NULL, ...) {
+#'   UseMethod("create_variable_details_template", x)
+#' }
+#' 
+#' #' @export
+#' create_variable_details_template.BLLFlow <- function(bllFlow_object) {
+#'   variable_details <-
+#'     data.frame(
+#'       variable = character(),
+#'       toType = character(),
+#'       databaseStart = character(),
+#'       variableStart = character(),
+#'       fromType = character(),
+#'       recTo = character(),
+#'       catLabel = character(),
+#'       catLabelLong = character(),
+#'       units = character(),
+#'       recFrom = character(),
+#'       catStartLabel = character(),
+#'       variableStartShortLabel = character(),
+#'       variableStartLabel = character()
+#'     )
+#'   # Collect all the variables in MSW variables
+#'   detected_variables <- unique(bllFlow_object[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.Variables]])
+#'   
+#'   # Loop through the ddiList and add variables detected
+#'   for (single_DDI in bllFlow_object[[pkg.globals$bllFlowContent.DDI]]) {
+#'     variable <- "Please Insert RecodedVariable name"
+#'     toType <-
+#'       "Please insert desired recoded variable type supported ones are: cat, cont"
+#'     databaseStart <-
+#'       single_DDI[["ddiObject"]][["codeBook"]][["docDscr"]][["docSrc"]][["titlStmt"]][["titl"]][[1]]
+#'     # loop through detected_variables
+#'     for (singleDetectedVariable in detected_variables) {
+#'       if (singleDetectedVariable %in% names(single_DDI[["variableMetaData"]][["dataDscr"]])) {
+#'         variableDDI <-
+#'           single_DDI[["variableMetaData"]][["dataDscr"]][[singleDetectedVariable]]
+#'         variableStart <-
+#'           paste(databaseStart, singleDetectedVariable, sep = "::")
+#'         fromType <- variableDDI$type
+#'         recTo <- "Please insert values to recode to"
+#'         catLabel <- "Please enter the lable"
+#'         catLabelLong <- "Please enter the long label"
+#'         units <- "Specify the units"
+#'         recFrom <- "Specify range to recode from"
+#'         catStartLabel <- variableDDI$label
+#'         variableStartShortLabel <- variableDDI$label
+#'         variableStartLabel <- variableDDI$label
+#'         
+#'         newRow <-
+#'           data.frame(
+#'             variable = variable,
+#'             toType,
+#'             databaseStart,
+#'             variableStart,
+#'             fromType,
+#'             recTo,
+#'             catLabel,
+#'             catLabelLong,
+#'             units,
+#'             recFrom,
+#'             catStartLabel,
+#'             variableStartShortLabel ,
+#'             variableStartLabel
+#'           )
+#'         variable_details <- rbind(variable_details, newRow)
+#'       }
+#'     }
+#'     
+#'     
+#'   }
+#'   bllFlow_object$variable_details <- variable_details
+#'   
+#'   return(bllFlow_object)
+#' }
 
 # ----------- DEPRICATE NEEDS REMAKING ---------
 #' #' Creates a data frame that holds additional ddi data

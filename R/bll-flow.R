@@ -119,7 +119,11 @@ build_bllflow <-
         
       )
     attr(bll_flow_model, "class") <- "BLLFlow"
-    attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <- 0
+    # BANDAID
+    if(!is.null(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])) {
+      attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <-
+        0
+    }
     
     return(bll_flow_model)
   }

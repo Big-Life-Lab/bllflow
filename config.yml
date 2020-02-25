@@ -3,6 +3,8 @@ default:
   variables: !expr cchsflow::variables
   variable_details: !expr cchsflow::variable_details
   modules: NULL
+  data_type: ".RData"
+  data_dir: !expr file.path(getwd(),"data")
   data:
     cchs2001: !expr cchsflow::cchs2001_p
     cchs2003: !expr cchsflow::cchs2003_p
