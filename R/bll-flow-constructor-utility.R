@@ -17,7 +17,8 @@ bllflow_config_init <-
     config <- config::get()
     ret_bllflow <-
       build_bllflow(variables = as.data.frame(config$variables),
-                    variable_details = as.data.frame(config$variable_details))
+                    variable_details = as.data.frame(config$variable_details),
+                    modules = as.data.frame(config$modules))
     
     return(ret_bllflow)
 }
@@ -50,7 +51,7 @@ bllflow_config_read_data <- function(bllflow_object, config_name = NULL){
           path_to_data = config$data[[data_name]]
         )
       assign(data_name, tmp_data)
-      save(list = data_name, file = paste0(config$data_dir, data_name, ".RData"))
+      save(list = data_name, file = file.path(config$data_dir, paste0(data_name, ".RData")))
     }
   }
 }
@@ -75,7 +76,7 @@ bllflow_config_rec_data <- function(bllflow_object, config_name = NULL){
   config <- config::get()
   for (data_name in names(config$data)) {
     load(file.path(config$data_dir, paste0( data_name, ".RData")))
-    tmp_rec_data <- rec_with_table(base::get(data_name), variables = bllflow_object$variables)
+    tmp_rec_data <- rec_with_table(base::get(data_name), variables = bllflow_object$variables, variable_details = bllflow_object$variable_details, database_name = data_name)
     assign(data_name, tmp_rec_data)
     save(list = data_name, file = file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
   }
