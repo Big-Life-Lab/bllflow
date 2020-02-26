@@ -1,3 +1,4 @@
+#' @export
 step_apply_missing_tagged_na <- function(recipe,
                                ...,
                                role = NA,
