@@ -96,8 +96,6 @@ bake.step_z <- function(object, new_data, ...) {
   require(tibble)
   for (varName in names(object$means)) {
     newVarName <- paste(varName, object$suffix, sep = "")
-    print((new_data[[varName]] - object$means[[varName]]) / object$sd[[varName]])
-    print(paste(object$means[[varName]],"<-mean ->",object$sd[[varName]]))
     new_data[newVarName] <- (new_data[[varName]] - object$means[[varName]]) / object$sd[[varName]]
     if (!object$append) {
       new_data[varName] <- NULL
