@@ -43,7 +43,7 @@ CreateTableOne <- function(x = NULL, ...) {
 #' pbc_table_one <- CreateTableOne(pbc_model, strata = "edema")
 #' @importFrom tableone CreateTableOne
 #' @export
-CreateTableOne.bllfow <- function(bll_flow_model,
+CreateTableOne.BLLFlow <- function(bll_flow_model,
                                    vars = NULL,
                                    strata = NULL,
                                    factor_vars = NULL,
