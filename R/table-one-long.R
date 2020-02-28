@@ -87,7 +87,9 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
         strata = strata,...
       )
   }
-  
+  # Appends valLabels to metadata of tableone for val printing
+  valLabels <- sjlabelled::get_labels(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]][vars], values = "n")
+  final_table$MetaData[["valLabels"]] <- valLabels
   return(final_table)
 }
 
