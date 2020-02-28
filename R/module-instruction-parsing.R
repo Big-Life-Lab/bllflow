@@ -54,6 +54,7 @@ run_module.BLLFlow <- function(bll_model, module_sequence_number) {
   return(bll_model)
 }
 
+#' @importFrom recipes bake
 #' @export
 run_module.default <-
   function(variables,

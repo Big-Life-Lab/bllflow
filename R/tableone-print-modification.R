@@ -63,7 +63,7 @@ print.TableOne <-
            ...) {
     
     ## Extract Cont/CatTable elements of x and dispatch print() appropriately
-    FmtTables <- ModuleFormatTables(x,
+    FmtTables <- tableone:::ModuleFormatTables(x,
                                     catDigits = catDigits, contDigits = contDigits,
                                     test = test, smd = smd, missing = missing,
                                     explain = explain, pDigits = pDigits,
@@ -81,7 +81,7 @@ print.TableOne <-
     
     ## List of stratum sample size row only tables
     FmtStratumSizesTables <- sapply(FmtTables,
-                                    FUN = ModuleStratumSizesRow,
+                                    FUN = tableone:::ModuleStratumSizesRow,
                                     showAllLevels = showAllLevels,
                                     simplify = FALSE)
     names(FmtStratumSizesTables) <- paste0(names(FmtStratumSizesTables), "N")
@@ -93,14 +93,14 @@ print.TableOne <-
     ## Add space paddings
     ## Given a list of tables with vecColWidths,
     ## return a strata-by-table df containing spaces to add
-    nSpacesToAdd <- ModuleNSpacesToAdd(FmtElementTables)
+    nSpacesToAdd <- tableone:::ModuleNSpacesToAdd(FmtElementTables)
     ## Actually add spaces to tables
-    spcFmtEltTables <- ModuleAddSpacesToTable(FmtElementTables, nSpacesToAdd, showAllLevels)
+    spcFmtEltTables <- tableone:::ModuleAddSpacesToTable(FmtElementTables, nSpacesToAdd, showAllLevels)
     
     
     ## Create a list of one variable tables excluding sample size row.
     ## This is based on the variable order in the MetaData.
-    lstOneVarTables <- ModuleListOfOneVarTables(spcFmtEltTables,
+    lstOneVarTables <- tableone:::ModuleListOfOneVarTables(spcFmtEltTables,
                                                 MetaData = x$MetaData)
     
     
@@ -209,14 +209,14 @@ print.TableOne <-
     
     ## Center-justify column names if asked and not removing spaces.
     if (padColnames & !noSpaces) {
-      out <- ModuleMidJustifyColnames(mat = out)
+      out <- tableone:::ModuleMidJustifyColnames(mat = out)
     }
     
     ## Remove spaces if asked.
-    out <- ModuleRemoveSpaces(mat = out, noSpaces = noSpaces)
+    out <- tableone:::ModuleRemoveSpaces(mat = out, noSpaces = noSpaces)
     
     ## Modular version of quote/print toggle.
-    out <- ModuleQuoteAndPrintMat(matObj = out,
+    out <- tableone:::ModuleQuoteAndPrintMat(matObj = out,
                                   quote = quote, printToggle = printToggle)
     
     ## Return the result
