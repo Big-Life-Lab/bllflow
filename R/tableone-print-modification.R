@@ -128,7 +128,7 @@ print.TableOne <-
                          }, error = function(e)
                          {
                            x$MetaData$valLabels[[i]][[trimws(rownames(mat)[j])]] <-
-                             "I NEED A LABEL"
+                             missingLabel
                          })
                        rownames(mat)[j] <-
                          gsub(trimws(rownames(mat)[j]),
