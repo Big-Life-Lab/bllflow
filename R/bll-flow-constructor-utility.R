@@ -54,6 +54,7 @@ bllflow_config_read_data <- function(bllflow_object, config_name = NULL){
       save(list = data_name, file = file.path(config$data_dir, paste0(data_name, ".RData")))
     }
   }
+  return(bllflow_object)
 }
 
 #' Recode data using config data
@@ -80,6 +81,7 @@ bllflow_config_rec_data <- function(bllflow_object, config_name = NULL){
     assign(data_name, tmp_rec_data)
     save(list = data_name, file = file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
   }
+  return(bllflow_object)
 }
 
 #' Combine data based on config location
