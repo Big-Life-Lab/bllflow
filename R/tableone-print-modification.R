@@ -242,7 +242,7 @@ print.TableOne <-
 #' kableone(tableOne)
 #' 
 #' @importFrom utils capture.output
-kableone <- function(x, ...) {
-  capture.output(x <- print(x, valLabel=TRUE, varLabel = TRUE))
+kableone <- function(x, missingLabel = "Missing Label", valLabel = TRUE, varLabel = TRUE,  ...) {
+  capture.output(x <- print(x, valLabel =  valLabel, varLabel = varLabel, missingLabel = missingLabel))
   knitr::kable(x, ...)
 }
