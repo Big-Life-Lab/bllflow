@@ -84,6 +84,7 @@ set_data_labels.default <-
       # Add rows from variables that are missing from variable_details
       var_details_names <- unique(variable_details[[pkg.globals$argument.Variables]])
       missing_vars <- variable_names[(!variable_names %in% var_details_names)]
+      missing_vars <- missing_vars[missing_vars %in% variables_sheet[[pkg.globals$argument.Variables]]]
       catch_up_vars <-
         variables_sheet[variables_sheet[[pkg.globals$argument.Variables]] %in% missing_vars, ]
       keep_columns <-
@@ -97,11 +98,14 @@ set_data_labels.default <-
           pkg.globals$argument.Units,
           pkg.globals$argument.CatValue
         )
-      catch_up_vars[keep_columns[(!keep_columns %in% colnames(catch_up_vars))]] <- NA
-      catch_up_vars[[pkg.globals$argument.ToType]] <- "cont"
-      variable_details <- variable_details[keep_columns]
-      catch_up_vars <- catch_up_vars[keep_columns]
-      variable_details <- rbind(variable_details, catch_up_vars)
+      if (nrow(catch_up_vars) > 0) {
+        catch_up_vars[keep_columns[(!keep_columns %in% colnames(catch_up_vars))]] <-
+          NA
+        catch_up_vars[[pkg.globals$argument.ToType]] <- "cont"
+        variable_details <- variable_details[keep_columns]
+        catch_up_vars <- catch_up_vars[keep_columns]
+        variable_details <- rbind(variable_details, catch_up_vars)
+      }
     }
     label_list <- NULL
     for (variable_name in variable_names) {
