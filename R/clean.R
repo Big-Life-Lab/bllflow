@@ -8,7 +8,7 @@
 #' clean_min <- function(bll_flow_model, ...) {
 #'   UseMethod("clean_min")
 #' }
-#' 
+#'
 #' #' @describeIn clean_min Cleans the data using the min and outlier columns in the variables sheet of
 #' #' the MSW. Outlier method is applied on a row if any of the variable
 #' #' values for that row is less than the min value as specified in the variables
@@ -56,17 +56,17 @@
 #'                        pkg.globals$columnNames.Min,
 #'                        print,
 #'                        check_less_then)
-#'   
+#'
 #'   return(bll_flow_model)
 #' }
-#' 
+#'
 #' # Less then comparing function
 #' check_less_then <-
 #'   function(operator_based_compare_value,
 #'            value_being_compare) {
 #'     return(operator_based_compare_value < value_being_compare)
 #'   }
-#' 
+#'
 #' #' Cleans a dataset by updating values above a certain maximum
 #' #'
 #' #' @param bll_flow_model The bll_flow_model we will clean
@@ -76,7 +76,7 @@
 #' clean_max <- function(bll_flow_model, ...) {
 #'   UseMethod("clean_max")
 #' }
-#' 
+#'
 #' #' @describeIn clean_max Cleans the data using the max and outlier columns in the variables sheet of
 #' #' the MSW. Outlier method is applied on a row if any of the variable
 #' #' values for that row is greater than the max value as specified in the variables
@@ -124,17 +124,17 @@
 #'                        pkg.globals$columnNames.Max,
 #'                        print,
 #'                        check_greater_then)
-#'   
+#'
 #'   return(bll_flow_model)
 #' }
-#' 
+#'
 #' # Greater then comparing function
 #' check_greater_then <-
 #'   function(operator_based_compare_value,
 #'            value_being_compare) {
 #'     return(operator_based_compare_value > value_being_compare)
 #'   }
-#' 
+#'
 #' # Internal helper functions ------------------------------------------------------------------
 #' # Function for actually manipulating the data
 #' process_min_or_max <-
@@ -155,15 +155,15 @@
 #'         })
 #'     # Apply creates list of length of all rows it checks this removes the ones that had no data added
 #'     variables_to_check[sapply(variables_to_check, is.null)] <- NULL
-#'     
+#'
 #'     # Check if all the variables from variables to check exist in the data
 #'     check_for_existance_of_in_list(variables_to_check, colnames(bll_flow_model$data))
-#'     
+#'
 #'     # Clean the affected rows
 #'     for (variable_row_being_checked in variables_to_check) {
 #'       num_total_rows <- nrow(bll_flow_model$data)
 #'       num_affected_rows <- 0
-#'       
+#'
 #'       # Does not remove NA rows only less then or greater then
 #'       # Handling for the delete outlier
 #'       if (variable_row_being_checked[[pkg.globals$columnNames.Outlier]] == "delete") {
@@ -176,10 +176,10 @@
 #'             ) &
 #'               !is.na(bll_flow_model$data[variable_row_being_checked$variable])
 #'           ),]
-#'         
+#'
 #'         num_affected_rows <-
 #'           num_total_rows - nrow(bll_flow_model$data)
-#'         
+#'
 #'         # Handle missing outlier
 #'       } else if (variable_row_being_checked[[pkg.globals$columnNames.Outlier]] == "missing") {
 #'         # this checks how many rows contained missing before the function was ran to calculate how many were changed
@@ -191,7 +191,7 @@
 #'         num_post_rows <-
 #'           length(which(is.na(bll_flow_model$data[variable_row_being_checked$variable])))
 #'         num_affected_rows <- num_post_rows - num_pre_contain_rows
-#'         
+#'
 #'         # Handle the replace with outlier
 #'       } else if (!is.na(as.numeric(variable_row_being_checked[[pkg.globals$columnNames.Outlier]]))) {
 #'         # Check how many rows already contained the number that is being changed too to give exact number of changed rows
@@ -203,7 +203,7 @@
 #'         num_post_rows <-
 #'           length(which(bll_flow_model$data[variable_row_being_checked$variable] == variable_row_being_checked[[pkg.globals$columnNames.Outlier]]))
 #'         num_affected_rows <- num_post_rows - num_pre_contain_rows
-#'         
+#'
 #'         # Handle non supported outlier
 #'       } else {
 #'         stop(paste(
@@ -211,7 +211,7 @@
 #'           variable_row_being_checked[[pkg.globals$columnNames.Outlier]]
 #'         ))
 #'       }
-#'       
+#'
 #'       # Log the the activity of this outlier
 #'       bll_flow_model <-
 #'         log_function_activity(
@@ -233,6 +233,6 @@
 #'           print
 #'         )
 #'     }
-#'     
+#'
 #'     return(bll_flow_model)
 #'   }

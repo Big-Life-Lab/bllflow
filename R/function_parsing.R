@@ -19,10 +19,10 @@ parse_function <- function(data,
   return(processed_data)
 }
 
-# Use module parsing to find the single column functions??? 
+# Use module parsing to find the single column functions???
 
 
 # And use similar approach as rec custom functions for normal ones??
 # if i spot a = then thats a custom par otherwise i get the columns 1 by 1?
 # do i use the do again? Slow and inefficient but nice loading bar and hassle free!
-# reuse rec_with_table !!!!!!!!!!!!!!!!!!!!!! 
+# reuse rec_with_table !!!!!!!!!!!!!!!!!!!!!!

@@ -1,11 +1,11 @@
 #' Initialize bllflow from provided config file
-#' 
-#' Used the provided config file and matching name to load the correct config 
+#'
+#' Used the provided config file and matching name to load the correct config
 #' type
-#' 
+#'
 #' @param config_name = NULL name of the config environment to use for
 #' initialization
-#' 
+#'
 #' @return constructed bllflow object
 #' @export
 bllflow_config_init <-
@@ -16,27 +16,29 @@ bllflow_config_init <-
     }
     config <- config::get()
     ret_bllflow <-
-      build_bllflow(variables = as.data.frame(config$variables),
-                    variable_details = as.data.frame(config$variable_details),
-                    modules = as.data.frame(config$modules))
-    
+      build_bllflow(
+        variables = as.data.frame(config$variables),
+        variable_details = as.data.frame(config$variable_details),
+        modules = as.data.frame(config$modules)
+      )
+
     return(ret_bllflow)
-}
+  }
 
 #' Read in data according to config specified data type
-#' 
+#'
 #' Uses bllflow to read_data based on config specifications. Currently supported
 #' formats are: .RData, .csv
-#' 
+#'
 #' @param bllflow_object passed bllflow object to read variables from
 #' @param config_name = NULL optional passing of config if you wish to load data
 #' from a specific config
-#' 
-#' @return NULL since no modifications are made and read data is just stored in 
+#'
+#' @return NULL since no modifications are made and read data is just stored in
 #' pre specified location
 #' @export
-bllflow_config_read_data <- function(bllflow_object, config_name = NULL){
-  if (!is.null(config_name)){
+bllflow_config_read_data <- function(bllflow_object, config_name = NULL) {
+  if (!is.null(config_name)) {
     Sys.setenv(R_CONFIG_ACTIVE = config_name)
   }
   config <- config::get()
@@ -51,71 +53,85 @@ bllflow_config_read_data <- function(bllflow_object, config_name = NULL){
           path_to_data = config$data[[data_name]]
         )
       assign(data_name, tmp_data)
-      save(list = data_name, file = file.path(config$data_dir, paste0(data_name, ".RData")))
+      save(list = data_name, file = file.path(config$data_dir,
+                                              paste0(data_name, ".RData")))
     }
   }
   return(bllflow_object)
 }
 
 #' Recode data using config data
-#' 
-#' Recodes data according to the config then saves it as RData file at a 
+#'
+#' Recodes data according to the config then saves it as RData file at a
 #' specified location
-#' 
+#'
 #' @param bllflow_object passed bllflow object to read variables from
 #' @param config_name = NULL optional passing of config if you wish to load data
 #' from a specific config
-#' 
-#' @return NULL since no modifications are made and read data is just stored in 
+#'
+#' @return NULL since no modifications are made and read data is just stored in
 #' pre specified location
 #' @export
-bllflow_config_rec_data <- function(bllflow_object, config_name = NULL){
+bllflow_config_rec_data <- function(bllflow_object, config_name = NULL) {
   # Consider making this into a function or let user pass loaded config
-  if (!is.null(config_name)){
+  if (!is.null(config_name)) {
     Sys.setenv(R_CONFIG_ACTIVE = config_name)
   }
   config <- config::get()
   for (data_name in names(config$data)) {
-    load(file.path(config$data_dir, paste0( data_name, ".RData")))
-    tmp_rec_data <- rec_with_table(base::get(data_name), variables = bllflow_object$variables, variable_details = bllflow_object$variable_details, database_name = data_name)
+    load(file.path(config$data_dir, paste0(data_name, ".RData")))
+    tmp_rec_data <- rec_with_table(
+      base::get(data_name),
+      variables = bllflow_object$variables,
+      variable_details = bllflow_object$variable_details,
+      database_name = data_name)
     assign(data_name, tmp_rec_data)
-    save(list = data_name, file = file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
+    save(list = data_name,
+         file = file.path(config$data_dir,
+                          paste0(data_name,
+                                 "_recoded",
+                                 ".RData")))
   }
   return(bllflow_object)
 }
 
 #' Combine data based on config location
-#' 
-#' Combines recoded data and applies labels before attaching the object to bllflow
-#' 
+#'
+#' Combines recoded data and applies labels before attaching
+#' the object to bllflow
+#'
 #' @param bllflow_object passed bllflow object to read variables from
 #' @param config_name = NULL optional passing of config if you wish to load data
 #' from a specific config
-#' 
+#'
 #' @return modified bllflow object containing labelled combined data
 #' @export
-bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
-  if (!is.null(config_name)){
+bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
+  if (!is.null(config_name)) {
     Sys.setenv(R_CONFIG_ACTIVE = config_name)
   }
   config <- config::get()
   tmp_working_data <- NULL
   for (data_name in names(config$data)) {
-    load(file.path(config$data_dir, paste0( data_name, "_recoded", ".RData")))
+    load(file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
     tmp_mod_data <- base::get(data_name)
     tmp_mod_data[["data_name"]] <- data_name
-    if (is.null(tmp_working_data)){
+    if (is.null(tmp_working_data)) {
       tmp_working_data <- tmp_mod_data
-    }else{
+    } else {
       tmp_working_data <- dplyr::bind_rows(tmp_working_data, tmp_mod_data)
     }
   }
-  tmp_working_data <- bllflow::set_data_labels(tmp_working_data, bllflow_object$variable_details, bllflow_object$variables)
+  tmp_working_data <- bllflow::set_data_labels(
+    tmp_working_data,
+    bllflow_object$variable_details,
+    bllflow_object$variables)
   bllflow_object[[pkg.globals$bllFlowContent.WorkingData]] <- tmp_working_data
   bllflow_object[["previous_module_data"]] <- tmp_working_data
-  attr(bllflow_object[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <-
+  attr(bllflow_object[[pkg.globals$bllFlowContent.WorkingData]],
+       pkg.globals$bllFlowContent.Sequence) <-
     0
-  
+
   return(bllflow_object)
 }
 # ----------- WIP NOT FULLY IMPLEMENTED ON TODO ---------
@@ -123,7 +139,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #' create_variable_details_template <- function(x = NULL, ...) {
 #'   UseMethod("create_variable_details_template", x)
 #' }
-#' 
+#'
 #' #' @export
 #' create_variable_details_template.BLLFlow <- function(bllFlow_object) {
 #'   variable_details <-
@@ -143,20 +159,25 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'       variableStartLabel = character()
 #'     )
 #'   # Collect all the variables in MSW variables
-#'   detected_variables <- unique(bllFlow_object[[pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.Variables]])
-#'   
+#'   detected_variables <- unique(bllFlow_object[[
+#'   pkg.globals$bllFlowContent.Variables]][[pkg.globals$argument.Variables]])
+#'
 #'   # Loop through the ddiList and add variables detected
 #'   for (single_DDI in bllFlow_object[[pkg.globals$bllFlowContent.DDI]]) {
 #'     variable <- "Please Insert RecodedVariable name"
 #'     toType <-
-#'       "Please insert desired recoded variable type supported ones are: cat, cont"
+#'       "Please insert desired recoded variable type supported ones are: 
+#'       cat, cont"
 #'     databaseStart <-
-#'       single_DDI[["ddiObject"]][["codeBook"]][["docDscr"]][["docSrc"]][["titlStmt"]][["titl"]][[1]]
+#'       single_DDI[["ddiObject"]][["codeBook"]][["docDscr"]][[
+#'       "docSrc"]][["titlStmt"]][["titl"]][[1]]
 #'     # loop through detected_variables
 #'     for (singleDetectedVariable in detected_variables) {
-#'       if (singleDetectedVariable %in% names(single_DDI[["variableMetaData"]][["dataDscr"]])) {
+#'       if (singleDetectedVariable %in% names(single_DDI[[
+#'       "variableMetaData"]][["dataDscr"]])) {
 #'         variableDDI <-
-#'           single_DDI[["variableMetaData"]][["dataDscr"]][[singleDetectedVariable]]
+#'           single_DDI[["variableMetaData"]][["dataDscr"]][[
+#'           singleDetectedVariable]]
 #'         variableStart <-
 #'           paste(databaseStart, singleDetectedVariable, sep = "::")
 #'         fromType <- variableDDI$type
@@ -168,7 +189,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'         catStartLabel <- variableDDI$label
 #'         variableStartShortLabel <- variableDDI$label
 #'         variableStartLabel <- variableDDI$label
-#'         
+#'
 #'         newRow <-
 #'           data.frame(
 #'             variable = variable,
@@ -188,44 +209,50 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'         variable_details <- rbind(variable_details, newRow)
 #'       }
 #'     }
-#'     
-#'     
+#'
+#'
 #'   }
 #'   bllFlow_object$variable_details <- variable_details
-#'   
+#'
 #'   return(bllFlow_object)
 #' }
 
 # ----------- DEPRICATE NEEDS REMAKING ---------
 #' #' Creates a data frame that holds additional ddi data
 #' #'
-#' #' @param variable_details The dataframe that contains the variable information
-#' #' that is used to populate the frame with relevant ddi info
+#' #' @param variable_details The dataframe that contains the
+#' #'  variable information that is used to populate the frame with
+#' #'  relevant ddi info
 #' #' @param ddiVariables an object that is generated by populateVariables
-#' #' it contains the variables as well as all their value labels and min and max
+#' #'  it contains the variables as well as all their value labels
+#' #'  and min and max
 #' #' @return returns a dataframe containing new ddi data
 #' PopulateVariableDetails <-
 #'   function(variable_details,
 #'            ddiVariables) {
 #'     # Used to group all the variables in the dataframe
 #'     variable_details <-
-#'       variable_details[order(variable_details[[pkg.globals$argument.VariableStart]],
-#'                                 variable_details[[pkg.globals$argument.CatStartValue]]),]
+#'       variable_details[order(variable_details[[
+#'       pkg.globals$argument.VariableStart]],
+#'        variable_details[[pkg.globals$argument.CatStartValue]]),]
 #'     onlyDesiredVariables <-
-#'       variable_details[variable_details[[pkg.globals$argument.VariableStart]] %in% names(ddiVariables), ]
+#'       variable_details[variable_details[[pkg.globals$argument.VariableStart]]
+#'         %in% names(ddiVariables), ]
 #'     # Copy all the columns
 #'     finalFrame <- onlyDesiredVariables[0, ]
 #'     for (nameIndex in 1:length(names(ddiVariables))) {
 #'       nameBeingChecked <- names(ddiVariables)[[nameIndex]]
 #'       # All the rows for the variable being checked
 #'       rowsToCheck <-
-#'         onlyDesiredVariables[onlyDesiredVariables[[pkg.globals$argument.VariableStart]] == nameBeingChecked,]
+#'         onlyDesiredVariables[onlyDesiredVariables[[
+#'          pkg.globals$argument.VariableStart]] == nameBeingChecked,]
 #'       # Writes data to relavant rows and removes them from the value object
 #'       for (rowToCheck in 1:nrow(rowsToCheck)) {
 #'         presentCatStartValue <-
 #'           rowsToCheck[rowToCheck, pkg.globals$argument.CatStartValue]
 #'         # Check if the value matches anything in the DDI object
-#'         if (presentCatStartValue %in% names(ddiVariables[[nameBeingChecked]])) {
+#'         if (presentCatStartValue %in% names(ddiVariables[[
+#'              nameBeingChecked]])) {
 #'           # Populate every column with values pulled from DDI
 #'           selectedVariableCatValue <-
 #'             ddiVariables[[nameBeingChecked]][[as.character(presentCatStartValue)]]
@@ -249,7 +276,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'               }
 #'             }
 #'           }
-#'           
+#'
 #'           # Remove that value from the list to avoid repetition during new row creation
 #'           ddiVariables[[nameBeingChecked]][[as.character(presentCatStartValue)]] <-
 #'             NULL
@@ -292,7 +319,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'           finalFrame <- rbind(finalFrame, rowsToCheck[rowToCheck,])
 #'         }
 #'       }
-#'       
+#'
 #'       # Create new Rows for leftover data
 #'       for (leftOverValue in names(ddiVariables[[nameBeingChecked]])) {
 #'         rowToAdd <-  onlyDesiredVariables[0, ]
@@ -306,23 +333,23 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'           rowToAdd[1, columnName] <-
 #'             leftOverVariableValue[[columnName]]
 #'         }
-#'         
+#'
 #'         rowToAdd[1, pkg.globals$argument.VariableStart] <-
 #'           nameBeingChecked
 #'         finalFrame <- rbind(finalFrame, rowToAdd)
 #'       }
 #'     }
-#'     
+#'
 #'     variablesNotRelatedToTheDDI <-
 #'       variable_details[!variable_details$variableStart %in% names(ddiVariables), ]
 #'     finalFrame <- rbind(finalFrame, variablesNotRelatedToTheDDI)
 #'     rownames(finalFrame) <- NULL
-#'     
+#'
 #'     return(finalFrame)
 #'   }
-#' 
+#'
 #' #' Imports DDI metadata into a variable details worksheet
-#' #' 
+#' #'
 #' #' Updates a variable details worksheet with metadata from a DDI document. New rows
 #' #' are added for missing categories and columns that are empty are updated with
 #' #' values from the document. No information from the worksheet is overwritten.
@@ -331,12 +358,12 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #' #' @param variable_details A data frame containing a variable details worksheet
 #' #' @return A dataframe containing the updated variable details worksheet
 #' #' @export
-#' #' @examples 
+#' #' @examples
 #' #' library(bllflow)
-#' #' 
+#' #'
 #' #' pbcDDI <- bllflow::ReadDDI(system.file("extdata", "", package="bllflow"), "pbcDDI.xml")
 #' #' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
-#' #' 
+#' #'
 #' #' populatedDetails <- ProcessDDIVariableDetails(pbcDDI, variable_details)
 #' ProcessDDIVariableDetails <- function(ddi, variable_details) {
 #'   variableValueList <- list()
@@ -348,7 +375,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'     unique(variable_details[pkg.globals$argument.VariableStart])
 #'   # Find extra info about the variable low and high
 #'   valueForHighLow <- list()
-#'   
+#'
 #'   # Need to loop through every element because the xml2 names all variables var
 #'   for (individualVariable in ddiObject$codeBook$dataDscr) {
 #'     if (!is.null(attr(individualVariable, "name", exact = TRUE))) {
@@ -362,7 +389,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'       }
 #'     }
 #'   }
-#'   
+#'
 #'   # Loop through every unique variable found in the VariableDetails
 #'   for (variableToCheck in detected_variables[, 1]) {
 #'     # Check if that variable is recorded in DDI
@@ -388,7 +415,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'       }
 #'       if (valueForHighLow[[variableToCheck]]$Type != pkg.globals$ddiValueName.Cat){
 #'       # Record variable info
-#'       variableValueList[[as.character(variableToCheck)]] <- 
+#'       variableValueList[[as.character(variableToCheck)]] <-
 #'         AddDDIToList(
 #'           valueForHighLow[[variableToCheck]]$Type,
 #'           NA,
@@ -402,7 +429,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'       ddiVariables[[variableToCheck]] <- variableValueList
 #'     }
 #'   }
-#'   
+#'
 #'   if (length(ddiVariables) == 0) {
 #'     populatedVariableDetails <- NULL
 #'   } else{
@@ -410,10 +437,10 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'       PopulateVariableDetails(variable_details,
 #'                               ddiVariables)
 #'   }
-#'   
+#'
 #'   return(populatedVariableDetails)
 #' }
-#' 
+#'
 #' #' AddDDI information to a list
 #' #'
 #' #' @param variableStartType Variable type cont or cat
@@ -435,7 +462,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL){
 #'   retList[[pkg.globals$argument.CatStartLabel]] <- catStartLabel
 #'   retList[[pkg.globals$argument.VariableStartLabel]] <- variableStartLabel
 #'   retList[[pkg.globals$argument.VariableStartHighLow]] <- paste(variableStartLow, ":",variableStartHigh, sep = "")
-#'   
+#'
 #'   return(retList)
 #' }
-#' 
+#'

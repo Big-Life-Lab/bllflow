@@ -29,10 +29,10 @@
 #'   if (print) {
 #'     print(passed_table[[pkg.globals$LongTable.MetaData]][[pkg.globals$LongTable.SmallCells]])
 #'   }
-#'   
+#'
 #'   return(passed_table)
 #' }
-#' 
+#'
 #' #' Check for Small Cells
 #' #'
 #' #' check_small_cells checks a given table for small sells then adds a
@@ -86,9 +86,9 @@
 #'   # Handles TableOne type tables
 #'     small_size_table <-
 #'       check_small_cells_in_table_one(passed_table, small_size)
-#'   
+#'
 #'   # Outputing the created Table function ---------------------------------------
-#'   
+#'
 #'   # Writes the created table into the MetaData object of the passed table
 #'   # Appends to smallCells if previous reccord exists
 #'   if ("smallCells" %in% names(passed_table$MetaData)) {
@@ -122,10 +122,10 @@
 #'       print(passed_table$MetaData$smallCells)
 #'     }
 #'   }
-#'   
+#'
 #'   return(passed_table)
 #' }
-#' 
+#'
 #' #' Only summary table and table one is currently supported every other type of
 #' #' table will throw this error
 #' #' @export
@@ -140,9 +140,9 @@
 #'     "Unsupported Type"
 #'   )
 #' }
-#' 
+#'
 #' # Table Parsing Functions -----------------------------------------------------------------------
-#' 
+#'
 #' #' Check for Small Cells in TableOne
 #' #'
 #' #' Check for Small Cells inside a TableOne format Table
@@ -162,7 +162,7 @@
 #' check_small_cells_in_table_one <- function(table_one,
 #'                                       small_size = 6) {
 #'   # Variable declaration -------------------------------------------------------
-#'   
+#'
 #'   strata_checked <- 0
 #'   levels_checked <- 0
 #'   variables_found <- 0

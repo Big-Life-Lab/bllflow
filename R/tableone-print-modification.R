@@ -15,6 +15,8 @@
 ##' @param noSpaces Whether to remove spaces added for alignment. Use this option if you prefer to align numbers yourself in other software.
 ##' @param padColnames Whether to pad column names with spaces to center justify. The default is FALSE. It is not conducted if noSpaces = TRUE.
 ##' @param varLabels Whether to replace variable names with variable labels obtained from \code{labelled::var_label()} function.
+##' @param valLabels Whether to replace variable category names with variable value labels obtained from \code{sjlabelled::get_labels()} function
+##' @param missingLabels The type of label to use when no value label is found for any given variable
 ##' @param format The default is "fp" frequency (percentage). You can also choose from "f" frequency only, "p" percentage only, and "pf" percentage (frequency).
 ##' @param showAllLevels Whether to show all levels. FALSE by default, i.e., for 2-level categorical variables, only the higher level is shown to avoid redundant information.
 ##' @param cramVars A character vector to specify the two-level categorical variables, for which both levels should be shown in one row.
@@ -27,158 +29,172 @@
 ##' @author Kazuki Yoshida, Justin Bohn
 ##' @seealso
 ##' \code{\link{CreateTableOne}}, \code{\link{CreateTableOne}}, \code{\link{summary.TableOne}}
+##' @importFrom labelled var_label
 ##' @examples
 ##'
 ##' ## See examples for CreateTableOne and svyCreateTableOne
 ##'
 ##' @export
 print.TableOne <-
-  function(x,                   # TableOne object
-           catDigits = 1, contDigits = 2, pDigits = 3, # Number of digits to show
-           quote         = FALSE,       # Whether to show quotes
-           
-           ## Common options
-           missing       = FALSE, # Not implemented yet
-           explain       = TRUE,  # Whether to show explanation in variable names
-           printToggle   = TRUE,  # Whether to print the result visibly
-           test          = TRUE,  # Whether to add p-values
-           smd           = FALSE, # Whether to add standardized mean differences
-           noSpaces      = FALSE, # Whether to remove spaces for alignments
-           padColnames   = FALSE, # Whether to pad column names for alignments
-           varLabels     = FALSE, # Whether to show variable labels instead of names.
-           valLabels     = FALSE, # Whether to show category labels instead of values.
-           missingLabel  = "Missing Label", # What label is assigned to missing value labels
-           
-           ## Categorical options
-           format        = c("fp","f","p","pf")[1], # Format f_requency and/or p_ercent
-           showAllLevels = FALSE, # Show all levels of a categorical variable
-           cramVars      = NULL,  # Which 2-level variables to show both levels in one row
-           dropEqual     = FALSE, # Do not show " = second level" for two-level variables
-           exact         = NULL,  # Which variables should be tested with exact tests
-           
-           ## Continuous options
-           nonnormal     = NULL,  # Which variables should be treated as nonnormal
-           minMax        = FALSE, # Whether to show median
-           
-           ...) {
-    
+  function(x, # TableOne object
+             catDigits = 1, contDigits = 2, pDigits = 3, # Number of digits to show
+             quote = FALSE, # Whether to show quotes
+
+             ## Common options
+             missing = FALSE, # Not implemented yet
+             explain = TRUE, # Whether to show explanation in variable names
+             printToggle = TRUE, # Whether to print the result visibly
+             test = TRUE, # Whether to add p-values
+             smd = FALSE, # Whether to add standardized mean differences
+             noSpaces = FALSE, # Whether to remove spaces for alignments
+             padColnames = FALSE, # Whether to pad column names for alignments
+             varLabels = FALSE, # Whether to show variable labels instead of names.
+             valLabels = FALSE, # Whether to show category labels instead of values.
+             missingLabels = "Missing Label", # What label is assigned to missing value labels
+
+             ## Categorical options
+             format = c("fp", "f", "p", "pf")[1], # Format f_requency and/or p_ercent
+             showAllLevels = FALSE, # Show all levels of a categorical variable
+             cramVars = NULL, # Which 2-level variables to show both levels in one row
+             dropEqual = FALSE, # Do not show " = second level" for two-level variables
+             exact = NULL, # Which variables should be tested with exact tests
+
+             ## Continuous options
+             nonnormal = NULL, # Which variables should be treated as nonnormal
+             minMax = FALSE, # Whether to show median
+
+             ...) {
+
     ## Extract Cont/CatTable elements of x and dispatch print() appropriately
     FmtTables <- tableone:::ModuleFormatTables(x,
-                                    catDigits = catDigits, contDigits = contDigits,
-                                    test = test, smd = smd, missing = missing,
-                                    explain = explain, pDigits = pDigits,
-                                    
-                                    ## print.CatTable arguments passed
-                                    format = format, exact = exact,
-                                    ## Returns one more column if TRUE
-                                    showAllLevels = showAllLevels,
-                                    cramVars = cramVars,
-                                    dropEqual = dropEqual,
-                                    
-                                    ## print.ContTable arguments passed
-                                    nonnormal = nonnormal, minMax = minMax,
-                                    insertLevel = showAllLevels)
-    
+      catDigits = catDigits, contDigits = contDigits,
+      test = test, smd = smd, missing = missing,
+      explain = explain, pDigits = pDigits,
+
+      ## print.CatTable arguments passed
+      format = format, exact = exact,
+      ## Returns one more column if TRUE
+      showAllLevels = showAllLevels,
+      cramVars = cramVars,
+      dropEqual = dropEqual,
+
+      ## print.ContTable arguments passed
+      nonnormal = nonnormal, minMax = minMax,
+      insertLevel = showAllLevels
+    )
+
     ## List of stratum sample size row only tables
     FmtStratumSizesTables <- sapply(FmtTables,
-                                    FUN = tableone:::ModuleStratumSizesRow,
-                                    showAllLevels = showAllLevels,
-                                    simplify = FALSE)
+      FUN = tableone:::ModuleStratumSizesRow,
+      showAllLevels = showAllLevels,
+      simplify = FALSE
+    )
     names(FmtStratumSizesTables) <- paste0(names(FmtStratumSizesTables), "N")
-    
+
     ## Combine as a list of necessary table elements
     FmtElementTables <- c(FmtTables, FmtStratumSizesTables)
-    
-    
+
+
     ## Add space paddings
     ## Given a list of tables with vecColWidths,
     ## return a strata-by-table df containing spaces to add
     nSpacesToAdd <- tableone:::ModuleNSpacesToAdd(FmtElementTables)
     ## Actually add spaces to tables
     spcFmtEltTables <- tableone:::ModuleAddSpacesToTable(FmtElementTables, nSpacesToAdd, showAllLevels)
-    
-    
+
+
     ## Create a list of one variable tables excluding sample size row.
     ## This is based on the variable order in the MetaData.
     lstOneVarTables <- tableone:::ModuleListOfOneVarTables(spcFmtEltTables,
-                                                MetaData = x$MetaData)
-    
-    
-    
+      MetaData = x$MetaData
+    )
+
+
+
     if (valLabels) {
       lstOneVarTables <-
-        lapply(seq_along(lstOneVarTables),
-               function(i) {
-                 ## Each element is a string matrix.
-                 mat <- lstOneVarTables[[i]]
-                 ## Manipulate if a non-NULL label is available.
-                 ## Note MetaData$varLabels is a list.
-                 if ((!is.null(x$MetaData$valLabels[[i]])) && (length(x$MetaData$valLabels[[i]]) > 1)) {
-                   ## The first row name contains the variable name
-                   ## without preceding space. Replace by exact matching.
-                   if (!length(rownames(mat)) > 1) {
-                     #print("HMMMM")
-                     # Handle collapsed vars somehow??????
-                   } else{
-                     for (j in 2:length(rownames(mat))) {
-                       # TODO Have some way to deal with collapsed cats
-                       catchValue <-
-                         tryCatch({
-                           x$MetaData$valLabels[[i]][[trimws(rownames(mat)[j])]]
-                         }, error = function(e)
-                         {
-                           x$MetaData$valLabels[[i]][[trimws(rownames(mat)[j])]] <-
-                             missingLabel
-                         })
-                       rownames(mat)[j] <-
-                         gsub(trimws(rownames(mat)[j]),
-                              catchValue,
-                              rownames(mat)[j], fixed = TRUE)
-                     }
-                   }
-                 }
-                 ## Return the entire matrix.
-                 mat
-               })
+        lapply(
+          seq_along(lstOneVarTables),
+          function(i) {
+            ## Each element is a string matrix.
+            mat <- lstOneVarTables[[i]]
+            ## Manipulate if a non-NULL label is available.
+            ## Note MetaData$varLabels is a list.
+            if ((!is.null(x$MetaData$valLabels[[i]])) && (length(x$MetaData$valLabels[[i]]) > 1)) {
+              ## The first row name contains the variable name
+              ## without preceding space. Replace by exact matching.
+              if (!length(rownames(mat)) > 1) {
+                # print("HMMMM")
+                # Handle collapsed vars somehow??????
+              } else {
+                for (j in 2:length(rownames(mat))) {
+                  # TODO Have some way to deal with collapsed cats
+                  catchValue <-
+                    tryCatch({
+                      x$MetaData$valLabels[[i]][[trimws(rownames(mat)[j])]]
+                    }, error = function(e) {
+                      x$MetaData$valLabels[[i]][[trimws(rownames(mat)[j])]] <-
+                        missingLabels
+                    })
+                  rownames(mat)[j] <-
+                    gsub(trimws(rownames(mat)[j]),
+                      catchValue,
+                      rownames(mat)[j],
+                      fixed = TRUE
+                    )
+                }
+              }
+            }
+            ## Return the entire matrix.
+            mat
+          }
+        )
     }
-    
+
     ## Replace variable names with variable labels if requested.
     ## Loop over the variable replacing its name with its label.
     if (varLabels) {
       lstOneVarTables <-
-        lapply(seq_along(lstOneVarTables),
-               function(i) {
-                 ## Each element is a string matrix.
-                 mat <- lstOneVarTables[[i]]
-                 ## Manipulate if a non-NULL label is available.
-                 ## Note MetaData$varLabels is a list.
-                 if (!is.null(x$MetaData$varLabels[[i]])) {
-                   ## The first row name contains the variable name
-                   ## without preceding space. Replace by exact matching.
-                   rownames(mat)[1] <- gsub(paste0("^", x$MetaData$vars[i]),
-                                            x$MetaData$varLabels[[i]],
-                                            rownames(mat)[1])
-                 }
-                 ## Return the entire matrix.
-                 mat
-               })
+        lapply(
+          seq_along(lstOneVarTables),
+          function(i) {
+            ## Each element is a string matrix.
+            mat <- lstOneVarTables[[i]]
+            ## Manipulate if a non-NULL label is available.
+            ## Note MetaData$varLabels is a list.
+            if (!is.null(x$MetaData$varLabels[[i]])) {
+              ## The first row name contains the variable name
+              ## without preceding space. Replace by exact matching.
+              rownames(mat)[1] <- gsub(
+                paste0("^", x$MetaData$vars[i]),
+                x$MetaData$varLabels[[i]],
+                rownames(mat)[1]
+              )
+            }
+            ## Return the entire matrix.
+            mat
+          }
+        )
     }
-    
-    
+
+
     ## Check if the first row is CatTable element
     ## if so, pick sample size row from space-padded CatTable element
     ## if not, pick sample size row from space-padded ContTable element
     ## Intentionally a one-element list
     lstStratumSizesRow <- ifelse(x$MetaData$logiFactors[1],
-                                 list(spcFmtEltTables$FmtCatTableN),
-                                 list(spcFmtEltTables$FmtContTableN))
-    
+      list(spcFmtEltTables$FmtCatTableN),
+      list(spcFmtEltTables$FmtContTableN)
+    )
+
     ## Row-combin n and all variables
-    out <- do.call(rbind,
-                   ## List concatenation (both are lists)
-                   c(lstStratumSizesRow, lstOneVarTables))
-    
-    
+    out <- do.call(
+      rbind,
+      ## List concatenation (both are lists)
+      c(lstStratumSizesRow, lstOneVarTables)
+    )
+
+
     ## Add stratification information to the column header
     ## NULL element has a length of zero
     if (length(x$ContTable) > 1) {
@@ -188,7 +204,6 @@ print.TableOne <-
       strataString <- paste0("Stratified by ", strataVarName)
       ## Name the row dimension with it. 1st dimension name should be empty.
       names(dimnames(out)) <- c("", strataString)
-      
     } else if (length(x$CatTable) > 1) {
       ## Combine variable names with : in between
       strataVarName <- attributes(x$CatTable)$strataVarName
@@ -196,29 +211,29 @@ print.TableOne <-
       strataString <- paste0("Stratified by ", strataVarName)
       ## Name the row dimension with it. 1st dimension name should be empty.
       names(dimnames(out)) <- c("", strataString)
-      
     } else {
-      
       names(dimnames(out)) <- c("", "")
     }
-    
+
     ## Right-justify Missing column if showing and not removing spaces.
     if (missing & !noSpaces) {
-      out[,"Missing"] <- format(out[,"Missing"], justify = "right")
+      out[, "Missing"] <- format(out[, "Missing"], justify = "right")
     }
-    
+
     ## Center-justify column names if asked and not removing spaces.
     if (padColnames & !noSpaces) {
       out <- tableone:::ModuleMidJustifyColnames(mat = out)
     }
-    
+
     ## Remove spaces if asked.
     out <- tableone:::ModuleRemoveSpaces(mat = out, noSpaces = noSpaces)
-    
+
     ## Modular version of quote/print toggle.
-    out <- tableone:::ModuleQuoteAndPrintMat(matObj = out,
-                                  quote = quote, printToggle = printToggle)
-    
+    out <- tableone:::ModuleQuoteAndPrintMat(
+      matObj = out,
+      quote = quote, printToggle = printToggle
+    )
+
     ## Return the result
     return(invisible(out))
   }
@@ -227,22 +242,16 @@ print.TableOne <-
 #' Export TableOne Objects to Markdown
 #'
 #' @param x an object created by a tableone function
+#' @param missingLabels passed to \code{bllflow::print.TableOne}
+#' @param valLabels = TRUE passed to \code{bllflow::print.TableOne}
+#' @param varLabels = TRUE passed to \code{bllflow::print.TableOne}
 #' @param ... arguments passed to \code{\link[knitr]{kable}}
 #'
 #' @return A character vector of the table source code
 #' @export
 #'
-#' @examples
-#' 
-#' library(survival)
-#' data(pbc)
-#' 
-#' tableOne <- CreateTableOne(data = pbc)
-#' 
-#' kableone(tableOne)
-#' 
 #' @importFrom utils capture.output
-kableone <- function(x, missingLabel = "Missing Label", valLabel = TRUE, varLabel = TRUE,  ...) {
-  capture.output(x <- print(x, valLabel =  valLabel, varLabel = varLabel, missingLabel = missingLabel))
+kableone <- function(x, missingLabels = "Missing Label", valLabels = TRUE, varLabels = TRUE, ...) {
+  capture.output(x <- print(x, valLabels = valLabels, varLabels = varLabels, missingLabels = missingLabels))
   knitr::kable(x, ...)
 }

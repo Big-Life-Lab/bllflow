@@ -1,9 +1,0 @@
-variable,dataStart,labelLong,label,units,type,variableType,algorithm,required,operations,centre,interaction,RCS,dummy,impute,2factor,min,max,outlier
-age,pbc,Age (years),Age (years),years,Demographic,Continuous,PBC_demo,TRUE,2,TRUE,FALSE,4,FALSE,FALSE,FALSE,,,
-sex,pbc,Sex,Sex,,Demographic,Categorical,PBC_demo,TRUE,"1 ,2",FALSE,FALSE,FALSE,TRUE,FALSE,TRUE,,,
-bili,pbc,Serum bilirunbin,Bilirubin,mg/dl,Lab,Continuous,PBC_demo,FALSE,2,TRUE,age,3,FALSE,mean,FALSE,,,
-albumin,pbc,Serum albumin,Albumin,g/dl,Lab,Continuous,PBC_demo,FALSE,2,TRUE,age,3,FALSE,mean,FALSE,,,
-protime,pbc,standardised blood clotting time,Prothrombin time,seconds,Lab,Continuous,PBC_demo,FALSE,2,TRUE,age,3,FALSE,mean,FALSE,,,
-edema,pbc,Edema,Edema,,Physical sign,Categorical,PBC_demo,FALSE,2,TRUE,age,3,TRUE,mean,TRUE,,,
-stage,,,,,,,,,2,TRUE,FALSE,FALSE,FALSE,mean,FALSE,,,
-,,,,,,,,,,,,,,mean,FALSE,,,

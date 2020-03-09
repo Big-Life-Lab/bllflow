@@ -24,20 +24,24 @@ Authors@R: c(
 Depends:
   R (>= 3.2),
   tableone,
+  recipes
+Imports: 
   DDIwR,
   xml2,
   stringr,
-  recipes,
   sjlabelled,
   haven,
   magrittr,
   rms,
   config,
-  dplyr
+  dplyr,
+  labelled,
+  rlang,
+  tibble,
+  tidyr
 Suggests:
   knitr,
   rmarkdown,
-  magrittr,
   survival,
   testthat
 URL: https://github.com/Big-Life-Lab/bllflow

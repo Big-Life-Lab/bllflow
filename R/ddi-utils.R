@@ -36,22 +36,22 @@
 #'         var_name
 #'     }
 #'   }
-#'   
+#'
 #'   ddi_object <-
 #'     list(variable_meta_data = ddi_meta_data, ddi_object = additional_DDI_meta_data)
 #'   attr(ddi_object, "class") <-
 #'     c(attr(ddi_object, "class"), "BLLFlowDDI")
-#'   
+#'
 #'   return(ddi_object)
 #' }
-#' 
+#'
 #' # Prevents function from writing Cat to console
 #' suppress_function_output <- function(x) {
 #'   sink(tempfile())
 #'   on.exit(sink())
 #'   invisible(force(x))
 #' }
-#' 
+#'
 #' #' Parses the headers from a DDI document
 #' #'
 #' #' Retreives the docDscr, stdyDscr and fileDscr nodes from a DDI document, storing
@@ -78,10 +78,10 @@
 #'     stdyDscr = ddi_object$codeBook$stdyDscr,
 #'     fileDscr = ddi_object$codeBook$fileDscr
 #'   )
-#'   
+#'
 #'   return(additional_DDI_meta_data)
 #' }
-#' 
+#'
 #' #' Writes a variable details CSV sheet to file
 #' #' @param x Object on which we will dispatch
 #' #' @param ... The next method in the chain
@@ -90,7 +90,7 @@
 #' write_DDI_populated_MSW <- function(x, ...) {
 #'   UseMethod("write_DDI_populated_MSW", x)
 #' }
-#' 
+#'
 #' #' @describeIn write_DDI_populated_MSW The populated_variable_details data frame within a bllflow model is written
 #' #' as a CSV file
 #' #'
@@ -125,17 +125,17 @@
 #' write_DDI_populated_MSW.BLLFlow <-
 #'   function(x, path_to_write_to, new_file_name, ...) {
 #'     bllFlow <- x
-#'     
+#'
 #'     # create new directory if one does not exist
 #'     if (!dir.exists(path_to_write_to)) {
 #'       dir.create(file.path(getwd(), path_to_write_to))
 #'     }
-#'     
+#'
 #'     write.csv(bllFlow[[pkg.globals$bllFlowContent.PopulatedVariableDetails]],
 #'               file = file.path(path_to_write_to, new_file_name),
 #'               row.names = FALSE)
 #'   }
-#' 
+#'
 #' #' @describeIn write_DDI_populated_MSW Updates an existing variable details worksheet
 #' #' with metadata from a ddi document and then writes the new variable details
 #' #' sheet to file. The new sheet is saved in the same directory as the old sheet. The
@@ -160,31 +160,31 @@
 #' write_DDI_populated_MSW.BLLFlowDDI <-
 #'   function(x, path_to_MSW, msw_name, new_name = NULL, ...) {
 #'     ddi <- x
-#'     
+#'
 #'     if (!file.exists(file.path(path_to_MSW, msw_name))) {
 #'       stop(paste("The MSW file is not present in", path_to_MSW), call. = FALSE)
 #'     }
 #'     variable_details <- read.csv(file.path(path_to_MSW, msw_name))
 #'     populated_variable_details <-
 #'       process_DDI_variable_details(ddi, variable_details)
-#'     
+#'
 #'     # create new directory if one does not exist
 #'     if (!dir.exists(path_to_MSW)) {
 #'       dir.create(file.path(getwd(), path_to_MSW))
 #'     }
-#'     
+#'
 #'     # generate name for new file name if one is not provided
 #'     if (is.null(new_name)) {
 #'       new_name <- paste(msw_name, "DDIPopulated.csv", sep = "")
 #'     }
-#'     
+#'
 #'     write.csv(
 #'       populated_variable_details,
 #'       file = file.path(path_to_MSW, new_name),
 #'       row.names = FALSE
 #'     )
 #'   }
-#' 
+#'
 #' #' Retreives variables in a DDI document
 #' #'
 #' #' Returns a list of dataDscr nodes from a DDI document which represent
@@ -209,10 +209,10 @@
 #'     which(names(ddi$ddi_object$codeBook$dataDscr) %in% var_list)
 #'   ddi_variables <-
 #'     ddi$ddi_object$codeBook$dataDscr[requested_variable_indexes]
-#'   
+#'
 #'   return(ddi_variables)
 #' }
-#' 
+#'
 #' #' Updates the model specification worksheet (MSW) of a bllflow model. Also updates
 #' #' the variable details sheet with metadata from a ddi document from the original
 #' #' bllflow model if it exists.
@@ -263,6 +263,6 @@
 #'         process_DDI_variable_details(bll_model[[pkg.globals$bllFlowContent.DDI]], new_MSW_variable_deatails)
 #'     }
 #'   }
-#'   
+#'
 #'   return(bll_model)
 #' }

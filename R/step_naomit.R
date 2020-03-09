@@ -1,8 +1,8 @@
 #' Remove observations with missing values
 #'
 #' `step_tagged_naomit` creates a *specification* of a recipe step that
-#'   will add remove observations (rows of data) if they contain NA
-#'   or NaN values.
+#'   will add remove observations (rows of data) if they contain specified
+#'   tagged na. Based on \code{recipes::step_naomit()}
 #'
 #' @param recipe A recipe object. The step will be added to the sequence of
 #'   operations for this recipe.
@@ -15,6 +15,8 @@
 #'   have been estimated. Again included for consistency.
 #' @param columns A character string of variable names that will
 #'  be populated (eventually) by the `terms` argument.
+#' @param tag_type the Type of the tag being checked for if NULL is passed no
+#'  tag is checked so all NA are ommited
 #' @param id A character string that is unique to this step to identify it.
 #' @param skip A logical. Should the step be skipped when the
 #'  recipe is baked by [bake.recipe()]? While all operations are baked
@@ -28,22 +30,17 @@
 #'   new step added to the sequence of existing steps (if any).
 #' @export
 #'
-#' @examples
-#'
-#' recipe(Ozone ~ ., data = airquality) %>%
-#'   step_tagged_naomit(Solar.R) %>%
-#'   prep(airquality, verbose = FALSE) %>%
-#'   juice()
-#'
+#' @importFrom tidyr drop_na
+#' @importFrom recipes step
 #' @seealso [recipe()] [prep.recipe()] [bake.recipe()]
 step_tagged_naomit <- function(recipe,
-                        ...,
-                        role = NA,
-                        trained = FALSE,
-                        columns = NULL,
-                        tag_type = NULL,
-                        skip = FALSE,
-                        id = recipes::rand_id("tagged_naomit")) {
+                               ...,
+                               role = NA,
+                               trained = FALSE,
+                               columns = NULL,
+                               tag_type = NULL,
+                               skip = FALSE,
+                               id = recipes::rand_id("tagged_naomit")) {
   recipes::add_step(
     recipe,
     step_tagged_naomit_new(
@@ -89,12 +86,12 @@ prep.step_tagged_naomit <- function(x, training, info = NULL, ...) {
 bake.step_tagged_naomit <- function(object, new_data, ...) {
   if (is.null(object$tag_type)) {
     tibble::as_tibble(tidyr::drop_na(new_data, object$columns))
-  } else{
+  } else {
     for (column in object$columns) {
-      if(is.numeric(new_data[[column]])){
-      new_data <- new_data[!haven::is_tagged_na(new_data[[column]], tag = object$tag_type),]
-      }else{
-        new_data <- new_data[!is_equal(new_data[[column]], paste("NA(",object$tag_type,")",sep = "")), ]
+      if (is.numeric(new_data[[column]])) {
+        new_data <- new_data[!haven::is_tagged_na(new_data[[column]], tag = object$tag_type), ]
+      } else {
+        new_data <- new_data[!is_equal(new_data[[column]], paste("NA(", object$tag_type, ")", sep = "")), ]
       }
     }
     tibble::as.tibble(new_data)
@@ -104,16 +101,7 @@ bake.step_tagged_naomit <- function(object, new_data, ...) {
 print.step_tagged_naomit <-
   function(x, width = max(20, options()$width - 30), ...) {
     cat("Removing rows with NA values in ", sep = "")
-    cat(tidyr::drop_naformat_selectors(x$terms, width = width))
+    cat(recipes::format_selectors(x$terms, width = width))
     cat("\n")
     invisible(x)
   }
-
-#' @rdname step_tagged_naomit
-#' @param x A `step_tagged_naomit` object.
-#' @export
-tidy.step_tagged_naomit <- function(x, ...) {
-  res <- recipes::simple_terms(x, ...)
-  res$id <- x$id
-  res
-}

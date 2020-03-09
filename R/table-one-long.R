@@ -3,7 +3,9 @@
 #'
 #' Creates Table One using the tableone package if a bllflow object is passed a custom function
 #' then extracts the necessary data for tableone call from the object avoiding unnecessary arguments.
-#'  
+#'
+#' @param x Object to retrive variables from
+#' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
 #' @export
 CreateTableOne <- function(x = NULL, ...) {
   UseMethod("CreateTableOne", x)
@@ -16,38 +18,25 @@ CreateTableOne <- function(x = NULL, ...) {
 #' additional arguments can be passed to create a specific table one.
 #' However if no optional args are passed the variable info stored in variables MSW is used.
 #'
-#' @param bll_flow_model The bllflow object
+#' @param x The bllflow object
 #' @param vars The optional vars to use in creation of tableone if no vars are passed then vars in MSW variables is used
 #' @param strata The optional strata to use in creation of tableone if no strata is passed no strata is used
 #' @param factor_vars The optional factor_vars (categorical variables) used in creation of tableone if nothing is passed
 #' the MSW variables sheet is used to determine variable types
+#' @param select_role The optional argument that specifies the role of the variables to pass to tableone
 #' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
-#' 
+#'
 #' @return returns a table one \href{https://cran.r-project.org/web/packages/tableone/index.html}{tableone} object
 #'
-#' @examples
-#' library(survival)
-#' data(pbc)
-#' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
-#' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
-#' ifelse(pbc$age >= 20 & pbc$age < 40, 2,
-#' ifelse(pbc$age >= 40 & pbc$age < 80, 3,
-#' ifelse(pbc$age >= 80, 4, NA))))
-#'
-#' library(bllflow)
-#' variables_sheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
-#' ddi <- read_DDI(file.path(getwd(), 'bllflow/extdata'),"pbcDDI.xml")
-#' pbc_model <- build_bllflow(pbc, variables_sheet, variable_details, ddi)
-#'
-#' pbc_table_one <- CreateTableOne(pbc_model, strata = "edema")
 #' @importFrom tableone CreateTableOne
+#' @importFrom sjlabelled get_labels
 #' @export
-CreateTableOne.BLLFlow <- function(bll_flow_model,
+CreateTableOne.BLLFlow <- function(x,
                                    vars = NULL,
                                    strata = NULL,
                                    factor_vars = NULL,
                                    select_role = NULL, ...) {
+  bll_flow_model <- x
   # ----Step 1: pull from variables in bll_flow_model ----
   variables_sheet <-
     bll_flow_model[[pkg.globals$bllFlowContent.Variables]]
@@ -55,36 +44,38 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
     if (is.null(select_role)) {
       vars <-
         as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
-    }else {
+    } else {
       vars <-
-        as.character(variables_sheet[grepl(select_role,variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+        as.character(variables_sheet[grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
     }
     vars <- trimws(vars)
   }
   if (is.null(factor_vars)) {
     if (is.null(select_role)) {
       factor_vars <-
-        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
-    }else {
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical), pkg.globals$MSW.Variables.Columns.Variable])
+    } else {
       factor_vars <-
-        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && grepl(select_role,variables_sheet[[pkg.globals$argument.Role]]) , pkg.globals$MSW.Variables.Columns.Variable])
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
     }
     factor_vars <- trimws(factor_vars)
   }
-  
+
   # ----Step 2: Create the tableone ----
   if (is.null(strata)) {
     final_table <-
-      tableone::CreateTableOne(data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
-                               vars = vars,
-                               factorVars = factor_vars,...)
-  } else{
+      tableone::CreateTableOne(
+        data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
+        vars = vars,
+        factorVars = factor_vars, ...
+      )
+  } else {
     final_table <-
       tableone::CreateTableOne(
         data = bll_flow_model[[pkg.globals$bllFlowContent.Data]],
         vars = vars,
         factorVars = factor_vars,
-        strata = strata,...
+        strata = strata, ...
       )
   }
   # Appends valLabels to metadata of tableone for val printing
@@ -94,7 +85,9 @@ CreateTableOne.BLLFlow <- function(bll_flow_model,
 }
 
 #' @export
-CreateTableOne.default <- tableone::CreateTableOne
+CreateTableOne.default <- function(...) {
+  tableone::CreateTableOne(...)
+}
 
 # ---------- WIP Needs further testing ----------
 #' #' Summary Data Long Table
@@ -159,9 +152,9 @@ CreateTableOne.default <- tableone::CreateTableOne
 #'     return_table <- unique(return_table)
 #'     return_summary_data <- list(summary_data = return_table)
 #'     class(return_summary_data) <- "SummaryData"
-#'     
+#'
 #'     return(return_summary_data)
-#'     
+#'
 #'   }
 #'
 # # Function to create a long table one for one tableOne
@@ -189,7 +182,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #         )
 #       returned_long_tables[[table_count]] <- cont_table_long_table
 #     }
-#     
+#
 #     # Call Cat table extraction if tableOne contains CatTable
 #     if (!is.null(passed_table$CatTable)) {
 #       dim_names <- attr(passed_table$CatTable, "dimnames")
@@ -208,7 +201,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #         )
 #       returned_long_tables[[table_count]] <- cat_table_long_table
 #     }
-#     
+#
 #     # ----Step 2: Add any missing columns to the newly created tables----
 #     for (table_to_append in returned_long_tables) {
 #       for (column_missing in colnames(long_table)) {
@@ -229,14 +222,14 @@ CreateTableOne.default <- tableone::CreateTableOne
 #           }
 #         }
 #       }
-#       
+#
 #       long_table <-
 #         rbind(long_table, table_to_append,  stringsAsFactors = FALSE)
 #     }
-#     
+#
 #     return(long_table)
 #   }
-# 
+#
 # # Create long table from contTable
 # extract_data_from_cont_table <-
 #   function(cont_table,
@@ -245,7 +238,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #            long_table,
 #            variable_details) {
 #     strata_split_name <- character()
-#     
+#
 #     # ----Step 1: Split the strata name into the two variables ----
 #     if (!is.null(strata_name)) {
 #       strata_split_name <-
@@ -253,10 +246,10 @@ CreateTableOne.default <- tableone::CreateTableOne
 #     } else{
 #       strata_split_name <- strata_name
 #     }
-#     
+#
 #     # ----Step 2: Add columns to long table
 #     long_table_rows <- data.frame()
-#     
+#
 #     # loop through each strata columns
 #     # ----Step 3: Extract information for each new row of the longtable ----
 #     for (strata_index in 1:length(cont_table)) {
@@ -276,7 +269,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #           cont_table[[strata_index]][row, pkg.globals$tableOne.p25]
 #         row_percentile75 <-
 #           cont_table[[strata_index]][row, pkg.globals$tableOne.p75]
-#         
+#
 #         # create the row to add to tableOne Long
 #         group_by_list <- list()
 #         if (length(strata_split_name) > 0) {
@@ -286,7 +279,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #                                  group_by_list,
 #                                  variable_details)
 #         }
-#         
+#
 #         # ----Step 4: Create long table row ----
 #         long_table_row <- list()
 #         long_table_row[[pkg.globals$LongTable.VariableCategory]] <- NA
@@ -302,7 +295,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #         long_table_row[[pkg.globals$LongTable.Percentile75]] <-
 #           row_percentile75
 #         long_table_row <- append(long_table_row, group_by_list)
-#         
+#
 #         # ----Step 5: Clean the row
 #         for (each_element_index in 1:length(long_table_row)) {
 #           # remove empty classes to avoid bind conflicts
@@ -311,16 +304,16 @@ CreateTableOne.default <- tableone::CreateTableOne
 #             long_table_row[[each_element_index]] <- NA
 #           }
 #         }
-#         
+#
 #         # ----Step 6: Add row to the rest of the rows----
 #         long_table_rows <-
 #           rbind(long_table_rows, long_table_row,  stringsAsFactors = FALSE)
 #       }
 #     }
-#     
+#
 #     return(long_table_rows)
 #   }
-# 
+#
 # # Create long table from CatTable
 # extract_data_from_cat_table <-
 #   function(cat_table,
@@ -334,10 +327,10 @@ CreateTableOne.default <- tableone::CreateTableOne
 #     strata_split_name <-
 #       unlist(strsplit(as.character(strata_name), split = ":"))
 #     # Adds group by columns not found in the long table
-#     
+#
 #     # ----Step 2: Add columns to long table
 #     long_table_rows <- data.frame()
-#     
+#
 #     # ----Step 3: Extract information for each new row of the longtable ----
 #     for (strata_counter in 1:length(cat_table)) {
 #       strata_split_values <-
@@ -346,7 +339,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #       for (selected_variable_table in cat_table[[strata_counter]]) {
 #         # Used to specify the variable being writen
 #         variables_checked <- variables_checked + 1
-#         
+#
 #         # Loop through the levels of each variable
 #         for (row in 1:nrow(selected_variable_table)) {
 #           n_miss <- selected_variable_table[row, pkg.globals$tableOne.Miss]
@@ -373,7 +366,7 @@ CreateTableOne.default <- tableone::CreateTableOne
 #               }
 #             }
 #           }
-#           
+#
 #           # ----Step 4: Create long table row ----
 #           long_table_row <- list()
 #           long_table_row[[pkg.globals$LongTable.VariableCategory]] <-
@@ -390,14 +383,14 @@ CreateTableOne.default <- tableone::CreateTableOne
 #           long_table_row[[pkg.globals$LongTable.Percentile25]] <-  NA
 #           long_table_row[[pkg.globals$LongTable.Percentile75]] <-  NA
 #           long_table_row <- append(long_table_row, group_by_list)
-#           
+#
 #           # ----Step 5: Clean the row
 #           for (each_element_index in 1:length(long_table_row)) {
 #             if (length(long_table_row[[each_element_index]]) == 0) {
 #               long_table_row[[each_element_index]] <- NA
 #             }
 #           }
-#           
+#
 #           # ----Step 6: Add row to the rest of the rows----
 #           long_table_rows <-
 #             rbind(long_table_rows, long_table_row,  stringsAsFactors = FALSE)
@@ -405,6 +398,6 @@ CreateTableOne.default <- tableone::CreateTableOne
 #       }
 #       variables_checked <- 0
 #     }
-#     
+#
 #     return(long_table_rows)
 #   }

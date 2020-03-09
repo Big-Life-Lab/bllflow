@@ -2,11 +2,11 @@
 # This function returns TRUE wherever elements are the same, including NA's,
 # and false everywhere else.
 is_equal <- function(v1, v2) {
-  same <- (v1 == v2)  |  (is.na(v1) & is.na(v2))
+  same <- (v1 == v2) | (is.na(v1) & is.na(v2))
   # anything compared to NA equals NA
   # replaces all instanses of NA with FALSE
   same[is.na(same)] <- FALSE
-  
+
   return(same)
 }
 
@@ -17,7 +17,7 @@ clean_strata_values <-
     strata_all_combinations_data_frame <- expand.grid(dim_names)
     strata_args <- c(strata_all_combinations_data_frame, sep = ":")
     strata_values <- do.call(paste, strata_args)
-    
+
     return(strata_values)
   }
 
@@ -33,10 +33,10 @@ clean_strata_values <-
 #         table_to_add_to[, column_name] <- NA
 #       }
 #     }
-#     
+#
 #     return(table_to_add_to)
 #   }
-# 
+#
 # # Adds groupBy columns to long table
 # add_group_by_columns <-
 #   function(strata_split_name,
@@ -49,7 +49,7 @@ clean_strata_values <-
 #       long_table <-
 #         add_column(paste(pkg.globals$LongTable.GroupByValue, group_by_index, sep = ""),
 #                    long_table)
-#       
+#
 #       if (!is.null(variable_details)) {
 #         long_table <-
 #           add_column(paste(pkg.globals$LongTable.GroupByLabel, group_by_index, sep = ""),
@@ -65,10 +65,10 @@ clean_strata_values <-
 #           )
 #       }
 #     }
-#     
+#
 #     return(long_table)
 #   }
-# 
+#
 # # Fills group by columns with information from variable details
 # fill_in_group_by_columns <-
 #   function(strata_split_name,
@@ -80,7 +80,7 @@ clean_strata_values <-
 #         strata_split_name[[group_by_index]]
 #       long_table_row[[paste(pkg.globals$LongTable.GroupByValue, group_by_index, sep = "")]] <-
 #         strata_split_values[[group_by_index]]
-#       
+#
 #       if (!is.null(variable_details)) {
 #         long_table_row[[paste(pkg.globals$LongTable.GroupByLabel, group_by_index, sep = "")]] <-
 #           variable_details[is_equal(variable_details[[pkg.globals$argument.VariableStart]], strata_split_name[[group_by_index]]) &
@@ -90,9 +90,9 @@ clean_strata_values <-
 #                               sep = "")]] <-
 #           variable_details[is_equal(variable_details[[pkg.globals$argument.VariableStart]], strata_split_name[[group_by_index]]) &
 #                              is_equal(variable_details[[pkg.globals$argument.CatStartValue]], strata_split_values[[group_by_index]]), pkg.globals$argument.CatStartLabel]
-#         
+#
 #       }
 #     }
-#     
+#
 #     return(long_table_row)
 #   }

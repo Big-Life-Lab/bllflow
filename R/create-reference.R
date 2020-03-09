@@ -20,7 +20,7 @@
 #'     # ----Step 1: verify input/create not passed input----
 #'     supported_model_types <- c("crr")
 #'     var_names <- attr(model_object$coef, "names")
-#'     
+#'
 #'     if (!class(model_object) %in% supported_model_types) {
 #'       stop("Passed model type is not yet supported. Aborting!")
 #'     }
@@ -46,14 +46,14 @@
 #'         }
 #'       }
 #'     }
-#'     
+#'
 #'     # ----Step 2: Generate model object ----
 #'     # Obtain the beta coefficient
 #'     beta_coefficient <- model_object$coef
 #'     all_strata_var_means <- list()
 #'     ret_table <-
 #'       data.frame(beta_coefficient = beta_coefficient, row.names = var_names)
-#'     
+#'
 #'     # Obtain the means
 #'     if (calculate_mean) {
 #'       if (!is.null(table_one$ContTable)) {
@@ -68,10 +68,10 @@
 #'       }
 #'     }
 #'     baseline_risk <- calculate_baseline_risk(model_object, (365.25*baseline_risk_time_frame))
-#'     
+#'
 #'     return(list(reference = ret_table, baseline = baseline_risk))
 #'   }
-#' 
+#'
 #' calculate_baseline_risk <- function(model, time) {
 #'   jumps <- data.frame(time = model$uftime, bfitj = model$bfitj)
 #'   jumps_time <- jumps[jumps$time <= time, ]

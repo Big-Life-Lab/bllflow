@@ -43,13 +43,13 @@
 #'         )
 #'       )
 #'     }
-#'     
+#'
 #'     # Create a new log if metaData does not yet have a log object
 #'     if (is.null(bllFlow$metaData$log)) {
 #'       bllFlow$metaData$log <- list()
 #'       attr(bllFlow$metaData$log, "class") <- c(attr(bllFlow$metaData$log, "class"), "metaDataLog")
 #'     }
-#'     
+#'
 #'     # Populate the log object with data about the function that was executed
 #'     label <-
 #'       bllFlow$variables[bllFlow$variables$variable==variable
@@ -65,6 +65,6 @@
 #'           value = value
 #'         )
 #'       )
-#'     
+#'
 #'     return(bllFlow)
 #'   }

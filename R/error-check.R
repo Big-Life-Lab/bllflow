@@ -27,13 +27,13 @@ check_if_data_frame <- function(passed_frame, passed_name) {
 
 check_if_cell_is_empty <-
   function(cell_content,
-           row_number,
-           column_name,
-           ddi_value) {
+             row_number,
+             column_name,
+             ddi_value) {
     is_empty <- TRUE
     if (!is.null(cell_content) &&
-        !is.na(cell_content) &&
-        cell_content != "" && cell_content != ddi_value) {
+      !is.na(cell_content) &&
+      cell_content != "" && cell_content != ddi_value) {
       warning(
         paste(
           "Row ",
@@ -51,6 +51,6 @@ check_if_cell_is_empty <-
       )
       is_empty <- FALSE
     }
-    
+
     return(is_empty)
   }

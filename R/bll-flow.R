@@ -2,62 +2,35 @@
 #'
 #' Wraps up the data, variables and variable_details arguments in an R object,
 #' making it an instance of a bllflow class and returning the resulting object.
-#' If a ddi argument is provided, all the metadata from the DDI document is
-#' imported into the R object
 #'
-#' @param data A dataframe list that represents the datasets the model will be developed
-#' on
-#' @param variables A dataframe that has the specification sheet for this model. An example
-#' of this worksheet is available here
-#' \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=0}.
-#' @param variable_details A dataframe that is the variable details worksheet. An example
-#' of this worksheet is available here
-#' \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit#gid=1196358036}.
-#' @param ddi A named list that contains the ddi documents
+#' @param data A dataframe list that represents the datasets the model
+#'  will be developed on
+#' @param variables A dataframe that has the specification sheet for this model.
+#'  An example of this worksheet is available here
+#'  \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit?usp=sharing}.
+#' @param variable_details A dataframe that is the variable details worksheet.
+#'  An example of this worksheet is available here
+#'  \url{https://docs.google.com/spreadsheets/d/1QVqLKy_C185hzeQdJeOy-EeFMBXui1hZ1cB2sKqPG-4/edit?usp=sharing}.
+#' @param modules A dataframe containing module instructions
 #' @return A named list which is an instance of the bllflow class. The items
-#' in the list are specified below: \cr
-#' 1. data - A dataframe that contains the passed data argument \cr
-#' 2. variables - A dataframe that contains the passed variables argument \cr
-#' 3. variable_details - A dataframe that contains the passed variable_details argument \cr
-#' 4. ddi - A named list that contains the ddi found on the passed path \cr
-#' 5. additional_DDI_meta_data - A named list. See the return type of the \code{\link{get_DDI_description}} function \cr
-#' 6. populated_variable_details - A dataframe that contains the rows in the variable_details \cr
-#' argument but with additional data filled in using the ddi argument it's specified
+#'  in the list are specified below: \cr
+#'  1. previous_module_data - A dataframe used to store previous module
+#'   transformation for the purpose of backtracking \cr
+#'  2. working_data - A dataframe used to store latest module transformations.
+#'   This is the primary data used in bllflow functions \cr
+#'  3. variables - A dataframe that contains the passed variables argument \cr
+#'  4. variable_details - A dataframe that contains the passed
+#'   variable_details argument \cr
 #'
 #' @export
-#'
-#' @examples
-#' #TODO Update with lists
-#' # ALl the libraries we will be using
-#' library(bllflow)
-#' library(survival)
-#'
-#' # Read in the data we will use for this example
-#' data(pbc)
-#'
-#' # Read in the variables and variable details CSV sheets which are part of the
-#' # master specification workbook
-#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variable_details <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package="bllflow"))
-#'
-#' # Create a bllFlow R object for the PBC model using the above variables as args
-#' # and store it in the pbcModel variable
-#' pbcModel <- bllflow::BLLFlow(pbc, variablesSheet, variable_details)
-#'
-#' # The pbcModel variable is an R object of instance BLLFlow
-#' print(attr(pbcModel, 'class'))
 build_bllflow <-
   function(data = NULL,
-           variables = NULL,
-           variable_details = NULL,
-           modules = NULL,
-           ddi = NULL) {
-    ddi_header <- list()
+             variables = NULL,
+             variable_details = NULL,
+             modules = NULL) {
     # Verify passed arg integrity for future functions
     if (!is.null(data)) {
       check_if_data_frame(data, names(data))
-      
-      
     }
     if (!is.null(variables)) {
       check_if_data_frame(variables, pkg.globals$argument.Variables)
@@ -69,8 +42,10 @@ build_bllflow <-
       )
     }
     if (!is.null(variable_details)) {
-      check_if_data_frame(variable_details,
-                          pkg.globals$argument.VariableDetailsSheet)
+      check_if_data_frame(
+        variable_details,
+        pkg.globals$argument.VariableDetailsSheet
+      )
       check_for_column_presence(
         c(
           "variable",
@@ -88,23 +63,23 @@ build_bllflow <-
         pkg.globals$argument.VariableDetailsSheet
       )
     }
-    
-    
-    if (!is.null(ddi)) {
-      # TODO redisign to create template rather then populate add a check to verify proper structure
-      # processedVariableDetails <-
-      #   ProcessDDIVariableDetails(ddi, variable_details)
-      
-      check_for_existance_of_in_list(c("variableMetaData", "ddiObject"),
-                                     ddi,
-                                     paste(names(ddi), "ddi"))
-      ddi_header[[names(ddi)]] <-
-        get_DDI_description(ddi)
-      
-      
-    } else{
-      ddi_header <- NULL
-    }
+
+    # DDI support has been dropped for now
+    # if (!is.null(ddi)) {
+    #   # TODO redisign to create template rather then populate add a check to verify proper structure
+    #   # processedVariableDetails <-
+    #   #   ProcessDDIVariableDetails(ddi, variable_details)
+    #
+    #   check_for_existance_of_in_list(c("variableMetaData", "ddiObject"),
+    #                                  ddi,
+    #                                  paste(names(ddi), "ddi"))
+    #   ddi_header[[names(ddi)]] <-
+    #     get_DDI_description(ddi)
+    #
+    #
+    # } else{
+    #   ddi_header <- NULL
+    # }
     # TODO Add Verification for modules
     bll_flow_model <-
       list(
@@ -112,42 +87,55 @@ build_bllflow <-
         working_data = data,
         variables = variables,
         variable_details = variable_details,
-        additional_DDI_meta_data = ddi_header,
-        populated_variable_details = NULL,
-        ddi = ddi,
         modules = modules
-        
       )
     attr(bll_flow_model, "class") <- "BLLFlow"
     # BANDAID
-    if(!is.null(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])) {
-      attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]], pkg.globals$bllFlowContent.Sequence) <-
+    if (!is.null(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])) {
+      attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
+           pkg.globals$bllFlowContent.Sequence) <-
         0
     }
-    
+
     return(bll_flow_model)
   }
-
+#' Read csv data
+#'
+#' Uses passed variables sheet as well as the name of the data name to only read
+#' the needed columns from the csv
+#'
+#' @param variables a variables dataframe can ususally be found in
+#'  bllflow$variables
+#' @param data_name the name of the database ur reading make sure it matches
+#'  the name in databaseStart
+#' @param path_to_data a valid file path to read the csv from
+#' @param nrows = -1 specifies the number of rows to read in case not full data
+#'  is required
+#'
+#' @return a data.frame containing only the variables needed for that cycle
+#'  in variables
 #' @export
 read_data <-
   function(variables,
-           data_name,
-           path_to_data,
-           nrows = -1) {
+             data_name,
+             path_to_data,
+             nrows = -1) {
     # calculate the rows to set to null
-    first_row_of_data <- read.csv(file = path_to_data, nrows = 1)
-    
+    first_row_of_data <- utils::read.csv(file = path_to_data, nrows = 1)
+
     var_names_for_this_data <-
       get_variables.default(variables, data_name)
-    
+
     columns_to_keep <-
       colnames(first_row_of_data) %in% var_names_for_this_data
     column_classes <- sapply(columns_to_keep, boolean_conversion)
-    
-    data_to_save <- read.csv(file = path_to_data,
-                             colClasses = column_classes,
-                             nrows = nrows)
-    
+
+    data_to_save <- utils::read.csv(
+      file = path_to_data,
+      colClasses = column_classes,
+      nrows = nrows
+    )
+
     return(data_to_save)
   }
 boolean_conversion <- function(bool_value) {
@@ -157,29 +145,65 @@ boolean_conversion <- function(bool_value) {
   } else {
     ret_value <- "NULL"
   }
-  
+
   return(ret_value)
 }
+#' Get variables
+#'
+#' Generic method for getting start variables from variable_source
+#' based on data_name
+#'
+#' @param variable_source A variables sheet or bllflow object containing
+#'  the variables sheet
+#' @param ... Used for generic function consistency
+#'
+#' @return character vector containing start variables for this databaseStart
 #' @export
 get_variables <- function(variable_source = NULL, ...) {
   UseMethod("get_variables", variable_source)
 }
+
+#' Get variables from bllflow using specified database name
+#'
+#' A bllflow specific wrapper around default get_variables to allow
+#' consistent bllflow workflow
+#'
+#' @param variable_source a bllflow object containing variables sheet
+#'  that is then parsed
+#' @param data_name name matching the databaseStart column you wish to
+#'  get variables for
+#' @param ... Used for generic function consistency
+#'
+#' @return character vector containing start variables for this databaseStart
 #' @export
-get_variables.BLLFlow <- function(bllFlow, data_name) {
-  variables <- bllFlow[[pkg.globals$bllFlowContent.Variables]]
-  
+get_variables.BLLFlow <- function(variable_source, data_name, ...) {
+  variables <- variable_source[[pkg.globals$bllFlowContent.Variables]]
+
   return(get_variables.default(variables, data_name))
 }
+
+#' Get variables from variables using specified database name
+#'
+#' @param variable_source a variables data.frame object containing variables
+#'  used in the study
+#' @param data_name name matching the databaseStart column you wish to get
+#'  variables for
+#' @param ... Used for generic function consistency
+#'
+#' @return character vector containing start variables for this databaseStart
 #' @export
-get_variables.default <- function(variables, data_name) {
+get_variables.default <- function(variable_source, data_name, ...) {
+  variables <- variable_source
   variables_to_read_list <-
-    variables[grepl(data_name, variables[[pkg.globals$argument.DatabaseStart]]), ]
-  
+    variables[grepl(data_name, variables[[
+      pkg.globals$argument.DatabaseStart]]), ]
+
   var_names_for_this_data <- list()
-  
-  for (variable_to_read_row in 1:nrow(variables_to_read_list)) {
+
+  for (variable_to_read_row in seq_len(nrow(variables_to_read_list))) {
     variable_to_read <-
-      as.character(variables_to_read_list[variable_to_read_row, pkg.globals$argument.VariableStart])
+      as.character(variables_to_read_list[variable_to_read_row,
+                                          pkg.globals$argument.VariableStart])
     data_variable_being_checked <- character()
     if (!grepl("DerivedVar", variable_to_read)) {
       if (grepl(data_name, variable_to_read)) {
@@ -198,11 +222,11 @@ get_variables.default <- function(variables, data_name) {
           stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
       }
     }
-    
+
     var_names_for_this_data <-
       append(var_names_for_this_data, data_variable_being_checked)
   }
   var_names_for_this_data <- unique(var_names_for_this_data)
-  
+
   return(var_names_for_this_data)
 }
