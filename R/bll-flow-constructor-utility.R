@@ -44,6 +44,11 @@ bllflow_config_read_data <- function(bllflow_object, config_name = NULL) {
   config <- config::get()
   if (config$data_type == ".RData") {
     # use variables to only read the specified variables??
+    for (data_name in names(config$data)) {
+      load(config$data[[data_name]])
+      save(list = data_name, file = file.path(config$data_dir,
+                                              paste0(data_name, ".RData")))
+    }
   } else if (config$data_type == ".csv") {
     for (data_name in names(config$data)) {
       tmp_data <-
