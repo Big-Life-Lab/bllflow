@@ -1,3 +1,10 @@
+#' Scramble outcome data
+#' 
+#' Scrambles the variables matching the role_name in variables attached to bllflow_object
+#' @param bllflow_object a bllflow object containing data variables and variable details
+#' @param role_name string matching the variables you wish to scramble
+#' 
+#' @return bllflow_object where the variables matching the role are scrambled in working_data
 #' @export
 scramble_data <- function(bllflow_object, role_name = NULL){
   # Extract variables based on role_name values

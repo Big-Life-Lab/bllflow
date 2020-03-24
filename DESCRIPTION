@@ -43,12 +43,13 @@ Suggests:
   knitr,
   rmarkdown,
   survival,
-  testthat
+  testthat,
+  cchsflow
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr

@@ -27,6 +27,24 @@ CreateTableOne <- function(x = NULL, ...) {
 #' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
 #'
 #' @return returns a table one \href{https://cran.r-project.org/web/packages/tableone/index.html}{tableone} object
+#' 
+#' @examples 
+#' library(bllflow)
+#' bllflow_object <- build_bllflow(variables = cchsflow::variables, 
+#' variable_details = cchsflow::variable_details)
+#' cchs2001 <- cchsflow::rec_with_table(cchsflow::cchs2001_p, database_name = "cchs2001_p")
+#' cchs2003 <- cchsflow::rec_with_table(cchsflow::cchs2003_p, database_name = "cchs2003_p")
+#' cchs2005 <- cchsflow::rec_with_table(cchsflow::cchs2005_p, database_name = "cchs2005_p")
+#' cchs2007_2008_p <- cchsflow::rec_with_table(cchsflow::cchs2007_2008_p, database_name = "cchs2007_2008_p")
+#' cchs2009_2010_p <- cchsflow::rec_with_table(cchsflow::cchs2009_2010_p, database_name = "cchs2009_2010_p")
+#' cchs2011_2012_p <- cchsflow::rec_with_table(cchsflow::cchs2011_2012_p, database_name = "cchs2011_2012_p")
+#' cchs2013_2014_p <- cchsflow::rec_with_table(cchsflow::cchs2013_2014_p, database_name = "cchs2013_2014_p")
+#' 
+#' combined_data <- dplyr::bind_rows(cchs2001, cchs2003, cchs2005, cchs2007_2008_p, cchs2009_2010_p, cchs2011_2012_p, cchs2013_2014_p)
+#' 
+#' bllflow_object$working_data <- combined_data
+#' 
+#' test_table <- CreateTableOne(bllflow_object)
 #'
 #' @importFrom tableone CreateTableOne
 #' @importFrom sjlabelled get_labels
