@@ -215,6 +215,9 @@ get_variables.default <- function(variable_source, data_name, ...) {
           if (!grepl("DerivedVar", var_name)) {
             data_variable_being_checked <-
               as.list(strsplit(var_name, "::")[[1]])[[2]]
+          }else if (grepl("\\[", variable_to_read)) {
+            data_variable_being_checked <-
+              stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
           }
         }
       }
