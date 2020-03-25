@@ -25,9 +25,9 @@
 #' @export
 build_bllflow <-
   function(data = NULL,
-             variables = NULL,
-             variable_details = NULL,
-             modules = NULL) {
+           variables = NULL,
+           variable_details = NULL,
+           modules = NULL) {
     # Verify passed arg integrity for future functions
     if (!is.null(data)) {
       check_if_data_frame(data, names(data))
@@ -63,7 +63,7 @@ build_bllflow <-
         pkg.globals$argument.VariableDetailsSheet
       )
     }
-
+    
     # DDI support has been dropped for now
     # if (!is.null(ddi)) {
     #   # TODO redisign to create template rather then populate add a check to verify proper structure
@@ -96,7 +96,7 @@ build_bllflow <-
            pkg.globals$bllFlowContent.Sequence) <-
         0
     }
-
+    
     return(bll_flow_model)
   }
 #' Read csv data
@@ -117,25 +117,25 @@ build_bllflow <-
 #' @export
 read_data <-
   function(variables,
-             data_name,
-             path_to_data,
-             nrows = -1) {
+           data_name,
+           path_to_data,
+           nrows = -1) {
     # calculate the rows to set to null
     first_row_of_data <- utils::read.csv(file = path_to_data, nrows = 1)
-
+    
     var_names_for_this_data <-
       get_variables.default(variables, data_name)
-
+    
     columns_to_keep <-
       colnames(first_row_of_data) %in% var_names_for_this_data
     column_classes <- sapply(columns_to_keep, boolean_conversion)
-
+    
     data_to_save <- utils::read.csv(
       file = path_to_data,
       colClasses = column_classes,
       nrows = nrows
     )
-
+    
     return(data_to_save)
   }
 boolean_conversion <- function(bool_value) {
@@ -145,7 +145,7 @@ boolean_conversion <- function(bool_value) {
   } else {
     ret_value <- "NULL"
   }
-
+  
   return(ret_value)
 }
 #' Get variables
@@ -178,7 +178,7 @@ get_variables <- function(variable_source = NULL, ...) {
 #' @export
 get_variables.BLLFlow <- function(variable_source, data_name, ...) {
   variables <- variable_source[[pkg.globals$bllFlowContent.Variables]]
-
+  
   return(get_variables.default(variables, data_name))
 }
 
@@ -197,36 +197,36 @@ get_variables.default <- function(variable_source, data_name, ...) {
   variables_to_read_list <-
     variables[grepl(data_name, variables[[
       pkg.globals$argument.DatabaseStart]]), ]
-
+  
   var_names_for_this_data <- list()
-
+  
   for (variable_to_read_row in seq_len(nrow(variables_to_read_list))) {
     variable_to_read <-
       as.character(variables_to_read_list[variable_to_read_row,
                                           pkg.globals$argument.VariableStart])
     data_variable_being_checked <- character()
-      if (grepl(data_name, variable_to_read)) {
-        var_start_names_list <-
-          as.list(strsplit(variable_to_read, ",")[[1]])
-        # Find exact var Name
-        for (var_name in var_start_names_list) {
-          if (grepl(data_name, var_name)) {
-            # separate dataname from the var name
-            if (!grepl("DerivedVar", variable_to_read)) {
+    if (grepl(data_name, variable_to_read)) {
+      var_start_names_list <-
+        as.list(strsplit(variable_to_read, ",")[[1]])
+      # Find exact var Name
+      for (var_name in var_start_names_list) {
+        if (grepl(data_name, var_name)) {
+          # separate dataname from the var name
+          if (!grepl("DerivedVar", var_name)) {
             data_variable_being_checked <-
               as.list(strsplit(var_name, "::")[[1]])[[2]]
-            }
           }
         }
-      } else if (grepl("\\[", variable_to_read)) {
-        data_variable_being_checked <-
-          stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
       }
+    } else if (grepl("\\[", variable_to_read)) {
+      data_variable_being_checked <-
+        stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
+    }
     
     var_names_for_this_data <-
       append(var_names_for_this_data, data_variable_being_checked)
   }
   var_names_for_this_data <- unique(var_names_for_this_data)
-
+  
   return(var_names_for_this_data)
 }
