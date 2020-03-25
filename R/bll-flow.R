@@ -205,24 +205,24 @@ get_variables.default <- function(variable_source, data_name, ...) {
       as.character(variables_to_read_list[variable_to_read_row,
                                           pkg.globals$argument.VariableStart])
     data_variable_being_checked <- character()
-    if (!grepl("DerivedVar", variable_to_read)) {
       if (grepl(data_name, variable_to_read)) {
         var_start_names_list <-
           as.list(strsplit(variable_to_read, ",")[[1]])
         # Find exact var Name
         for (var_name in var_start_names_list) {
           if (grepl(data_name, var_name)) {
-            # seperate dataname from the var name
+            # separate dataname from the var name
+            if (!grepl("DerivedVar", variable_to_read)) {
             data_variable_being_checked <-
               as.list(strsplit(var_name, "::")[[1]])[[2]]
+            }
           }
         }
       } else if (grepl("\\[", variable_to_read)) {
         data_variable_being_checked <-
           stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
       }
-    }
-
+    
     var_names_for_this_data <-
       append(var_names_for_this_data, data_variable_being_checked)
   }
