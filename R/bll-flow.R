@@ -42,10 +42,8 @@ build_bllflow <-
       )
     }
     if (!is.null(variable_details)) {
-      check_if_data_frame(
-        variable_details,
-        pkg.globals$argument.VariableDetailsSheet
-      )
+      check_if_data_frame(variable_details,
+                          pkg.globals$argument.VariableDetailsSheet)
       check_for_column_presence(
         c(
           "variable",
@@ -121,7 +119,8 @@ read_data <-
            path_to_data,
            nrows = -1) {
     # calculate the rows to set to null
-    first_row_of_data <- utils::read.csv(file = path_to_data, nrows = 1)
+    first_row_of_data <-
+      utils::read.csv(file = path_to_data, nrows = 1)
     
     var_names_for_this_data <-
       get_variables.default(variables, data_name)
@@ -130,11 +129,9 @@ read_data <-
       colnames(first_row_of_data) %in% var_names_for_this_data
     column_classes <- sapply(columns_to_keep, boolean_conversion)
     
-    data_to_save <- utils::read.csv(
-      file = path_to_data,
-      colClasses = column_classes,
-      nrows = nrows
-    )
+    data_to_save <- utils::read.csv(file = path_to_data,
+                                    colClasses = column_classes,
+                                    nrows = nrows)
     
     return(data_to_save)
   }
@@ -195,8 +192,7 @@ get_variables.BLLFlow <- function(variable_source, data_name, ...) {
 get_variables.default <- function(variable_source, data_name, ...) {
   variables <- variable_source
   variables_to_read_list <-
-    variables[grepl(data_name, variables[[
-      pkg.globals$argument.DatabaseStart]]), ]
+    variables[grepl(data_name, variables[[pkg.globals$argument.DatabaseStart]]),]
   
   var_names_for_this_data <- list()
   
@@ -205,26 +201,27 @@ get_variables.default <- function(variable_source, data_name, ...) {
       as.character(variables_to_read_list[variable_to_read_row,
                                           pkg.globals$argument.VariableStart])
     data_variable_being_checked <- character()
-    if (grepl(data_name, variable_to_read)) {
-      var_start_names_list <-
-        as.list(strsplit(variable_to_read, ",")[[1]])
-      # Find exact var Name
-      for (var_name in var_start_names_list) {
-        if (grepl(data_name, var_name)) {
-          # separate dataname from the var name
-          if (!grepl("DerivedVar", var_name)) {
-            data_variable_being_checked <-
-              as.list(strsplit(var_name, "::")[[1]])[[2]]
-          }else if (grepl("\\[", variable_to_read)) {
-            data_variable_being_checked <-
-              stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
-          }
+    var_start_names_list <-
+      as.list(strsplit(variable_to_read, ",")[[1]])
+    # Find exact var Name
+    for (var_name in var_start_names_list) {
+      if (grepl(data_name, var_name)) {
+        # separate dataname from the var name
+        if (!grepl("DerivedVar", var_name)) {
+          data_variable_being_checked <-
+            as.list(strsplit(var_name, "::")[[1]])[[2]]
         }
       }
-    } else if (grepl("\\[", variable_to_read)) {
-      data_variable_being_checked <-
-        stringr::str_match(variable_to_read, "\\[(.*?)\\]")[, 2]
     }
+    if (length(data_variable_being_checked) == 0) {
+      last_var_list_element <-
+        var_start_names_list[[length(var_start_names_list)]]
+      if (grepl("\\[", last_var_list_element)) {
+        data_variable_being_checked <-
+          stringr::str_match(last_var_list_element, "\\[(.*?)\\]")[, 2]
+      }
+    }
+    
     
     var_names_for_this_data <-
       append(var_names_for_this_data, data_variable_being_checked)
