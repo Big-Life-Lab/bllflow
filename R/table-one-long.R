@@ -74,11 +74,13 @@ CreateTableOne.BLLFlow <- function(x,
         as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical), pkg.globals$MSW.Variables.Columns.Variable])
     } else {
       factor_vars <-
-        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) && grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) & grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
     }
     factor_vars <- trimws(factor_vars)
   }
-
+  # TODO Add warning for removed
+  vars <- vars[vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])]
+  factor_vars <- factor_vars[factor_vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])]
   # ----Step 2: Create the tableone ----
   if (is.null(strata)) {
     final_table <-
