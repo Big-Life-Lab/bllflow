@@ -1,6 +1,6 @@
-#' Initialize bllflow from provided config file
+#' Initialize bllflow object from provided config file
 #'
-#' Used the provided config file and matching name to load the correct config
+#' Uses the provided config file and matching name to load the correct config
 #' type
 #'
 #' @param config_name = NULL name of the config environment to use for
@@ -27,7 +27,7 @@ bllflow_config_init <-
 
 #' Read in data according to config specified data type
 #'
-#' Uses bllflow to read_data based on config specifications. Currently supported
+#' Uses bllflow object to read_data based on config specifications. Currently supported
 #' formats are: .RData, .csv
 #'
 #' @param bllflow_object passed bllflow object to read variables from
@@ -35,7 +35,7 @@ bllflow_config_init <-
 #' from a specific config
 #'
 #' @return NULL since no modifications are made and read data is just stored in
-#' pre specified location
+#' pre specified location that is read from the config
 #' @export
 bllflow_config_read_data <- function(bllflow_object, config_name = NULL) {
   if (!is.null(config_name)) {
@@ -100,16 +100,16 @@ bllflow_config_rec_data <- function(bllflow_object, config_name = NULL) {
   return(bllflow_object)
 }
 
-#' Combine data based on config location
+#' Combine data based on config specified location
 #'
 #' Combines recoded data and applies labels before attaching
-#' the object to bllflow
+#' the data to bllflow object
 #'
 #' @param bllflow_object passed bllflow object to read variables from
 #' @param config_name = NULL optional passing of config if you wish to load data
 #' from a specific config
 #'
-#' @return modified bllflow object containing labelled combined data
+#' @return modified bllflow object containing labeled combined data
 #' @export
 bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
   if (!is.null(config_name)) {

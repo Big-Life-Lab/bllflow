@@ -1,3 +1,14 @@
+#' Parse recipe steps
+#' 
+#' Parses steps that exist in the recipes package
+#' 
+#' @param data the data to apply steps too
+#' @param sequence_element what steps to run
+#' @param modules data.frame containing module istructions
+#' @param variables data.frame containing variable information
+#' @param variable_details data.frame containing variable details
+#' 
+#' @return data.frame that containes processed data
 parse_default_step <-
   function(data,
              sequence_element,
@@ -13,15 +24,24 @@ parse_default_step <-
         variable_details = variable_details
       )
     working_data <-
-      create_recipy(module_functions, working_data, variables)
+      create_recipe(module_functions, working_data, variables)
 
     processed_data <- recipes::bake(working_data, new_data = data)
 
     return(processed_data)
   }
 
-# Parse out the functions inside each module returning a
-# list of the functions in it
+#' Parse module functions
+#' 
+#' Parse out the functions inside each module returning a
+#' list of the functions in it
+#' 
+#' @param module_table data.frame containing modules
+#' @param module_sequence what is the current module being done
+#' @param variables data.frame containing variables information
+#' @param variable_details data.frame containing variable details
+#' 
+#' @return list containing the functions and args present in this module
 parse_module_functions <-
   function(module_table,
              module_sequence,
@@ -70,9 +90,15 @@ parse_module_functions <-
 
     return(refactored_funcs_with_args_and_vars)
   }
-
-# Uses the function object to find the variables for it and find all
-# the applicable variables
+#' Parse function variables
+#' 
+#' Find all the variables that are tied to each function_list element
+#' 
+#' @param function_list list containing all the functions
+#' @param variables data.frame containing variable information
+#' @param module_sequence_number current module number
+#' 
+#' @return list containing functions and the variables they are applied to
 parse_function_variables <-
   function(function_list,
              variables,
@@ -115,7 +141,13 @@ parse_function_variables <-
     return(function_list)
   }
 
-# Define exact functions depending on variable arguments
+#' Create function call
+#' 
+#' Uses the passed function_list to create the function call that can be used.
+#' 
+#' @param function_list function list containing the function and its args and vars
+#' 
+#' @return function list containing ready to use function calls
 create_exact_function <- function(function_list) {
   # Parse out non TRUE parameters
   for (fun_name in names(function_list)) {
@@ -170,11 +202,19 @@ create_exact_function <- function(function_list) {
   }
 
   return(function_list)
-  # Create new functions with the new paramev ters
+  # Create new functions with the new parameters
 }
 
-# Uses the function objects to create a recipy
-create_recipy <-
+#' Create recipe
+#' 
+#' Create recipe for the module
+#' 
+#' @param function_object_list list containing functions
+#' @param working_data data.frame to apply recipe on
+#' @param variables data.frame containing variable information
+#' 
+#' @return a "recipes" recipe object
+create_recipe <-
   function(function_object_list,
              working_data,
              variables) {
@@ -214,7 +254,13 @@ create_recipy <-
     return(recipy_object)
   }
 
-# Function for creating formula for variable selection
+#' Create Variable Formula
+#' 
+#' Function for creating formula for variable selection
+#' 
+#' @param var_list list containing variables to form into a recipes formula
+#' 
+#' @return string containing the formula to be used with recipes
 create_variable_formula <- function(var_list) {
   return_formula <- list()
   for (variable in var_list) {

@@ -1,4 +1,14 @@
-#
+#' Parse forumala step
+#' 
+#' Parse a formula based step
+#' 
+#' @param data data to process
+#' @param sequence_element the current step sequence
+#' @param modules data.frame containing the module instructions
+#' @param variables data.frame containing the variable information
+#' @param variable_details data.frame containing variable details
+#' 
+#' @return processed data
 parse_formula_step <- function(data,
                                sequence_element,
                                modules,
@@ -20,7 +30,16 @@ parse_formula_step <- function(data,
   return(processed_data)
 }
 
-# Parse out the functions inside each module returning a list of the functions in it
+#' Parse function formula
+#' 
+#' Parse out the functions inside each module returning a list of the functions in it
+#' 
+#' @param module_table data.frame containing module instructions
+#' @param module_sequence current module_sequence
+#' @param variables data.frame containing variable information
+#' @param variable_details data.frame containing variable details
+#' 
+#' @return list of functions for this module step
 parse_formula_module_functions <-
   function(module_table,
              module_sequence,
@@ -64,7 +83,15 @@ parse_formula_module_functions <-
     return(refactored_funcs_with_args_and_vars)
   }
 
-# Uses the function object to find the variables for it and find all the applicable variables
+#' Parse function variables
+#' 
+#' Uses the function object to find the variables for it and find all the applicable variables
+#' 
+#' @param function_list List containing functions
+#' @param variables data.frame containing variable information
+#' @param module_sequence_number current module number
+#' 
+#' @return function_list with applicable vars
 parse_formula_function_variables <-
   function(function_list,
              variables,
@@ -137,7 +164,13 @@ create_formula_recipy <-
     return(recipy_object)
   }
 
-# Function for creating formula for variable selection
+#' Variable formula creation
+#' 
+#' Function for creating formula for variable selection
+#' 
+#' @param function list of functions
+#' 
+#' @return list of function call strings
 create_formula_variable_formula <- function(functions) {
   return_formula <- list()
   for (variable in names(functions[[pkg.globals$FunctionList.VariableArguments]])) {

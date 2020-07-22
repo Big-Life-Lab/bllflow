@@ -1,4 +1,9 @@
-# verify module sequence matches the passed data
+#' Verify data sequence match
+#' 
+#' This functions verifies that the data is from the previous step in the module sequence
+#' 
+#' @param module_sequence_number the sequence number being checked
+#' @param data the data to check
 verify_data_and_sequence_match <-
   function(module_sequence_number, data) {
     if (module_sequence_number[[1]] == 1 &&

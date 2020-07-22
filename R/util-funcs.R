@@ -74,7 +74,7 @@ fill_in_group_by_columns <-
   function(strata_split_name,
            strata_split_values,
            long_table_row,
-           variable_details) {
+           variable_details = NULL) {
     for (group_by_index in 1:length(strata_split_name)) {
       long_table_row[[paste(pkg.globals$LongTable.GroupBy, group_by_index, sep = "")]] <-
         strata_split_name[[group_by_index]]

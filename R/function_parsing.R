@@ -1,3 +1,14 @@
+#' Parse function
+#' 
+#' This function runs modules sequence number on the passed data and returns new data
+#' 
+#' @param data the starting data
+#' @param sequence_element the current module sequence number
+#' @param modules data.frame containing module information
+#' @param variables data.frame containing variable information
+#' @param variable_details data.frame containing variable details
+#' 
+#' @return data.frame with processed data
 parse_function <- function(data,
                            sequence_element,
                            modules,
@@ -12,17 +23,9 @@ parse_function <- function(data,
       variable_details = variable_details
     )
   working_data <-
-    create_recipy(module_functions, working_data, variables)
+    create_recipe(module_functions, working_data, variables)
 
   processed_data <- recipes::bake(working_data, new_data = data)
 
   return(processed_data)
 }
-
-# Use module parsing to find the single column functions???
-
-
-# And use similar approach as rec custom functions for normal ones??
-# if i spot a = then thats a custom par otherwise i get the columns 1 by 1?
-# do i use the do again? Slow and inefficient but nice loading bar and hassle free!
-# reuse rec_with_table !!!!!!!!!!!!!!!!!!!!!!
