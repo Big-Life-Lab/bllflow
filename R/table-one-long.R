@@ -145,7 +145,7 @@ CreateTableOne.default <- function(...) {
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
 #'
-#' pbc_table_one <- CreateTableOne(pbc_model, strata = "edema")
+#' pbc_table_one <- CreateTableOne(data = pbc, strata = "edema")
 #' pbc_summary_table<- table_one_long(pbc_table_one)
 #' @export
 table_one_long <-
