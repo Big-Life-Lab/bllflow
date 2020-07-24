@@ -26,7 +26,7 @@ Three data cleaning functions are supported.
 For continuous variables:
 
 1) `clean.Min()` -- deletes observations below a defined value.
-1) `clean.Max()` -- deletes observations abovea a defined value.
+1) `clean.Max()` -- deletes observations above a defined value.
 
 For categorical variables: 
 

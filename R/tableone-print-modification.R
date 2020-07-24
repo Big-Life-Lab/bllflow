@@ -25,7 +25,7 @@
 ##' @param nonnormal A character vector to specify the variables for which the p-values should be those of nonparametric tests. By default all p-values are from normal assumption-based tests (oneway.test).
 ##' @param minMax Whether to use [min,max] instead of [p25,p75] for nonnormal variables. The default is FALSE.
 ##' @param ... For compatibility with generic. Ignored.
-##' @return A matrix object containing what you see is also invisibly returned. This can be assinged a name and exported via \code{write.csv}.
+##' @return A matrix object containing what you see is also invisibly returned. This can be assigned a name and exported via \code{write.csv}.
 ##' @author Kazuki Yoshida, Justin Bohn
 ##' @seealso
 ##' \code{\link{CreateTableOne}}, \code{\link{CreateTableOne}}, \code{\link{summary.TableOne}}

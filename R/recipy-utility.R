@@ -1,17 +1,17 @@
 # --------- WIP ---------
-#' #' Returns a recipy attached to bllflow if one is not attached constructs one
+#' #' Returns a recipe attached to bllflow if one is not attached constructs one
 #' #' based on variables sheet
 #' #' @export
-#' get_recipy <- function(){
+#' get_recipe <- function(){
 #'
 #' }
-#' #' Sets the recipy for the bllflow object
-#' #' TODO add a way to verify that the recipy works with the bllflow object
+#' #' Sets the recipe for the bllflow object
+#' #' TODO add a way to verify that the recipe works with the bllflow object
 #' #' @export
-#' set_recipy <- function(){
+#' set_recipe <- function(){
 #'
 #' }
-#' #' Creates recipy from variable sheet
-#' construct_recipy <- function(){
+#' #' Creates recipe from variable sheet
+#' construct_recipe <- function(){
 #'
 #' }

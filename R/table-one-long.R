@@ -5,7 +5,7 @@
 #' Creates Table One using the tableone package if a bllflow object is passed a custom function
 #' then extracts the necessary data for tableone call from the object avoiding unnecessary arguments.
 #'
-#' @param x Object to retrive variables from
+#' @param x Object to retrieve variables from
 #' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
 #' @export
 CreateTableOne <- function(x = NULL, ...) {
@@ -394,7 +394,7 @@ extract_data_from_cat_table <-
               }
             }
           }
-          
+
           # ----Step 4: Create long table row ----
           long_table_row <- list()
           long_table_row[[pkg.globals$LongTable.VariableCategory]] <-
@@ -414,14 +414,14 @@ extract_data_from_cat_table <-
           long_table_row[[pkg.globals$LongTable.Percentile75]] <-
             NA
           long_table_row <- append(long_table_row, group_by_list)
-          
+
           # ----Step 5: Clean the row
           for (each_element_index in 1:length(long_table_row)) {
             if (length(long_table_row[[each_element_index]]) == 0) {
               long_table_row[[each_element_index]] <- NA
             }
           }
-          
+
           # ----Step 6: Add row to the rest of the rows----
           long_table_rows <-
             rbind(long_table_rows, long_table_row,  stringsAsFactors = FALSE)
@@ -429,6 +429,6 @@ extract_data_from_cat_table <-
       }
       variables_checked <- 0
     }
-    
+
     return(long_table_rows)
   }

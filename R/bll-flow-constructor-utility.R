@@ -27,8 +27,8 @@ bllflow_config_init <-
 
 #' Read in data according to config specified data type
 #'
-#' Uses bllflow object to read_data based on config specifications. Currently supported
-#' formats are: .RData, .csv
+#' Uses bllflow object to read_data based on config specifications. 
+#' Currently supported formats are: .RData, .csv
 #'
 #' @param bllflow_object passed bllflow object to read variables from
 #' @param config_name = NULL optional passing of config if you wish to load data
@@ -381,11 +381,13 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
 #'   # Find extra info about the variable low and high
 #'   valueForHighLow <- list()
 #'
-#'   # Need to loop through every element because the xml2 names all variables var
+#'   # Need to loop through every element because the xml2 
+#'   names all variables var
 #'   for (individualVariable in ddiObject$codeBook$dataDscr) {
 #'     if (!is.null(attr(individualVariable, "name", exact = TRUE))) {
 #'       ddiElementName <- attr(individualVariable, "name", exact = TRUE)
-#'       if (length(detected_variables[detected_variables$variableStart == ddiElementName, 1]) != 0) {
+#'       if (length(detected_variables[
+#'       detected_variables$variableStart == ddiElementName, 1]) != 0) {
 #'         valueForHighLow[[ddiElementName]] <- individualVariable$valrng$range
 #'         valueForHighLow[[ddiElementName]][["Type"]] <-
 #'           ifelse(attr(individualVariable, "intrvl") == "discrete",
@@ -418,7 +420,9 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
 #'             )
 #'         }
 #'       }
-#'       if (valueForHighLow[[variableToCheck]]$Type != pkg.globals$ddiValueName.Cat){
+#'       if (
+#'       valueForHighLow[[
+#'       variableToCheck]]$Type != pkg.globals$ddiValueName.Cat) {
 #'       # Record variable info
 #'       variableValueList[[as.character(variableToCheck)]] <-
 #'         AddDDIToList(
@@ -466,7 +470,8 @@ bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
 #'   retList[[pkg.globals$argument.CatStartValue]] <- catStartValue
 #'   retList[[pkg.globals$argument.CatStartLabel]] <- catStartLabel
 #'   retList[[pkg.globals$argument.VariableStartLabel]] <- variableStartLabel
-#'   retList[[pkg.globals$argument.VariableStartHighLow]] <- paste(variableStartLow, ":",variableStartHigh, sep = "")
+#'   retList[[pkg.globals$argument.VariableStartHighLow]] <- paste(
+#'   variableStartLow, ":",variableStartHigh, sep = "")
 #'
 #'   return(retList)
 #' }

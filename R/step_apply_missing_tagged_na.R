@@ -1,7 +1,7 @@
 #' Apply missing tagged na
 #'
-#' `step_apply_missing_tagged_na` creates a *specification* of a recipe step that
-#'   will tag variables if they contain NA
+#' `step_apply_missing_tagged_na` creates a *specification* of a recipe step
+#'   that will tag variables if they contain NA
 #'   or NaN values. This step is based on \code{recipes::step_naomit}
 #'
 #' @param recipe A recipe object. The step will be added to the sequence of
@@ -38,7 +38,9 @@ step_apply_missing_tagged_na <- function(recipe,
                                          columns = NULL,
                                          tag_type = NULL,
                                          skip = FALSE,
-                                         id = recipes::rand_id("apply_missing_tagged_na")) {
+                                         id =
+                                           recipes::rand_id(
+                                             "apply_missing_tagged_na")) {
   recipes::add_step(
     recipe,
     step_apply_missing_tagged_na_new(
@@ -91,10 +93,14 @@ bake.step_apply_missing_tagged_na <- function(object, new_data, ...) {
       new_data[true_NA_index, variable] <-
         haven::tagged_na(object$tag_type)
     } else {
-      if (!paste("NA(", object$tag_type, ")", sep = "") %in% levels(new_data[[variable]])) {
-        levels(new_data[[variable]]) <- c(levels(new_data[[variable]]), paste("NA(", object$tag_type, ")", sep = ""))
+      if (!paste("NA(", object$tag_type, ")",
+                 sep = "") %in% levels(new_data[[variable]])) {
+        levels(new_data[[variable]]) <-
+          c(levels(new_data[[variable]]),
+            paste("NA(", object$tag_type, ")", sep = ""))
       }
-      new_data[true_NA_index, variable] <- paste("NA(", object$tag_type, ")", sep = "")
+      new_data[true_NA_index, variable] <-
+        paste("NA(", object$tag_type, ")", sep = "")
     }
   }
   tibble::as.tibble(new_data)

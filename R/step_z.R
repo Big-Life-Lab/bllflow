@@ -21,13 +21,13 @@
 #'  Care should be taken when using `skip = TRUE` as it may affect
 #'  the computations for subsequent operations
 #' @param id A character string that is unique to this step to identify it.
-#' @param append A boolean indicator if the calculated z-score is to be appened
+#' @param append A boolean indicator if the calculated z-score is to be appended
 #' or replace the original variable
 #' @param suffix A character indicating the suffix for the variable
 #' @param means A list used for storing the means calculated during prep
 #' @param sd A list used for storing the standard deviation during prep
-#' @param na.rm na.rm paramater to pass to the mean, sd functions
-#' @param trim paramater to pass to the mean and sd functions
+#' @param na.rm na.rm parameter to pass to the mean, sd functions
+#' @param trim parameter to pass to the mean and sd functions
 #' @return An updated version of `recipe` with the new step added to the
 #'  sequence of existing steps (if any). For the `tidy` method, a tibble with
 #'  columns `terms` (the selectors or variables selected) and `model` (the mean
@@ -103,11 +103,14 @@ prep.step_z <- function(x, training, info = NULL, ...) {
       stop(paste(variable_name, "is missing from the training data"))
     }
     if (!is.numeric(training[[variable_name]])) {
-      stop(paste(variable_name, "is not numeric therefore zScore cannot \n                 be calculated"))
+      stop(paste(variable_name, "is not numeric therefore zScore cannot \n
+                 be calculated"))
     }
     # Calculate the Standard Deviation for the variable
-    x$means[[variable_name]] <- mean(training[[variable_name]], trim = x$trim, na.rm = x$na.rm)
-    x$sd[[variable_name]] <- stats::sd(training[[variable_name]], na.rm = x$na.rm)
+    x$means[[variable_name]] <-
+      mean(training[[variable_name]], trim = x$trim, na.rm = x$na.rm)
+    x$sd[[variable_name]] <-
+      stats::sd(training[[variable_name]], na.rm = x$na.rm)
     # Calculate the mean for the variable
   }
 
@@ -132,7 +135,8 @@ prep.step_z <- function(x, training, info = NULL, ...) {
 bake.step_z <- function(object, new_data, ...) {
   for (varName in names(object$means)) {
     newVarName <- paste(varName, object$suffix, sep = "")
-    new_data[newVarName] <- (new_data[[varName]] - object$means[[varName]]) / object$sd[[varName]]
+    new_data[newVarName] <-
+      (new_data[[varName]] - object$means[[varName]]) / object$sd[[varName]]
     if (!object$append) {
       new_data[varName] <- NULL
     }

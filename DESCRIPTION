@@ -3,7 +3,7 @@ Type: Package
 Title: Big Life Lab Flow - a Workflow for Predictive Studies
 Description: An implementation of predictive algorithm studies. Predictive 
   Modelling Mark-up Language (PMML) is suported. The workflow has three steps:
-  data prepartation; model development, and; model deployment.
+  data preparation; model development, and; model deployment.
 Version: 0.1.0
 Date: 2018-12-09
 Authors@R: c( 

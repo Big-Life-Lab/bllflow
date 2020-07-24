@@ -1,13 +1,14 @@
 #' Parse function
-#' 
-#' This function runs modules sequence number on the passed data and returns new data
-#' 
+#'
+#' This function runs modules sequence number on the
+#' passed data and returns new data
+#'
 #' @param data the starting data
 #' @param sequence_element the current module sequence number
 #' @param modules data.frame containing module information
 #' @param variables data.frame containing variable information
 #' @param variable_details data.frame containing variable details
-#' 
+#'
 #' @return data.frame with processed data
 parse_function <- function(data,
                            sequence_element,
