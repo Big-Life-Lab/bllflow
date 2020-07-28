@@ -108,4 +108,5 @@ pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
 
 # FunctionList contents
 pkg.globals$FunctionList.Arguments <- "arguments"
+pkg.globals$FunctionList.Parameter <- "parameter"
 pkg.globals$FunctionList.VariableArguments <- "variablesArguments"
