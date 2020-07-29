@@ -13,6 +13,7 @@
 #' @export
 scramble_data <- function(bllflow_object, role_name = NULL, strata = NULL) {
   # Extract variables based on role_name values
+  role_name <- paste0(role_name, ",")
   vars_to_scramble <-
     as.character(bllflow_object[[
       pkg.globals$bllFlowContent.Variables]][
