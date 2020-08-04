@@ -27,7 +27,7 @@ bllflow_config_init <-
 
 #' Read in data according to config specified data type
 #'
-#' Uses bllflow object to read_data based on config specifications. 
+#' Uses bllflow object to read_csv_data based on config specifications. 
 #' Currently supported formats are: .RData, .csv
 #'
 #' @param bllflow_object passed bllflow object to read variables from
@@ -52,7 +52,7 @@ bllflow_config_read_data <- function(bllflow_object, config_env_name = NULL) {
   } else if (config$data_type == ".csv") {
     for (data_name in names(config$data)) {
       tmp_data <-
-        read_data(
+        read_csv_data(
           variables = bllflow_object$variables,
           data_name = data_name,
           path_to_data = config$data[[data_name]]

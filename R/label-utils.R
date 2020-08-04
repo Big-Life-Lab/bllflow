@@ -59,6 +59,7 @@ set_data_labels.default <-
         variable_details[variable_details[[pkg.globals$argument.Variables]]
         %in% variable_names, ]
       if (is.null(variables_sheet)) {
+        # In case variables sheet is missing to avoid null pointer error empty columns are created
         variable_details[[pkg.globals$MSW.Variables.Columns.Label]] <- NA
         variable_details[[pkg.globals$MSW.Variables.Columns.LabelLong]] <-
           NA
@@ -78,10 +79,12 @@ set_data_labels.default <-
       # Add rows from variables that are missing from variable_details
       var_details_names <- 
         unique(variable_details[[pkg.globals$argument.Variables]])
+      # Captures variables not in variable details
       missing_vars <- variable_names[(!variable_names %in% var_details_names)]
       missing_vars <- 
         missing_vars[missing_vars %in% variables_sheet[[
           pkg.globals$argument.Variables]]]
+      # Missing variables in variables
       catch_up_vars <-
         variables_sheet[variables_sheet[[
           pkg.globals$argument.Variables]] %in% missing_vars, ]
@@ -97,12 +100,15 @@ set_data_labels.default <-
           pkg.globals$argument.CatValue
         )
       if (nrow(catch_up_vars) > 0) {
+        # Setting any missing columns to NA to allow for rbind
         catch_up_vars[keep_columns[
           (!keep_columns %in% colnames(catch_up_vars))]] <-
           NA
+        # Vars not in variable details can only be cont
         catch_up_vars[[pkg.globals$argument.ToType]] <- "cont"
         variable_details <- variable_details[keep_columns]
         catch_up_vars <- catch_up_vars[keep_columns]
+        # Append any missing vars
         variable_details <- rbind(variable_details, catch_up_vars)
       }
     }
@@ -121,11 +127,17 @@ set_data_labels.default <-
 
 create_label_list_element <- function(variable_rows) {
   ret_list <- list(
+    # Variable type
     type = NULL,
+    # Variable value units
     unit = NULL,
+    # variable label long
     label_long = NULL,
+    # variable label
     label = NULL,
+    # Variable value label
     values = c(),
+    # Variable value label long
     values_long = c()
   )
   first_row <- variable_rows[1, ]
@@ -203,7 +215,7 @@ create_label_list_element <- function(variable_rows) {
 
 #' @title label_data
 #'
-#' @description Attaches labels to the DataToLabel to preserve metadata
+#' @description Attaches labels to the data_to_label to preserve metadata
 #'
 #' @param label_list the label list object that contains extracted labels
 #' from variable details
@@ -229,7 +241,7 @@ label_data <- function(label_list, data_to_label) {
           factor(data_to_label[[variable_name]])
       }
       data_to_label[[variable_name]] <-
-        set_labels(data_to_label[[variable_name]],
+        sjlabelled::set_labels(data_to_label[[variable_name]],
           labels = label_list[[variable_name]]$values
         )
       attr(data_to_label[[variable_name]], "labels_long") <-
@@ -244,7 +256,7 @@ label_data <- function(label_list, data_to_label) {
           as.numeric(data_to_label[[variable_name]])
       }
     }
-    set_label(data_to_label[[variable_name]]) <-
+    sjlabelled::set_label(data_to_label[[variable_name]]) <-
       label_list[[variable_name]]$label
     attr(data_to_label[[variable_name]], "unit") <-
       label_list[[variable_name]]$unit

@@ -51,7 +51,7 @@ pkg.globals$bllFlowContent.AdditionalMetaData <- "additionalDDIMetaData"
 pkg.globals$bllFlowContent.WorkingData <- "working_data"
 pkg.globals$bllFlowContent.PreviousData <- "previous_module_data"
 pkg.globals$bllFlowContent.Sequence <- "sequence_number"
-pkg.globals$bllFlowContent.Class <- "bllflow"
+pkg.globals$bllFlowContent.Class <- "BLLFlow"
 
 # MSW Column Names
 pkg.globals$MSW.Variables.Columns.Variable <- "variable"

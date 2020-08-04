@@ -87,8 +87,8 @@ build_bllflow <-
         variable_details = variable_details,
         modules = modules
       )
-    attr(bll_flow_model, "class") <- "BLLFlow"
-    # BANDAID
+    attr(bll_flow_model, "class") <- pkg.globals$bllFlowContent.Class
+    
     if (!is.null(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])) {
       attr(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
            pkg.globals$bllFlowContent.Sequence) <-
@@ -113,7 +113,7 @@ build_bllflow <-
 #' @return a data.frame containing only the variables needed for that cycle
 #'  in variables
 #' @export
-read_data <-
+read_csv_data <-
   function(variables,
            data_name,
            path_to_data,
@@ -123,7 +123,7 @@ read_data <-
       utils::read.csv(file = path_to_data, nrows = 1)
 
     var_names_for_this_data <-
-      get_variables.default(variables, data_name)
+      get_variables(variables, data_name)
 
     columns_to_keep <-
       colnames(first_row_of_data) %in% var_names_for_this_data
@@ -176,7 +176,7 @@ get_variables <- function(variable_source = NULL, ...) {
 get_variables.BLLFlow <- function(variable_source, data_name, ...) {
   variables <- variable_source[[pkg.globals$bllFlowContent.Variables]]
 
-  return(get_variables.default(variables, data_name))
+  return(get_variables(variables, data_name))
 }
 
 #' Get variables from variables using specified database name
@@ -204,20 +204,26 @@ get_variables.default <- function(variable_source, data_name, ...) {
     data_variable_being_checked <- character()
     var_start_names_list <-
       as.list(strsplit(variable_to_read, ",")[[1]])
-    # Find exact var Name
+    # Loop through all the elements of variableStart
     for (var_name in var_start_names_list) {
+      # If the data name is contained means the <data>::<var> format is followed
       if (grepl(data_name, var_name)) {
         # separate dataname from the var name
+        # Derived vars dont have a single variable start so they are ignored
         if (!grepl("DerivedVar", var_name)) {
           data_variable_being_checked <-
             as.list(strsplit(var_name, "::")[[1]])[[2]]
         }
       }
     }
+    # Once all the elements are checked the default var name is then selected [<var>]
     if (length(data_variable_being_checked) == 0) {
+      # The default is the last element in the cell
       last_var_list_element <-
         var_start_names_list[[length(var_start_names_list)]]
+      # Check that last element is indeed default value
       if (grepl("\\[", last_var_list_element)) {
+        # Strip the [] resulting in clean var name
         data_variable_being_checked <-
           stringr::str_match(last_var_list_element, "\\[(.*?)\\]")[, 2]
       }

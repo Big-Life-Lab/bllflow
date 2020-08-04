@@ -10,7 +10,7 @@ verify_data_and_sequence_match <-
     if (module_sequence_number[[1]] == 1 &&
       attr(data, pkg.globals$bllFlowContent.Sequence) != 0) {
       stop(
-        "Working data was passed when sequance is at step 1.
+        "Working data was passed where sequence is at step 1.
         Make sure to pass the starting data.
         Aborting operation!"
       )
@@ -18,8 +18,8 @@ verify_data_and_sequence_match <-
       if (module_sequence_number[[1]] != 1) {
         stop(
           paste(
-            "Non working_data was passed to sequence greater then step 1
-            please make sure ur passing working data that is result of the
+            "Non-working data was passed to sequence greater then step 1. 
+            Please make sure that you are passing working data that is the result of the
             module sequence before",
             module_sequence_number,
             "
@@ -31,7 +31,7 @@ verify_data_and_sequence_match <-
                module_sequence_number[[1]]) {
       stop(
         paste(
-          "The WorkingData passed is not from the previous module please
+          "The working data passed is not from the previous module please
           verify that the data passed is from module",
           module_sequence_number - 1,
           "
@@ -100,7 +100,7 @@ run_module.BLLFlow <- function(x, module_sequence_number, ...) {
 #' @param modules data.frame containing module instructions
 #' @param data data.frame to apply the module transformations onto
 #' @param module_sequence_number a number specifying the module to run or
-#' a numeric range ex: 1 OR 1:3
+#' a numeric range ex: 1 OR 1:3 or an allowed string: "all"
 #' @param variable_details = NULL optional param can be used
 #' to attach variable category labels
 #' @param ... Used for generic function consistency
@@ -124,8 +124,8 @@ run_module.default <-
         min(module_order, na.rm = TRUE):max(module_order, na.rm = TRUE)
     } else if (!is.numeric(module_sequence_number)) {
       stop(
-        "Invalid module_sequence_numberPassed please make sure
-        its either the word all or numeric.
+        "Invalid module_sequence_number passed. Please make sure
+        its either the word \"all\" or numeric.
         Aborting operation!",
         call. = FALSE
       )
@@ -136,15 +136,15 @@ run_module.default <-
     processed_data <- data
     previous_data <- NULL
     # Find type of module and execute the right call
-    for (sequence_element in module_sequence_number) {
+    for (sequence_number in module_sequence_number) {
       previous_data <- processed_data
       type_of_module <-
-        modules[modules[[pkg.globals$Modules.DefaultOrder]] == sequence_element,
+        modules[modules[[pkg.globals$Modules.DefaultOrder]] == sequence_number,
                 pkg.globals$Modules.OperationsType]
       if (type_of_module == pkg.globals$ModuleTypes.DefaultStep) {
         processed_data <- parse_default_step(
           processed_data,
-          sequence_element,
+          sequence_number,
           modules,
           variables,
           variable_details
@@ -152,7 +152,7 @@ run_module.default <-
       } else if (type_of_module == pkg.globals$ModuleTypes.FormulaStep) {
         processed_data <- parse_formula_step(
           processed_data,
-          sequence_element,
+          sequence_number,
           modules,
           variables,
           variable_details
@@ -160,17 +160,15 @@ run_module.default <-
       } else if (type_of_module == pkg.globals$ModuleTypes.Function) {
         processed_data <- parse_function(
           processed_data,
-          sequence_element,
+          sequence_number,
           modules,
           variables,
           variable_details
         )
       }
       attr(processed_data, pkg.globals$bllFlowContent.Sequence) <-
-        sequence_element
+        sequence_number
     }
-
-    # Find type of module and execute the right call
 
     return(list(processed_data, previous_data))
   }

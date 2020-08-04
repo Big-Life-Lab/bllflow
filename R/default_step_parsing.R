@@ -3,7 +3,7 @@
 #' Parses steps that exist in the recipes package
 #'
 #' @param data the data to apply steps too
-#' @param sequence_element what steps to run
+#' @param sequence_number what steps to run
 #' @param modules data.frame containing module instructions
 #' @param variables data.frame containing variable information
 #' @param variable_details data.frame containing variable details
@@ -11,7 +11,7 @@
 #' @return data.frame that contains processed data
 parse_default_step <-
   function(data,
-             sequence_element,
+             sequence_number,
              modules,
              variables,
              variable_details) {
@@ -19,7 +19,7 @@ parse_default_step <-
     module_functions <-
       parse_module_functions(
         module_table = modules,
-        module_sequence = sequence_element,
+        module_sequence = sequence_number,
         variables = variables,
         variable_details = variable_details
       )

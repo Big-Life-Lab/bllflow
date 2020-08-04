@@ -2,7 +2,7 @@
 #'
 #' Scrambles the variables matching the role_name in variables attached
 #' to bllflow_object
-#' @param bllflow_object a bllflow object containing data variables
+#' @param bllflow_object a bllflow object containing data, variables
 #' and variable details
 #' @param role_name string matching the variables you wish to scramble
 #' @param strata A character vector containing column names you wish to

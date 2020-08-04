@@ -3,14 +3,14 @@
 #' Parse a formula based step
 #'
 #' @param data data to process
-#' @param sequence_element the current step sequence
+#' @param sequence_number the current step sequence
 #' @param modules data.frame containing the module instructions
 #' @param variables data.frame containing the variable information
 #' @param variable_details data.frame containing variable details
 #'
 #' @return processed data
 parse_formula_step <- function(data,
-                               sequence_element,
+                               sequence_number,
                                modules,
                                variables,
                                variable_details) {
@@ -18,7 +18,7 @@ parse_formula_step <- function(data,
   module_functions <-
     parse_formula_module_functions(
       module_table = modules,
-      module_sequence = sequence_element,
+      module_sequence = sequence_number,
       variables = variables,
       variable_details = variable_details
     )

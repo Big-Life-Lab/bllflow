@@ -1,44 +1,5 @@
 # Removing Note
 . <- NULL
-#' @title is equal
-#' @description Function to compare even with NA present
-#' This function returns TRUE wherever elements are the same, including NA's,
-#' and false everywhere else.
-#'
-#' @param v1 variable 1
-#' @param v2 variable 2
-#'
-#' @return boolean value of whether or not v1 and v2 are equal
-#'
-#' @examples
-#' library(cchsflow)
-#' is_equal(1,2)
-#' # FALSE
-#'
-#' is_equal(1,1)
-#' # TRUE
-#'
-#' 1==NA
-#' # NA
-#'
-#' is_equal(1,NA)
-#' # FALSE
-#'
-#' NA==NA
-#' # NA
-#'
-#' is_equal(NA,NA)
-#' # TRUE
-#' @export
-is_equal <- function(v1, v2) {
-  same <- (v1 == v2) | (is.na(v1) & is.na(v2))
-  # anything compared to NA equals NA
-  # replaces all instanses of NA with FALSE
-  same[is.na(same)] <- FALSE
-
-  return(same)
-}
-
 #' Recode with Table
 #'
 #' Recode with Table is responsible for recoding values of a dataset based on
@@ -49,7 +10,7 @@ is_equal <- function(v1, v2) {
 #'  \describe{
 #'   \item{variable}{name of new (mutated) variable that is recoded}
 #'   \item{toType}{type the variable is being recoded to
-#'   \emph{cat = categorical, cont = continues}}
+#'   \emph{cat = categorical, cont = continuous}}
 #'   \item{databaseStart}{name of dataframe with original variables to be
 #'   recoded}
 #'   \item{variableStart}{name of variable to be recoded}
@@ -100,11 +61,11 @@ is_equal <- function(v1, v2) {
 #'     and all values from 3 to 5 into NA in the new variable)}
 #' }
 #'
-#' @param data A dataframe containing the variables to be recoded.
+#' @param data A dataframe containing the variables to be recoded. Can also be a list of dataframes
 #' @param variables character vector containing variable names to recode or
 #' a variables csv containing additional variable info
-#' @param database_name String, the name of the dataset containing the
-#' to be recoded.
+#' @param database_name String, the name of the dataset containing the variables
+#' to be recoded. Can also be a vector of strings if data is a list
 #' @param variable_details A dataframe containing the specifications (rules)
 #' for recoding.
 #' @param else_value Value (string, number, integer, logical or NA) that is used
@@ -168,11 +129,13 @@ rec_with_table <-
       source(custom_function_path)
     }
     if (is.null(variable_details)) {
-      message("Loading cchsflow variable_details")
+      message("No variable_details detected.
+              Loading cchsflow variable_details")
       data(variable_details, package = "cchsflow", envir = environment())
     }
     if (is.null(variables)) {
-      message("Loading cchsflow variables")
+      message("No variables detected.
+              Loading cchsflow variables")
       data(variables, package = "cchsflow", envir = environment())
     }
     if (is.null(database_name)) {
@@ -231,7 +194,7 @@ rec_with_table <-
       stop(
         paste(
           "The passed number of data does not match the passed number of
-          dataNames please verify that the number of databases matches number
+          data_names. Please verify that the number of databases matches the number
           of passed names.
           Aborting operation!"
         ),
@@ -358,7 +321,7 @@ recode_call <-
 #' @param data_name name of the database being checked
 #' @param data database being checked
 #' @param row_being_checked the row from variable details that contains
-#' information on this variables
+#' information on this variable
 #' @param variable_being_checked the name of the recoded variable
 #'
 #' @return the data equivalent of variable_being_checked
@@ -370,7 +333,7 @@ get_data_variable_name <-
     data_variable_being_checked <- character()
     var_start_names <-
       as.character(row_being_checked[[pkg.globals$argument.VariableStart]])
-
+    
     if (grepl(data_name, var_start_names)) {
       var_start_names_list <- as.list(strsplit(var_start_names, ",")[[1]])
       # Find exact var Name
@@ -381,7 +344,9 @@ get_data_variable_name <-
             as.list(strsplit(var_name, "::")[[1]])[[2]]
         }
       }
+      # Check for default variable name
     } else if (grepl("\\[", var_start_names)) {
+      # Strip default var name tags: []
       data_variable_being_checked <-
         str_match(var_start_names, "\\[(.*?)\\]")[, 2]
     } else {
@@ -489,6 +454,7 @@ recode_columns <-
           all_from_values_for_variable)) != length(
             all_from_values_for_variable)) {
           for (single_from in all_from_values_for_variable) {
+            # Check if value is repeated more then once
             if (sum(all_from_values_for_variable == single_from) > 1) {
               stop(
                 paste(
@@ -515,13 +481,6 @@ recode_columns <-
             recode_variable_NA_formating(else_value, label_list[[
               variable_being_checked]]$type)
           if (is_equal(else_value, "copy")) {
-            data_variable_being_checked <-
-              get_data_variable_name(
-                data_name = data_name,
-                row_being_checked = first_row,
-                variable_being_checked = variable_being_checked,
-                data = data
-              )
             recoded_data[variable_being_checked] <-
               data[data_variable_being_checked]
           } else {
@@ -782,6 +741,14 @@ update_variable_details_based_on_variable_sheet <-
     return(variable_details)
   }
 
+#' Recode NA formatting
+#' 
+#' Recodes the NA depending on the var type
+#' 
+#' @param cell_value The value inside the recTo column
+#' @param var_type the toType of a variable
+#' 
+#' @return an appropriately coded tagged NA
 recode_variable_NA_formating <- function(cell_value, var_type) {
   recode_value <- NULL
   if (grepl("NA", cell_value)) {
