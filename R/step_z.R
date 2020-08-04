@@ -1,6 +1,6 @@
 #' Calculate z score
 #'
-#' `step_z` creates a *specification* of a recipe step that
+#' `step_z_score` creates a *specification* of a recipe step that
 #'   will calculate z-score on specified variables using training set mean and
 #'   standard deviation, then based on append
 #'   will overwrite existing variable or add new columns
@@ -37,7 +37,7 @@
 #' @importFrom stats sd
 #' @importFrom recipes step
 #' @export
-step_z <- function(recipe,
+step_z_score <- function(recipe,
                    ...,
                    role = "predictor",
                    trained = FALSE,
@@ -52,7 +52,7 @@ step_z <- function(recipe,
   terms <- recipes::ellipse_check(...)
   recipes::add_step(
     recipe,
-    step_z_new(
+    step_z_score_new(
       terms = terms,
       trained = trained,
       role = role,
@@ -68,7 +68,7 @@ step_z <- function(recipe,
   )
 }
 
-step_z_new <-
+step_z_score_new <-
   function(terms,
              role,
              trained,
@@ -96,7 +96,7 @@ step_z_new <-
     )
   }
 #' @export
-prep.step_z <- function(x, training, info = NULL, ...) {
+prep.step_z_score <- function(x, training, info = NULL, ...) {
   for (variable_name in recipes::terms_select(x$terms, info = info)) {
     # Verify the training data variable
     if (is.null(training[[variable_name]])) {
@@ -115,7 +115,7 @@ prep.step_z <- function(x, training, info = NULL, ...) {
   }
 
   return(
-    step_z_new(
+    step_z_score_new(
       terms = x$terms,
       trained = TRUE,
       role = x$role,
@@ -132,7 +132,7 @@ prep.step_z <- function(x, training, info = NULL, ...) {
 }
 
 #' @export
-bake.step_z <- function(object, new_data, ...) {
+bake.step_z_score <- function(object, new_data, ...) {
   for (varName in names(object$means)) {
     newVarName <- paste(varName, object$suffix, sep = "")
     new_data[newVarName] <-
@@ -145,7 +145,7 @@ bake.step_z <- function(object, new_data, ...) {
   return(tibble::as_tibble(new_data))
 }
 
-print.step_z <-
+print.step_z_score <-
   function(x, width = max(20, options()$width - 30), ...) {
     cat("z score for ", sep = "")
     recipes::printer(names(x$means), x$terms, x$trained, width = width)

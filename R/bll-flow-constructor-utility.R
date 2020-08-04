@@ -3,16 +3,16 @@
 #' Uses the provided config file and matching name to load the correct config
 #' type
 #'
-#' @param config_name = NULL name of the config environment to use for
+#' @param config_env_name = NULL name of the config environment to use for
 #' initialization
 #'
 #' @return constructed bllflow object
 #' @export
 bllflow_config_init <-
-  function(config_name = NULL) {
-    # Idea let them pass config or config name? @Doug, @Warsame
-    if (!is.null(config_name)) {
-      Sys.setenv(R_CONFIG_ACTIVE = config_name)
+  function(config_env_name = NULL) {
+    if (!is.null(config_env_name)) {
+      set_config_env_name(config_env_name)
+      set_config_env_name(config_env_name)
     }
     config <- config::get()
     ret_bllflow <-
@@ -31,15 +31,15 @@ bllflow_config_init <-
 #' Currently supported formats are: .RData, .csv
 #'
 #' @param bllflow_object passed bllflow object to read variables from
-#' @param config_name = NULL optional passing of config if you wish to load data
+#' @param config_env_name = NULL optional passing of config if you wish to load data
 #' from a specific config
 #'
 #' @return NULL since no modifications are made and read data is just stored in
 #' pre specified location that is read from the config
 #' @export
-bllflow_config_read_data <- function(bllflow_object, config_name = NULL) {
-  if (!is.null(config_name)) {
-    Sys.setenv(R_CONFIG_ACTIVE = config_name)
+bllflow_config_read_data <- function(bllflow_object, config_env_name = NULL) {
+  if (!is.null(config_env_name)) {
+    set_config_env_name(config_env_name)
   }
   config <- config::get()
   if (config$data_type == ".RData") {
@@ -71,16 +71,16 @@ bllflow_config_read_data <- function(bllflow_object, config_name = NULL) {
 #' specified location
 #'
 #' @param bllflow_object passed bllflow object to read variables from
-#' @param config_name = NULL optional passing of config if you wish to load data
+#' @param config_env_name = NULL optional passing of config if you wish to load data
 #' from a specific config
 #'
 #' @return NULL since no modifications are made and read data is just stored in
 #' pre specified location
 #' @export
-bllflow_config_rec_data <- function(bllflow_object, config_name = NULL) {
+bllflow_config_rec_data <- function(bllflow_object, config_env_name = NULL) {
   # Consider making this into a function or let user pass loaded config
-  if (!is.null(config_name)) {
-    Sys.setenv(R_CONFIG_ACTIVE = config_name)
+  if (!is.null(config_env_name)) {
+    set_config_env_name(config_env_name)
   }
   config <- config::get()
   for (data_name in names(config$data)) {
@@ -106,14 +106,14 @@ bllflow_config_rec_data <- function(bllflow_object, config_name = NULL) {
 #' the data to bllflow object
 #'
 #' @param bllflow_object passed bllflow object to read variables from
-#' @param config_name = NULL optional passing of config if you wish to load data
+#' @param config_env_name = NULL optional passing of config if you wish to load data
 #' from a specific config
 #'
 #' @return modified bllflow object containing labeled combined data
 #' @export
-bllflow_config_combine_data <- function(bllflow_object, config_name = NULL) {
-  if (!is.null(config_name)) {
-    Sys.setenv(R_CONFIG_ACTIVE = config_name)
+bllflow_config_combine_data <- function(bllflow_object, config_env_name = NULL) {
+  if (!is.null(config_env_name)) {
+    set_config_env_name(config_env_name)
   }
   config <- config::get()
   tmp_working_data <- NULL

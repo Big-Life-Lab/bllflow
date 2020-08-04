@@ -3,7 +3,7 @@
 #' Wraps up the data, variables and variable_details arguments in an R object,
 #' making it an instance of a bllflow class and returning the resulting object.
 #'
-#' @param data A dataframe list that represents the datasets the model
+#' @param data A dataframe that represents the dataset the model
 #'  will be developed on
 #' @param variables A dataframe that has the specification sheet for this model.
 #'  An example of this worksheet is available here
@@ -36,7 +36,7 @@ build_bllflow <-
       check_if_data_frame(variables, pkg.globals$argument.Variables)
       # Change the columns needed for the functions
       check_for_column_presence(
-        c("variable", "label", "labelLong", "variableType", "units"),
+        c(pkg.globals$MSW.Variables.Columns.Variable, pkg.globals$MSW.Variables.Columns.Label, pkg.globals$MSW.Variables.Columns.LabelLong, pkg.globals$MSW.Variables.Columns.VariableType, pkg.globals$MSW.Variables.Columns.Units),
         variables,
         pkg.globals$argument.Variables
       )
@@ -46,16 +46,16 @@ build_bllflow <-
                           pkg.globals$argument.VariableDetailsSheet)
       check_for_column_presence(
         c(
-          "variable",
-          "toType",
-          "databaseStart",
-          "variableStart",
-          "fromType",
-          "recTo",
-          "catLabel",
-          "catLabelLong",
-          "recFrom",
-          "units"
+          pkg.globals$argument.Variables,
+          pkg.globals$argument.ToType,
+          pkg.globals$argument.DatabaseStart,
+          pkg.globals$argument.VariableStart,
+          pkg.globals$argument.FromType,
+          pkg.globals$argument.CatValue,
+          pkg.globals$argument.CatLabel,
+          pkg.globals$argument.CatLabelLong,
+          pkg.globals$argument.From,
+          pkg.globals$argument.Units
         ),
         variable_details,
         pkg.globals$argument.VariableDetailsSheet
