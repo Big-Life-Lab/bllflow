@@ -30,7 +30,7 @@ For continuous variables:
 
 For categorical variables: 
 
-1) `recodeWithTable()` TODO.
+1) `recode_with_table()` TODO.
 
 ### Example 1: `clean.Max` and `clean.Min` using BLLFlow model (and MSW variableDetails)
 ```{r}
@@ -42,15 +42,15 @@ library(bllflow)
 
 # read the Model Specification Workbook
 variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+variable_details <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
 
 # initialize BLLFlow - create the BLLFlow object
-pbcModel <- BLLFlow(pbc, variables, variableDetails)
+pbc_model <- BLLFlow(pbc, variables, variable_details)
 
-cleanedPbcModel <- clean.Max(pbcModel, print = TRUE)
-cleanedPbcModel <- clean.Min(cleanedPbcModel, print = TRUE)
+cleaned_pbc_model <- clean.Max(pbc_model, print = TRUE)
+cleaned_pbc_model <- clean.Min(cleaned_pbc_model, print = TRUE)
 
-cleanedPbcModel$metaData$log # to print the entire log.
+cleaned_pbc_model$metaData$log # to print the entire log.
 
 ```
 
