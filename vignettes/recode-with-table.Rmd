@@ -8,7 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-# RecWTable
+# rec_with_table
+
 Recode with Table
 
 Recoding variables is a common task in research that is time consuming and error prone. RecWTable compliments sjmisc::rec() and other recoding methods with the following features:
@@ -18,25 +19,25 @@ Recoding variables is a common task in research that is time consuming and error
 - The syntax for recoding is the same as sjmisc::rec() -- see below -- and contained in variableDetails$from
 - Included in each row in the data.table is the variable label, value label and name of the new categorical variable.
 Defaults: 
-    + variable labels <- variableDetails$label
-    + value (factor) labels <- variableDetails$valueLabel
-    + variable units <- variableDetils$units
+    + variable labels <- variable_details$label
+    + value (factor) labels <- variable_details$value_label
+    + variable units <- variable_details$units
 
 - Recoding from a continuous or categorical variabe to new categorical variable.
 - Recoding from a categorical variable to either a new continuous or catecategorical variable (todo).
 - Recoding to a common target variable from different variables in different databases. See below 'recoding to a common target variable'.
 - VariableDetails labels and other metadata can be imported from an accompanying metadata file (DDI supported).
 - A log of transformations can be printed to console.
-- `attr` for new variable set. `recodeFrom` to the original variable.  (for discussion but I would like to include).
-- Additional features are available if `variableDetails` is a bllflow class. That is, `variableDetails `is passed as an attribute when creating a _bllflow_ object using `bllflow()`-- see [Speciying your model](vignettes/b_model_specification.html#reading-the-model-specification-workbook)
-     + 'variables' sheet is used to identify which variables are recoded. `variableDetails` provides the rules for how to recode.
+- `attr` for new variable set. `recode_from` to the original variable.  (for discussion but I would like to include).
+- Additional features are available if `variable_details` is a bllflow class. That is, `variable_details `is passed as an attribute when creating a _bllflow_ object using `bllflow()`-- see [Speciying your model](vignettes/b_model_specification.html#reading-the-model-specification-workbook)
+     + 'variables' sheet is used to identify which variables are recoded. `variable_details` provides the rules for how to recode.
      + the log of recoding is appended to the _bllflow_ object. see....
 
 ## Syntax for variable recoding
 
 The syntax is the same syntax as sjmisc.
 
-The recode-pattern, i.e. which new values should replace the old values, is defined using the `rec` variable in `variableDetails` data.frame. This argument has a specific "syntax":
+The recode-pattern, i.e. which new values should replace the old values, is defined using the `rec` variable in `variable_details` data.frame. This argument has a specific "syntax":
 
 the pairs are obtained from the RecFrom and RecTo columns
 
@@ -62,7 +63,7 @@ Different from sjmisc::rec(), there is the ability to define intervals uising `i
 
 rev is available in sjmisc, but not available in bllflow. * **"rev"**: `"rev"` is a special token that reverses the value order.
 
-Direct value label is avaiable in sjmis. In bllflow, value labelling is performed using 'valueLabel' for the corresponding row in the `variableDetails` data.table. * **direct value labelling**: Value labels for new values can be assigned inside the recode pattern by writing the value label in square brackets after defining the new value in a recode pair, e.g. `rec = "15:30=1 [young aged]; 31:55=2 [middle aged]; 56:max=3 [old aged]"`
+Direct value label is avaiable in sjmis. In bllflow, value labelling is performed using 'valueLabel' for the corresponding row in the `variable_details` data.table. * **direct value labelling**: Value labels for new values can be assigned inside the recode pattern by writing the value label in square brackets after defining the new value in a recode pair, e.g. `rec = "15:30=1 [young aged]; 31:55=2 [middle aged]; 56:max=3 [old aged]"`
 
 * **non-captured values**: Non-matching values will be set to `NA` (default), unless captured by the `"else"`- or `"copy"`-token. 
 
@@ -74,9 +75,9 @@ Notes:
 1) If a startVariable is not present in the data, should we consider whether it is an intermediary variable, and then transform (recode) that variable? An intermediary variable is a variable that exists as a variable variableDetails (it is created by variables in `data` and then used in a transformation with other)
 
 For initial version, give warnings and errors only.
-If missing intermediary variable: “Error: recoding {variable} requires {startVariable} variable. Recode available in {variableDetails}. Suggest first recoding {startVariable} variable, then try again.”
+If missing intermediary variable: “Error: recoding {variable} requires {start_variable} variable. Recode available in {variable_details}. Suggest first recoding {start_variable} variable, then try again.”
 
-If missing startVariable (altogether): “Error: missing required starting variable(s): {startingVariable}”
+If missing start_variable (altogether): “Error: missing required starting variable(s): {starting_variable}”
 
 2) Check to make sure all possible values are recoded. What should we do if values cannot be recoded? See outOfRange = NA
 

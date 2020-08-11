@@ -27,8 +27,10 @@ package.
 Below is a temporary example for the Fine and Grey model.
 
 
-##Overview
-Here I am going to show an example of using the primary billary cirrhosis (PBC) data to create a Fine and Grey regression model to evalute the effect of treatment with Dpenicillamine (trt) on time to transpantion (time), considering death as a competing risk (status)
+## Overview
+
+Here I am going to show an example of using the primary billary cirrhosis (PBC) data to create a Fine and Grey regression model to evalute the effect of treatment with Dpenicillamine (trt) on time to transpantion (time), considering death as a competing risk (status).
+
 Age will be modelled as a restricted cubic spline with 5 knots (requires the Hmic package), and bilirubin as an rcs with 3 knots.
 
 Only include the patients invovled in the randomized trial:
@@ -36,7 +38,8 @@ Only include the patients invovled in the randomized trial:
 pbc <- pbc[!is.na(pbc$trt),]
 ```
 
-##Prepare the data
+## Prepare the data
+
 First we need to change sex from 'm' and 'f' to '0' and '1'
 ```{r}
 attach(pbc)
@@ -65,7 +68,8 @@ pbc$biliC <- bili - bili_mean
 detach(pbc)
 ```
 
-##Create restricted cubic spline variables for age and bilirubin
+## Create restricted cubic spline variables for age and bilirubin
+
 A k knot spline is specified by k-1 variables. For example, a five knot spline is specified by 4 variables. The first variable is always the same as the original variable.
 
 The rcs function creates variables are named by adding ' to the end of the original variable name. These names are difficult to work with and do not fit our naming scheme. For example, this code this will create the four variables needed for a 5 knot cubic spline of age: age (the original variable), age', age'', and age''':
@@ -91,9 +95,11 @@ str(allvars)
 ```
 The allvars object contains 8 variables.
 
-##Create the Fine and Grey regression model
+## Create the Fine and Grey regression model
+
 The 'time' variable is the time (in days) from study start to either censoring, liver transplantation, or death
-The 'status' variable is 0 for censored, 1 for transplant, 2 for death
+The 'status' variable is 0 for censored, 1 for transplant, 2 for death.
+
 ```{r}
 pbc_crr_model <- crr(ftime = pbc$time, fstatus = pbc$status, allvars, failcode = 1, cencode = 0)
 summary(pbc_crr_model)
@@ -103,7 +109,8 @@ The beta coefficients for the model are here:
 pbc_crr_model$coef
 ```
 
-#Knot locations
+# Knot locations
+
 We need to know where the knots are placed. To determine this:
 ```{r}
 attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
@@ -111,24 +118,25 @@ attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
 TODO: when we create the RCS function, we'll need to have an argument that passess the bllflow modelObject. Then add these knots to that object. 
 ```{r}
-modelPbcTableOne <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
+model_pbc_table_one <- tableone::create_table_one(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
 library(bllflow)
-CreateBLLModelObject(allvars, pbc_crr_model, modelPbcTableOne)
+create_BLLModel_object(allvars, pbc_crr_model, model_pbc_table_one)
 ```
 
 # Generate a bllflow model object
+
 This object is used to generate the PMML file, for manuscript figures and other uses.
 
-@param modelObject The object that is returned when a model is created. 
-@param modelType values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
-@param tableOne The object returned by createTableOne(). This contains the mean values that is used if there are any variables that are centered on the mean.
-@param modelData The data used to generate the model. This is only required if tableOne = misssiong.
-@param calculateMean default = TRUE. If TRUE and tableOne = missing, then calculate means of variables.
+@param model_object The object that is returned when a model is created. 
+@param model_type values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
+@param table_one The object returned by createTableOne(). This contains the mean values that is used if there are any variables that are centered on the mean.
+@param model_data The data used to generate the model. This is only required if tableOne = misssiong.
+@param calculate_mean default = TRUE. If TRUE and table_one = missing, then calculate means of variables.
 
 ```{r}
 
-pbcTableOne = CreateTableOne(data = pbc)
-CreateBLLModelObject(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
+pbc_table_one = create_table_one(data = pbc)
+create_BLLModel_object(model_object = pbc_crr_model, table_one = pbc_table_one, model_data = allvars)
 
 ```
-Note that modelType is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
+Note that model_type is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
