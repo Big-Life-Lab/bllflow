@@ -132,7 +132,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_env_name = NULL) 
     bllflow_object$variable_details,
     bllflow_object$variables)
   bllflow_object[[pkg.globals$bllFlowContent.WorkingData]] <- tmp_working_data
-  bllflow_object[["previous_module_data"]] <- tmp_working_data
+  bllflow_object[[pkg.globals$bllFlowContent.PreviousData]] <- tmp_working_data
   attr(bllflow_object[[pkg.globals$bllFlowContent.WorkingData]],
        pkg.globals$bllFlowContent.Sequence) <-
     0
