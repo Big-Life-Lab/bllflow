@@ -1,0 +1,34 @@
+---
+title: "operations-test"
+author: "Rostyslav Vyuha"
+date: "July 8, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+##Updated specs
+Please refer to the google sheets for updated information
+https://docs.google.com/spreadsheets/d/18sPxA2CSf2WDArtZuroR9T-98SA7lWEXCW3GYWm6rgs/edit?usp=sharing
+
+##Specify the Modules to perform
+Isinde the modules sheet u can specify modules which are sets of funtions. Default order is the default order that the modules are ran in, if the cell is set to NA the module is not a default module and is just a utility module.
+
+Module ID is used as reference for the modules in the variables sheet. 
+
+Module description describes the purpose of the module. 
+
+TableOne Name specifies the name of the table that is created at the end of the module if the name is NA no table is created at the end of the module. These tables are then stored as part of bllFlow as Module Summary. In the future we can add additional things to generate as in other tables or models. Module summary can have a long summary data table for all the table ones as well as a sepearte table one for each step.
+
+Module operations specifies the functions as well as the order they are ran in
+
+Module name is the name that module is logged under, could also be basically short label
+
+## Specify the operations to perform
+Each variable inside the variables sheet will contain an operations column which describes what modules and functions to run on it.If the cell is left empty all default modules are ran on that variable in that order. If the cell contains modules they are ran in that order as well as any functions(Modules should follow their default order unless they are being ran a seccond time in which case u need to specify it with a semi collon ex:data cleaning::2 this then lets u syncronize other vars to create data cleaning::2)
+
+
+##Custom functions
+Custom function will just be functions the user is sourcing in their environment. Which i will then convert into steps. Custom funtions are added to the variables sheet following their basic function call ie: createPackYears(pack,year,smoke) this will then use the corelating variables in variables to calculate packYears.
+

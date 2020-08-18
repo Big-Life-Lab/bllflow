@@ -12,3 +12,7 @@ BLLFlow.Rproj
 ^images$
 docs$
 vignettes
+^.travis.yml
+^CODE_OF_CONDUCT.md
+^CONTRIBUTING.md
+^config.yml

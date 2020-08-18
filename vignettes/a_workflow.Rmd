@@ -79,7 +79,7 @@ engines (with future plans for export to Tensor Flow Graph). `model-description`
  
 ## Reference files - Variable types, labels and metadata
 _bllflow_ uses consistent labels and metadata throughout the workflow. 
-_bllflow_ metadata is alligned with two documentation initiatives: the 
+_bllflow_ metadata is aligned with two documentation initiatives: the 
 [Data Documentaiton Initiative (DDI)](https://www.ddialliance.org) and 
 [PMML](http://dmg.org). The `variable-metadata` file is a table that identifies 
 all variable types used. For example, `mean`  refers to the mean value of an 

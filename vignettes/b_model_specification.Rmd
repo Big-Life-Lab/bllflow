@@ -45,8 +45,8 @@ The `variables.csv` contains each variable as row. The sheet includes additional
 
 ```{r} 
 library(DT)
-
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+library(cchsflow)
+variables <- cchsflow::variables
 
 datatable(variables, options = list(pageLength = 6))
 ```
@@ -61,6 +61,19 @@ _bllflow_ supports importing metadata into the workbook from:
 similar packages); or,
 - manually added added to the MSW.
 
+### Variable roles
+`bllflow` can assign one or more roles to each variable in the data. We add at least one role for each variable that is used in our studies. Roles can be defined for any purpose, and once defined they can be re-used. For example, building a new model using the role 'predictor' to select variables, or generating a Table 1 using a newly defined role 'table-1'. You can define your own role or use suggested roles below.
+
+Suggested roles include:
+
+- predictor - a variable or feature used in a model
+- outcome-primary - there should be only one primary outcome
+- outcome-secondary - a secondary outcome
+- strata - used to stratify the data for development of a model, e.g., create different models for males and females, or split the sample into development and validation sub-samples.
+- descriptor - used to describe a study population, as in Table 1 or 2, or report the performance of a model
+- intermediate -  used only to create other (derived) variables
+- filter  - inclusion or exclusion criteria to create a study population
+
 ### Example 2: Variable details
 The `variableDetails.csv` contains additional variable details. For categorical variables there are rows for each category (factor). Included for each row are factor levels and lablels. Again, this information can be added through helper functions if there is a DDI file or the labels are already in your data. 
 
@@ -69,7 +82,7 @@ The `variableDetails` sheet also includes transformed variables used throughout 
 There are 16 rows in `variableDetails`. We included `age` as the first example, with the remaining rows representing only the newly transformed variables -- variables that do not existing our orginal `pbc` data. The information for variables in the original `pbc` data are in the `pbcDDI.xml` file. That metadata can be added with the DDI utility functions describe later [Helper and utility functions](vignettes/i_helper_functions.html)
 
 ```{r}
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+variableDetails <- cchsflow::variable_details
 datatable(variableDetails, options = list(pageLength = 5))
 ```
 
@@ -78,18 +91,10 @@ Model Specification Workbook is imported and added to a _bllflow_ object that ca
 
 In the following example, the MSW `variables` and `variableDetails` sheets are read and then added with the `pbc` data into our `pbcModel`.
 ```{r}
-library(survival)
-data(pbc)
-
-# read MSW variables and variableDetails sheet for the PBC model
-variables <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-variableDetails <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-
-
 library(bllflow)
 
 # create a bllflow object and add labels.
-pbcModel <- BLLFlow(pbc, variables, variableDetails)
+pbcModel <- BLLFlow(cchsflow::cchs2001_p, variables, variableDetails)
 ```
 The `pbcModel` contains `pbc`, `variables` and `variableDetails` along with three additional objects used to support model building.
 ```{r the pbcModel}

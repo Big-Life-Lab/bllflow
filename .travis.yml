@@ -13,6 +13,7 @@ before_script:
   - R -e "install.packages('knitr')"
   - R -e "install.packages('roxygen2')"
   - R -e "install.packages('devtools')"
+  - Rscript -e 'devtools::install()'
   
 script:
   - R -e 'devtools::document()'
@@ -20,7 +21,6 @@ script:
   - R CMD check *tar.gz
   
 after_success:
-  - Rscript -e 'devtools::install()'
   - R -e "install.packages('pkgdown')"
   - Rscript -e 'pkgdown::build_site(run_dont_run = TRUE)'
 
