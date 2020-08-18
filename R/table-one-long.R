@@ -65,8 +65,7 @@ CreateTableOne.BLLFlow <- function(x,
       vars <-
         as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
     } else {
-      vars <-
-        as.character(variables_sheet[grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+      vars <- select_vars_by_role(select_role, variables_sheet)
     }
     vars <- trimws(vars)
   }
@@ -78,8 +77,8 @@ CreateTableOne.BLLFlow <- function(x,
     } else {
       factor_vars <-
         as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]],
-                                              pkg.globals$ddiValueName.Categorical) &
-                                       grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+                                              pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
+      factor_vars <- factor_vars[[factor_vars %in% vars]]
     }
     factor_vars <- trimws(factor_vars)
   }

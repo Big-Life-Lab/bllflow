@@ -162,10 +162,7 @@ create_formula_recipe <-
            variables) {
     # Check variable roles for the recipe creation
     # TODO bllflow support make this add to overall recipe
-    outcome_variable <-
-      as.character(variables[grepl("outcome,",
-                                   variables[[pkg.globals$argument.Role]]),
-                             pkg.globals$argument.Variables])
+    outcome_variable <-select_vars_by_role("outcome", variables)
     # TODO add a function for creating a proper formula
     recipe_formula <- paste(outcome_variable, "~ .")
     
