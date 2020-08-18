@@ -1,4 +1,4 @@
-# Removing Note
+# This is needed for package Check as . is used by magrittr however is not exported 
 . <- NULL
 #' Recode with Table
 #'

@@ -12,7 +12,6 @@ bllflow_config_init <-
   function(config_env_name = NULL) {
     if (!is.null(config_env_name)) {
       set_config_env_name(config_env_name)
-      set_config_env_name(config_env_name)
     }
     config <- config::get()
     ret_bllflow <-
@@ -42,15 +41,12 @@ bllflow_config_read_data <- function(bllflow_object, config_env_name = NULL) {
     set_config_env_name(config_env_name)
   }
   config <- config::get()
-  if (config$data_type == ".RData") {
-    # use variables to only read the specified variables??
-    for (data_name in names(config$data)) {
+  # use variables to only read the specified variables??
+  for (data_name in names(config$data)) {
+    if (config$data_type == ".RData") {
       load(config$data[[data_name]])
-      save(list = data_name, file = file.path(config$data_dir,
-                                              paste0(data_name, ".RData")))
     }
-  } else if (config$data_type == ".csv") {
-    for (data_name in names(config$data)) {
+    else if (config$data_type == ".csv") {
       tmp_data <-
         read_csv_data(
           variables = bllflow_object$variables,
@@ -58,10 +54,12 @@ bllflow_config_read_data <- function(bllflow_object, config_env_name = NULL) {
           path_to_data = config$data[[data_name]]
         )
       assign(data_name, tmp_data)
-      save(list = data_name, file = file.path(config$data_dir,
-                                              paste0(data_name, ".RData")))
     }
+    save(list = data_name,
+         file = file.path(config$data_dir,
+                          paste0(data_name, ".RData")))
   }
+  
   return(bllflow_object)
 }
 
