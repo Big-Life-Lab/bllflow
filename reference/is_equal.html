@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Table One — CreateTableOne • bllflow</title>
+<title>is equal — is_equal • bllflow</title>
 
 
 <!-- jquery -->
@@ -45,9 +45,10 @@
 
 
 
-<meta property="og:title" content="Create Table One — CreateTableOne" />
-<meta property="og:description" content="Creates Table One using the tableone package. If a bllflow object is passed a custom function
-then extracts the necessary data for tableone call from the object avoiding unnecessary arguments." />
+<meta property="og:title" content="is equal — is_equal" />
+<meta property="og:description" content="Function to compare even with NA present
+This function returns TRUE wherever elements are the same, including NA's,
+and false everywhere else." />
 
 
 
@@ -169,32 +170,60 @@ then extracts the necessary data for tableone call from the object avoiding unne
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Table One</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/table-one-long.R'><code>R/table-one-long.R</code></a></small>
-    <div class="hidden name"><code>CreateTableOne.Rd</code></div>
+    <h1>is equal</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/util-funcs.R'><code>R/util-funcs.R</code></a></small>
+    <div class="hidden name"><code>is_equal.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates Table One using the tableone package. If a bllflow object is passed a custom function
-then extracts the necessary data for tableone call from the object avoiding unnecessary arguments.</p>
+    <p>Function to compare even with NA present
+This function returns TRUE wherever elements are the same, including NA's,
+and false everywhere else.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CreateTableOne</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>is_equal</span>(<span class='no'>v1</span>, <span class='no'>v2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Object to retrieve variables from</p></td>
+      <th>v1</th>
+      <td><p>variable 1</p></td>
     </tr>
     <tr>
-      <th>...</th>
-      <td><p>Additional arguments to pass to the tableone::CreateTableOne function call</p></td>
+      <th>v2</th>
+      <td><p>variable 2</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>boolean value of whether or not v1 and v2 are equal</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>cchsflow</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: haven</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: sjlabelled</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘sjlabelled’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:haven’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    as_factor, read_sas, read_spss, read_stata, write_sas, zap_labels</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:dplyr’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    as_label</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: stringr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘stringr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:recipes’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    fixed</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: magrittr</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Attaching package: ‘cchsflow’</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:bllflow’:</span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>    is_equal, rec_with_table, set_data_labels</span></div><div class='input'><span class='fu'>is_equal</span>(<span class='fl'>1</span>,<span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='co'># FALSE</span>
+
+<span class='fu'>is_equal</span>(<span class='fl'>1</span>,<span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'># TRUE</span>
+
+<span class='fl'>1</span><span class='kw'>==</span><span class='fl'>NA</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='co'># NA</span>
+
+<span class='fu'>is_equal</span>(<span class='fl'>1</span>,<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'><span class='co'># FALSE</span>
+
+<span class='fl'>NA</span><span class='kw'>==</span><span class='fl'>NA</span></div><div class='output co'>#&gt; [1] NA</div><div class='input'><span class='co'># NA</span>
+
+<span class='fu'>is_equal</span>(<span class='fl'>NA</span>,<span class='fl'>NA</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'># TRUE
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

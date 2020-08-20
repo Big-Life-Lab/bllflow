@@ -1,19 +1,23 @@
 pandoc: '2.2'
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   a_workflow: a_workflow.html
   b_model_specification: b_model_specification.html
+  bllflow-workflow-demo: bllflow-workflow-demo.html
   bllflow: bllflow.html
   c_describing_data: c_describing_data.html
   d_clean_data: d_clean_data.html
   e_model_development: e_model_development.html
   f_model_performance: f_model_performance.html
+  fine_and_grey_model_example: fine_and_grey_model_example.html
   g_model_description: g_model_description.html
   h_model_deployment: h_model_deployment.html
   i_helper_functions: i_helper_functions.html
   j_reference_files: j_reference_files.html
+  pbc-recode-with-table: pbc-recode-with-table.html
   recode-with-table: recode-with-table.html
+last_built: 2020-08-20T16:26Z
 urls:
   reference: https://big-life-lab.github.io/bllflow//reference
   article: https://big-life-lab.github.io/bllflow//articles

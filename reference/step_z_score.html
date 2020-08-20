@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create Table One — CreateTableOne • bllflow</title>
+<title>Calculate z score — step_z_score • bllflow</title>
 
 
 <!-- jquery -->
@@ -45,9 +45,11 @@
 
 
 
-<meta property="og:title" content="Create Table One — CreateTableOne" />
-<meta property="og:description" content="Creates Table One using the tableone package. If a bllflow object is passed a custom function
-then extracts the necessary data for tableone call from the object avoiding unnecessary arguments." />
+<meta property="og:title" content="Calculate z score — step_z_score" />
+<meta property="og:description" content="`step_z_score` creates a *specification* of a recipe step that
+  will calculate z-score on specified variables using training set mean and
+  standard deviation, then based on append
+  will overwrite existing variable or add new columns" />
 
 
 
@@ -169,31 +171,103 @@ then extracts the necessary data for tableone call from the object avoiding unne
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create Table One</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/table-one-long.R'><code>R/table-one-long.R</code></a></small>
-    <div class="hidden name"><code>CreateTableOne.Rd</code></div>
+    <h1>Calculate z score</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Big-Life-Lab/bllflow/blob/master/R/step_z_score.R'><code>R/step_z_score.R</code></a></small>
+    <div class="hidden name"><code>step_z_score.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Creates Table One using the tableone package. If a bllflow object is passed a custom function
-then extracts the necessary data for tableone call from the object avoiding unnecessary arguments.</p>
+    <p>`step_z_score` creates a *specification* of a recipe step that
+  will calculate z-score on specified variables using training set mean and
+  standard deviation, then based on append
+  will overwrite existing variable or add new columns</p>
     </div>
 
-    <pre class="usage"><span class='fu'>CreateTableOne</span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>step_z_score</span>(
+  <span class='no'>recipe</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>role</span> <span class='kw'>=</span> <span class='st'>"predictor"</span>,
+  <span class='kw'>trained</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>id</span> <span class='kw'>=</span> <span class='kw pkg'>recipes</span><span class='kw ns'>::</span><span class='fu'><a href='https://recipes.tidymodels.org/reference/rand_id.html'>rand_id</a></span>(<span class='st'>"Z"</span>),
+  <span class='kw'>append</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_Z"</span>,
+  <span class='kw'>means</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>trim</span> <span class='kw'>=</span> <span class='fl'>0</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>Object to retrieve variables from</p></td>
+      <th>recipe</th>
+      <td><p>A recipe object. The step will be added to the
+sequence of operations for this recipe.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Additional arguments to pass to the tableone::CreateTableOne function call</p></td>
+      <td><p>One or more selector functions to choose which variables are
+affected by the step. See [selections()] for more details. For the `tidy`
+method, these are not currently used.</p></td>
+    </tr>
+    <tr>
+      <th>role</th>
+      <td><p>For model terms created by this step, what analysis
+role should they be assigned?.</p></td>
+    </tr>
+    <tr>
+      <th>trained</th>
+      <td><p>A logical to indicate if the quantities for
+preprocessing have been estimated.</p></td>
+    </tr>
+    <tr>
+      <th>skip</th>
+      <td><p>A logical. Should the step be skipped when the
+recipe is baked by [bake.recipe()]? While all operations are baked
+when [prep.recipe()] is run, some operations may not be able to be
+conducted on new data (e.g. processing the outcome variable(s)).
+Care should be taken when using `skip = TRUE` as it may affect
+the computations for subsequent operations</p></td>
+    </tr>
+    <tr>
+      <th>id</th>
+      <td><p>A character string that is unique to this step to identify it.</p></td>
+    </tr>
+    <tr>
+      <th>append</th>
+      <td><p>A boolean indicator if the calculated z-score is to be appended
+or replace the original variable</p></td>
+    </tr>
+    <tr>
+      <th>suffix</th>
+      <td><p>A character indicating the suffix for the variable</p></td>
+    </tr>
+    <tr>
+      <th>means</th>
+      <td><p>A list used for storing the means calculated during prep</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>A list used for storing the standard deviation during prep</p></td>
+    </tr>
+    <tr>
+      <th>na.rm</th>
+      <td><p>na.rm parameter to pass to the mean, sd functions</p></td>
+    </tr>
+    <tr>
+      <th>trim</th>
+      <td><p>parameter to pass to the mean and sd functions</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>An updated version of `recipe` with the new step added to the
+ sequence of existing steps (if any). For the `tidy` method, a tibble with
+ columns `terms` (the selectors or variables selected) and `model` (the mean
+ value).</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

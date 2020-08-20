@@ -4,88 +4,142 @@
     <loc>https://big-life-lab.github.io/bllflow//index.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/AddDDIToList.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/BLLFlow.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.SummaryData.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCells.TableOne.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/CheckSmallCellsInTableOne.html</loc>
-  </url>
-  <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/CompareValueBasedOnInterval.html</loc>
-  </url>
-  <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/CreateTableOne.BLLFlow.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//reference/CreateTableOne.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/GetDDIDescription.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/bllflow_config_combine_data.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/GetDDIVariables.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/bllflow_config_init.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/GetDataVariableName.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/bllflow_config_read_data.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/LabelData.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/bllflow_config_rec_data.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/LogFunctionActivity.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/build_bllflow.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/PopulateVariableDetails.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/compare_value_based_on_interval.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/ProcessDDIVariableDetails.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/create_exact_function.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/ReadDDI.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/create_formula_recipe.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/RecWTable.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/create_formula_variable_formula.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/RecWTable.default.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/create_recipe.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/RecodeColumns.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/create_variable_formula.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/SummaryDataLong.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/get_data_variable_name.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/UpdateMSW.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/get_variables.BLLFlow.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/WriteDDIPopulatedMSW.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/get_variables.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/clean.Max.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/get_variables.default.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/clean.Min.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/is_equal.html</loc>
   </url>
   <url>
-    <loc>https://big-life-lab.github.io/bllflow//reference/print.metaDataLog.html</loc>
+    <loc>https://big-life-lab.github.io/bllflow//reference/kableone.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/label_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_default_step.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_formula_function_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_formula_module_functions.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_formula_step.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_function.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_function_variables.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/parse_module_functions.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/print.TableOne.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/read_csv_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/rec_with_table.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/recode_columns.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/recode_variable_NA_formating.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/run_module.BLLFlow.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/run_module.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/run_module.default.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/scramble_data.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/set_data_labels.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/set_data_labels.default.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/step_naomit.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/step_tagged_naomit.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/step_z_score.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/table_one_long.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//reference/verify_data_and_sequence_match.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/a_workflow.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/b_model_specification.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/bllflow-workflow-demo.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/bllflow.html</loc>
@@ -103,6 +157,9 @@
     <loc>https://big-life-lab.github.io/bllflow//articles/f_model_performance.html</loc>
   </url>
   <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/fine_and_grey_model_example.html</loc>
+  </url>
+  <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/g_model_description.html</loc>
   </url>
   <url>
@@ -113,6 +170,9 @@
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/j_reference_files.html</loc>
+  </url>
+  <url>
+    <loc>https://big-life-lab.github.io/bllflow//articles/pbc-recode-with-table.html</loc>
   </url>
   <url>
     <loc>https://big-life-lab.github.io/bllflow//articles/recode-with-table.html</loc>

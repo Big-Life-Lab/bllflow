@@ -8,23 +8,29 @@
 
 <title>Articles • bllflow</title>
 
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -33,12 +39,14 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
+
 <meta property="og:title" content="Articles" />
+
 
 
 
@@ -55,7 +63,7 @@
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-article-index">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -133,7 +141,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/Big-Life-Lab/bllflow">
@@ -167,20 +174,38 @@
       <h3>All vignettes</h3>
       <p class="section-desc"></p>
 
-      <ul>
-        <li><a href="a_workflow.html">Workflow overview</a></li>
-        <li><a href="b_model_specification.html">1 - Specifying your model</a></li>
-        <li><a href="bllflow.html">Getting started with bllFlows</a></li>
-        <li><a href="c_describing_data.html">2 - Describing the study cohort</a></li>
-        <li><a href="d_clean_data.html">3 - Data cleaning and variable transformation</a></li>
-        <li><a href="e_model_development.html">4 - Developing a (predictive) model</a></li>
-        <li><a href="f_model_performance.html">5 - Reporting the performance of a model</a></li>
-        <li><a href="g_model_description.html">6 - Describing and reporting a model</a></li>
-        <li><a href="h_model_deployment.html">7 - (predictive) Model deployment</a></li>
-        <li><a href="i_helper_functions.html">Helper and utility functions</a></li>
-        <li><a href="j_reference_files.html">Reference files - variable labels and metadata</a></li>
-        <li><a href="recode-with-table.html">Recode with table</a></li>
-      </ul>
+      <dl>
+        <dt><a href="a_workflow.html">Workflow overview</a></dt>
+        <dd></dt>
+        <dt><a href="b_model_specification.html">1 - Specifying your model</a></dt>
+        <dd></dt>
+        <dt><a href="bllflow-workflow-demo.html">bllflow-workflow-demo</a></dt>
+        <dd></dt>
+        <dt><a href="bllflow.html">Getting started with bllFlows</a></dt>
+        <dd></dt>
+        <dt><a href="c_describing_data.html">2 - Describing the study cohort</a></dt>
+        <dd></dt>
+        <dt><a href="d_clean_data.html">3 - Data cleaning and variable transformation</a></dt>
+        <dd></dt>
+        <dt><a href="e_model_development.html">4 - Developing a (predictive) model</a></dt>
+        <dd></dt>
+        <dt><a href="f_model_performance.html">5 - Reporting the performance of a model</a></dt>
+        <dd></dt>
+        <dt><a href="fine_and_grey_model_example.html">fine_and_grey_model_example</a></dt>
+        <dd></dt>
+        <dt><a href="g_model_description.html">6 - Describing and reporting a model</a></dt>
+        <dd></dt>
+        <dt><a href="h_model_deployment.html">7 - (predictive) Model deployment</a></dt>
+        <dd></dt>
+        <dt><a href="i_helper_functions.html">Helper and utility functions</a></dt>
+        <dd></dt>
+        <dt><a href="j_reference_files.html">Reference files - variable labels and metadata</a></dt>
+        <dd></dt>
+        <dt><a href="pbc-recode-with-table.html">pbc-recode-with-table</a></dt>
+        <dd></dt>
+        <dt><a href="recode-with-table.html">Recode with table</a></dt>
+        <dd></dt>
+      </dl>
     </div>
   </div>
 </div>
@@ -192,7 +217,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
