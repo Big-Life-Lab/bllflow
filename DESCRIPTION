@@ -3,7 +3,7 @@ Type: Package
 Title: Big Life Lab Flow - a Workflow for Predictive Studies
 Description: An implementation of predictive algorithm studies. Predictive 
   Modelling Mark-up Language (PMML) is suported. The workflow has three steps:
-  data prepartation; model development, and; model deployment.
+  data preparation; model development, and; model deployment.
 Version: 0.1.0
 Date: 2018-12-09
 Authors@R: c( 
@@ -24,29 +24,32 @@ Authors@R: c(
 Depends:
   R (>= 3.2),
   tableone,
+  recipes
+Imports: 
   DDIwR,
   xml2,
+  stringr,
   sjlabelled,
-  haven
-Imports:
-  rstudioapi,
-  glue,
-  plotly,
-  Hmisc,
-  tidyr,
-  dplyr
+  haven,
+  magrittr,
+  rms,
+  config,
+  dplyr,
+  labelled,
+  rlang,
+  tibble,
+  tidyr
 Suggests:
-    knitr,
-    rmarkdown,
-    DT,
-    magrittr,
-    survival,
-    testthat
+  knitr,
+  rmarkdown,
+  survival,
+  testthat,
+  cchsflow
 URL: https://github.com/Big-Life-Lab/bllflow
 BugReports: https://github.com/Big-Life-Lab/bllflow/issues
 Maintainer: Rostyslav Vyuha <rostikvyuha@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr

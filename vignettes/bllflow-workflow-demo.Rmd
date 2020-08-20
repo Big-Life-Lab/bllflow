@@ -1,0 +1,64 @@
+---
+title: "bllflow-workflow-demo"
+author: "Rostyslav Vyuha"
+date: "October 29, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Creating the initial bllflow object with study specifications
+
+Importing study specifications
+ read_csv("../inst/extdata/PBC-variable_details.csv")
+ 
+```{r}
+variables_MSW <- read.csv("../inst/extdata/CCHS MSW/Study Specifications/PoRT MSW - cchsVariables_archived.csv")
+var_details <- read.csv("../inst/extdata/CCHS MSW/Study Specifications/PoRT MSW - cchsVarDetails_archived.csv")
+cchs2001 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2001-c1-1-general-file_F1.csv", nrows = 200)
+cchs2003 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2003-c2-1-GeneralFile_F1.csv", nrows = 200)
+cchs2005 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2005-c3-1-main-file_F1.csv", nrows = 200)
+cchs2007 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-E-2007-2008-AnnualComponent_F1.csv", nrows = 200)
+cchs2009 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/CCHS-82M0013-E-2009-2010-Annualcomponent_F1.csv", nrows = 200)
+cchs2010 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/CCHS-82M0013-E-2010-AnnualComponent_F1.csv", nrows = 200)
+cchs2011 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2011-2012-Annual-component_F1.csv", nrows = 200)
+cchs2012 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2012-Annual-component_F1.csv", nrows = 200)
+cchs2013 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2013-2014-Annual-component_F1.csv", nrows = 200)
+cchs2014 <-  read.csv("~/Work/R/bllFlow/OneDrive_1_8-9-2019/cchs-82M0013-E-2014-Annual-component_F1.csv", nrows = 200)
+```
+## Recode the data
+```{r}
+cchs2001_recoded <- RecWTable(dataSource = cchs2001, variable_details = var_details, datasetName = "cchs-82M0013-E-2001-c1-1-general-file", printNote = FALSE)
+cchs2003_recoded <- RecWTable(dataSource = cchs2003, variable_details = var_details, datasetName = "cchs-82M0013-E-2003-c2-1-General File", printNote = FALSE)
+cchs2005_recoded <- RecWTable(dataSource = cchs2005, variable_details = var_details, datasetName = "cchs-82M0013-E-2005-c3-1-main-file", printNote = FALSE)
+cchs2007_recoded <- RecWTable(dataSource = cchs2007, variable_details = var_details, datasetName = "cchs-E-2007-2008-AnnualComponent", printNote = FALSE)
+cchs2009_recoded <- RecWTable(dataSource = cchs2009, variable_details = var_details, datasetName = "CCHS-82M0013-E-2009-2010-Annualcomponent", printNote = FALSE)
+cchs2010_recoded <- RecWTable(dataSource = cchs2010, variable_details = var_details, datasetName = "CCHS-82M0013-E-2010-AnnualComponent", printNote = FALSE)
+cchs2011_recoded <- RecWTable(dataSource = cchs2011, variable_details = var_details, datasetName = "cchs-82M0013-E-2011-2012-Annual-component", printNote = FALSE)
+cchs2012_recoded <- RecWTable(dataSource = cchs2012, variable_details = var_details, datasetName = "cchs-82M0013-E-2012-Annual-component", printNote = FALSE)
+cchs2013_recoded <- RecWTable(dataSource = cchs2013, variable_details = var_details, datasetName = "cchs-82M0013-E-2013-2014-Annual-component", printNote = FALSE)
+cchs2014_recoded <- RecWTable(dataSource = cchs2014, variable_details = var_details, datasetName = "cchs-82M0013-E-2014-Annual-component", printNote = FALSE)
+
+```
+## Combine Data
+```{r, warning=FALSE}
+working_data <- bind_rows(cchs2001_recoded, cchs2003_recoded)
+working_data <- bind_rows(working_data, cchs2005_recoded)
+working_data <- bind_rows(working_data, cchs2007_recoded)
+working_data <- bind_rows(working_data, cchs2009_recoded)
+working_data <- bind_rows(working_data, cchs2010_recoded)
+working_data <- bind_rows(working_data, cchs2011_recoded)
+working_data <- bind_rows(working_data, cchs2012_recoded)
+working_data <- bind_rows(working_data, cchs2013_recoded)
+working_data <- bind_rows(working_data, cchs2014_recoded)
+```
+
+```{r}
+library(bllflow)
+cchsBllFlow <- BLLFlow(variables = variables_MSW, variable_details = var_details)
+cchsBllFlow[["working_data"]] <- working_data
+tmpTable <- CreateTableOne(cchsBllFlow)
+longTable <- SummaryDataLong(tmpTable)
+```

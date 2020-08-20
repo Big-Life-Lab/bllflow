@@ -1,56 +1,21 @@
-CheckForColumnPresence <- function(names, frame, frameName) {
-  missingColNames <- names[names %in% colnames(frame) == FALSE]
-  if (length(missingColNames) != 0) {
+check_for_column_presence <- function(names, frame, frame_name) {
+  missing_col_names <- names[names %in% colnames(frame) == FALSE]
+  if (length(missing_col_names) != 0) {
     stop(paste(
       "Column(s)",
-      missingColNames,
+      missing_col_names,
       "are missing from ",
-      frameName,
+      frame_name,
       "\n"
     ))
   }
 }
 
-CheckForExistanceOfInList <- function(names, passedList) {
-  for (name.checkRow in names) {
-    if (!(name.checkRow["variable"] %in% passedList)) {
-      stop(paste("The ", name.checkRow["variable"], "column is missing from the data"))
-    }
+
+check_if_data_frame <- function(passed_frame, passed_name) {
+  if (!is.data.frame(passed_frame)) {
+    stop(paste("The ", passed_name, " object is not a data frame"))
   }
 }
 
-CheckIfDataFrame <- function(passedFrame, passedName) {
-  if (!is.data.frame(passedFrame)) {
-    stop(paste("The ", passedName, " object is not a data frame"))
-  }
-}
 
-CheckIfCellIsEmpty <-
-  function(cellContent,
-           rowNumber,
-           columnName,
-           ddiValue) {
-    isEmpty <- TRUE
-    if (!is.null(cellContent) &&
-        !is.na(cellContent) &&
-        cellContent != "" && cellContent != ddiValue) {
-      warning(
-        paste(
-          "Row ",
-          rowNumber,
-          ":",
-          columnName,
-          " column has value \"",
-          cellContent,
-          "\" but DDI value is \"",
-          ddiValue,
-          "\". Not overwriting"
-        ),
-        call. = FALSE,
-        immediate. = TRUE
-      )
-      isEmpty <- FALSE
-    }
-    
-    return(isEmpty)
-  }

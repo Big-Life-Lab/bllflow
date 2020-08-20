@@ -1,525 +1,713 @@
-#' @title Recode with Table
+# This is needed for package Check as . is used by magrittr however is not exported 
+. <- NULL
+#' Recode with Table
 #'
-#' @name RecWTable
+#' Recode with Table is responsible for recoding values of a dataset based on
+#' the specifications in variable_details.
 #'
-#' @description \code{RecWTable()} recodes values of variable, where vaiable selection and recoding rules are describe in a reference table (variableDetails). Similar to \code{sjmisc::rec()}. Uses the same rule syntax as \code{sjmisc::rec()}, except rules are in a table as opposed to arguments in the function.
-#'
-#' @seealso \code{sjmisc::rec()}
-#' @export
-RecWTable <- function(dataSource = NULL, ...) {
-  UseMethod("RecWTable", dataSource)
-}
-
-#' @title Recode with Table
-#'
-#' @name RecWTable.default
-#'
-#' @details The \code{variableDetails} dataframe has the following variables:
+#' The \href{https://github.com/Big-Life-Lab/bllflow/blob/master/inst/extdata/PBC-variableDetails.csv}{variable_details}
+#'  dataframe needs the following variables to function:
 #'  \describe{
-#'  \item{variable}{name of new (mutated) variable that is recoded}
-#'  \item{databaseStart}{name of dataframe with original variables (\code{variableStart}) to be recoded}
-#'  \item{variableStart}{name of variable to be recoded}
-#'  \ifem{fromType}{variable type of \code{variableStart}. \code{cat} = categorical or factor variable; \code{cont} = continuous variable (real number or integer)}
-#'  \item{catlabel}{label for each category of \code{variable}}
-#'  \item{...  add remaining variables (headers) here}
+#'   \item{variable}{name of new (mutated) variable that is recoded}
+#'   \item{toType}{type the variable is being recoded to
+#'   \emph{cat = categorical, cont = continuous}}
+#'   \item{databaseStart}{name of dataframe with original variables to be
+#'   recoded}
+#'   \item{variableStart}{name of variable to be recoded}
+#'   \item{fromType}{variable type of start variable.
+#'   \emph{cat = categorical or factor variable}
+#'   \emph{cont = continuous variable (real number or integer)}}
+#'   \item{recTo}{Value to recode to}
+#'   \item{recFrom}{Value/range being recoded from}
 #'  }
-#'
-#'  Each row in \code{variableDetails} comprises one category in a newly transformed variable. The rules for each category the new variable are a string in \code{recFrom} and value in \code{recTo}. These recode pairs are the same syntax as \code{sjmisc::rec()}, except in \code{sjmisc::rec()} the pairs are a string for the function attibute \code{rec =}, separated by '\code{=}'. For example in \code{RecWTable} \code{variableDetails$recFrom = 2; variableDetails$recTo = 4} is the same as \code{sjmisc::rec(rec = "2=4")}.
-#'
+#'  Each row in \emph{variable_details} comprises one category in a
+#'  newly transformed variable. The rules for each category the new variable
+#'  are a string in \emph{recFrom} and value in \emph{recTo}.
+#'  These recode pairs are the same syntax as \emph{sjmisc::rec()},
+#'  except in \emph{sjmisc::rec()} the pairs are a string for the function
+#'  attribute \emph{rec =}, separated by '\emph{=}'.
+#'  For example in \emph{rec_w_table}
+#'  \emph{variable_details$recFrom = 2; variable_details$recTo = 4}
+#'  is the same as \emph{sjmisc::rec(rec = "2=4")}.
 #'  the pairs are obtained from the RecFrom and RecTo columns
 #'   \describe{
-#'     \item{recode pairs}{each recode pair is row. see above example or \code{PBC-variableDetails.csv}
-#'     \item{multiple values}{multiple old values that should be recoded into a new single value may be separated with comma, e.g. \code{recFrom = "1,2"; recTo = 1}}
-#'     \item{value range}{a value range is indicated by a colon, e.g. \code{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1}
-#'     \item{value range for doubles}{for double vectors (with fractional part), all values within the specified range are recoded; e.g. \code{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1, but 2.55 would not be recoded (since it's not included in the specified range)}
-#'     \item{\code{"min"} and \code{"max"}}{minimum and maximum values are indicates by \emph{min} (or \emph{lo}) and \emph{max} (or \emph{hi}), e.g. \code{recFrom = "min:4"; recTo = 1} (recodes all values from minimum values of \code{x} to 4 into 1)}
-#'     \item{\code{"else"}}{all other values, which have not been specified yet, are indicated by \emph{else}, e.g. \code{recFrom = "else"; recTo = NA} (recode all other values (not specified in other rows) to "NA")}
-#'     \item{\code{"copy"}}{the \code{"else"}-token can be combined with \emph{copy}, indicating that all remaining, not yet recoded values should stay the same (are copied from the original value), e.g. \code{recFrom = "else"; recTo = "copy"}
-#'     \item{\code{NA}'s}{\code{\link{NA}} values are allowed both as old and new value, e.g. \code{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"} (recodes all NA into 1, and all values from 3 to 5 into NA in the new variable)}
+#'     \item{recode pairs}{each recode pair is row. see above example
+#'     or \emph{PBC-variableDetails.csv}}
+#'     \item{multiple values}{multiple old values that should be recoded into
+#'     a new single value may be separated with comma, e.g.
+#'     \emph{recFrom = "1,2"; recTo = 1}}
+#'     \item{value range}{a value range is indicated by a colon, e.g.
+#'     \emph{recFrom= "1:4"; recTo = 1} (recodes all values from 1 to 4 into 1)}
+#'     \item{value range for doubles}{for double vectors (with fractional part),
+#'      all values within the specified range are recoded; e.g.
+#'      \emph{recFrom = "1:2.5'; recTo = 1} recodes 1 to 2.5 into 1,
+#'      but 2.55 would not be recoded
+#'      (since it's not included in the specified range)}
+#'     \item{\emph{"min"} and \emph{"max"}}{minimum and maximum values
+#'     are indicates by \emph{min} (or \emph{lo}) and \emph{max} (or \emph{hi}),
+#'      e.g. \emph{recFrom = "min:4"; recTo = 1} (recodes all values from
+#'      minimum values of \emph{x} to 4 into 1)}
+#'     \item{\emph{"else"}}{all other values, which have not been specified yet,
+#'      are indicated by \emph{else}, e.g. \emph{recFrom = "else"; recTo = NA}
+#'      (recode all other values (not specified in other rows) to "NA")}
+#'     \item{\emph{"copy"}}{the \emph{"else"}-token can be combined with
+#'     \emph{copy}, indicating that all remaining, not yet recoded values should
+#'      stay the same (are copied from the original value), e.g.
+#'      \emph{recFrom = "else"; recTo = "copy"}}
+#'     \item{\emph{NA}'s}{\emph{NA} values are allowed both as old and
+#'     new value, e.g.
+#'     \emph{recFrom "NA"; recTo = 1. or "recFrom = "3:5"; recTo = "NA"}
+#'     (recodes all NA into 1,
+#'     and all values from 3 to 5 into NA in the new variable)}
+#' }
 #'
+#' @param data A dataframe containing the variables to be recoded. Can also be a list of dataframes
+#' @param variables character vector containing variable names to recode or
+#' a variables csv containing additional variable info
+#' @param database_name String, the name of the dataset containing the variables
+#' to be recoded. Can also be a vector of strings if data is a list
+#' @param variable_details A dataframe containing the specifications (rules)
+#' for recoding.
+#' @param else_value Value (string, number, integer, logical or NA) that is used
+#' to replace any values that are outside the specified ranges
+#' (no rules for recoding).
+#' @param append_to_data Logical, if \code{TRUE} (default), recoded variables
+#' will be appended to the data.
+#' @param log Logical, if \code{FALSE} (default), a log of recoding will
+#' not be printed.
+#' @param notes Logical, if \code{FALSE} (default), will not print the
+#' content inside the `Note`` column of the variable being recoded.
+#' @param var_labels labels vector to attach to variables in variables
+#' @param custom_function_path path to location of the function to load
+#' @param attach_data_name to attach name of database to end table
 #'
-#' @param dataSource A dataframe containing the variables to be recoded.
-#' @param variableDetails A dataframe containing the specifications (rules) for recoding.
-#' @param datasetName String, the name of the dataset containing the variables to be recoded.
-#' @param elseValue Value (string, number, integer, logical or NA) that is used to replace any values that are outside the specified ranges (no rules for recoding).
-#' @param appendToData Logical, if \code{TRUE} (default), recoded variables will be appended to the dataSource.
-#' @param log Logical, if \code{FALSE} (default), a log of recoding will not be printed.
-#' @param printNote Logical, if \code{FALSE} (default), will not print the content inside the `Note`` column of the variable beinng recoded.
-#' @param appendNonDBColumns Logical, if \code{FALSE} (default), will not append variables if missing in `dataSource`` but present in `variableDetails`.
-#' @param variables character vector containing variable names to recode or a variables csv containing additional variable info
-#' @param labels named character vector of variable and their label
+#' @return a dataframe that is recoded according to rules in variable_details.
 #'
-#' @return a dataframe that is recoded according to rules in variableDetails.
+#' @examples
+#' library(cchsflow)
+#' bmi2001 <- rec_with_table(
+#'   data = cchs2001_p, c(
+#'     "HWTGHTM",
+#'     "HWTGWTK", "HWTGBMI_der"
+#'   )
+#' )
+#'
+#' head(bmi2001)
+#'
+#' bmi2011_2012 <- rec_with_table(
+#'   data = cchs2011_2012_p,  c(
+#'     "HWTGHTM",
+#'     "HWTGWTK", "HWTGBMI_der"
+#'   )
+#' )
+#'
+#' tail(bmi2011_2012)
+#'
+#' combined_bmi <- bind_rows(bmi2001, bmi2011_2012)
+#' head(combined_bmi)
+#' tail(combined_bmi)
+#' @importFrom haven tagged_na
+#' @importFrom stringr str_match
+#' @importFrom dplyr rowwise select do
+#' @importFrom magrittr %>%
 #' @export
-RecWTable.default <-
-  function(dataSource,
-           variableDetails,
-           datasetName,
-           elseValue = NA,
-           appendToData = FALSE,
-           log = FALSE,
-           printNote = TRUE,
+
+rec_with_table <-
+  function(data,
            variables = NULL,
-           varLabels = NULL) {
+           database_name = NULL,
+           variable_details = NULL,
+           else_value = NA,
+           append_to_data = FALSE,
+           log = FALSE,
+           notes = TRUE,
+           var_labels = NULL,
+           custom_function_path = NULL,
+           attach_data_name = FALSE) {
+    # If custom Functions are passed create new environment and source
+    if (!is.null(custom_function_path)) {
+      source(custom_function_path)
+    }
+    if (is.null(variable_details)) {
+      message("No variable_details detected.
+              Loading cchsflow variable_details")
+      data(variable_details, package = "cchsflow", envir = environment())
+    }
+    if (is.null(variables)) {
+      message("No variables detected.
+              Loading cchsflow variables")
+      data(variables, package = "cchsflow", envir = environment())
+    }
+    if (is.null(database_name)) {
+      message("Using the passed data variable name as database_name")
+      database_name <- deparse(substitute(data))
+    }
     # ---- Step 1: Detemine if the passed data is a list or single database
-    appendNonDBColumns <- FALSE
-    if (class(dataSource) == "list" &&
-        length(datasetName) == length(dataSource)) {
-      for (dataName in datasetName) {
+    append_non_db_columns <- FALSE
+    if (class(data) == "list" &&
+        length(database_name) == length(data)) {
+      for (data_name in database_name) {
         # ---- Step 2A: Verify that the passed name exists in the passed data
-        
-        if (!is.null(dataSource[[dataName]])) {
-          dataSource[[dataName]] <-  RecodeCall(
+
+        if (!is.null(data[[data_name]])) {
+          data[[data_name]] <- recode_call(
             variables = variables,
-            dataSource = dataSource[[dataName]],
-            datasetName = datasetName,
-            printNote = printNote,
-            elseValue = elseValue,
-            variableDetails = variableDetails,
-            appendToData = appendToData,
-            appendNonDBColumns = appendNonDBColumns,
+            data = data[[data_name]],
+            database_name = database_name,
+            print_note = notes,
+            else_value = else_value,
+            variable_details = variable_details,
+            append_to_data = append_to_data,
+            append_non_db_columns = append_non_db_columns,
             log = log,
-            varLabels = varLabels
+            var_labels = var_labels
           )
-        } else{
+        } else {
           stop(
             paste(
               "The data",
-              dataName,
-              "is missing from the passed list please verify the names are correct in the dataSource list and the datasetName list"
+              data_name,
+              "is missing from the passed list please verify the names are
+              correct in the data list and the database_name list"
             )
           )
         }
       }
-      
-    } else if ("data.frame" %in% class(dataSource) &&
-               length(datasetName) == 1) {
-      dataSource <-  RecodeCall(
+    } else if ("data.frame" %in% class(data) &&
+               length(database_name) == 1) {
+      data <- recode_call(
         variables = variables,
-        dataSource = dataSource,
-        datasetName = datasetName,
-        printNote = printNote,
-        elseValue = elseValue,
-        variableDetails = variableDetails,
-        appendToData = appendToData,
-        appendNonDBColumns = appendNonDBColumns,
+        data = data,
+        database_name = database_name,
+        print_note = notes,
+        else_value = else_value,
+        variable_details = variable_details,
+        append_to_data = append_to_data,
+        append_non_db_columns = append_non_db_columns,
         log = log,
-        varLabels = varLabels
+        var_labels = var_labels
       )
-    } else{
+      if (attach_data_name) {
+        data[["data_name"]] <- database_name
+      }
+    } else {
       stop(
         paste(
-          "The passed number of data does not match the passed number of dataNames please verify that the number of databases matches number of passed names.
+          "The passed number of data does not match the passed number of
+          data_names. Please verify that the number of databases matches the number
+          of passed names.
           Aborting operation!"
         ),
         call. = FALSE
-        )
+      )
     }
-    
-    return(dataSource)
+
+    return(data)
   }
 
 # Creates inputs and runs recode functions
-RecodeCall <-
+recode_call <-
   function(variables,
-           dataSource,
-           datasetName,
-           printNote,
-           elseValue,
-           variableDetails,
-           appendToData ,
-           appendNonDBColumns,
+           data,
+           database_name,
+           print_note,
+           else_value,
+           variable_details,
+           append_to_data,
+           append_non_db_columns,
            log,
-           varLabels) {
+           var_labels) {
+    variable_details[[pkg.globals$argument.Variables]] <-
+      trimws(variable_details[[pkg.globals$argument.Variables]])
     if (!is.null(variables) && "data.frame" %in% class(variables)) {
-      variableDetails <-
-        UpdateVariableDetailsBasedOnVariableSheet(variableSheet = variables, variableDetails = variableDetails)
+      variables[[pkg.globals$argument.Variables]] <-
+        trimws(variables[[pkg.globals$argument.Variables]])
+      variable_details <-
+        update_variable_details_based_on_variable_sheet(
+          variable_sheet = variables,
+          variable_details = variable_details
+        )
     } else {
       if (!is.null(variables)) {
-        variableDetails <-
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variables,]
+        variable_details <-
+          variable_details[trimws(variable_details[[
+            pkg.globals$argument.Variables]]) %in% variables, ]
+        vars_being_recoded <-
+          as.character(unique(variable_details[[
+            pkg.globals$argument.Variables]]))
+        if (length(vars_being_recoded) != length(variables)) {
+          missing_vars <- setdiff(variables, vars_being_recoded)
+          warning(
+            paste(
+              missing_vars,
+              "is missing from variable details therefore cannot be recoded"
+            )
+          )
+        }
       }
-      if (is.null(variableDetails[[pkg.globals$argument.VariableLabel]])) {
-        variableDetails[[pkg.globals$argument.VariableLabel]] <- NA
+      if (is.null(variable_details[[pkg.globals$argument.VariableLabel]])) {
+        variable_details[[pkg.globals$argument.VariableLabel]] <- NA
       }
-      if (is.null(variableDetails[[pkg.globals$argument.VariableLabelShort]])) {
-        variableDetails[[pkg.globals$argument.VariableLabelShort]] <- NA
+      if (is.null(variable_details[[
+        pkg.globals$argument.VariableLabelShort]])) {
+        variable_details[[pkg.globals$argument.VariableLabelShort]] <- NA
       }
     }
-    if (!is.null(varLabels)) {
-      if (is.null(names(varLabels))) {
+    if (!is.null(var_labels)) {
+      if (is.null(names(var_labels))) {
         stop(
-          "The passed labels was not a named vector please follow the c(varName = varLalbel) format"
+          "The passed labels was not a named vector please follow
+          the c(var_name = varLalbel) format"
         )
-      } else{
-        if (is.factor(variableDetails[[pkg.globals$argument.VariableLabelShort]])) {
-          variableDetails[[pkg.globals$argument.VariableLabelShort]] <-
-            as.character(variableDetails[[pkg.globals$argument.VariableLabelShort]])
+      } else {
+        if (is.factor(variable_details[[
+          pkg.globals$argument.VariableLabelShort]])) {
+          variable_details[[pkg.globals$argument.VariableLabelShort]] <-
+            as.character(variable_details[[
+              pkg.globals$argument.VariableLabelShort]])
         }
-        for (varName in names(varLabels)) {
-          variableDetails[variableDetails[[pkg.globals$argument.Variables]] == varName, pkg.globals$argument.VariableLabelShort] <-
-            varLabels[[varName]]
+        for (var_name in names(var_labels)) {
+          variable_details[variable_details[[
+            pkg.globals$argument.Variables]] == var_name,
+            pkg.globals$argument.VariableLabelShort] <-
+            var_labels[[var_name]]
         }
       }
     }
-    
-    allPossibleVarNames <-
-      unique(as.character(variableDetails[[pkg.globals$argument.Variables]]))
-    allVariablesDetected <-
-      variableDetails[grepl(datasetName , variableDetails[[pkg.globals$argument.DatabaseStart]]),]
-    
-    recData <-
-      RecodeColumns(
-        dataSource = dataSource,
-        variablesToProcess = allVariablesDetected,
-        dataName = datasetName,
+
+    all_possible_var_names <-
+      unique(as.character(variable_details[[pkg.globals$argument.Variables]]))
+    all_variables_detected <-
+      variable_details[grepl(database_name, variable_details[[
+        pkg.globals$argument.DatabaseStart]]), ]
+
+    rec_data <-
+      recode_columns(
+        data = data,
+        variables_to_process = all_variables_detected,
+        data_name = database_name,
         log = log,
-        printNote = printNote,
-        elseDefault = elseValue
+        print_note = print_note,
+        else_default = else_value
       )
-    if (appendNonDBColumns) {
-      missedVariables <-
-        allPossibleVarNames[!allPossibleVarNames %in% unique(as.character(allVariablesDetected[, pkg.globals$argument.Variables]))]
-      for (missedVariableName in missedVariables) {
-        recData[[missedVariableName]] <- NA
+    if (append_non_db_columns) {
+      missed_variables <-
+        all_possible_var_names[!all_possible_var_names %in%
+                                 unique(as.character(
+                                   all_variables_detected[
+                                     ,
+                                     pkg.globals$argument.Variables]))]
+      for (missed_variable_name in missed_variables) {
+        rec_data[[missed_variable_name]] <- NA
       }
     }
-    
-    if (appendToData) {
-      dataSource <- cbind(dataSource, recData)
-    } else{
-      dataSource <- recData
+
+    if (append_to_data) {
+      data <- cbind(data, rec_data)
+    } else {
+      data <- rec_data
     }
-    
-    return(dataSource)
+
+    return(data)
   }
 
 #' @title Get Data Variable Name
 #'
-#' @name GetDataVariableName
+#' @name get_data_variable_name
 #'
-#' @description Retrieves the name of the column inside dataSource to use for calculations
+#' @description Retrieves the name of the column inside data to
+#' use for calculations
 #'
-#' @param dataName name of the database being checked
-#' @param rowBeingChecked the row from variable details that contains information on this variables
-#' @param variableBeingChecked the name of the recoded variable
+#' @param data_name name of the database being checked
+#' @param data database being checked
+#' @param row_being_checked the row from variable details that contains
+#' information on this variable
+#' @param variable_being_checked the name of the recoded variable
 #'
-#' @return the dataSource equivalant of variableBeingChecked
-GetDataVariableName <-
-  function(dataName,
+#' @return the data equivalent of variable_being_checked
+get_data_variable_name <-
+  function(data_name,
            data,
-           rowBeingChecked,
-           variableBeingChecked) {
-    dataVariableBeingChecked <- character()
-    varStartNames <-
-      as.character(rowBeingChecked[[pkg.globals$argument.VariableStart]])
+           row_being_checked,
+           variable_being_checked) {
+    data_variable_being_checked <- character()
+    var_start_names <-
+      as.character(row_being_checked[[pkg.globals$argument.VariableStart]])
     
-    if (grepl(dataName, varStartNames)) {
-      varStartNamesList <- as.list(strsplit(varStartNames, ",")[[1]])
+    if (grepl(data_name, var_start_names)) {
+      var_start_names_list <- as.list(strsplit(var_start_names, ",")[[1]])
       # Find exact var Name
-      for (varName in varStartNamesList) {
-        if (grepl(dataName, varName)) {
+      for (var_name in var_start_names_list) {
+        if (grepl(data_name, var_name)) {
           # seperate dataname from the var name
-          dataVariableBeingChecked <-
-            as.list(strsplit(varName, "::")[[1]])[[2]]
+          data_variable_being_checked <-
+            as.list(strsplit(var_name, "::")[[1]])[[2]]
         }
       }
-    } else if (grepl("\\[", varStartNames)) {
-      dataVariableBeingChecked <-
-        stringr::str_match(varStartNames, "\\[(.*?)\\]")[, 2]
-    } else{
+      # Check for default variable name
+    } else if (grepl("\\[", var_start_names)) {
+      # Strip default var name tags: []
+      data_variable_being_checked <-
+        str_match(var_start_names, "\\[(.*?)\\]")[, 2]
+    } else {
       stop(
         paste(
           "The row
           ",
           row,
           "for the variable",
-          variableBeingChecked,
+          variable_being_checked,
           "
           Does not contain the database being checked(",
-          dataName,
+          data_name,
           ") in its variable start the default is also missing.
           Please double check if this variable should have this",
-          dataName,
+          data_name,
           "included in its databaseStart"
-          )
         )
+      )
     }
-    
-    return(dataVariableBeingChecked)
+    data_variable_being_checked <- trimws(data_variable_being_checked)
+    return(data_variable_being_checked)
   }
 
-#' RecodeColumns
+#' recode_columns
 #'
-#' Recodes columns from passed row returns just table with those columns and same rows as the dataSource
+#' Recodes columns from passed row and returns just table with those columns
+#' and same rows as the data
 #'
-#' @param dataSource The source database
-#' @param variablesToProcess rows from variable details that are applicable to this DB
+#' @param data The source database
+#' @param variables_to_process rows from variable details that are applicable
+#' to this DB
+#' @param data_name Name of the database being passed
 #' @param log The option of printing log
-#' @param printNote the option of printing the note columns
+#' @param print_note the option of printing the note columns
+#' @param else_default default else value to use if no else is present
 #'
 #' @return Returns recoded and labeled data
-RecodeColumns <-
-  function(dataSource,
-           variablesToProcess,
-           dataName,
+recode_columns <-
+  function(data,
+           variables_to_process,
+           data_name,
            log,
-           printNote,
-           elseDefault) {
-    labelList <- list()
+           print_note,
+           else_default) {
+    # Split variables to process into recode map and func
+    map_variables_to_process <-
+      variables_to_process[grepl("map::", variables_to_process[[
+        pkg.globals$argument.CatValue]]), ]
+
+    func_variables_to_process <-
+      variables_to_process[grepl("Func::", variables_to_process[[
+        pkg.globals$argument.CatValue]]), ]
+
+    rec_variables_to_process <-
+      variables_to_process[(!grepl("Func::|map::", variables_to_process[[
+        pkg.globals$argument.CatValue]])) & (!grepl("DerivedVar::",
+                                                    variables_to_process[[
+          pkg.globals$argument.VariableStart]])), ]
+
+    label_list <- list()
     # Set interval if none is present
-    intervalPresent <- TRUE
-    validIntervals <- c("[,]", "[,)", "(,]")
-    intervalDefault <- "[,)"
-    recodedData <- dataSource[, 0]
-    if (is.null(variablesToProcess[[pkg.globals$argument.Interval]])) {
-      intervalPresent <- FALSE
+    interval_present <- TRUE
+    valid_intervals <- c("[,]", "[,)", "(,]")
+    interval_default <- "[,]"
+    recoded_data <- data[, 0]
+    if (is.null(rec_variables_to_process[[pkg.globals$argument.Interval]])) {
+      interval_present <- FALSE
     }
-    
-    # Loop through the rows
-    while (nrow(variablesToProcess) > 0) {
-      variableBeingChecked <-
-        as.character(variablesToProcess[1, pkg.globals$argument.Variables])
-      rowsBeingChecked <-
-        variablesToProcess[variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      variablesToProcess <-
-        variablesToProcess[!variablesToProcess[[pkg.globals$argument.Variables]] == variableBeingChecked,]
-      firstRow <- rowsBeingChecked[1, ]
+
+    # Loop through the rows of recode vars
+    while (nrow(rec_variables_to_process) > 0) {
+      variable_being_checked <-
+        as.character(rec_variables_to_process[1,
+                                              pkg.globals$argument.Variables])
+      rows_being_checked <-
+        rec_variables_to_process[rec_variables_to_process[[
+          pkg.globals$argument.Variables]] == variable_being_checked, ]
+      rec_variables_to_process <-
+        rec_variables_to_process[!rec_variables_to_process[[
+          pkg.globals$argument.Variables]] == variable_being_checked, ]
+      first_row <- rows_being_checked[1, ]
       # Check for varialbe existance in data
-      dataVariableBeingChecked <-
-        GetDataVariableName(
-          dataName = dataName,
-          rowBeingChecked = firstRow,
-          variableBeingChecked = variableBeingChecked,
-          data = dataSource
+      data_variable_being_checked <-
+        get_data_variable_name(
+          data_name = data_name,
+          row_being_checked = first_row,
+          variable_being_checked = variable_being_checked,
+          data = data
         )
-      if (is.null(dataSource[[dataVariableBeingChecked]])) {
+      if (is.null(data[[data_variable_being_checked]])) {
         warning(
           paste(
             "Data",
-            dataName,
+            data_name,
             "does not contain the variable",
-            dataVariableBeingChecked
+            data_variable_being_checked
           )
         )
-      } else{
+      } else {
         # Check for From column duplicates
-        allFromValuesForVariable <-
-          rowsBeingChecked[[pkg.globals$argument.From]]
-        if (length(unique(allFromValuesForVariable)) != length(allFromValuesForVariable)) {
-          for (singleFrom in allFromValuesForVariable) {
-            if (sum(allFromValuesForVariable == singleFrom) > 1) {
+        all_from_values_for_variable <-
+          rows_being_checked[[pkg.globals$argument.From]]
+        if (length(unique(
+          all_from_values_for_variable)) != length(
+            all_from_values_for_variable)) {
+          for (single_from in all_from_values_for_variable) {
+            # Check if value is repeated more then once
+            if (sum(all_from_values_for_variable == single_from) > 1) {
               stop(
                 paste(
-                  singleFrom,
+                  single_from,
                   "was detected more then once in",
-                  variableBeingChecked,
+                  variable_being_checked,
                   "please make sure only one from value is being recoded"
                 )
               )
             }
           }
         }
-        
+
         # Set factor for all recode values
-        labelList[[variableBeingChecked]] <- CreateLabelListElement(rowsBeingChecked)
-        elseValue <-
-          as.character(rowsBeingChecked[rowsBeingChecked[[pkg.globals$argument.From]] == "else", pkg.globals$argument.CatValue])
-        if (length(elseValue) == 1) {
-          elseValue <- RecodeVariableNAFormating(elseValue, labelList[[variableBeingChecked]]$type)
-          if (isEqual(elseValue, "copy")) {
-            dataVariableBeingChecked <-
-              GetDataVariableName(
-                dataName = dataName,
-                rowBeingChecked = firstRow,
-                variableBeingChecked = variableBeingChecked,
-                data = dataSource
-              )
-            recodedData[variableBeingChecked] <-
-              dataSource[dataVariableBeingChecked]
+        label_list[[variable_being_checked]] <-
+          create_label_list_element(rows_being_checked)
+        else_value <-
+          as.character(rows_being_checked[rows_being_checked[[
+            pkg.globals$argument.From]] == "else",
+            pkg.globals$argument.CatValue])
+        if (length(else_value) == 1 &&
+            !is_equal(else_value, "character(0)")) {
+          else_value <-
+            recode_variable_NA_formating(else_value, label_list[[
+              variable_being_checked]]$type)
+          if (is_equal(else_value, "copy")) {
+            recoded_data[variable_being_checked] <-
+              data[data_variable_being_checked]
           } else {
-            recodedData[variableBeingChecked] <- elseValue
+            recoded_data[variable_being_checked] <- else_value
           }
           # Catch multiple else rows
-        } else if (length(elseValue) > 1) {
+        } else if (length(else_value) > 1) {
           stop(
             paste(
-              variableBeingChecked,
+              variable_being_checked,
               " contains",
-              length(elseValue),
+              length(else_value),
               "rows of else only one else value is allowed"
             )
           )
         }
-        else{
-          recodedData[variableBeingChecked] <- elseDefault
+        else {
+          recoded_data[variable_being_checked] <- else_default
         }
-        rowsBeingChecked <-
-          rowsBeingChecked[!rowsBeingChecked[[pkg.globals$argument.From]] == "else",]
-        if (nrow(rowsBeingChecked) > 0) {
-          logTable <- rowsBeingChecked[, 0]
-          logTable$valueTo <- NA
-          logTable$From <- NA
-          logTable$rowsRecoded <- NA
-          levels(recodedData[[variableBeingChecked]]) <-
-            c(levels(recodedData[[variableBeingChecked]]), levels(rowsBeingChecked[[pkg.globals$argument.CatValue]]))
-          
-          for (row in 1:nrow(rowsBeingChecked)) {
-            rowBeingChecked <- rowsBeingChecked[row, ]
+        rows_being_checked <-
+          rows_being_checked[!rows_being_checked[[
+            pkg.globals$argument.From]] == "else", ]
+        if (nrow(rows_being_checked) > 0) {
+          log_table <- rows_being_checked[, 0]
+          log_table$value_to <- NA
+          log_table$From <- NA
+          log_table$rows_recoded <- NA
+          levels(recoded_data[[variable_being_checked]]) <-
+            c(levels(recoded_data[[variable_being_checked]]),
+              levels(rows_being_checked[[pkg.globals$argument.CatValue]]))
+
+          for (row in seq_len(nrow(rows_being_checked))) {
+            row_being_checked <- rows_being_checked[row, ]
             # If cat go check for label and obtain it
-            
+
             # regardless obtain unit and attach
-            
+
             # find var name for this database
-            dataVariableBeingChecked <-
-              GetDataVariableName(
-                dataName = dataName,
-                rowBeingChecked = rowBeingChecked,
-                variableBeingChecked = variableBeingChecked,
-                data = dataSource
+            data_variable_being_checked <-
+              get_data_variable_name(
+                data_name = data_name,
+                row_being_checked = row_being_checked,
+                variable_being_checked = variable_being_checked,
+                data = data
               )
-            
+
             # Recode the variable
-            fromValues <- list()
-            if (grepl(":", as.character(rowBeingChecked[[pkg.globals$argument.From]]))){
-            fromValues <-
-              strsplit(as.character(rowBeingChecked[[pkg.globals$argument.From]]), ":")[[1]]
-            }else {
-              # TODO find a more elagant way to handle in the future
-              fromValues[[1]] <- as.character(rowBeingChecked[[pkg.globals$argument.From]])
-              fromValues[[2]] <- fromValues[[1]]
+            from_values <- list()
+            if (grepl(":", as.character(row_being_checked[[
+              pkg.globals$argument.From]]))) {
+              from_values <-
+                strsplit(as.character(row_being_checked[[
+                  pkg.globals$argument.From]]), ":")[[1]]
+            } else {
+              temp_from <-
+                as.character(row_being_checked[[pkg.globals$argument.From]])
+              from_values[[1]] <- temp_from
+              from_values[[2]] <- from_values[[1]]
             }
-            valueRecorded <-
-              as.character(rowBeingChecked[[pkg.globals$argument.CatValue]])
-            if (intervalPresent) {
-              interval = as.character(rowBeingChecked[[pkg.globals$argument.Interval]])
-              if (!interval %in% validIntervals) {
-                interval <- intervalDefault
+            value_recorded <-
+              as.character(row_being_checked[[pkg.globals$argument.CatValue]])
+            if (interval_present) {
+              interval <- as.character(row_being_checked[[
+                pkg.globals$argument.Interval]])
+              if (!interval %in% valid_intervals) {
+                interval <- interval_default
               }
-              if (fromValues[[1]] == fromValues[[2]]) {
+              if (from_values[[1]] == from_values[[2]]) {
                 interval <- "[,]"
               }
-              validRowIndex <- CompareValueBasedOnInterval(
-                compareColumns = dataVariableBeingChecked,
-                dataSource = dataSource,
-                leftBoundary = fromValues[[1]],
-                rightBoundary = fromValues[[2]],
+              valid_row_index <- compare_value_based_on_interval(
+                compare_columns = data_variable_being_checked,
+                data = data,
+                left_boundary = from_values[[1]],
+                right_boundary = from_values[[2]],
                 interval = interval
               )
-            } else{
-              if (fromValues[[1]] == fromValues[[2]]) {
+            } else {
+              if (from_values[[1]] == from_values[[2]]) {
                 interval <- "[,]"
-              }else{
-                interval <- intervalDefault
+              } else {
+                interval <- interval_default
               }
-              validRowIndex <- CompareValueBasedOnInterval(
-                compareColumns = dataVariableBeingChecked,
-                dataSource = dataSource,
-                leftBoundary = fromValues[[1]],
-                rightBoundary = fromValues[[2]],
+              valid_row_index <- compare_value_based_on_interval(
+                compare_columns = data_variable_being_checked,
+                data = data,
+                left_boundary = from_values[[1]],
+                right_boundary = from_values[[2]],
                 interval = interval
               )
             }
             # Start construction of dataframe for log
-            logTable[row, "valueTo"] <- valueRecorded
-            logTable[row, "From"] <-
-              as.character(rowBeingChecked[[pkg.globals$argument.From]])
-            logTable[row, "rowsRecoded"] <-
-              sum(validRowIndex, na.rm = TRUE)
-            
-            valueRecorded <- RecodeVariableNAFormating(valueRecorded, labelList[[variableBeingChecked]]$type)
-            if (isEqual(valueRecorded, "copy")) {
-              valueRecorded <-
-                dataSource[validRowIndex, dataVariableBeingChecked]
+            log_table[row, "value_to"] <- value_recorded
+            log_table[row, "From"] <-
+              as.character(row_being_checked[[pkg.globals$argument.From]])
+            log_table[row, "rows_recoded"] <-
+              sum(valid_row_index, na.rm = TRUE)
+
+            value_recorded <-
+              recode_variable_NA_formating(value_recorded, label_list[[
+                variable_being_checked]]$type)
+            if (is_equal(value_recorded, "copy")) {
+              value_recorded <-
+                data[valid_row_index, data_variable_being_checked]
             }
-            recodedData[validRowIndex, variableBeingChecked] <-
-              valueRecorded
-            if (printNote &&
-                !is.null(rowBeingChecked[[pkg.globals$argument.Notes]]) &&
-                !isEqual(rowBeingChecked[[pkg.globals$argument.Notes]], "") &&
-                !is.na(rowBeingChecked[[pkg.globals$argument.Notes]])) {
-              print(paste("NOTE:", as.character(rowBeingChecked[[pkg.globals$argument.Notes]])))
+            recoded_data[valid_row_index, variable_being_checked] <-
+              value_recorded
+            if (print_note &&
+                !is.null(row_being_checked[[pkg.globals$argument.Notes]]) &&
+                !is_equal(row_being_checked[[pkg.globals$argument.Notes]],
+                          "") &&
+                !is.na(row_being_checked[[pkg.globals$argument.Notes]])) {
+              message("NOTE for ", variable_being_checked,
+                      ": ",
+                      as.character(row_being_checked[[
+                        pkg.globals$argument.Notes]]))
             }
           }
           # if log was requested print it
           if (log) {
-            print(
-              paste(
-                "The variable",
-                dataVariableBeingChecked,
-                "was recoded into",
-                variableBeingChecked,
-                "for the database",
-                dataName,
-                "the following recodes were made:"
-              )
+            message(
+              "The variable ",
+              data_variable_being_checked,
+              " was recoded into ",
+              variable_being_checked,
+              " for the database ",
+              data_name,
+              " the following recodes were made: "
             )
             # Reset rowCount to avoid confusion
-            rownames(logTable) <- NULL
-            print(logTable)
+            rownames(log_table) <- NULL
+            print(log_table)
           }
         }
-        
       }
     }
-    
+
+    # Process funcVars
+    while (nrow(func_variables_to_process) > 0) {
+      first_row <- func_variables_to_process[1, ]
+      first_row_variable_name <-
+        as.character(first_row[[pkg.globals$argument.Variables]])
+      # get name of var pass to
+      derived_return <-
+        recode_derived_variables(
+          variable_being_processed = first_row_variable_name,
+          recoded_data = recoded_data,
+          variables_to_process = func_variables_to_process,
+          log = log,
+          print_note = print_note,
+          else_default = else_default,
+          label_list = label_list,
+          var_stack = c()
+        )
+      label_list <- derived_return$label_list
+      recoded_data <- derived_return$recoded_data
+      func_variables_to_process <-
+        derived_return$variables_to_process
+    }
     # Populate data Labels
-    recodedData <-
-      LabelData(labelList = labelList, dataToLabel = recodedData)
-    
-    return(recodedData)
+    recoded_data <-
+      label_data(label_list = label_list, data_to_label = recoded_data)
+
+    return(recoded_data)
   }
 
 #' Compare Value Based On Interval
 #'
 #' Compare values on the scientific notation interval
 #'
-#' @param leftBoundary the min value
-#' @param rightBoundary the max value
-#' @param dataSource the data that contains values being compared
-#' @param compareColumns The columns inside dataSource being checked
+#' @param left_boundary the min value
+#' @param right_boundary the max value
+#' @param data the data that contains values being compared
+#' @param compare_columns The columns inside data being checked
 #' @param interval The scientific notation interval
 #'
-#' @return a boolean vector containing true for rows where the comparison is true
-CompareValueBasedOnInterval <-
-  function(leftBoundary,
-           rightBoundary,
-           dataSource,
-           compareColumns,
+#' @return a boolean vector containing true for rows where the
+#' comparison is true
+compare_value_based_on_interval <-
+  function(left_boundary,
+           right_boundary,
+           data,
+           compare_columns,
            interval) {
-    returnBoolean <- vector()
-    if (interval == "[,]") {
-      returnBoolean <-
-        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
-          as.numeric(leftBoundary) <= dataSource[[compareColumns]] &
-            dataSource[[compareColumns]] <= as.numeric(rightBoundary)
-        )]
-    } else if (interval == "[,)") {
-      returnBoolean <-
-        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
-          as.numeric(leftBoundary) <= dataSource[[compareColumns]] &
-            dataSource[[compareColumns]] < as.numeric(rightBoundary)
-        )]
-    } else if (interval == "(,]") {
-      returnBoolean <-
-        dataSource[[compareColumns]] %in% dataSource[[compareColumns]][which(
-          as.numeric(leftBoundary) < dataSource[[compareColumns]] &
-            dataSource[[compareColumns]] <= as.numeric(rightBoundary)
-        )]
-    } else{
-      stop("Invalid Argument was passed")
+    return_boolean <- vector()
+    if (suppressWarnings(is.na(as.numeric(left_boundary)))) {
+      return_boolean <-
+        data[[compare_columns]] %in% data[[
+          compare_columns]][
+            which(left_boundary == data[[compare_columns]])]
+    } else {
+      if (interval == "[,]") {
+        return_boolean <-
+          data[[compare_columns]] %in% data[[
+            compare_columns]][which(
+              as.numeric(left_boundary) <= data[[compare_columns]] &
+                data[[compare_columns]] <= as.numeric(right_boundary)
+            )]
+      } else if (interval == "[,)") {
+        return_boolean <-
+          data[[compare_columns]] %in% data[[
+            compare_columns]][which(
+              as.numeric(left_boundary) <= data[[compare_columns]] &
+                data[[compare_columns]] < as.numeric(right_boundary)
+            )]
+      } else if (interval == "(,]") {
+        return_boolean <-
+          data[[compare_columns]] %in% data[[
+            compare_columns]][which(
+              as.numeric(left_boundary) < data[[compare_columns]] &
+                data[[compare_columns]] <= as.numeric(right_boundary)
+            )]
+      } else {
+        stop("Invalid Argument was passed")
+      }
     }
-    
-    return(returnBoolean)
+
+    return(return_boolean)
   }
 
 # Parse out variables csv
-UpdateVariableDetailsBasedOnVariableSheet <-
-  function(variableSheet, variableDetails) {
+update_variable_details_based_on_variable_sheet <-
+  function(variable_sheet, variable_details) {
     # remove conflicting columns from variable details
-    variableDetails <-
-      variableDetails[, !(
-        names(variableDetails) %in% c(
+    variable_details <-
+      variable_details[, !(
+        names(variable_details) %in% c(
           pkg.globals$MSW.Variables.Columns.VariableType,
           pkg.globals$MSW.Variables.Columns.Label,
           pkg.globals$MSW.Variables.Columns.LabelLong,
@@ -527,8 +715,8 @@ UpdateVariableDetailsBasedOnVariableSheet <-
         )
       )]
     # Only keep the needed columns
-    variableSheet <-
-      variableSheet[, c(
+    variable_sheet <-
+      variable_sheet[, c(
         pkg.globals$MSW.Variables.Columns.Variable,
         pkg.globals$MSW.Variables.Columns.VariableType,
         pkg.globals$MSW.Variables.Columns.Label,
@@ -536,36 +724,201 @@ UpdateVariableDetailsBasedOnVariableSheet <-
         pkg.globals$MSW.Variables.Columns.Units
       )]
     # merge the labels and data
-    variableDetails <-
+    variable_details <-
       merge(
-        variableDetails,
-        variableSheet,
+        variable_details,
+        variable_sheet,
         by.x = pkg.globals$argument.Variables,
         by.y = pkg.globals$MSW.Variables.Columns.Variable,
         all.x = TRUE
       )
-    # remove variables not present in variableSheet
-    variableDetails <-
-      variableDetails[variableDetails[[pkg.globals$argument.Variables]] %in% variableSheet[[pkg.globals$MSW.Variables.Columns.Variable]],]
-    
-    return(variableDetails)
+    # remove variables not present in variable_sheet
+    variable_details <-
+      variable_details[variable_details[[pkg.globals$argument.Variables]] %in%
+                         variable_sheet[[
+                           pkg.globals$MSW.Variables.Columns.Variable]], ]
+
+    return(variable_details)
   }
 
-RecodeVariableNAFormating <- function(cellValue, varType) {
-  recodeValue <- NULL
-  if (grepl("NA", cellValue)) {
-    naValueList <- strsplit(cellValue, ":")[[1]]
-    if (isEqual(varType, pkg.globals$argument.CatType)) {
-      recodeValue <- paste("NA(", naValueList[[3]], ")", sep = "")
-    } else{
-      recodeValue <- haven::tagged_na(as.character(naValueList[[3]]))
+#' Recode NA formatting
+#' 
+#' Recodes the NA depending on the var type
+#' 
+#' @param cell_value The value inside the recTo column
+#' @param var_type the toType of a variable
+#' 
+#' @return an appropriately coded tagged NA
+recode_variable_NA_formating <- function(cell_value, var_type) {
+  recode_value <- NULL
+  if (grepl("NA", cell_value)) {
+    na_value_list <- strsplit(cell_value, ":")[[1]]
+    if (is_equal(var_type, pkg.globals$argument.CatType)) {
+      recode_value <- paste("NA(", na_value_list[[3]], ")", sep = "")
+    } else {
+      recode_value <- tagged_na(as.character(na_value_list[[3]]))
     }
-  } else{
-    if (!isEqual(varType, pkg.globals$argument.CatType) && !isEqual(cellValue, "copy")) {
-      cellValue <- as.numeric(cellValue)
+  } else {
+    if (!is_equal(var_type, pkg.globals$argument.CatType) &&
+        !is_equal(cell_value, "copy")) {
+      cell_value <- as.numeric(cell_value)
     }
-    recodeValue <- cellValue
+    recode_value <- cell_value
   }
-  
-  return(recodeValue)
+
+  return(recode_value)
 }
+
+recode_derived_variables <-
+  function(recoded_data,
+           variable_being_processed,
+           variables_to_process,
+           log,
+           print_note,
+           else_default,
+           label_list,
+           var_stack) {
+    if (nrow(variables_to_process) <= 0) {
+      stop(paste(
+        variable_being_processed,
+        "is missing from variable_details"
+      ))
+    }
+    var_stack <- c(var_stack, variable_being_processed)
+    # obtain rows to process and updated variables to Process
+    variable_rows <-
+      variables_to_process[variables_to_process[[
+        pkg.globals$argument.Variables]] == variable_being_processed, ]
+    variables_to_process <-
+      variables_to_process[variables_to_process[[
+        pkg.globals$argument.Variables]] != variable_being_processed, ]
+    for (row_num in seq_len(nrow(variable_rows))) {
+      # Check for presence of feeder variables in data and in the
+      # variable being processed stack
+      feeder_vars <-
+        as.list(strsplit(as.character(variable_rows[row_num, ][[
+          pkg.globals$argument.VariableStart]]), "::"))[[1]][[2]]
+      feeder_vars <- gsub("\\[|\\]", "", feeder_vars)
+      feeder_vars <- as.list(strsplit(feeder_vars, ","))[[1]]
+      feeder_vars <- sapply(feeder_vars, trimws)
+      used_feeder_vars <- feeder_vars
+      feeder_vars <- setdiff(feeder_vars, names(recoded_data))
+
+      # Check if the variable has a function to recode
+      non_func_missing_variables <-
+        setdiff(feeder_vars, unique(as.character(variables_to_process[[
+          pkg.globals$argument.Variables]])))
+      if (length(non_func_missing_variables) > 0) {
+        warning(
+          paste(
+            variable_being_processed,
+            "could not be derived because",
+            feeder_vars,
+            "was never specified nor is it a function variable,
+            therefore it was not recoded \n"
+          )
+        )
+        var_stack <-
+          var_stack[!(var_stack == variable_being_processed)]
+
+        return(
+          list(
+            var_stack = var_stack,
+            label_list = label_list,
+            recoded_data = recoded_data,
+            variables_to_process = variables_to_process
+          )
+        )
+      }
+      # Check for presense in var_stack
+      if (length(intersect(feeder_vars, var_stack)) > 0) {
+        conflict_vars <- intersect(feeder_vars, var_stack)
+        stop(
+          paste(
+            conflict_vars,
+            "is required to create",
+            variable_being_processed,
+            "but",
+            variable_being_processed,
+            "is needed to create",
+            conflict_vars
+          )
+        )
+      }
+
+      # Update var_stack and recurse to get the feeder vars
+      for (one_feeder in feeder_vars) {
+        # Need to check recoded data again in case a recursion added it
+        if (!one_feeder %in% names(recoded_data)) {
+          derived_return <-
+            recode_derived_variables(
+              variable_being_processed = one_feeder,
+              recoded_data = recoded_data,
+              variables_to_process = variables_to_process,
+              log = log,
+              print_note = print_note,
+              else_default = else_default,
+              label_list = label_list,
+              var_stack = var_stack
+            )
+          var_stack <- derived_return$var_stack
+          label_list <- derived_return$label_list
+          recoded_data <- derived_return$recoded_data
+          variables_to_process <-
+            derived_return$variables_to_process
+        }
+      }
+
+      # Obtain the function for each row
+      append(label_list, create_label_list_element(variable_rows))
+
+      row_being_checked <- variable_rows[row_num, ]
+      func_cell <-
+        as.character(row_being_checked[[pkg.globals$argument.CatValue]])
+      function_being_used <-
+        as.list(strsplit(func_cell, "::"))[[1]][[2]]
+
+      column_value <-
+        recoded_data %>%
+        rowwise() %>%
+        select(used_feeder_vars) %>%
+        do(
+          column_being_added = calculate_custom_function_row_value(
+            .,
+            variable_names = used_feeder_vars,
+            custom_function_name = function_being_used
+          )
+        )
+      # Set type of var
+      if (as.character(row_being_checked[[pkg.globals$argument.ToType]]) !=
+          pkg.globals$argument.CatType) {
+        column_value <- as.numeric(unlist(column_value[["column_being_added"]]))
+      }else{
+        column_value <- as.factor(unlist(column_value[["column_being_added"]]))
+      }
+      recoded_data[[variable_being_processed]] <-
+        column_value
+
+      var_stack <-
+        var_stack[!(var_stack == variable_being_processed)]
+    }
+
+    return(
+      list(
+        var_stack = var_stack,
+        label_list = label_list,
+        recoded_data = recoded_data,
+        variables_to_process = variables_to_process
+      )
+    )
+  }
+calculate_custom_function_row_value <-
+  function(row_values,
+           variable_names,
+           custom_function_name) {
+    row_values <- unname(row_values)
+    custom_function_return_value <-
+      do.call(get(custom_function_name), row_values)
+
+    return(custom_function_return_value)
+  }

@@ -1,91 +1,139 @@
-#' Summary Data Long Table
-#'
-#' Creates a Long table to summarise data from multiple tables in one convenient table.
-#' Its primary use is to convert Table one tables into a long table.
-#' The optional arguments allow appending to long table as well as addition of labels
-#'
-#' @param tableOne the table one object to be converted into a long table
-#' @param longTable the optional long table to append the table one information to
-#' @param bllFlowModel The optional bllFlow object containing labels and extra information on the variables
-#' @return Returns the long table or the bllFlowModel with long table attached
-#'
-#' @examples
-#' library(survival)
-#' data(pbc)
-#' pbc$exp_percentile <- runif(nrow(pbc), 0, 1)
-#' pbc$ageGroup <- ifelse(pbc$age < 20, 1,
-#' ifelse(pbc$age >= 20 & pbc$age < 40, 2,
-#' ifelse(pbc$age >= 40 & pbc$age < 80, 3,
-#' ifelse(pbc$age >= 80, 4, NA))))
-#'
-#' library(bllflow)
-#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
-#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
-#'
-#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
-#' pbcSummaryTableNoLabels <- SummaryDataLong(pbcTableOne)
-#' pbcLongTableWithLabel <- SummaryDataLong(pbcTableOne, bllFlowModel = pbcModel, longTable = pbcSummaryTableNoLabels)
-#'@export
-SummaryDataLong <-
-  function(tableOne,
-           longTable = NULL,
-           bllFlowModel = NULL) {
-    if (is.null(tableOne) & is.null(longTable)) {
-      warning("No table one or long table was passed to SummaryDataLong",
-              call. = FALSE)
-    }
-    if (is.null(longTable)) {
-      longTable <- data.frame(stringsAsFactors = FALSE)
-      longTable[[pkg.globals$LongTable.VariableCategory]] <-
-        character()
-      longTable[[pkg.globals$LongTable.Variable]] <- character()
-      longTable[[pkg.globals$LongTable.Prevalence]] <-  numeric()
-      longTable[[pkg.globals$LongTable.Frequency]] <-  numeric()
-      longTable[[pkg.globals$LongTable.NMissing]] <-  numeric()
-      longTable[[pkg.globals$LongTable.Mean]] <-  numeric()
-      longTable[[pkg.globals$LongTable.SD]] <-  numeric()
-      longTable[[pkg.globals$LongTable.Percentile25]] <-  numeric()
-      longTable[[pkg.globals$LongTable.Percentile75]] <-  numeric()
-    } else{
-      longTable <- longTable[[pkg.globals$LongTable.LongTable]]
-    }
-    returnTable <-
-      AddToLongTable(tableOne, longTable, bllFlowModel[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
-    if (!pkg.globals$LongTable.ClassName %in% class(returnTable)) {
-      class(returnTable) <-
-        append(class(returnTable), pkg.globals$LongTable.ClassName)
-    }
-    returnTable <- unique(returnTable)
-    returnSummaryData <- list(summaryData = returnTable)
-    class(returnSummaryData) <- "SummaryData"
-    
-    return(returnSummaryData)
-    
-  }
+
 
 #' Create Table One
 #'
-#' Creates Table One using the tableone package
+#' Creates Table One using the tableone package. If a bllflow object is passed a custom function
+#' then extracts the necessary data for tableone call from the object avoiding unnecessary arguments.
+#'
+#' @param x Object to retrieve variables from
+#' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
 #' @export
 CreateTableOne <- function(x = NULL, ...) {
   UseMethod("CreateTableOne", x)
 }
 
-#' Create Table One using BLLFlow Object
+#' Create Table One using bllflow Object
 #'
-#' Creates table one using the information present in the passed bllFlow object
+#' Creates table one using the information present in the passed bllflow object
+#' specifically uses working data as the data,
 #' additional arguments can be passed to create a specific table one.
 #' However if no optional args are passed the variable info stored in variables MSW is used.
 #'
-#' @param bllFlowModel The bllflow object
-#' @param vars The optional vars to use in creation of table one if no vars are passed then vars in MSW variables is used
-#' @param strata The optional strata to use in creation of table one if no strata is passed no strata is used
-#' @param factorVars The optional factorVars (categorical variables) used in creation of table one if nothing is passed
+#' @param x The bllflow object
+#' @param vars The optional vars to use in creation of tableone if no vars are passed then vars in MSW variables is used
+#' @param strata The optional strata to use in creation of tableone if no strata is passed no strata is used
+#' @param factor_vars The optional factor_vars (categorical variables) used in creation of tableone if nothing is passed
 #' the MSW variables sheet is used to determine variable types
+#' @param select_role The optional argument that specifies the role of the variables to pass to tableone
+#' @param ... Additional arguments to pass to the tableone::CreateTableOne function call
 #'
-#' @return returns a table one tableOne object
+#' @return returns a table one \href{https://cran.r-project.org/web/packages/tableone/index.html}{tableone} object
+#'
+#' @examples
+#' library(bllflow)
+#' bllflow_object <- build_bllflow(variables = cchsflow::variables,
+#' variable_details = cchsflow::variable_details)
+#' cchs2001 <- cchsflow::rec_with_table(cchsflow::cchs2001_p, database_name = "cchs2001_p")
+#' cchs2003 <- cchsflow::rec_with_table(cchsflow::cchs2003_p, database_name = "cchs2003_p")
+#' cchs2005 <- cchsflow::rec_with_table(cchsflow::cchs2005_p, database_name = "cchs2005_p")
+#' cchs2007_2008_p <- cchsflow::rec_with_table(cchsflow::cchs2007_2008_p, database_name = "cchs2007_2008_p")
+#' cchs2009_2010_p <- cchsflow::rec_with_table(cchsflow::cchs2009_2010_p, database_name = "cchs2009_2010_p")
+#' cchs2011_2012_p <- cchsflow::rec_with_table(cchsflow::cchs2011_2012_p, database_name = "cchs2011_2012_p")
+#' cchs2013_2014_p <- cchsflow::rec_with_table(cchsflow::cchs2013_2014_p, database_name = "cchs2013_2014_p")
+#'
+#' combined_data <- dplyr::bind_rows(cchs2001, cchs2003, cchs2005, cchs2007_2008_p, cchs2009_2010_p, cchs2011_2012_p, cchs2013_2014_p)
+#'
+#' bllflow_object$working_data <- combined_data
+#'
+#' test_table <- CreateTableOne(bllflow_object)
+#'
+#' @importFrom tableone CreateTableOne
+#' @importFrom sjlabelled get_labels
+#' @export
+CreateTableOne.BLLFlow <- function(x,
+                                   vars = NULL,
+                                   strata = NULL,
+                                   factor_vars = NULL,
+                                   select_role = NULL,
+                                   ...) {
+  bll_flow_model <- x
+  # ----Step 1: pull from variables in bll_flow_model ----
+  variables_sheet <-
+    bll_flow_model[[pkg.globals$bllFlowContent.Variables]]
+  if (is.null(vars)) {
+    if (is.null(select_role)) {
+      vars <-
+        as.character(variables_sheet[[pkg.globals$MSW.Variables.Columns.Variable]])
+    } else {
+      vars <-
+        as.character(variables_sheet[grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+    }
+    vars <- trimws(vars)
+  }
+  if (is.null(factor_vars)) {
+    if (is.null(select_role)) {
+      factor_vars <-
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]],
+                                              pkg.globals$ddiValueName.Categorical), pkg.globals$MSW.Variables.Columns.Variable])
+    } else {
+      factor_vars <-
+        as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]],
+                                              pkg.globals$ddiValueName.Categorical) &
+                                       grepl(select_role, variables_sheet[[pkg.globals$argument.Role]]), pkg.globals$MSW.Variables.Columns.Variable])
+    }
+    factor_vars <- trimws(factor_vars)
+  }
+  dropped_vars <-
+    vars[!(vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]]))]
+  if (length(dropped_vars) > 0) {
+    message(paste(dropped_vars, "were not present in working data"))
+  }
+  dropped_factor <-
+    factor_vars[!(factor_vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]]))]
+  if (length(dropped_factor) > 0) {
+    message(paste(dropped_factor, "were not present in working data"))
+  }
+  vars <-
+    vars[vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])]
+  factor_vars <-
+    factor_vars[factor_vars %in% colnames(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]])]
+  # ----Step 2: Create the tableone ----
+  if (is.null(strata)) {
+    final_table <-
+      tableone::CreateTableOne(data = bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]],
+                               vars = vars,
+                               factorVars = factor_vars,
+                               ...)
+  } else {
+    final_table <-
+      tableone::CreateTableOne(
+        data = bll_flow_model[[pkg.globals$bllFlowContent.Data]],
+        vars = vars,
+        factorVars = factor_vars,
+        strata = strata,
+        ...
+      )
+  }
+  # Appends valLabels to metadata of tableone for val printing
+  valLabels <-
+    sjlabelled::get_labels(bll_flow_model[[pkg.globals$bllFlowContent.WorkingData]][vars], values = "n")
+  final_table$MetaData[["valLabels"]] <- valLabels
+  return(final_table)
+}
+
+#' @export
+CreateTableOne.default <- function(...) {
+  tableone::CreateTableOne(...)
+}
+
+#' Table one long
+#'
+#' Creates a Long table to summarize data from Table one tables.
+#'
+#' @param table_one the table one object to be converted into a long table
+#' @param bll_flow_model The optional bllFlow object containing labels and extra information on the variables
+#'
+#' @return Returns the long table
 #'
 #' @examples
 #' library(survival)
@@ -96,294 +144,319 @@ CreateTableOne <- function(x = NULL, ...) {
 #' ifelse(pbc$age >= 40 & pbc$age < 80, 3,
 #' ifelse(pbc$age >= 80, 4, NA))))
 #'
-#' library(bllflow)
-#' variablesSheet <- read.csv(system.file("extdata", "PBC-variables.csv", package="bllflow"))
-#' variablesDetailsSheet <- read.csv(system.file("extdata", "PBC-variableDetails.csv", package = "bllflow"))
-#' ddi <- ReadDDI(system.file("extdata", '', package = "bllflow"),"pbcDDI.xml")
-#' pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet, ddi)
 #'
-#' pbcTableOne <- CreateTableOne(pbcModel, strata = "edema")
-#'
+#' pbc_table_one <- CreateTableOne(data = pbc, strata = "edema")
+#' pbc_summary_table<- table_one_long(pbc_table_one)
 #' @export
-CreateTableOne.BLLFlow <- function(bllFlowModel,
-                                   vars = NULL,
-                                   strata = NULL,
-                                   factorVars = NULL) {
-  # ----Step 1: pull from variables in bllFlowModel ----
-  variablesSheet <-
-    bllFlowModel[[pkg.globals$bllFlowContent.Variables]]
-  if (is.null(vars)) {
-    vars <-
-      as.character(bllFlowModel[[pkg.globals$bllFlowContent.Variables]][, pkg.globals$MSW.Variables.Columns.Variable])
+table_one_long <-
+  function(table_one, bll_flow_model = NULL) {
+    long_table <- data.frame()
+    if (is.null(table_one)) {
+      warning("No table one was passed to table_one_long",
+              call. = FALSE)
+    }
+    long_table <- data.frame(stringsAsFactors = FALSE)
+    long_table[[pkg.globals$LongTable.VariableCategory]] <-
+      character()
+    long_table[[pkg.globals$LongTable.Variable]] <- character()
+    long_table[[pkg.globals$LongTable.Prevalence]] <-  numeric()
+    long_table[[pkg.globals$LongTable.Frequency]] <-  numeric()
+    long_table[[pkg.globals$LongTable.NMissing]] <-  numeric()
+    long_table[[pkg.globals$LongTable.Mean]] <-  numeric()
+    long_table[[pkg.globals$LongTable.SD]] <-  numeric()
+    long_table[[pkg.globals$LongTable.Percentile25]] <-  numeric()
+    long_table[[pkg.globals$LongTable.Percentile75]] <-  numeric()
+    
+    return_table <-
+      add_to_long_table(table_one, long_table, bll_flow_model[[pkg.globals$bllFlowContent.PopulatedVariableDetails]])
+    if (!pkg.globals$LongTable.ClassName %in% class(return_table)) {
+      class(return_table) <-
+        append(class(return_table), pkg.globals$LongTable.ClassName)
+    }
+    return_table <- unique(return_table)
+    return_summary_data <- list(summary_data = return_table)
+    class(return_summary_data) <- "SummaryData"
+    
+    return(return_summary_data)
+    
   }
-  if (is.null(factorVars)) {
-    factorVars <-
-      as.character(variablesSheet[isEqual(variablesSheet[[pkg.globals$MSW.Variables.Columns.VariableType]], pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
-  }
-  
-  # ----Step 2: Create the tableone ----
-  if (is.null(strata)) {
-    finalTable <-
-      tableone::CreateTableOne(data = bllFlowModel[[pkg.globals$bllFlowContent.Data]],
-                               vars = vars,
-                               factorVars = factorVars)
-  } else{
-    finalTable <-
-      tableone::CreateTableOne(
-        data = bllFlowModel[[pkg.globals$bllFlowContent.Data]],
-        vars = vars,
-        factorVars = factorVars,
-        strata = strata
-      )
-  }
-  
-  return(finalTable)
-}
-
-#' @export
-CreateTableOne.default <- tableone::CreateTableOne
 
 # Function to create a long table one for one tableOne
-AddToLongTable <-
-  function(passedTable, longTable, variableDetails) {
+add_to_long_table <-
+  function(passed_table,
+           long_table,
+           variable_details) {
     # ----Step 1: Populate long table from cont and cat tableone tables ----
     # Call Cont table extraction if tableOne contains ContTable
-    returnedLongTables <- list()
-    # tableCount is used to populate list and avoid list append issues
-    tableCount <- 0
-    if (!is.null(passedTable$ContTable)) {
-      dimNames <- attr(passedTable$ContTable, "dimnames")
-      strataValues <- CleanStrataValues(dimNames)
-      tableCount <- tableCount + 1
-      contTableLongTable <-
-        ExtractDataFromContTable(
-          passedTable$ContTable,
+    returned_long_tables <- list()
+    # table_count is used to populate list and avoid list append issues
+    table_count <- 0
+    if (!is.null(passed_table$ContTable)) {
+      dim_names <- attr(passed_table$ContTable, "dimnames")
+      strata_values <- clean_strata_values(dim_names)
+      table_count <- table_count + 1
+      cont_table_long_table <-
+        extract_data_from_cont_table(
+          passed_table$ContTable,
           attr(
-            passedTable$ContTable,
+            passed_table$ContTable,
             pkg.globals$tableOne.StrataVarName
           ),
-          strataValues,
-          longTable,
-          variableDetails
+          strata_values,
+          long_table,
+          variable_details
         )
-      returnedLongTables[[tableCount]] <- contTableLongTable
+      returned_long_tables[[table_count]] <- cont_table_long_table
     }
     
     # Call Cat table extraction if tableOne contains CatTable
-    if (!is.null(passedTable$CatTable)) {
-      dimNames <- attr(passedTable$CatTable, "dimnames")
-      strataValues <- CleanStrataValues(dimNames)
-      tableCount <- tableCount + 1
-      catTableLongTable <-
-        ExtractDataFromCatTable(
-          passedTable$CatTable,
+    if (!is.null(passed_table$CatTable)) {
+      dim_names <- attr(passed_table$CatTable, "dimnames")
+      strata_values <- clean_strata_values(dim_names)
+      table_count <- table_count + 1
+      cat_table_long_table <-
+        extract_data_from_cat_table(
+          passed_table$CatTable,
           attr(
-            passedTable$CatTable,
+            passed_table$CatTable,
             pkg.globals$tableOne.StrataVarName
           ),
-          strataValues,
-          longTable,
-          variableDetails
+          strata_values,
+          long_table,
+          variable_details
         )
-      returnedLongTables[[tableCount]] <- catTableLongTable
+      returned_long_tables[[table_count]] <- cat_table_long_table
     }
     
     # ----Step 2: Add any missing columns to the newly created tables----
-    for (tableToAppend in returnedLongTables) {
-      for (columnMissing in colnames(longTable)) {
-        if (!columnMissing %in% colnames(tableToAppend)) {
-          tableToAppend[[columnMissing]] <- NA
+    for (table_to_append in returned_long_tables) {
+      for (column_missing in colnames(long_table)) {
+        if (!column_missing %in% colnames(table_to_append)) {
+          table_to_append[[column_missing]] <- NA
         }
       }
       # synchronizing columns to avoid binding issues
-      for (columnMissing in colnames(tableToAppend)) {
-        if (!columnMissing %in% colnames(longTable)) {
+      for (column_missing in colnames(table_to_append)) {
+        if (!column_missing %in% colnames(long_table)) {
           # in case of zero row table columns need to be declared in columns <- dataType()
           # Set data type of missing column to type of append table
-          if (nrow(longTable) == 0) {
-            class(longTable[[columnMissing]]) <-
-              class(tableToAppend[[columnMissing]])
+          if (nrow(long_table) == 0) {
+            class(long_table[[column_missing]]) <-
+              class(table_to_append[[column_missing]])
           } else {
-            longTable[[columnMissing]] <- NA
+            long_table[[column_missing]] <- NA
           }
         }
       }
       
-      longTable <-
-        rbind(longTable, tableToAppend,  stringsAsFactors = FALSE)
+      long_table <-
+        rbind(long_table, table_to_append,  stringsAsFactors = FALSE)
     }
     
-    return(longTable)
+    return(long_table)
   }
 
 # Create long table from contTable
-ExtractDataFromContTable <-
-  function(contTable,
-           strataName,
-           strataValues,
-           longTable,
-           variableDetails) {
-    strataSplitName <- character()
+extract_data_from_cont_table <-
+  function(cont_table,
+           strata_name,
+           strata_values,
+           long_table,
+           variable_details) {
+    strata_split_name <- character()
     
     # ----Step 1: Split the strata name into the two variables ----
-    if (!is.null(strataName)) {
-      strataSplitName <-
-        unlist(strsplit(as.character(strataName), split = ":"))
+    if (!is.null(strata_name)) {
+      strata_split_name <-
+        unlist(strsplit(as.character(strata_name), split = ":"))
     } else{
-      strataSplitName <- strataName
+      strata_split_name <- strata_name
     }
     
     # ----Step 2: Add columns to long table
-    longTableRows <- data.frame()
+    long_table_rows <- data.frame()
     
     # loop through each strata columns
     # ----Step 3: Extract information for each new row of the longtable ----
-    for (strataIndex in 1:length(contTable)) {
-      variables <- (row.names(contTable[[strataIndex]]))
-      for (row in 1:nrow(contTable[[strataIndex]])) {
-        strataSplitValues <-
-          unlist(strsplit(as.character(strataValues[[strataIndex]]), split = ":"))
+    for (strata_index in 1:length(cont_table)) {
+      variables <- (row.names(cont_table[[strata_index]]))
+      for (row in 1:nrow(cont_table[[strata_index]])) {
+        strata_split_values <-
+          unlist(strsplit(as.character(strata_values[[strata_index]]), split = ":"))
         # extract all the information for that row
-        num <- contTable[[strataIndex]][row, pkg.globals$tableOne.N]
-        nMiss <-
-          contTable[[strataIndex]][row, pkg.globals$tableOne.Miss]
-        rowMean <-
-          contTable[[strataIndex]][row, pkg.globals$tableOne.Mean]
-        rowSD <-
-          contTable[[strataIndex]][row, pkg.globals$tableOne.SD]
-        rowPercentile25 <-
-          contTable[[strataIndex]][row, pkg.globals$tableOne.p25]
-        rowPercentile75 <-
-          contTable[[strataIndex]][row, pkg.globals$tableOne.p75]
+        num <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.N]
+        n_miss <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.Miss]
+        row_mean <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.Mean]
+        row_SD <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.SD]
+        row_percentile25 <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.p25]
+        row_percentile75 <-
+          cont_table[[strata_index]][row, pkg.globals$tableOne.p75]
         
         # create the row to add to tableOne Long
-        groupByList <- list()
-        if (length(strataSplitName) > 0) {
-          groupByList <-
-            FillInGroupByColumns(strataSplitName,
-                                 strataSplitValues,
-                                 groupByList,
-                                 variableDetails)
+        group_by_list <- list()
+        if (length(strata_split_name) > 0) {
+          group_by_list <-
+            fill_in_group_by_columns(strata_split_name,
+                                     strata_split_values,
+                                     group_by_list,
+                                     variable_details)
         }
         
         # ----Step 4: Create long table row ----
-        longTableRow <- list()
-        longTableRow[[pkg.globals$LongTable.VariableCategory]] <- NA
-        longTableRow[[pkg.globals$LongTable.Variable]] <-
+        long_table_row <- list()
+        long_table_row[[pkg.globals$LongTable.VariableCategory]] <-
+          NA
+        long_table_row[[pkg.globals$LongTable.Variable]] <-
           variables[[row]]
-        longTableRow[[pkg.globals$LongTable.Prevalence]] <-  NA
-        longTableRow[[pkg.globals$LongTable.Frequency]] <-  num
-        longTableRow[[pkg.globals$LongTable.NMissing]] <-  nMiss
-        longTableRow[[pkg.globals$LongTable.Mean]] <-  rowMean
-        longTableRow[[pkg.globals$LongTable.SD]] <-  rowSD
-        longTableRow[[pkg.globals$LongTable.Percentile25]] <-
-          rowPercentile25
-        longTableRow[[pkg.globals$LongTable.Percentile75]] <-
-          rowPercentile75
-        longTableRow <- append(longTableRow, groupByList)
+        long_table_row[[pkg.globals$LongTable.Prevalence]] <-  NA
+        long_table_row[[pkg.globals$LongTable.Frequency]] <-  num
+        long_table_row[[pkg.globals$LongTable.NMissing]] <-  n_miss
+        long_table_row[[pkg.globals$LongTable.Mean]] <-  row_mean
+        long_table_row[[pkg.globals$LongTable.SD]] <-  row_SD
+        long_table_row[[pkg.globals$LongTable.Percentile25]] <-
+          row_percentile25
+        long_table_row[[pkg.globals$LongTable.Percentile75]] <-
+          row_percentile75
+        long_table_row <- append(long_table_row, group_by_list)
         
         # ----Step 5: Clean the row
-        for (eachElementIndex in 1:length(longTableRow)) {
+        for (each_element_index in 1:length(long_table_row)) {
           # remove empty classes to avoid bind conflicts
           # example character(0)
-          if (length(longTableRow[[eachElementIndex]]) == 0) {
-            longTableRow[[eachElementIndex]] <- NA
+          if (length(long_table_row[[each_element_index]]) == 0) {
+            long_table_row[[each_element_index]] <- NA
           }
         }
         
         # ----Step 6: Add row to the rest of the rows----
-        longTableRows <-
-          rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
+        long_table_rows <-
+          rbind(long_table_rows, long_table_row,  stringsAsFactors = FALSE)
       }
     }
     
-    return(longTableRows)
+    return(long_table_rows)
   }
 
 # Create long table from CatTable
-ExtractDataFromCatTable <-
-  function(catTable,
-           strataName,
-           strataValues,
-           longTable,
-           variableDetails) {
+extract_data_from_cat_table <-
+  function(cat_table,
+           strata_name,
+           strata_values,
+           long_table,
+           variable_details) {
     # ----Step 1: Split the strata name into the two variables ----
-    variablesChecked <- 0
-    varNames <- attr(catTable[[1]], "names")
-    strataSplitName <-
-      unlist(strsplit(as.character(strataName), split = ":"))
+    variables_checked <- 0
+    var_names <- attr(cat_table[[1]], "names")
+    strata_split_name <-
+      unlist(strsplit(as.character(strata_name), split = ":"))
     # Adds group by columns not found in the long table
     
     # ----Step 2: Add columns to long table
-    longTableRows <- data.frame()
+    long_table_rows <- data.frame()
     
     # ----Step 3: Extract information for each new row of the longtable ----
-    for (strataCounter in 1:length(catTable)) {
-      strataSplitValues <-
-        unlist(strsplit(as.character(strataValues[[strataCounter]]), split = ":"))
+    for (strata_counter in 1:length(cat_table)) {
+      strata_split_values <-
+        unlist(strsplit(as.character(strata_values[[strata_counter]]), split = ":"))
       # Loop through the tables of each variable
-      for (selectedVariableTable in catTable[[strataCounter]]) {
+      for (selected_variable_table in cat_table[[strata_counter]]) {
         # Used to specify the variable being writen
-        variablesChecked <- variablesChecked + 1
+        variables_checked <- variables_checked + 1
         
         # Loop through the levels of each variable
-        for (row in 1:nrow(selectedVariableTable)) {
-          nMiss <- selectedVariableTable[row, pkg.globals$tableOne.Miss]
+        for (row in 1:nrow(selected_variable_table)) {
+          n_miss <- selected_variable_table[row, pkg.globals$tableOne.Miss]
           frequency <-
-            selectedVariableTable[row, pkg.globals$tableOne.Freq]
-          levName <-
-            selectedVariableTable[row, pkg.globals$tableOne.Level]
+            selected_variable_table[row, pkg.globals$tableOne.Freq]
+          lev_name <-
+            selected_variable_table[row, pkg.globals$tableOne.Level]
           prevalence <-
-            selectedVariableTable[row, pkg.globals$tableOne.Percent]
-          groupByList <- list()
-          if (length(strataSplitName) > 0) {
-            groupByList <-
-              FillInGroupByColumns(strataSplitName,
-                                   strataSplitValues,
-                                   groupByList,
-                                   variableDetails)
-            if (!is.null(variableDetails)) {
-              groupByList[[pkg.globals$LongTable.VariableCategoryLabel]] <-
-                variableDetails[isEqual(variableDetails[[pkg.globals$argument.VariableStart]], varNames[[variablesChecked]]) &
-                                  isEqual(variableDetails[[pkg.globals$argument.CatStartValue]], as.character(levName)), pkg.globals$argument.CatStartLabel]
+            selected_variable_table[row, pkg.globals$tableOne.Percent]
+          group_by_list <- list()
+          if (length(strata_split_name) > 0) {
+            group_by_list <-
+              fill_in_group_by_columns(strata_split_name,
+                                       strata_split_values,
+                                       group_by_list,
+                                       variable_details)
+            if (!is.null(variable_details)) {
+              group_by_list[[pkg.globals$LongTable.VariableCategoryLabel]] <-
+                variable_details[is_equal(variable_details[[pkg.globals$argument.VariableStart]], var_names[[variables_checked]]) &
+                                   is_equal(variable_details[[pkg.globals$argument.CatStartValue]], as.character(lev_name)), pkg.globals$argument.CatStartLabel]
               # If empty add NA
-              if (length(groupByList[[pkg.globals$LongTable.VariableCategoryLabel]]) == 0) {
-                groupByList[[pkg.globals$LongTable.VariableCategoryLabel]] <- NA
+              if (length(group_by_list[[pkg.globals$LongTable.VariableCategoryLabel]]) == 0) {
+                group_by_list[[pkg.globals$LongTable.VariableCategoryLabel]] <- NA
               }
             }
           }
-          
+
           # ----Step 4: Create long table row ----
-          longTableRow <- list()
-          longTableRow[[pkg.globals$LongTable.VariableCategory]] <-
-            levName
-          longTableRow[[pkg.globals$LongTable.Variable]] <-
-            varNames[variablesChecked]
-          longTableRow[[pkg.globals$LongTable.Prevalence]] <-
+          long_table_row <- list()
+          long_table_row[[pkg.globals$LongTable.VariableCategory]] <-
+            lev_name
+          long_table_row[[pkg.globals$LongTable.Variable]] <-
+            var_names[variables_checked]
+          long_table_row[[pkg.globals$LongTable.Prevalence]] <-
             prevalence
-          longTableRow[[pkg.globals$LongTable.Frequency]] <-
+          long_table_row[[pkg.globals$LongTable.Frequency]] <-
             frequency
-          longTableRow[[pkg.globals$LongTable.NMissing]] <-  nMiss
-          longTableRow[[pkg.globals$LongTable.Mean]] <-  NA
-          longTableRow[[pkg.globals$LongTable.SD]] <-  NA
-          longTableRow[[pkg.globals$LongTable.Percentile25]] <-  NA
-          longTableRow[[pkg.globals$LongTable.Percentile75]] <-  NA
-          longTableRow <- append(longTableRow, groupByList)
-          
+          long_table_row[[pkg.globals$LongTable.NMissing]] <-
+            n_miss
+          long_table_row[[pkg.globals$LongTable.Mean]] <-  NA
+          long_table_row[[pkg.globals$LongTable.SD]] <-  NA
+          long_table_row[[pkg.globals$LongTable.Percentile25]] <-
+            NA
+          long_table_row[[pkg.globals$LongTable.Percentile75]] <-
+            NA
+          long_table_row <- append(long_table_row, group_by_list)
+
           # ----Step 5: Clean the row
-          for (eachElementIndex in 1:length(longTableRow)) {
-            if (length(longTableRow[[eachElementIndex]]) == 0) {
-              longTableRow[[eachElementIndex]] <- NA
+          for (each_element_index in 1:length(long_table_row)) {
+            if (length(long_table_row[[each_element_index]]) == 0) {
+              long_table_row[[each_element_index]] <- NA
             }
           }
-          
+
           # ----Step 6: Add row to the rest of the rows----
-          longTableRows <-
-            rbind(longTableRows, longTableRow,  stringsAsFactors = FALSE)
+          long_table_rows <-
+            rbind(long_table_rows, long_table_row,  stringsAsFactors = FALSE)
         }
       }
-      variablesChecked <- 0
+      variables_checked <- 0
+    }
+
+    return(long_table_rows)
+  }
+
+# Fills group by columns with information from variable details
+fill_in_group_by_columns <-
+  function(strata_split_name,
+           strata_split_values,
+           long_table_row,
+           variable_details = NULL) {
+    for (group_by_index in 1:length(strata_split_name)) {
+      long_table_row[[paste(pkg.globals$LongTable.GroupBy, group_by_index, sep = "")]] <-
+        strata_split_name[[group_by_index]]
+      long_table_row[[paste(pkg.globals$LongTable.GroupByValue, group_by_index, sep = "")]] <-
+        strata_split_values[[group_by_index]]
+      
+      if (!is.null(variable_details)) {
+        long_table_row[[paste(pkg.globals$LongTable.GroupByLabel, group_by_index, sep = "")]] <-
+          variable_details[is_equal(variable_details[[pkg.globals$argument.VariableStart]], strata_split_name[[group_by_index]]) &
+                             is_equal(variable_details[[pkg.globals$argument.CatStartValue]], strata_split_values[[group_by_index]]), pkg.globals$argument.VariableStartLabel]
+        long_table_row[[paste(pkg.globals$LongTable.GroupByValueLabel,
+                              group_by_index,
+                              sep = "")]] <-
+          variable_details[is_equal(variable_details[[pkg.globals$argument.VariableStart]], strata_split_name[[group_by_index]]) &
+                             is_equal(variable_details[[pkg.globals$argument.CatStartValue]], strata_split_values[[group_by_index]]), pkg.globals$argument.CatStartLabel]
+        
+      }
     }
     
-    return(longTableRows)
+    return(long_table_row)
   }

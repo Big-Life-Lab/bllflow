@@ -1,31 +1,19 @@
 ---
-title: "4 - Developing a (predictive) model"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{4 - Developing a (predictive) model}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+title: "fine_and_grey_model_example"
+author: "Stacey Fisher"
+date: '2019-04-19'
+output: html_document
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r, collapse=TRUE}
+library(survival) #pcb data
+library(cmprsk) #crr function
+library(rms) #rcs function
 ```
-## Introduction
 
-This section is in progress. _bllflow_ supports a pre-specified approach to 
-model development, but otherwise does not have an opinionated model development 
-approach. 
-
-Vignette examples will develop the `pbc` model following the original study's 
-cox proportional hazard approach using functions in base R and the 'Hmisc' 
-package. 
-
-
-Below is a temporary example for the Fine and Grey model.
-
+```{r}
+data(pbc)
+```
 
 ## Overview
 
@@ -39,7 +27,6 @@ pbc <- pbc[!is.na(pbc$trt),]
 ```
 
 ## Prepare the data
-
 First we need to change sex from 'm' and 'f' to '0' and '1'
 ```{r}
 attach(pbc)
@@ -68,7 +55,7 @@ pbc$biliC <- bili - bili_mean
 detach(pbc)
 ```
 
-## Create restricted cubic spline variables for age and bilirubin
+## Create restricted cubic spline variables for age
 
 A k knot spline is specified by k-1 variables. For example, a five knot spline is specified by 4 variables. The first variable is always the same as the original variable.
 
@@ -77,6 +64,7 @@ The rcs function creates variables are named by adding ' to the end of the origi
 ```{r}
 attach(pbc)
 age_rcs_vec <- rcs(ageC, 5)
+bili_rcs_vec <- rcs(biliC, 5)
 detach(pbc)
 ```
 
@@ -84,12 +72,14 @@ I have modified the rcs function from Harrell's rms package to let us specify th
 
 ```{r}
 source(file.path(getwd(), "../R/rcs2.R"))
+age_rcs_vec2 <- rcs2(pbc$ageC, 5, rcs_names = c("AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4"))
+bili_rcs_vec2 <- rcs2(pbc$biliC, 3, rcs_names = c("BiliC_rcs1", "BiliC_rcs2"))
 ```
 
 Use the rcs funciton to collect all of the variables you want to use in the model into a single object for easier regression running.
 ```{r}
 attach(pbc)
-allvars <- as.data.frame(cbind(trtC, sexC))
+allvars <- as.data.frame(cbind(trtC, sexC, age_rcs_vec2, bili_rcs_vec2))
 detach(pbc)
 str(allvars)
 ```
@@ -98,8 +88,7 @@ The allvars object contains 8 variables.
 ## Create the Fine and Grey regression model
 
 The 'time' variable is the time (in days) from study start to either censoring, liver transplantation, or death
-The 'status' variable is 0 for censored, 1 for transplant, 2 for death.
-
+The 'status' variable is 0 for censored, 1 for transplant, 2 for death
 ```{r}
 pbc_crr_model <- crr(ftime = pbc$time, fstatus = pbc$status, allvars, failcode = 1, cencode = 0)
 summary(pbc_crr_model)
@@ -109,34 +98,64 @@ The beta coefficients for the model are here:
 pbc_crr_model$coef
 ```
 
-# Knot locations
+# Baseline Risk of Event
 
+We also need to know the baseline risk (1- cumualtive incidence) of the event at time t. Here I will show how to obtain baseline risk of transplant at 2 years
+
+Function for calcualting baseline risk:
+```{r}
+baseline.risk <- function(model, time) {
+  jumps <- data.frame(time = model$uftime, bfitj = model$bfitj)
+  jumps_time <- jumps[jumps$time <= time, ]
+  b0 <- sum(jumps_time$bfitj)
+  out <- 1-exp(-b0)
+  return(out)
+}
+```
+
+Baseline risk at 2 years
+```{r}
+H0_2YR <- baseline.risk(pbc_crr_model, (365.25*2))
+H0_2YR
+```
+`r H0_2YR*100`% of average individuals receive transplant within 2 years
+
+# Knot locations
 We need to know where the knots are placed. To determine this:
 ```{r}
 attributes(rcspline.eval(pbc$ageC, nk = 5))$knots
 attributes(rcspline.eval(pbc$biliC, nk = 3))$knots
 ```
+Or,
+```{r}
+attributes(age_rcs_vec2)$parms
+attributes(bili_rcs_vec2)$parms
+```
 TODO: when we create the RCS function, we'll need to have an argument that passess the bllflow modelObject. Then add these knots to that object. 
 ```{r}
-model_pbc_table_one <- tableone::create_table_one(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
+model_pbc_table_one <- tableone::CreateTableOne(data = allvars, vars = c("trtC", "sexC", "AgeC_rcs1", "AgeC_rcs2", "AgeC_rcs3", "AgeC_rcs4", "BiliC_rcs1", "BiliC_rcs2"))
+
 library(bllflow)
-create_BLLModel_object(allvars, pbc_crr_model, model_pbc_table_one)
+bllModel <- create_BLLModel_object(allvars, pbc_crr_model, model_pbc_table_one)
+bllModel$reference
+bllModel$baseline
 ```
 
 # Generate a bllflow model object
-
 This object is used to generate the PMML file, for manuscript figures and other uses.
 
 @param model_object The object that is returned when a model is created. 
 @param model_type values = crr, NULL. The class name of the modelObject. "crr" is the class name for the Fine and Grey model. This is currently the only model that is supported.
-@param table_one The object returned by createTableOne(). This contains the mean values that is used if there are any variables that are centered on the mean.
-@param model_data The data used to generate the model. This is only required if tableOne = misssiong.
+@param table_one The object returned by createTableOne(). 
+@param model_data The data used to generate the model. 
 @param calculate_mean default = TRUE. If TRUE and table_one = missing, then calculate means of variables.
 
 ```{r}
 
-pbc_table_one = create_table_one(data = pbc)
-create_BLLModel_object(model_object = pbc_crr_model, table_one = pbc_table_one, model_data = allvars)
+pbcTableOne = create_table_one(data = pbc)
+bllModel <- create_BLLModel_object(modelObject = pbc_crr_model, tableOne = pbcTableOne, modelData = allvars)
+bllModel$reference
+bllModel$baseline
 
 ```
 Note that model_type is missing in this call. The function should examine class of pbc_crr_model. If class <> 'crr' the issue error "Not a recognized model (allowable models include: crr)".
