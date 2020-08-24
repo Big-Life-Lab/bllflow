@@ -240,7 +240,7 @@ recode_call <-
           warning(
             paste(
               missing_vars,
-              "is missing from variable details therefore cannot be recoded"
+              "is missing from variable details therefore cannot be recoded \n"
             )
           )
         }
