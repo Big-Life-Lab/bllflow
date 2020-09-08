@@ -203,7 +203,7 @@ rec_with_table <-
                   No id column was created")
         }
         if(attach_data_name){
-          id_cols <- c("data_name") 
+          id_cols <- append(id_cols,"data_name") 
         }
         tmp_data <- tidyr::unite(data = data, tmp, sep = "_", id_cols)
         data[[id_role_name$var_name]] <- tmp_data$tmp

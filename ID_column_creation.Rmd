@@ -1,0 +1,30 @@
+---
+title: "Id_column_creation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Id column creation
+
+If the data_name column is present it is automatically added onto the row_id alongside passed variables in feeder_vars.
+For variable sheets that support roles feeder_roles can also be used.
+```{r}
+library(cchsflow)
+library(bllflow)
+
+cchs2001_p <- cchsflow::cchs2001_p
+rec_data <-
+  rec_with_table(
+    cchs2001_p,
+    variables = cchsflow::variables,
+    variable_details = cchsflow::variable_details,
+    attach_data_name = TRUE,
+    id_role_name = list(var_name = "ADM_RM0_year", feeder_vars = "ADM_RNO")
+  )
+
+rec_data$ADM_RM0_year
+```
