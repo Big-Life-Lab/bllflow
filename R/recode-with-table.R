@@ -123,7 +123,8 @@ rec_with_table <-
            notes = TRUE,
            var_labels = NULL,
            custom_function_path = NULL,
-           attach_data_name = FALSE) {
+           attach_data_name = FALSE,
+           id_role_name = NULL) {
     # If custom Functions are passed create new environment and source
     if (!is.null(custom_function_path)) {
       source(custom_function_path)
@@ -189,6 +190,23 @@ rec_with_table <-
       )
       if (attach_data_name) {
         data[["data_name"]] <- database_name
+      }
+      if(!is.null(id_role_name)){
+        # Check for role or variables
+        id_cols <- c()
+        if(!is.null(id_role_name$feeder_vars)){
+          id_cols <- append(id_cols,id_role_name$feeder_vars)
+        }else if (!is.null(id_role_name$feeder_roles)){
+          id_cols <- append(id_cols, select_vars_by_role(roles = id_role_name$feeder_roles, variables = variables))
+        }else {
+          message("id_role_name does not contain feeder_roles or feeder_vars.
+                  No id column was created")
+        }
+        if(attach_data_name){
+          id_cols <- c("data_name") 
+        }
+        tmp_data <- tidyr::unite(data = data, tmp, sep = "_", id_cols)
+        data[[id_role_name$var_name]] <- tmp_data$tmp
       }
     } else {
       stop(
