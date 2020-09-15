@@ -247,7 +247,6 @@ parse_module <- function(variables, module_ID, data, modules) {
       }
       recipe_object <- do.call(get(single_func$func_name), params)
       
-      print("yay")
     }else{
       # Check for running recipy
       if(recipy_flag){
@@ -256,11 +255,28 @@ parse_module <- function(variables, module_ID, data, modules) {
           recipes::prep(recipe_object, training = data)
         data <- recipes::bake(recipe_object, new_data = data)
         recipy_flag <- FALSE
+        params <- list(data = data, rlang::parse_expr(unlist(single_func$args)))
+        for (param_name in names(single_func$params)) {
+          param_to_add <- trimws(single_func$params[[param_name]])
+          if(!is.na(as.numeric(param_to_add))){param_to_add <- as.numeric(param_to_add)}
+          else if(!is.na(as.logical(param_to_add))){param_to_add <- as.logical(param_to_add)}
+          params[[param_name]] <- param_to_add
+        }
+        data <- do.call(get(single_func$func_name), params)
       }
       
     }
   }
   
+  # Bake if not yet baked
+  if(recipy_flag){
+    # Bake existing recipy and update working data to run non recipy function on
+    recipe_object <-
+      recipes::prep(recipe_object, training = data)
+    data <- recipes::bake(recipe_object, new_data = data)
+  }
+  
+  return(data)
 }
 
 #' Verify data sequence match

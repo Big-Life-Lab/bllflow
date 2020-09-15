@@ -649,12 +649,12 @@ recode_columns <-
       # Extract type of id creation
       current_id <- id_variables_to_process[1, ]
       id_variables_to_process <- id_variables_to_process[-1, ]
-      id_creation_function <- current_id[[pkg.globals$argument.CatValue]]
+      id_creation_function <- as.character(current_id[[pkg.globals$argument.CatValue]])
       id_creation_function <- strsplit(id_creation_function, "::")[[1]][[2]]
       id_creation_function <- trimws(id_creation_function)
       
       # Extract the variables
-      id_feeder_vars <- current_id[[pkg.globals$argument.VariableStart]]
+      id_feeder_vars <- as.character(current_id[[pkg.globals$argument.VariableStart]])
       id_feeder_vars <- strsplit(id_feeder_vars,"::" )[[1]][[2]]
       id_feeder_vars <-  gsub("\\[|\\]", "", id_feeder_vars)
       id_feeder_vars <- strsplit(id_feeder_vars,"," )[[1]]
@@ -665,7 +665,7 @@ recode_columns <-
       }
       
       # Extract Id Name
-      id_name <- current_id[[pkg.globals$argument.Variables]]
+      id_name <- as.character(current_id[[pkg.globals$argument.Variables]])
       
       # Create id_object to append at the end
       tmp_list <- list(var_name = id_name, feeder_vars = tmp_feeder_vars)
