@@ -48,3 +48,43 @@ clean_strata_values <-
     return(strata_values)
   }
 
+#' Vars selected by role
+select_vars_by_role <- function(roles, variables){
+  # Reduce row looping by only looping over only unique combinations
+  unique_roles <- unique(variables[[pkg.globals$argument.Role]])
+  valid_patern <- c()
+  for (role_patern in unique_roles) {
+    # Split by commas to avoid partial matches being false positives
+    role_list <- strsplit(role_patern, ",")[[1]]
+    for (role in role_list){
+      if(role %in% roles){
+        valid_patern <- append(valid_patern, role_patern)
+      }
+    }
+  }
+  ret <- as.character(variables[variables[[pkg.globals$argument.Role]] == valid_patern, pkg.globals$MSW.Variables.Columns.Variable])
+  
+  return(ret)
+}
+
+# ID role creation
+create_id_row <- function(data, id_role_name, database_name){
+  # Check for role or variables
+  id_cols <- c()
+  if(!is.null(id_role_name$feeder_vars)){
+    id_cols <- append(id_cols,id_role_name$feeder_vars)
+  }else if (!is.null(id_role_name$feeder_roles)){
+    id_cols <- append(id_cols, select_vars_by_role(roles = id_role_name$feeder_roles, variables = variables))
+  }else {
+    message("id_role_name does not contain feeder_roles or feeder_vars.
+                  No id column was created")
+  }
+  if("data_name" %in% id_role_name$feeder_vars && is.null(data[["data_name"]])){
+    data[["data_name"]] <- database_name
+  }
+  tmp_data <- tidyr::unite(data = data, tmp, sep = "_", id_cols)
+  data[[id_role_name$var_name]] <- tmp_data$tmp
+  
+  return(data)
+}
+

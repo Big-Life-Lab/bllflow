@@ -87,7 +87,8 @@ bllflow_config_rec_data <- function(bllflow_object, config_env_name = NULL) {
       base::get(data_name),
       variables = bllflow_object$variables,
       variable_details = bllflow_object$variable_details,
-      database_name = data_name)
+      database_name = data_name,
+      attach_data_name = TRUE, id_role_name = list(var_name = "row_ID", feeder_vars="ADM_RNO"))
     assign(data_name, tmp_rec_data)
     save(list = data_name,
          file = file.path(config$data_dir,
@@ -119,6 +120,12 @@ bllflow_config_combine_data <- function(bllflow_object, config_env_name = NULL) 
     load(file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
     tmp_mod_data <- base::get(data_name)
     tmp_mod_data[["data_name"]] <- data_name
+    # Create unique row id 
+    if(config$unique_id){
+      id_cols <- select_vars_by_role("ID", bllflow_object$variables)
+      
+      print("potato")
+    }
     if (is.null(tmp_working_data)) {
       tmp_working_data <- tmp_mod_data
     } else {

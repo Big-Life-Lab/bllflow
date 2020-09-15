@@ -1,0 +1,25 @@
+---
+title: "Id_column_creation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Id column creation
+
+cchsflow dev currently contains updated variables and variable details. These both have the new rows needed for id creation allowing for the same function call
+
+
+
+```{r}
+library(cchsflow)
+library(bllflow)
+
+
+rec_data <- rec_with_table(cchs2001_p, variables = variables, variable_details = variable_details)
+
+rec_data$id_year
+```

@@ -252,8 +252,11 @@ label_data <- function(label_list, data_to_label) {
           as.numeric(levels(data_to_label[[variable_name]])
           [data_to_label[[variable_name]]])
       } else {
+        tmp <- as.numeric(data_to_label[[variable_name]])
+        if(sum(is.na(tmp))!= length(tmp)){
         data_to_label[[variable_name]] <-
           as.numeric(data_to_label[[variable_name]])
+        }
       }
     }
     sjlabelled::set_label(data_to_label[[variable_name]]) <-

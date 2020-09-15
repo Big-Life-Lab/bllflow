@@ -36,34 +36,59 @@
 ##'
 ##' @export
 print.TableOne <-
-  function(x, # TableOne object
-             catDigits = 1, contDigits = 2, pDigits = 3, # Number of digits to show
-             quote = FALSE, # Whether to show quotes
-
-             ## Common options
-             missing = FALSE, # Not implemented yet
-             explain = TRUE, # Whether to show explanation in variable names
-             printToggle = TRUE, # Whether to print the result visibly
-             test = TRUE, # Whether to add p-values
-             smd = FALSE, # Whether to add standardized mean differences
-             noSpaces = FALSE, # Whether to remove spaces for alignments
-             padColnames = FALSE, # Whether to pad column names for alignments
-             varLabels = FALSE, # Whether to show variable labels instead of names.
-             valLabels = FALSE, # Whether to show category labels instead of values.
-             missingLabels = "Missing Label", # What label is assigned to missing value labels
-
-             ## Categorical options
-             format = c("fp", "f", "p", "pf")[1], # Format f_requency and/or p_ercent
-             showAllLevels = FALSE, # Show all levels of a categorical variable
-             cramVars = NULL, # Which 2-level variables to show both levels in one row
-             dropEqual = FALSE, # Do not show " = second level" for two-level variables
-             exact = NULL, # Which variables should be tested with exact tests
-
-             ## Continuous options
-             nonnormal = NULL, # Which variables should be treated as nonnormal
-             minMax = FALSE, # Whether to show median
-
-             ...) {
+  function(x,
+           # TableOne object
+           catDigits = 1,
+           contDigits = 2,
+           pDigits = 3,
+           # Number of digits to show
+           quote = FALSE,
+           # Whether to show quotes
+           
+           ## Common options
+           missing = FALSE,
+           # Not implemented yet
+           explain = TRUE,
+           # Whether to show explanation in variable names
+           printToggle = TRUE,
+           # Whether to print the result visibly
+           test = TRUE,
+           # Whether to add p-values
+           smd = FALSE,
+           # Whether to add standardized mean differences
+           noSpaces = FALSE,
+           # Whether to remove spaces for alignments
+           padColnames = FALSE,
+           # Whether to pad column names for alignments
+           varLabels = FALSE,
+           # Whether to show variable labels instead of names.
+           valLabels = FALSE,
+           # Whether to show category labels instead of values.
+           missingLabels = "Missing Label",
+           # What label is assigned to missing value labels
+           
+           ## Categorical options
+           format = c("fp", "f", "p", "pf")[1],
+           # Format f_requency and/or p_ercent
+           showAllLevels = FALSE,
+           # Show all levels of a categorical variable
+           cramVars = NULL,
+           # Which 2-level variables to show both levels in one row
+           dropEqual = FALSE,
+           # Do not show " = second level" for two-level variables
+           exact = NULL,
+           # Which variables should be tested with exact tests
+           
+           ## Continuous options
+           nonnormal = NULL,
+           # Which variables should be treated as nonnormal
+           minMax = FALSE,
+           # Whether to show median
+           
+           formatOptions = list(scientific = FALSE),
+           # Options for formatting
+           ...) {
+    
 
     ## Extract Cont/CatTable elements of x and dispatch print() appropriately
     FmtTables <- tableone:::ModuleFormatTables(x,
@@ -80,7 +105,10 @@ print.TableOne <-
 
       ## print.ContTable arguments passed
       nonnormal = nonnormal, minMax = minMax,
-      insertLevel = showAllLevels
+      insertLevel = showAllLevels,
+      
+      ## FormatOptions passed
+      formatOptions = formatOptions
     )
 
     ## List of stratum sample size row only tables

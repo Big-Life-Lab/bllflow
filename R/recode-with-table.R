@@ -1,5 +1,6 @@
 # This is needed for package Check as . is used by magrittr however is not exported 
 . <- NULL
+
 #' Recode with Table
 #'
 #' Recode with Table is responsible for recoding values of a dataset based on
@@ -123,7 +124,10 @@ rec_with_table <-
            notes = TRUE,
            var_labels = NULL,
            custom_function_path = NULL,
-           attach_data_name = FALSE) {
+           attach_data_name = FALSE,
+           id_role_name = NULL) {
+    
+    id_role_name <- list(id_role_name)
     # If custom Functions are passed create new environment and source
     if (!is.null(custom_function_path)) {
       source(custom_function_path)
@@ -189,6 +193,14 @@ rec_with_table <-
       )
       if (attach_data_name) {
         data[["data_name"]] <- database_name
+      }
+      if(!is.null(id_role_name)){
+        for (single_id in id_role_name) {
+          if(!is.null(single_id)){
+          data <- create_id_row(data, single_id, database_name)
+          }
+        }
+        
       }
     } else {
       stop(
@@ -396,26 +408,26 @@ recode_columns <-
     map_variables_to_process <-
       variables_to_process[grepl("map::", variables_to_process[[
         pkg.globals$argument.CatValue]]), ]
-
+    
+    id_variables_to_process<-
+      variables_to_process[grepl("id_from::", variables_to_process[[
+        pkg.globals$argument.CatValue]]), ]
+    
     func_variables_to_process <-
       variables_to_process[grepl("Func::", variables_to_process[[
         pkg.globals$argument.CatValue]]), ]
 
     rec_variables_to_process <-
-      variables_to_process[(!grepl("Func::|map::", variables_to_process[[
+      variables_to_process[(!grepl("Func::|map::|id_from::", variables_to_process[[
         pkg.globals$argument.CatValue]])) & (!grepl("DerivedVar::",
                                                     variables_to_process[[
           pkg.globals$argument.VariableStart]])), ]
 
     label_list <- list()
     # Set interval if none is present
-    interval_present <- TRUE
     valid_intervals <- c("[,]", "[,)", "(,]")
     interval_default <- "[,]"
     recoded_data <- data[, 0]
-    if (is.null(rec_variables_to_process[[pkg.globals$argument.Interval]])) {
-      interval_present <- FALSE
-    }
 
     # Loop through the rows of recode vars
     while (nrow(rec_variables_to_process) > 0) {
@@ -529,11 +541,18 @@ recode_columns <-
 
             # Recode the variable
             from_values <- list()
-            if (grepl(":", as.character(row_being_checked[[
+            if (grepl("\\[*\\]", as.character(row_being_checked[[
               pkg.globals$argument.From]]))) {
               from_values <-
                 strsplit(as.character(row_being_checked[[
-                  pkg.globals$argument.From]]), ":")[[1]]
+                  pkg.globals$argument.From]]), ",")[[1]]
+              from_values[[1]] <- trimws(from_values[[1]])
+              from_values[[2]] <- trimws(from_values[[2]])
+              interval_left <- substr(from_values[[1]], 1, 1)
+              interval_right <- substr(from_values[[2]], nchar(from_values[[2]]), nchar(from_values[[2]]))
+              interval <- paste0(interval_left,",",interval_right)
+              from_values[[1]] <- gsub("\\[|\\]", "", from_values[[1]])
+              from_values[[2]] <- gsub("\\[|\\]", "", from_values[[2]])
             } else {
               temp_from <-
                 as.character(row_being_checked[[pkg.globals$argument.From]])
@@ -542,36 +561,19 @@ recode_columns <-
             }
             value_recorded <-
               as.character(row_being_checked[[pkg.globals$argument.CatValue]])
-            if (interval_present) {
-              interval <- as.character(row_being_checked[[
-                pkg.globals$argument.Interval]])
-              if (!interval %in% valid_intervals) {
-                interval <- interval_default
-              }
-              if (from_values[[1]] == from_values[[2]]) {
-                interval <- "[,]"
-              }
-              valid_row_index <- compare_value_based_on_interval(
-                compare_columns = data_variable_being_checked,
-                data = data,
-                left_boundary = from_values[[1]],
-                right_boundary = from_values[[2]],
-                interval = interval
-              )
-            } else {
-              if (from_values[[1]] == from_values[[2]]) {
-                interval <- "[,]"
-              } else {
-                interval <- interval_default
-              }
-              valid_row_index <- compare_value_based_on_interval(
-                compare_columns = data_variable_being_checked,
-                data = data,
-                left_boundary = from_values[[1]],
-                right_boundary = from_values[[2]],
-                interval = interval
-              )
+            if (from_values[[1]] == from_values[[2]]) {
+              interval <- "[,]"
+            }else if (!interval %in% valid_intervals) {
+              message(paste("For variable", variable_being_checked, "invalid interval was passed.\nDefault interval will be used:", interval_default))
+              interval <- interval_default
             }
+            valid_row_index <- compare_value_based_on_interval(
+              compare_columns = data_variable_being_checked,
+              data = data,
+              left_boundary = from_values[[1]],
+              right_boundary = from_values[[2]],
+              interval = interval
+            )
             # Start construction of dataframe for log
             log_table[row, "value_to"] <- value_recorded
             log_table[row, "From"] <-
@@ -640,6 +642,38 @@ recode_columns <-
       func_variables_to_process <-
         derived_return$variables_to_process
     }
+    
+    #Process Id Vars
+    top_function_frame <- parent.frame(2)
+    while (nrow(id_variables_to_process) > 0) {
+      # Extract type of id creation
+      current_id <- id_variables_to_process[1, ]
+      id_variables_to_process <- id_variables_to_process[-1, ]
+      id_creation_function <- as.character(current_id[[pkg.globals$argument.CatValue]])
+      id_creation_function <- strsplit(id_creation_function, "::")[[1]][[2]]
+      id_creation_function <- trimws(id_creation_function)
+      
+      # Extract the variables
+      id_feeder_vars <- as.character(current_id[[pkg.globals$argument.VariableStart]])
+      id_feeder_vars <- strsplit(id_feeder_vars,"::" )[[1]][[2]]
+      id_feeder_vars <-  gsub("\\[|\\]", "", id_feeder_vars)
+      id_feeder_vars <- strsplit(id_feeder_vars,"," )[[1]]
+      tmp_feeder_vars <- c()
+      for (single_var in id_feeder_vars) {
+        single_var <- trimws(single_var)
+        tmp_feeder_vars <- append(tmp_feeder_vars, single_var)
+      }
+      
+      # Extract Id Name
+      id_name <- as.character(current_id[[pkg.globals$argument.Variables]])
+      
+      # Create id_object to append at the end
+      tmp_list <- list(var_name = id_name, feeder_vars = tmp_feeder_vars)
+      top_function_frame$id_role_name <- append(top_function_frame$id_role_name, list(tmp_list))
+      
+      
+    }
+    
     # Populate data Labels
     recoded_data <-
       label_data(label_list = label_list, data_to_label = recoded_data)
