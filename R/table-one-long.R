@@ -73,11 +73,11 @@ CreateTableOne.BLLFlow <- function(x,
     if (is.null(select_role)) {
       factor_vars <-
         as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]],
-                                              pkg.globals$ddiValueName.Categorical), pkg.globals$MSW.Variables.Columns.Variable])
+                                              pkg.globals$ddiValueName.Categorical), pkg.globals$MSW.Variables.Columns.Variable][[1]])
     } else {
       factor_vars <-
         as.character(variables_sheet[is_equal(variables_sheet[[pkg.globals$MSW.Variables.Columns.VariableType]],
-                                              pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable])
+                                              pkg.globals$ddiValueName.Categorical) , pkg.globals$MSW.Variables.Columns.Variable][[1]])
       factor_vars <- factor_vars[[factor_vars %in% vars]]
     }
     factor_vars <- trimws(factor_vars)
