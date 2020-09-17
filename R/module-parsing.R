@@ -111,6 +111,8 @@ run_module.default <-
       processed_data <-
         parse_module(var_rows, sequence_number, processed_data, modules)
       
+      # @RUSTY merge data based on unique id 
+      
       attr(processed_data, pkg.globals$bllFlowContent.Sequence) <-
         sequence_number
     }
@@ -254,6 +256,8 @@ parse_module <- function(variables, module_ID, data, modules) {
         recipe_object <-
           recipes::prep(recipe_object, training = data)
         data <- recipes::bake(recipe_object, new_data = data)
+        # @RUSTY detect multi data output in case of inputes
+        # Reference config for RDF inpute storage and store other data before removal make sure to pair with unique id{ function out the check}
         recipy_flag <- FALSE
         params <- list(data = data, rlang::parse_expr(unlist(single_func$args)))
         for (param_name in names(single_func$params)) {
