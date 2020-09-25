@@ -20,7 +20,9 @@ Authors@R: c(
   person(given = "Carol", family = "Bennett", 
     email = "cbennett@ohri.ca", role = c("ctb")),
   person(given = "Meltem", family = "Tuna", 
-    email = "mtuna@ohri.ca", role = c("aut")))
+    email = "mtuna@ohri.ca", role = c("aut"))),
+  person(given = "Luke", family = "Bailey", 
+    email = "lbailey@ohri.ca", role = c("ctb")),
 Depends:
   R (>= 3.2),
   tableone,
@@ -38,7 +40,8 @@ Imports:
   labelled,
   rlang,
   tibble,
-  tidyr
+  tidyr,
+  XML
 Suggests:
   knitr,
   rmarkdown,
