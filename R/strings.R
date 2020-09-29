@@ -3,7 +3,7 @@ pkg.globals <- new.env()
 pkg.globals$columnNames.Min <- "min"
 pkg.globals$columnNames.Max <- "max"
 pkg.globals$columnNames.Outlier <- "outlier"
-pkg.globals$columnNames.Operations <- "operations"
+pkg.globals$columnNames.Operations <- "ModuleOperations"
 pkg.globals$columnNames.Variable <- "variable"
 
 # Variable Details Sheet Column Names
@@ -105,7 +105,7 @@ pkg.globals$ModuleTypes.Function <- "function"
 
 # WorkingData contents
 pkg.globals$WorkingData.ModuleSequenceNumber <- "moduleSequenceNumber"
-pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
+
 
 # FunctionList contents
 pkg.globals$FunctionList.Arguments <- "arguments"

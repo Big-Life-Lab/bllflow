@@ -112,6 +112,7 @@ run_module.default <-
         parse_module(var_rows, sequence_number, processed_data, modules)
       
       # @RUSTY merge data based on unique id 
+      processed_data <- merge_data_on_ID(data, processed_data, variables)
       
       attr(processed_data, pkg.globals$bllFlowContent.Sequence) <-
         sequence_number
@@ -123,9 +124,9 @@ run_module.default <-
 module_data_subset <- function(data, variables, sequence_number) {
   # vector containing vars that match sequence_number
   unique_module_ID <-
-    unique(variables[, pkg.globals$columnNames.Operations]) #@RUSTY merge with select_vars_by_role
+    as.list(unique(variables[, pkg.globals$columnNames.Operations])) #@RUSTY merge with select_vars_by_role
   valid_ID_patern <- c()
-  for (ID_patern in unique_module_ID) {
+  for (ID_patern in unique_module_ID[[1]]) {
     # Split by commas to avoid partial matches being false positives
     ID_list <- strsplit(ID_patern, ",")[[1]]
     for (ID in ID_list) {
@@ -134,8 +135,11 @@ module_data_subset <- function(data, variables, sequence_number) {
       }
     }
   }
+  id_vars <- select_vars_by_role("ID",variables)
+  valid_rows_index <- (variables[[pkg.globals$columnNames.Operations]] == valid_ID_patern) | (variables[[pkg.globals$columnNames.Variable]] %in% id_vars)
+  valid_rows_index[is.na(valid_rows_index)] <- FALSE
   valid_rows <-
-    variables[variables[[pkg.globals$columnNames.Operations]] == valid_ID_patern,]
+    variables[valid_rows_index,]
   valid_vars <-
     as.character(valid_rows[[pkg.globals$MSW.Variables.Columns.Variable]])
   ret_data <- data[, valid_vars]
@@ -150,7 +154,7 @@ module_data_subset <- function(data, variables, sequence_number) {
 parse_module <- function(variables, module_ID, data, modules) {
   # Isolate individual operations
   operations_to_run <-
-    as.character(modules[modules[[pkg.globals$Modules.ModuleID]] == module_ID, pkg.globals$WorkingData.ModuleOperations])
+    as.character(modules[modules[[pkg.globals$Modules.ModuleID]] == module_ID, pkg.globals$columnNames.Operations])
   operations_list <- strsplit(operations_to_run, "],")[[1]]
   running_data <- data
   func_list <- c()
@@ -266,7 +270,11 @@ parse_module <- function(variables, module_ID, data, modules) {
           else if(!is.na(as.logical(param_to_add))){param_to_add <- as.logical(param_to_add)}
           params[[param_name]] <- param_to_add
         }
-        data <- do.call(get(single_func$func_name), params)
+        
+        tmp_data <- do.call(get(single_func$func_name), params)
+        if(!is.data.frame(tmp_data)){
+          #Check for dataframe within list if possible if not throw error
+        }
       }
       
     }

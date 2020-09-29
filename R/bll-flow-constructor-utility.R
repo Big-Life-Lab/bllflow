@@ -122,12 +122,6 @@ bllflow_config_combine_data <- function(bllflow_object, config_env_name = NULL) 
     load(file.path(config$data_dir, paste0(data_name, "_recoded", ".RData")))
     tmp_mod_data <- base::get(data_name)
     tmp_mod_data[["data_name"]] <- data_name
-    # Create unique row id 
-    if(config$unique_id){
-      id_cols <- select_vars_by_role("ID", bllflow_object$variables)
-      
-      print("potato")
-    }
     if (is.null(tmp_working_data)) {
       tmp_working_data <- tmp_mod_data
     } else {

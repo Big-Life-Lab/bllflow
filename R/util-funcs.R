@@ -88,3 +88,27 @@ create_id_row <- function(data, id_role_name, database_name){
   return(data)
 }
 
+# Merge data based on ID
+merge_data_on_ID <- function(data_original, data_new, variables, overwrite_rows = TRUE){
+  # Identify ID column 
+  id_vars <- select_vars_by_role("ID", variables)
+  
+  # Identify similar VARS 
+  new_vars <- colnames(data_new)
+  original_vars <- colnames(data_original)
+  
+  identical_vars <- new_vars %in% original_vars
+  combined_data <- NULL
+  
+  # @RUSTY this is risky solution consider other approaches
+  data_original[new_vars[!new_vars[identical_vars] %in% id_vars]] <- NULL
+  if(overwrite_rows){
+    combined_data <- inner_join( data_original, data_new, by= id_vars)
+  }else{
+    combined_data <- left_join( data_original, data_new, by= id_vars)
+  }
+   
+  return(combined_data)
+  # Store duplicates from data_new 
+}
+
