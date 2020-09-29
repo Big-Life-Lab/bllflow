@@ -111,3 +111,13 @@ pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
 pkg.globals$FunctionList.Arguments <- "arguments"
 pkg.globals$FunctionList.Parameter <- "parameter"
 pkg.globals$FunctionList.VariableArguments <- "variablesArguments"
+
+# To PMML
+pkg.env$node_namespace.pmml <- "http://www.dmg.org/PMML-4_4"
+
+pkg.env$node_attr.pmml_version <- "4.4"
+
+pkg.env$node_name.pmml <- "PMML"
+pkg.env$node_name.data_dict <- "DataDictionary"
+pkg.env$node_name.trans_dict <- "TransformationDictionary"
+pkg.env$node_name.model <- "Model"
