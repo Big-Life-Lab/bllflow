@@ -1,0 +1,127 @@
+---
+title: "External Model Export"
+author: "Yulric Sequeira"
+date: "05/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(magrittr)
+library(dplyr)
+library(DT)
+```
+
+# Introduction 
+
+Investigators developing predictive models may/should want to export their final model for transparency reasons, reporting purposes, to run it in a different setting etc. Ideally, the model should be exported in a machine readable format like "predictive model markup language" so that it can be easily imported into other settings, consumed to make tables for reporting etc., however usually the investigator does not have the funds or the expertise to build the infrastructure needed for this feature. In any case, any such model export format should be agnostic to the stats language used to produce it and also be machine readable enough that it can be easily imported into other settings. In this document, I outline a model export using CSV files that should meet those requirements, but also human readable to the point that an investigator would not need to invest on heavy infrastructure costs to produce it.
+
+# Model Export Format
+
+## Variables and Variables Details Sheet
+
+The goal of a model export format is to outline all the **steps** to go from the starting variables in the model to calculating the outcome of the model. Keeping that in mind, we start by documenting all the starting variables in our model using two sheets called the **variables** and **variables details** sheet. Lets go through an example using the pbc data set from the survival package.
+
+```{r}
+View(survival::pbc)
+```
+
+The status variable in the dataset has 3 values signifying whether the person was censored (lived or lost to follow-up), had to undergo a liver transplant or diet. To make our example easier we will collapse the last two categories into one category to signify that the participant had a complication during the follow-up.
+
+```{r}
+pbc <- survival::pbc %>%
+  dplyr::mutate(status = dplyr::recode_factor(survival::pbc$status, `0` = 0, `1` = 1, `2` = 1))
+```
+
+To keep our model simple we will only focus on three variables, age, sex and treatment. These are the start variables for our model. We will start by making a variables sheet for this model.
+
+```{r}
+pbc_variables <- read.csv(file.path(getwd(), "/assets/model-export/variables.csv"))
+DT::datatable(pbc_variables)
+```
+
+The variables sheet gives a summary of all the variables used in the model.
+
+Once we have our variables sheet, we can make our variables details sheet.
+
+```{r}
+pbc_variables_details <- read.csv(file.path(getwd(), "/assets/model-export/variables-details.csv"))
+DT::datatable(pbc_variables_details)
+```
+
+The variables details sheet goes through all the variables defined in the variables sheet and defines them in more details. For eg., for continuous variables it gives the range of valid values and for categorical variables it lists all their categories as well as the dummy variables created for each category if they were created.
+
+## Model Steps
+
+The next step is to document all the steps to go from the start variables to the model outcome. First lets do that in code.
+
+```{r}
+# Center the age variable
+pbc <- pbc %>%
+  dplyr::mutate(age_c = age - mean(pbc$age))
+pbc$status <- as.numeric(pbc$status)
+
+pbc$sex <- factor(pbc$sex, level = c("m", "f"), labels = c("male", "female"))
+pbc$trt <- factor(pbc$trt, levels = c(1, 2), labels = c("Treatment", "No treatment"))
+```
+
+```{r}
+cox <- survival::coxph(survival::Surv(pbc$time, event = pbc$status) ~ age_c + sex + trt, data = pbc)
+print(cox)
+```
+
+Documenting the steps in our model-steps CSV file results in the following file,
+
+```{r}
+pbc_model_steps <- read.csv(file.path(getwd(), "/assets/model-export/model-steps.csv"))
+DT::datatable(pbc_model_steps)
+```
+
+The model steps file documents the steps to go from the start variables to the model output, in this case survival probability as well as the name of the files with additional information to implement this step. Lets go through the columns in the model steps file:
+1. step: The name of the step which should match up with the list of supported steps documented here 
+2. fileName: The name of the file which documents additional information needed to implement that step. For eg., the center step file center.csv would need to document the variables being centered along with their centering value. The steps documentation gives more information as to the structure of the file needed for each step.
+3. notes: This column is for documentation/metadata purpose and does not have any bearing in how the model is run.
+
+Although the model steps file lets us know what steps to run, it does not let us know how to actually run those steps. For eg., in the center step what variables should we center and with what centering values? For the cox step what model coefficients should we use? Like was said earlier this is where the fileName column comes in which gives more information about the step. Lets look at these files,
+
+```{r}
+pbc_center_step <- read.csv(file.path(getwd(), "/assets/model-export/center.csv"))
+DT::datatable(pbc_center_step)
+```
+
+The center.csv file lets us know what variables to center and the centerin values to use.
+
+```{r}
+pbc_cox_step <- read.csv(file.path(getwd(), "/assets/model-export/cox.csv"))
+DT::datatable(pbc_cox_step)
+```
+
+The cox.csv file gives us the names of the final variables in the model and their coefficients.
+
+There is no file for the dummy step since we already defined the dummy variables in the variables details file, giving us all the information we need to perform that step.
+
+Thus combining the model-steps.csv file and the files mentioned in the fileName column for each step we have all the information needed to run the model.
+
+## Steps
+
+### center
+
+### RCS
+
+Columns:
+**variable**: The name of the variable to convert
+**rcsVariables**: The names of the variables to convert to seperated by ;
+**knots** The knots to use seperated by ;
+
+```{r}
+eg_rcs_step <- read.csv(file.path(getwd(), "/assets/model-export/rcs.csv"))
+DT::datatable(eg_rcs_step)
+```
+
+### dummy
+
+### cox
+
