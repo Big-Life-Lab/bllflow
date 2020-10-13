@@ -1,6 +1,5 @@
-variable,role,label,labelLong,section,subject,variableType,units,databaseStart,variableStart,description
-age,,Age in years,Age in years,Demographics ,Age,cont,years,,,
-sex,,Sex,Sex,Demographics ,Sex,cat,NA,,,
-trt,,Treatment received,Whether the participant received treatment or placebo,NA,NA,cat,NA,,,
-time,,Time to event,"Number of days between registration and the earlier of death, transplantion, or study analysis in July, 1986",NA,NA,cont,days,,,
-,,,,,,,,,,
+variable,label,labelLong,section,subject,variableType,units,description
+age,Age in years,Age in years,Demographics ,Age,cont,years,
+sex,Sex,Sex,Demographics ,Sex,cat,NA,
+trt,Treatment received,Whether the participant received treatment or placebo,NA,NA,cat,NA,
+time,Time to event,"Number of days between registration and the earlier of death, transplantion, or study analysis in July, 1986",NA,NA,cont,days,

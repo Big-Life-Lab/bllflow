@@ -17,19 +17,19 @@ library(DT)
 
 # Introduction 
 
-Investigators developing predictive models may/should want to export their final model for transparency reasons, reporting purposes, to run it in a different setting etc. Ideally, the model should be exported in a machine readable format like "predictive model markup language" so that it can be easily imported into other settings, consumed to make tables for reporting etc., however usually the investigator does not have the funds or the expertise to build the infrastructure needed for this feature. In any case, any such model export format should be agnostic to the stats language used to produce it and also be machine readable enough that it can be easily imported into other settings. In this document, I outline a model export using CSV files that should meet those requirements, but also human readable to the point that an investigator would not need to invest on heavy infrastructure costs to produce it.
+This vignette goes through the steps to export a predictive model to CSV files. Ideally, such an export should be done to an existing standard such as "predictive modeling markup language", tensorflow etc. but the fact that these formats are not meant for human eyes makes it hard to do so without exising infrastructure. CSV files while posssiby fragmenting (its hard to encode several different types/databases in one file) are simple enough that an investigator can encode the model scoring steps in them.
 
 # Model Export Format
 
 ## Variables and Variables Details Sheet
 
-The goal of a model export format is to outline all the **steps** to go from the starting variables in the model to calculating the outcome of the model. Keeping that in mind, we start by documenting all the starting variables in our model using two sheets called the **variables** and **variables details** sheet. Lets go through an example using the pbc data set from the survival package.
+The goal of a model export format is to outline all the steps to go from the starting variables in the model to calculating the outcome of the model. Keeping that in mind, we start by documenting all the starting variables in our model using two sheets called the **variables** and **variables details** sheet. Lets go through an example using the pbc data set from the survival package.
 
 ```{r}
 View(survival::pbc)
 ```
 
-The status variable in the dataset has 3 values signifying whether the person was censored (lived or lost to follow-up), had to undergo a liver transplant or diet. To make our example easier we will collapse the last two categories into one category to signify that the participant had a complication during the follow-up.
+The status variable in the dataset has 3 values signifying whether the person was censored (lived or lost to follow-up), had to undergo a liver transplant or died. To make our example easier we will collapse the last two categories into one category to signify that the participant had a complication during the follow-up.
 
 ```{r}
 pbc <- survival::pbc %>%
@@ -43,7 +43,13 @@ pbc_variables <- read.csv(file.path(getwd(), "/assets/model-export/variables.csv
 DT::datatable(pbc_variables)
 ```
 
-The variables sheet gives a summary of all the variables used in the model.
+The variables sheet gives a summary of all the starting variables used in the model. A brief description of its columns are outlined below,
+* variable: The name of the start variable
+* label: A short label for the variable
+* labelLong: A longer label for the variable
+* section, subject: Used to classify the variable
+* variableType: Whether the variable is continuous (use cont) or categorical (use cat)
+* description: Additional metadata about the variable
 
 Once we have our variables sheet, we can make our variables details sheet.
 
@@ -52,47 +58,59 @@ pbc_variables_details <- read.csv(file.path(getwd(), "/assets/model-export/varia
 DT::datatable(pbc_variables_details)
 ```
 
-The variables details sheet goes through all the variables defined in the variables sheet and defines them in more details. For eg., for continuous variables it gives the range of valid values and for categorical variables it lists all their categories as well as the dummy variables created for each category if they were created.
+The variables details sheet should include all the variables defined in the variables sheet, giving more information about each of them. For eg., for continuous variables it gives the range of valid values and for categorical variables it lists all their categories as well as the any dummy variables created for each category. A brief description of its columns are outlined below,
+* variable: The name of the variable. Should correspond to a value in the variable column of the variables sheet.
+* dummyVariable: The name of the dummy variable created for this variable for the catValue specified. For eg., for sex in the sheet above, sex_cat1 will have a value of 1 if sex is "m" or 0 otherwise. Similarly, sex_cat2 will have a value of 1 of sex is "f" or 0 otherwise. This column is only used for categorical variables.
+* numValidCat: The number of valid categories for categorical variables.
+* catLabel: A label for the category of the categorical variable in that row.
+* catLabelLong: A longer label
+* catValue: The value of this category in the dataset
+* units: Units for this variable
+* type: Same as the type column in the variables sheet
+* interval: The valid range for this variable. Follows the mathematical notation for intervals https://en.wikipedia.org/wiki/Interval_(mathematics). For eg., the valid values for age are all values between 26 and 78, including the endpoints.
+* notes: Any additional metadata about the variable
 
 ## Model Steps
 
-The next step is to document all the steps to go from the start variables to the model outcome. First lets do that in code.
+The next step is to make a file called model steps that documents the steps to go from the start variables to the final model. In R, the code for this would look like whats below,
 
 ```{r}
-# Center the age variable
+# Center the age variable using the mean
 pbc <- pbc %>%
   dplyr::mutate(age_c = age - mean(pbc$age))
 pbc$status <- as.numeric(pbc$status)
 
+# Add labels and also set male as the reference for sex and Treatment as the reference for the treatment variable
 pbc$sex <- factor(pbc$sex, level = c("m", "f"), labels = c("male", "female"))
 pbc$trt <- factor(pbc$trt, levels = c(1, 2), labels = c("Treatment", "No treatment"))
 ```
 
 ```{r}
+# Fit the model. Remember that R automatically creates dummy variables for categorical variables before fitting
 cox <- survival::coxph(survival::Surv(pbc$time, event = pbc$status) ~ age_c + sex + trt, data = pbc)
 print(cox)
 ```
 
-Documenting the steps in our model-steps CSV file results in the following file,
+The "model steps" file documents all the steps written in the R code above. Such a file for the R code is shown below.
 
 ```{r}
 pbc_model_steps <- read.csv(file.path(getwd(), "/assets/model-export/model-steps.csv"))
 DT::datatable(pbc_model_steps)
 ```
 
-The model steps file documents the steps to go from the start variables to the model output, in this case survival probability as well as the name of the files with additional information to implement this step. Lets go through the columns in the model steps file:
-1. step: The name of the step which should match up with the list of supported steps documented here 
-2. fileName: The name of the file which documents additional information needed to implement that step. For eg., the center step file center.csv would need to document the variables being centered along with their centering value. The steps documentation gives more information as to the structure of the file needed for each step.
+The model steps file documents the steps to go from the start variables to the model output, in this case survival probability as well as the name of the files with additional information to implement this step. Each row in the file corresponds to a step. A brief description of its columns are outlined below,
+1. step: The name of the step. The value of this column should match up with one of the valid steps values outlined below. 
+2. fileName: The name of the file which documents additional information needed to implement that step. For eg., the center step file, center.csv would need to document the variables being centered along with their centering value. The steps documentation gives more information as to the structure of the file needed for each step.
 3. notes: This column is for documentation/metadata purpose and does not have any bearing in how the model is run.
 
-Although the model steps file lets us know what steps to run, it does not let us know how to actually run those steps. For eg., in the center step what variables should we center and with what centering values? For the cox step what model coefficients should we use? Like was said earlier this is where the fileName column comes in which gives more information about the step. Lets look at these files,
+Although the model steps file lets us know what steps to run, it does not give us information we will need to run those steps. For eg., in the center step what variables should we center and with what centering values? For the cox step what model coefficients should we use? Like was said earlier this is where the fileName column comes in which gives more information about the step. Lets look at these files,
 
 ```{r}
 pbc_center_step <- read.csv(file.path(getwd(), "/assets/model-export/center.csv"))
 DT::datatable(pbc_center_step)
 ```
 
-The center.csv file lets us know what variables to center and the centerin values to use.
+The center.csv file lets us know what variables to center and the centering values to use. The centeredVariable column also says what the name of the centered variable is.
 
 ```{r}
 pbc_cox_step <- read.csv(file.path(getwd(), "/assets/model-export/cox.csv"))
@@ -107,21 +125,48 @@ Thus combining the model-steps.csv file and the files mentioned in the fileName 
 
 ## Steps
 
+This section documents all the supported steps. The keyword highlights what phrase should be used to represent this step in the model steps file.
+
 ### center
+
+Keyword: center
+
+Columns:
+
+* **variable**: The name of the variable to center
+* **centerValue**: The value to use for centering
+* **centeredVariable**: The name of the new centered variable
 
 ### RCS
 
+Keyword: rcs
+
 Columns:
+
 **variable**: The name of the variable to convert
-**rcsVariables**: The names of the variables to convert to seperated by ;
+**rcsVariables**: The names of the new variables created seperated by ;
 **knots** The knots to use seperated by ;
+
+An example file is shown below
 
 ```{r}
 eg_rcs_step <- read.csv(file.path(getwd(), "/assets/model-export/rcs.csv"))
 DT::datatable(eg_rcs_step)
 ```
 
-### dummy
+### Dummy
 
-### cox
+Keyword: dummy
 
+No file is needed for this step. All dummy variables created need to be documented in the variables details files.
+
+### Cox
+
+A step to evaluate a cox survival model. The output of this step will be the risk of getting the outcome event.
+
+Keyword: cox
+
+Columns:
+
+* **variable**: The name of the variable
+* **coefficient**: The coefficient for this variable
