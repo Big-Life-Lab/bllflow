@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r, results='hide',message=FALSE}
 library(readr)
-varDetails <- read_csv("../inst/extdata/PBC-variableDetails.csv")
+var_details <- read_csv("../inst/extdata/PBC-variableDetails.csv")
 variables <- read_csv("../inst/extdata/PBC-variables.csv")
 ```
 
@@ -28,43 +28,45 @@ data("pbc")
 
 ```{r, results='hide',message=FALSE}
 library(bllflow)
-recodedPBC <- RecWTable(dataSource = pbc, variableDetails = varDetails, datasetName = "survival-pbc")
+recoded_pbc <- rec_with_table(data_source = pbc, variable_details = var_details, dataset_name = "survival-pbc")
 ```
 ## Compare the recode
 
 ```{r}
 print(pbc)
-print(recodedPBC[,c("TIME","STATUS","TRT","AGE","SEX","ASCITES","HEPATO","SPIDERS","EDEMA","BILI","CHOL","ALBUMIN","COPPER","ALK_PHOS","AST","TRIG","PLATELET","PROTIME","STAGE")])
+print(recoded_pbc[,c("TIME","STATUS","TRT","AGE","SEX","ASCITES","HEPATO","SPIDERS","EDEMA","BILI","CHOL","ALBUMIN","COPPER","ALK_PHOS","AST","TRIG","PLATELET","PROTIME","STAGE")])
 ```
+
 ## Write custom function for calculating age group
 
 ```{r}
-CustomAgeGroupCalculation <- function(age){
+custom_age_group_calculation <- function(age){
   # Feel free to write ur own code this is an example
   return(trunc(age/10))
 }
 ```
 
 ## Create a new variable that uses age group
+
 I will use R code to create  one row for the new variable, then rowbind it with existing variable details feel free to change any elements u wish just make sure its consistent with the function arguments.
 
 ```{r}
-newRow <- data.frame(variable = "Age_Group_Using_Custom_Variable", toType = "cont", databaseStart = "survival-pbc", variableStart = "DerivedVar::[AGE_GROUP, SPIDERS]", fromType = "cont", recTo = "Func::CustomRandomFunction", catLabel = "NA", catLabelLong ="NA", units = "NA", recFrom = "else", catStartLabel = NA, notes = NA, interval = NA)
-varDetails <- rbind(varDetails,newRow)
+new_row <- data.frame(variable = "Age_Group_Using_Custom_Variable", to_type = "cont", database_start = "survival-pbc", variable_start = "DerivedVar::[AGE_GROUP, SPIDERS]", from_type = "cont", rec_to = "Func::CustomRandomFunction", cat_label = "NA", cat_label_long ="NA", units = "NA", rec_from = "else", cat_start_label = NA, notes = NA, interval = NA)
+var_details <- rbind(var_details,new_row)
 ```
 
 ## Create the other custom function
 
 ```{r}
-CustomRandomFunction <- function(ageGroup, spiders) {
+custom_random_function <- function(age_group, spiders) {
   # make sure to account for na since in R anything == NA equaites to NA and causes errors
   if (is.na(spiders)) {
-  ageGroup <- ageGroup
+  age_group <- age_group
   }
   else if (spiders == "1") {
-  ageGroup = ageGroup + 5
+  age_group = age_group + 5
   } else if (spiders == "2") {
-  ageGroup = ageGroup - 5
+  age_group = age_group - 5
   }
   
   return(ageGroup)
@@ -73,6 +75,6 @@ CustomRandomFunction <- function(ageGroup, spiders) {
 
 ## Rerun the recode function to create new variable 
 ```{r}
-recodedPBC <- RecWTable(dataSource = pbc, variableDetails = varDetails, datasetName = "survival-pbc")
-print(recodedPBC)
+recoded_PBC <- rec_with_table(data_source = pbc, variable_details = var_details, dataset_name = "survival-pbc")
+print(recoded_PBC)
 ```

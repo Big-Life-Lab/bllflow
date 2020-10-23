@@ -1,12 +1,14 @@
 #' Generic label setting function
 #'
-#' When a bllflow object is passed the information in the object is used to label the data.
+#' When a bllflow object is passed the information in the object
+#' is used to label the data.
 #' The default handles non bllflow labeling and requires additional params
 #'
 #' @param x bllflow or data being labeled
 #' @param ... Used for generic function consistency
 #'
-#' @return for bllflow versions a bllflow object with labelled working_data is returned for default a data.frame with labels is returned
+#' @return for bllflow versions a bllflow object with labelled
+#' working_data is returned for default a data.frame with labels is returned
 #' @export
 set_data_labels <- function(x = NULL, ...) {
   UseMethod("set_data_labels", x)
@@ -33,8 +35,10 @@ set_data_labels.BLLFlow <- function(x, ...) {
 #' in the passed dataframes
 #'
 #' @param x newly transformed dataset
-#' @param variable_details this is for non bllflow and contains details about variable category labels
-#' @param variables_sheet this is for non bllflow and contains details about variable labels
+#' @param variable_details this is for non bllflow and
+#' contains details about variable category labels
+#' @param variables_sheet this is for non bllflow and
+#' contains details about variable labels
 #' @param ... Used for generic function consistency
 #'
 #' @return labeled data_to_label
@@ -49,18 +53,21 @@ set_data_labels.default <-
     variable_names <- unique(colnames(data_to_label))
     # extract only relevant variable info
     if (!is.null(variable_details)) {
-      variable_details[[pkg.globals$argument.Variables]] <- sapply(variable_details[[pkg.globals$argument.Variables]], trimws)
+      variable_details[[pkg.globals$argument.Variables]] <- 
+        sapply(variable_details[[pkg.globals$argument.Variables]], trimws)
       variable_details <-
         variable_details[variable_details[[pkg.globals$argument.Variables]]
         %in% variable_names, ]
       if (is.null(variables_sheet)) {
+        # In case variables sheet is missing to avoid null pointer error empty columns are created
         variable_details[[pkg.globals$MSW.Variables.Columns.Label]] <- NA
         variable_details[[pkg.globals$MSW.Variables.Columns.LabelLong]] <-
           NA
       }
     }
     if (!is.null(variables_sheet)) {
-      variables_sheet[[pkg.globals$argument.Variables]] <- sapply(variables_sheet[[pkg.globals$argument.Variables]], trimws)
+      variables_sheet[[pkg.globals$argument.Variables]] <- 
+        sapply(variables_sheet[[pkg.globals$argument.Variables]], trimws)
       variables_sheet <-
         variables_sheet[variables_sheet[[pkg.globals$argument.Variables]] %in%
           variable_names, ]
@@ -70,11 +77,17 @@ set_data_labels.default <-
           variable_details = variable_details
         )
       # Add rows from variables that are missing from variable_details
-      var_details_names <- unique(variable_details[[pkg.globals$argument.Variables]])
+      var_details_names <- 
+        unique(variable_details[[pkg.globals$argument.Variables]])
+      # Captures variables not in variable details
       missing_vars <- variable_names[(!variable_names %in% var_details_names)]
-      missing_vars <- missing_vars[missing_vars %in% variables_sheet[[pkg.globals$argument.Variables]]]
+      missing_vars <- 
+        missing_vars[missing_vars %in% variables_sheet[[
+          pkg.globals$argument.Variables]]]
+      # Missing variables in variables
       catch_up_vars <-
-        variables_sheet[variables_sheet[[pkg.globals$argument.Variables]] %in% missing_vars, ]
+        variables_sheet[variables_sheet[[
+          pkg.globals$argument.Variables]] %in% missing_vars, ]
       keep_columns <-
         c(
           pkg.globals$argument.Variables,
@@ -87,18 +100,23 @@ set_data_labels.default <-
           pkg.globals$argument.CatValue
         )
       if (nrow(catch_up_vars) > 0) {
-        catch_up_vars[keep_columns[(!keep_columns %in% colnames(catch_up_vars))]] <-
+        # Setting any missing columns to NA to allow for rbind
+        catch_up_vars[keep_columns[
+          (!keep_columns %in% colnames(catch_up_vars))]] <-
           NA
+        # Vars not in variable details can only be cont
         catch_up_vars[[pkg.globals$argument.ToType]] <- "cont"
         variable_details <- variable_details[keep_columns]
         catch_up_vars <- catch_up_vars[keep_columns]
+        # Append any missing vars
         variable_details <- rbind(variable_details, catch_up_vars)
       }
     }
     label_list <- NULL
     for (variable_name in variable_names) {
       rows_to_process <-
-        variable_details[variable_details[[pkg.globals$argument.Variables]] == variable_name, ]
+        variable_details[variable_details[[pkg.globals$argument.Variables]] ==
+                           variable_name, ]
       label_list[[variable_name]] <-
         create_label_list_element(rows_to_process)
     }
@@ -109,11 +127,17 @@ set_data_labels.default <-
 
 create_label_list_element <- function(variable_rows) {
   ret_list <- list(
+    # Variable type
     type = NULL,
+    # Variable value units
     unit = NULL,
+    # variable label long
     label_long = NULL,
+    # variable label
     label = NULL,
+    # Variable value label
     values = c(),
+    # Variable value label long
     values_long = c()
   )
   first_row <- variable_rows[1, ]
@@ -177,9 +201,11 @@ create_label_list_element <- function(variable_rows) {
         as.character(single_row[[pkg.globals$argument.CatValue]])
       value_being_labeled <-
         recode_variable_NA_formating(value_being_labeled, ret_list$type)
-      ret_list$values[[as.character(single_row[[pkg.globals$argument.CatLabel]])]] <-
+      ret_list$values[[as.character(single_row[[
+        pkg.globals$argument.CatLabel]])]] <-
         value_being_labeled
-      ret_list$values_long[[as.character(single_row[[pkg.globals$argument.CatLabelLong]])]] <-
+      ret_list$values_long[[as.character(single_row[[
+        pkg.globals$argument.CatLabelLong]])]] <-
         value_being_labeled
     }
   }
@@ -189,7 +215,7 @@ create_label_list_element <- function(variable_rows) {
 
 #' @title label_data
 #'
-#' @description Attaches labels to the DataToLabel to preserve metadata
+#' @description Attaches labels to the data_to_label to preserve metadata
 #'
 #' @param label_list the label list object that contains extracted labels
 #' from variable details
@@ -215,7 +241,7 @@ label_data <- function(label_list, data_to_label) {
           factor(data_to_label[[variable_name]])
       }
       data_to_label[[variable_name]] <-
-        set_labels(data_to_label[[variable_name]],
+        sjlabelled::set_labels(data_to_label[[variable_name]],
           labels = label_list[[variable_name]]$values
         )
       attr(data_to_label[[variable_name]], "labels_long") <-
@@ -230,7 +256,7 @@ label_data <- function(label_list, data_to_label) {
           as.numeric(data_to_label[[variable_name]])
       }
     }
-    set_label(data_to_label[[variable_name]]) <-
+    sjlabelled::set_label(data_to_label[[variable_name]]) <-
       label_list[[variable_name]]$label
     attr(data_to_label[[variable_name]], "unit") <-
       label_list[[variable_name]]$unit

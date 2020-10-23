@@ -16,14 +16,15 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-Data 
-and models are meaningless without good metadata.  Metadata should be 
+
+Data and models are meaningless without good metadata.  Metadata should be 
 independently understandable; machine actionable; discoverable, dynamic, 
 interactive. 
 **bllFlow** uses consistent labels and metadata throughout the workflow. We explain why in our accompanying [document]. tl;dr [Nature Videos](https://youtu.be/j7K3s_vi_1Y)
 
-## `bllFlow-variables`
-`bllFlow-variables` is the data file that describes labels and metadata in bblFlow. Add to your own `bllFlow-variables` or make a [pull request](https://github.com/big-Life-Lab/bllflow/pulls). 
+## `bllFlow_variables`
+
+`bllFlow_variables` is the data file that describes labels and metadata in bllFlow. Add to your own `bllFlow_variables` or make a [pull request](https://github.com/big-Life-Lab/bllflow/pulls). 
 
 Labels and metadata are used in five key areas of research reporting:
 
@@ -33,11 +34,11 @@ Labels and metadata are used in five key areas of research reporting:
 1) **Summary statistics** -- metrics model performance.
 1) **Validation data** -- example dataset to verify algorithm scoring (for predictive models).
 
-`bllFlow-variables`
+`bllFlow_variables`
 
 ```{r, echo=FALSE, results='asis'}
 library(DT)
 
-dt <- read.csv(file.path(getwd(), '../inst/extdata/bllFlow-variables.csv'))
+dt <- read.csv(file.path(getwd(), '../inst/extdata/bllFlow_variables.csv'))
 datatable(dt, options = list(pageLength = 5))
 ```

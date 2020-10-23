@@ -15,78 +15,87 @@ knitr::opts_chunk$set(
 _bllflow_ builds from the `tableone` package to present the study cohort and description statistics. Also planned are tools to help create a study codebook.
 
 ## Create "Table 1"
+
 Create "Table 1- description of study data" for all variables in your database. This method is from the `tableone` package.
 
 ```{r warning=FALSE}
 library(survival)
 data(pbc)
 library("tableone")
-catVars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
-CreateTableOne(data = pbc, factorVars = catVars)
+cat_vars <- c("status", "trt", "ascites", "hepato", "spiders", "edema", "stage")
+create_table_one(data = pbc, factorVars = cat_vars)
 ```
 
 ## Create Table 1 using the Model Specification Workbook
+
 Create a Table 1 with only the variables in your model, using the Model Specification Workbook.
 First initialize the BLLFlow model.
+
 ```{r} 
 library(bllflow)
-variablesSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
-variablesDetailsSheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
-pbcModel <- BLLFlow(pbc, variablesSheet, variablesDetailsSheet)
-CreateTableOne(pbcModel)
+variables_sheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variables.csv'))
+variables_details_sheet <- read.csv(file.path(getwd(), '../inst/extdata/PBC-variableDetails.csv'))
+pbc_model <- BLLFlow(pbc, variables_sheet, variables_details_sheet)
+create_table_one(pbc_model)
 ```
 
 ## Create Table 1 with stratification
+
 You can stratify Table 1 in two methods.
 
-1) Stratify with columns. This is how to describe your data for manuscripts. This method is supported with the `CreateTableOne` library.
+1) Stratify with columns. This is how to describe your data for manuscripts. This method is supported with the `create_table_one` library.
+
 ```{r}
-TableOne <- CreateTableOne(data = pbc,strata = c("trt"), factorVars = catVars)
+table_one <- create_table_one(data = pbc,strata = c("trt"), factorVars = cat_vars)
 ```
 
 2) Stratify with rows. This method is helpful if there are many strata. We use this format for interactive visualizations or when we create figures. 
 For example, see an '[algorithm viewer](http://algorithm-viewer.projectbiglife.ca/#/respect)' that shows Table 1 stratified for 61 strata (bins).
 ```{r}
-TableOneLong <- SummaryDataLong(TableOne)
+table_one_long <- summary_data_long(table_one)
 ```
 
 ## Add labels and metadata
+
 For all tables, metadata such as labels are added from the Model Specification Workbook and/or DDI documents.
 Initialize the model with the DDI document.
+
 ```{r}
 ddi <- bllflow::ReadDDI(system.file("extdata", "", package = "bllflow"), "pbcDDI.xml")
-pbcModel <- bllflow::UpdateMSW(bllModel = pbcModel, newDDI = ddi) 
-longTableWithLabels <- SummaryDataLong(tableOne = TableOne, bllFlowModel = pbcModel, longTable = TableOneLong)
+pbc_model <- bllflow::update_msw(BLL_model = pbc_model, new_DDI = ddi) 
+long_table_with_labels <- summary_data_long(table_one = table_one, bllflow_model = pbc_model, long_table = table_one_long)
 ```
 
 ## Check for small cells
+
 Our team works with personal health data in secure settings. For privacy, no summary tables can be exported from the data centre with small cells.
+
 ```{r}
-TableOne <- CreateTableOne(data = pbc,strata = c("trt","stage"), factorVars = catVars)
-checkedTableOne <- CheckSmallCells(TableOne)
+table_one <- create_table_one(data = pbc,strata = c("trt","stage"), factor_vars = cat_vars)
+checked_table_one <- check_small_cells(table_one)
 ```
 To obtain print of the actual small cells pass print as TRUE
 ```{r}
-checkedTableOne <- CheckSmallCells(TableOne, print = TRUE)
+checked_table_one <- check_small_cells(table_one, print = TRUE)
 ```
 
 Find out which rows and variables contain the small cells.
 ```{r}
-checkedTableOne$MetaData$smallCells
+checked_table_one$MetaData$small_cells
 ```
 
 
 You can also check small cells inside your Summary Data in case you have multiple tables
 ```{r}
-checkedLongTable <- CheckSmallCells(longTableWithLabels)
+checked_long_table <- check_small_cells(long_table_with_labels)
 ```
 
 For a print of the found rows pass print as TRUE
 ```{r}
-checkedLongTable <- CheckSmallCells(longTableWithLabels, print = TRUE)
+checked_long_table <- check_small_cells(long_table_with_labels, print = TRUE)
 ```
 
 Find out which rows and variables contain the small cells.
 ```{r}
-checkedLongTable$MetaData$smallCells
+checked_long_table$MetaData$small_cells
 ```

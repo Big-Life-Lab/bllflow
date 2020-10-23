@@ -89,9 +89,13 @@ bake.step_tagged_naomit <- function(object, new_data, ...) {
   } else {
     for (column in object$columns) {
       if (is.numeric(new_data[[column]])) {
-        new_data <- new_data[!haven::is_tagged_na(new_data[[column]], tag = object$tag_type), ]
+        new_data <-
+          new_data[!haven::is_tagged_na(new_data[[column]],
+                                        tag = object$tag_type), ]
       } else {
-        new_data <- new_data[!is_equal(new_data[[column]], paste("NA(", object$tag_type, ")", sep = "")), ]
+        new_data <-
+          new_data[!is_equal(new_data[[column]],
+                             paste("NA(", object$tag_type, ")", sep = "")), ]
       }
     }
     tibble::as.tibble(new_data)

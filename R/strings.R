@@ -31,6 +31,7 @@ pkg.globals$argument.CatLabel <- "catLabel"
 pkg.globals$argument.CatType <- "cat"
 pkg.globals$argument.VariableStartHighLow <- "from"
 pkg.globals$argument.Role <- "role"
+pkg.globals$argument.FromType <- "fromType"
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
@@ -50,7 +51,7 @@ pkg.globals$bllFlowContent.AdditionalMetaData <- "additionalDDIMetaData"
 pkg.globals$bllFlowContent.WorkingData <- "working_data"
 pkg.globals$bllFlowContent.PreviousData <- "previous_module_data"
 pkg.globals$bllFlowContent.Sequence <- "sequence_number"
-pkg.globals$bllFlowContent.Class <- "bllflow"
+pkg.globals$bllFlowContent.Class <- "BLLFlow"
 
 # MSW Column Names
 pkg.globals$MSW.Variables.Columns.Variable <- "variable"
@@ -108,4 +109,5 @@ pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
 
 # FunctionList contents
 pkg.globals$FunctionList.Arguments <- "arguments"
+pkg.globals$FunctionList.Parameter <- "parameter"
 pkg.globals$FunctionList.VariableArguments <- "variablesArguments"
