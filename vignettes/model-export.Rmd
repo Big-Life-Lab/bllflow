@@ -160,6 +160,25 @@ Keyword: dummy
 
 No file is needed for this step. All dummy variables created need to be documented in the variables details files.
 
+### Interactions
+
+Keyword: interaction
+
+Columns:
+
+**interactingVariables**: The list of variables that interact seperated by a ";"
+**interactionVariable**: The name of the interaction variable
+
+An example file is shown below
+
+```{r}
+eg_interactions_step <- read.csv(getwd(), "/assets/model-export/interactions.csv")
+DT::datatable(eg_interactions_step)
+```
+
+The first row in the above file says that the interaction variable ageXdiabetes is created by interacting the age and diabetes variable
+Similarly the second row says that the interaction variable ageXsmoking is created by interacting the age and smoking variable
+
 ### Cox
 
 A step to evaluate a cox survival model. The output of this step will be the risk of getting the outcome event.
