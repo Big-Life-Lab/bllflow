@@ -172,7 +172,7 @@ Columns:
 An example file is shown below
 
 ```{r}
-eg_interactions_step <- read.csv(getwd(), "/assets/model-export/interactions.csv")
+eg_interactions_step <- read.csv(file.path(getwd(), "/assets/model-export/interactions.csv"))
 DT::datatable(eg_interactions_step)
 ```
 
