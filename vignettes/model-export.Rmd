@@ -6,7 +6,10 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE,
+  collapse = TRUE
+)
 ```
 
 ```{r}
@@ -17,13 +20,13 @@ library(DT)
 
 # Introduction 
 
-This vignette goes through the steps to export a predictive model to CSV files. Ideally, such an export should be done to an existing standard such as "predictive modeling markup language", tensorflow etc. but the fact that these formats are not meant for human eyes makes it hard to do so without exising infrastructure. CSV files while posssiby fragmenting (its hard to encode several different types/databases in one file) are simple enough that an investigator can encode the model scoring steps in them.
+This vignette goes through the steps to export a predictive model to CSV files. Ideally, such an export would be done to an existing standard, such as "predictive modeling markup language", tensorflow etc. However, because these formats are not meant for human eyes makes it hard to do so without supportive infrastructure. CSV files, while posssiby fragmenting (its hard to encode several different types/databases in one file), are simple enough that an investigator can encode the model scoring steps in them.
 
 # Model Export Format
 
-## Variables and Variables Details Sheet
+## Variables and Variables Details Sheets
 
-The goal of a model export format is to outline all the steps to go from the starting variables in the model to calculating the outcome of the model. Keeping that in mind, we start by documenting all the starting variables in our model using two sheets called the **variables** and **variables details** sheet. Lets go through an example using the pbc data set from the survival package.
+The goal of a model export format is to outline all the steps to go from the starting variables in the model to calculating the outcome of the model. Keeping that in mind, we start by documenting all the starting variables in our model using two sheets called the **variables** and **variables details**. Lets go through an example using the pbc data set from the survival package.
 
 ```{r}
 View(survival::pbc)
@@ -46,9 +49,9 @@ DT::datatable(pbc_variables)
 The variables sheet gives a summary of all the starting variables used in the model. A brief description of its columns are outlined below,
 * variable: The name of the start variable
 * label: A short label for the variable
-* labelLong: A longer label for the variable
+* labelLong: A more detailed label for the variable
 * section, subject: Used to classify the variable
-* variableType: Whether the variable is continuous (use cont) or categorical (use cat)
+* variableType: Whether the variable is continuous (cont) or categorical (cat)
 * description: Additional metadata about the variable
 
 Once we have our variables sheet, we can make our variables details sheet.
@@ -58,16 +61,16 @@ pbc_variables_details <- read.csv(file.path(getwd(), "/assets/model-export/varia
 DT::datatable(pbc_variables_details)
 ```
 
-The variables details sheet should include all the variables defined in the variables sheet, giving more information about each of them. For eg., for continuous variables it gives the range of valid values and for categorical variables it lists all their categories as well as the any dummy variables created for each category. A brief description of its columns are outlined below,
+The variables details sheet should include all the variables defined in the variables sheet, giving more information about each of them. E.g., for continuous variables it gives the range of valid values and for categorical variables it lists all their levels as well as the any dummy variables created for each level. A brief description of its columns are outlined below,
 * variable: The name of the variable. Should correspond to a value in the variable column of the variables sheet.
-* dummyVariable: The name of the dummy variable created for this variable for the catValue specified. For eg., for sex in the sheet above, sex_cat1 will have a value of 1 if sex is "m" or 0 otherwise. Similarly, sex_cat2 will have a value of 1 of sex is "f" or 0 otherwise. This column is only used for categorical variables.
+* dummyVariable: The name of the dummy variable created for this variable for the catValue specified. E.g., for sex in the sheet above, sex_cat1 will have a value of 1 if sex is "m" or 0 otherwise. Similarly, sex_cat2 will have a value of 1 of sex is "f" or 0 otherwise. This column is only used for categorical variables.
 * numValidCat: The number of valid categories for categorical variables.
-* catLabel: A label for the category of the categorical variable in that row.
-* catLabelLong: A longer label
-* catValue: The value of this category in the dataset
-* units: Units for this variable
-* type: Same as the type column in the variables sheet
-* interval: The valid range for this variable. Follows the mathematical notation for intervals https://en.wikipedia.org/wiki/Interval_(mathematics). For eg., the valid values for age are all values between 26 and 78, including the endpoints.
+* catLabel: A label for the level of the categorical variable in that row.
+* catLabelLong: A more detailed label for each level of the categorical variable
+* catValue: The value for the level of the categorical variable
+* units: Unit of measurement for the variable
+* variableType: Same as the type column in the variables sheet
+* interval: The valid range for this variable. Follows the mathematical notation for intervals https://en.wikipedia.org/wiki/Interval_(mathematics). E.g., the valid values for age are all values between 26 and 78, including the endpoints.
 * notes: Any additional metadata about the variable
 
 ## Model Steps
