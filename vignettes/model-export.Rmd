@@ -182,7 +182,7 @@ eg_interactions_step <- read.csv(file.path(getwd(), "/assets/model-export/intera
 DT::datatable(eg_interactions_step)
 ```
 
-The first row in the above file says that the interaction variable ageXdiabetes is created by interacting the age and diabetes variable
+The first row in the preceding file says that the interaction variable ageXdiabetes is created by interacting the age and diabetes variable
 Similarly the second row says that the interaction variable ageXsmoking is created by interacting the age and smoking variable
 
 ### Cox
