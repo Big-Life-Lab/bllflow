@@ -1,0 +1,58 @@
+---
+title: "Modules Sheet"
+author: "Yulric Sequeira"
+date: "14/10/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Writing a study protocol is a must for any study trying to follow the scientific method. When it comes to the analysis of study data, its not enough to have a protocol that is human readable. Having a machine readable analysis plan in your protocol allows you to,
+1. Track any changes made to the protocol in a version control system to see how it evolved over time and also to explain all the changes made to it
+2. Integrate the protocol into your analysis code to ensure there are no discrepancies between the analysis plan and its implementation
+
+In this document, we present a standard for such a machine readable protocol implemented in a CSV file. We call it a "modules sheet". We will also show how such a sheet can be used in R to meet objective 2 above.
+
+# Modules Sheet
+
+```{r}
+library(recipes)
+library(magrittr)
+library(survival)
+library(bllflow)
+```
+
+```{r}
+source("../../R/test.R")
+```
+
+```{r}
+phiat_bllflow <- phiat_object
+
+prepare_data_module <- read.csv(file.path("./prepare-data-module.csv"))
+
+# Add roles to the variables in the dataset
+prepare_data_recipe <- bllflow_recipe(phiat_bllflow)
+
+# module::prepare-data-name
+prepare_data_recipe <- prepare_data_recipe %>%
+    recipes::step_filter(age > 20 & age < 100)
+    bllflow::step_apply_missing_tagged_na(tag_type = "c")
+    bllflow::step_z(has_role("z_diet_score"), append = TRUE) %>%
+    bllflow::step_naomit(tag_type = "a") %>%
+    bllflow::step_naomit(tag_type = "b") %>%
+    bllflow::step_naomit(tag_type = "c") %>%
+    bllflow::step_table_1(all_predictors(), strata = has_role("table-1-strata"))
+    
+bllflow_validate(prepare_data_recipe, module = prepare_data_module)
+  
+#analysis_data <- prepare_data_recipe %>% recipes::prep() %>% recipes::juice()
+
+recipe_to_pmml(prepare_data_recipe)
+
+include_exclude_dag(prepare_data_recipe)
+```
