@@ -1,4 +1,4 @@
-﻿variable,dummyVariable,numValidCat,catLabel,catLabelLong,catValue,units,type,interval,notes
+﻿variable,dummyVariable,numValidCat,catLabel,catLabelLong,catValue,units,variableType,interval,notes
 age,NA,NA,NA,NA,NA,years,cont,"[26,78]",
 sex,sex_cat1,2,Male,Male,m,NA,cat,NA,
 sex,sex_cat2,2,Female,Female,f,NA,cat,NA,
