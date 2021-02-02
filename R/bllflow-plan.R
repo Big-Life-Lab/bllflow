@@ -7,7 +7,7 @@
 # * The names of the parameters passed into each function in the list
 # follows the names in the modules sheet
 # Should also attach the bllflow and modules sheet to the bllflow_list
-# It will call the drake_plan function on the plan_list parameter and
+# It will call the drake_plan function on the plan_list parameter and 
 # return object
 bllflow_plan <- function(bllflow_object, module_name, plan_list) {
   

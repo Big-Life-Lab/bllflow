@@ -62,13 +62,13 @@ select_vars_by_role <- function(roles, variables){
       }
     }
   }
-  ret <- as.character(variables[variables[[pkg.globals$argument.Role]] == valid_patern, pkg.globals$MSW.Variables.Columns.Variable])
+  ret <- as.character(variables[variables[[pkg.globals$argument.Role]] == valid_patern, pkg.globals$MSW.Variables.Columns.Variable][[pkg.globals$MSW.Variables.Columns.Variable]])
   
   return(ret)
 }
 
 # ID role creation
-create_id_row <- function(data, id_role_name, database_name){
+create_id_row <- function(data, id_role_name, database_name, variables){
   # Check for role or variables
   id_cols <- c()
   if(!is.null(id_role_name$feeder_vars)){
