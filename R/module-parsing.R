@@ -135,7 +135,7 @@ module_data_subset <- function(data, variables, sequence_number) {
       }
     }
   }
-  id_vars <- select_vars_by_role("ID",variables)
+  id_vars <- select_vars_by_role("id",variables)
   valid_rows_index <- (variables[[pkg.globals$columnNames.Operations]] == valid_ID_patern) | (variables[[pkg.globals$columnNames.Variable]] %in% id_vars)
   valid_rows_index[is.na(valid_rows_index)] <- FALSE
   valid_rows <-
