@@ -126,7 +126,7 @@ module_data_subset <- function(data, variables, sequence_number) {
   unique_module_ID <-
     as.list(unique(variables[, pkg.globals$columnNames.Operations])) #@RUSTY merge with select_vars_by_role
   valid_ID_patern <- c()
-  for (ID_patern in unique_module_ID[[1]]) {
+  for (ID_patern in unique_module_ID) {
     # Split by commas to avoid partial matches being false positives
     ID_list <- strsplit(ID_patern, ",")[[1]]
     for (ID in ID_list) {
