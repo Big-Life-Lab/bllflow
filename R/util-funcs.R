@@ -97,7 +97,7 @@ create_id_row <- function(data, id_role_name, database_name, variables){
 # Merge data based on ID
 merge_data_on_ID <- function(data_original, data_new, variables, overwrite_rows = TRUE){
   # Identify ID column 
-  id_vars <- select_vars_by_role("ID", variables)
+  id_vars <- select_vars_by_role("id", variables)
   
   # Identify similar VARS 
   new_vars <- colnames(data_new)
