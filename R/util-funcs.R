@@ -63,7 +63,7 @@ select_vars_by_role <- function(roles, variables){
     }
   }
   ret <- NULL
-  tmp_ret <- variables[variables[[pkg.globals$argument.Role]] == valid_patern, pkg.globals$MSW.Variables.Columns.Variable]
+  tmp_ret <- variables[variables[[pkg.globals$argument.Role]] %in% valid_patern, pkg.globals$MSW.Variables.Columns.Variable]
   if(is.data.frame(tmp_ret)){
     ret <- as.character(tmp_ret[[pkg.globals$MSW.Variables.Columns.Variable]])
   }else{

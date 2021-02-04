@@ -136,7 +136,7 @@ module_data_subset <- function(data, variables, sequence_number) {
     }
   }
   id_vars <- select_vars_by_role("id",variables)
-  valid_rows_index <- (variables[[pkg.globals$columnNames.Operations]] == valid_ID_patern) | (variables[[pkg.globals$columnNames.Variable]] %in% id_vars)
+  valid_rows_index <- (variables[[pkg.globals$columnNames.Operations]] %in% valid_ID_patern) | (variables[[pkg.globals$columnNames.Variable]] %in% id_vars)
   valid_rows_index[is.na(valid_rows_index)] <- FALSE
   valid_rows <-
     variables[valid_rows_index,]
@@ -192,6 +192,9 @@ parse_module <- function(variables, module_ID, data, modules) {
                  vars,
                  single_arg)
         }
+      }else{
+        vars <- select_vars_by_role("predictor", variables)
+        vars_used[["predictor"]] <- vars
       }
       if (grepl("formula\\(", single_arg)) {
         single_arg <- gsub("formula\\(|\\)", "", single_arg)
@@ -231,24 +234,33 @@ parse_module <- function(variables, module_ID, data, modules) {
           recipes::recipe(formula = recipe_formula,
                           x = data)
         
-        # Remove default predictor role if output was suplied
-        if (outcome_variable != "."){
-        recipe_object <-
-          remove_role(recipe_object, all_predictors(), old_role = "predictor")
-        }
-        
-        # Assign roles
-        for (new_role in names(single_func$all_vars)) {
-          params <- list(recipe = recipe_object, rlang::parse_expr(unlist(single_func$all_vars[[new_role]])), new_role = new_role)
-          do.call(add_role, params)
-        }
+        # # Remove default predictor role if output was suplied
+        # if (outcome_variable != "."){
+        # recipe_object <-
+        #   remove_role(recipe_object, all_predictors(), old_role = "predictor")
+        # }
+        # 
+        # # Assign roles
+        # for (new_role in names(single_func$all_vars)) {
+        #   params <- list(recipe = recipe_object, paste(unlist(single_func$all_vars[[new_role]]), collapse = ","), new_role = new_role)
+        #   do.call(add_role, params)
+        # }
       }
       # Add to recipe
-      params <- list(recipe = recipe_object, rlang::parse_expr(unlist(single_func$args)))
+      if (length(single_func$args) > 1) {
+        params <-
+          list(recipe = recipe_object, rlang::parse_expr(unlist(single_func$args)))
+      } else{
+        params <- list(recipe = recipe_object)
+      }
       for (param_name in names(single_func$params)) {
         param_to_add <- trimws(single_func$params[[param_name]])
-        if(!is.na(as.numeric(param_to_add))){param_to_add <- as.numeric(param_to_add)}
-        else if(!is.na(as.logical(param_to_add))){param_to_add <- as.logical(param_to_add)}
+        if (!is.na(as.numeric(param_to_add))) {
+          param_to_add <- as.numeric(param_to_add)
+        }
+        else if (!is.na(as.logical(param_to_add))) {
+          param_to_add <- as.logical(param_to_add)
+        }
         params[[param_name]] <- param_to_add
       }
       recipe_object <- do.call(get(single_func$func_name), params)
