@@ -1,7 +1,0 @@
-﻿variable,dummyVariable,numValidCat,catLabel,catLabelLong,catValue,units,variableType,interval,notes
-age,NA,NA,NA,NA,NA,years,cont,"[26,78]",
-sex,sex_cat1,2,Male,Male,m,NA,cat,NA,
-sex,sex_cat2,2,Female,Female,f,NA,cat,NA,
-trt,trt_cat1,2,Received D-penicillmain,Received D-penicillmain,1,NA,cat,NA,
-trt,trt_cat2,2,Received placebo,Received placebo,2,NA,cat,NA,
-time,NA,NA,NA,NA,NA,NA,cont,"[41, 4795]",
