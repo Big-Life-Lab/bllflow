@@ -1,63 +1,57 @@
-﻿element,description,example,type,DDI,PMML,description.csv,variables.csv,variable_details.csv
-metadata,metadata namespace,bllflowV0.0.1,text,,,TRUE,,
-modelName,algorthm short name,MPoRTV2,text,,,TRUE,,
-modelDescription,description of the model,Predictive algorithm for 5-year risk of all-cause mortality in the general population,text,,,TRUE,,
-stratified,model stratification ,sex,text,,,TRUE,,
-modelType,model type,coxph,text,,,TRUE,,
-maxTime,maximium follow-up period,5,text,,,TRUE,,
-timeMetric,metric for maxTime,years,text,,,TRUE,,
-author,Prinicpal investigator for model,Doug Manuel,text,,,TRUE,,
-ocrid,orcid for author,0000-0003-0912-0845,text,,,TRUE,,
-copyright,copyright holder,The Ottawa Hosptial,text,,,TRUE,,
-licence,licence,,text,,,TRUE,,
-outcome,primary outcome,all-cause mortality,text,,,TRUE,,
-dateCreated,date created,01-Jan-19,text,,,TRUE,,
-startData,data used to develop the algorithm,"cchs_share_2001, cchs_share_2003, cchs_share_2005, cchs_share_2007, cchs_share_2009 ",text,,,TRUE,,
-variable,"(target variable) allowable variable name in SAS, R, JS, TS, Python, Stata",age,text,"<xs:element name=""var"" type=""name""/>",,,TRUE,TRUE
-label,"short variable label, less than 15 characters",Age (years),text,,,,TRUE,
-labelLong,"long, descriptive variable label",Age in years,text,"<xs:element name=""var"" type=""qstnLit""/>",,,TRUE,
-section,major heading,Demographics,text,"<xs:element name=""varGrp"" type=""section""/>",,,TRUE,
-subject,major sub-heading,Age,text,"<xs:element name=""varGrp"" type=""subject""/>",,,TRUE,
-variableType,"(target variable) allowable categories: cat (categorical), cont (continuous)",text,<var><varFormat><type>,,,,TRUE,TRUE
-units,unit of variable,years,text,,,,TRUE,TRUE
-reference,"reference group (level). Value: TRUE, FALSE, N/A. For 'variables' sheet = reference value.","TRUE for female, if females are the reference group.",boleen,,,,,TRUE
-numValidStartCat,number of valid categories in each of the starting variables,"1, 3",integers separated with commas?,"<var><universe clusion=""I"">",,,,TRUE
-databaseMapping,"target database(s). allowable variable name in SAS, R, JS, TS, Python, Stata",,,,,,,TRUE
-universe,"database(s) used for variable (dervivation). allowable variable name in SAS, R, JS, TS, Python, Stata",text,"<xs:element name=""IDNo""/>",,,,,TRUE
-dummyVariable,derived categories with dummy reference (refence cat = 0),,,,,,,TRUE
-high,low value for categorical or continuous level.,"30, for continuous age group 20-30 years.",number,"<xs:element name=""var"" type=""valrng""><range min=""1"" max=""2""/>",,,,TRUE
-interval,interval method.,"[,) for inclusion of low number and up to but not including high number",,,,,,TRUE
-low,low value for categorical or continuous level.,"20, for continuous age group 20-30 years.",number,"<xs:element name=""var"" type=""valrng""><range min=""1"" max=""2""/>",,,,TRUE
-method,"indicates method of variable transformationvalue is: map1_1 for one-to-one mapping, function name for custom function.",map1_1,text,,,,,TRUE
-target,target use of the variable,low value for categorical or continuous level.,"text separated by ',' if more that one target use.",,,,,TRUE
-units,unit of variable.,years,text,,,,,TRUE
-numValidCat,number of valid categories for the variable,3,integer,,,,,TRUE
-value,category values,,,,,,,TRUE
-variable_dummy,variable name that is derived or generated,age transformed to a RCS variable with 4 knots = age_RCS4_1,text,,,,,TRUE
-variableStart,"variable names that were used for transforming a new variable ('variable'). allowable variable name in SAS, R, JS, TS, Python, Stata. names separated with commas??",age,text,"<var><universe clusion=""I"">",,,,TRUE
-variableStartType,"(start variable) allowable types: cat (categoricial), cont (continuous).",age = continuous,,,,,,TRUE
-variableStartShortLabel,,,,,,,,
-variableStartLabel,,,,,,,,
-,,,,,,,,
-catValue,"vector? e.g. [1, 2,3,6, 9] currently [0;4]. Note DDI has categories of 'valid' and 'invalid'",vector,"<var><catgry><xs:element name=""catValu"" type=""simpleTextType""/>",,,,yes,
-catLabel,,,,,,,,
-catLabelLong,,,,,,,,
-catStartValue,,,,,,,,
-catStartLabel,,,,,,,,
-center,"indicates variable transformation of center to mean. TRUE, FALSE (missing treated as false),",boolean,,,,,,
-dummy,"indicates log transformation. Value: True, False, NA",Boolean,,,,,,
-impute,indicates variable data cleaning from missing imputed values. value is imputed method. e.g. Hmisc-impute,text,"<xs:element name=""imputation"" type=""simpleTextType""/>",,,,,
-interaction,"indicates variable transformation to interaction variable; value, indicated by interactionIndex column, interation1, interaction2, etc. (label is variables separated by _X_ e.g.,variable1_X_variable2)",text,,,,,,
-interactionIndex,"indicates index value (e.g., 1,2,3...) of interaction variable (i.e., interation1, interaction2, interaction3...)",,,,,,,
-invalid,,,,,,,,
-log,"indicates log transformation. Value: True, False, NA",Boolean,,,,,,
-max,maximum value for algorithm development,real,"<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>",,,,,
-min,"minimum value for algorithm development. If different values for males and females, then algorithm name should be different",real,"<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>",,,,,
-missing,,,,,,,,
-outlierMax,"method used with `max`. Value: delete, NA (missing), N/A (not applicable), number (real number).","age min=20, outlier_min = NA","<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>",,,,,
-outlierMin,"method used with `min`. Value: delete, NA (missing), N/A (not applicable), number (real number).","age max=80, outlier_max = NA","<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>",,,,,
-rcs,"indicates variable transformation to restricted cubic spline, wehere {num} equals the number of knots. value is rcs_{num}, where {num} indicates number of knots. e.g. rcs_3 for 3-knot restricted cubic spline.",text,,,,,,
-spline,"indicates spline transformation. Value: True, False, NA",Boolean,,,,,,
-recommended,variable that is recommended user input (versus a variable that is derived from input variables),EDUDR04 (education) versus derived packYears,,,,,,
-required,"mandatory variable required for scoring the algorithm (i.e, can not be missing and replaced with centered value)",For most algorithms: age and sex,,,,,,
-role,"variable's role in the algorithm development, validation, deployment, KTE process",predictor,text,,,,TRUE,
+﻿element,description,example,type,DDI,PMML,description.csv,variables.csv,variable_details.csv,rcs.csv,center.csv
+metadata,metadata namespace,bllflowV0.0.1,text,,,TRUE,,,,
+modelName,algorthm short name,MPoRTV2,text,,,TRUE,,,,
+modelDescription,description of the model,Predictive algorithm for 5-year risk of all-cause mortality in the general population,text,,,TRUE,,,,
+stratified,model stratification ,sex,text,,,TRUE,,,,
+modelType,model type,coxph,text,,,TRUE,,,,
+maxTime,maximium follow-up period,5,text,,,TRUE,,,,
+timeMetric,metric for maxTime,years,text,,,TRUE,,,,
+author,Prinicpal investigator for model,Doug Manuel,text,,,TRUE,,,,
+ocrid,orcid for author,0000-0003-0912-0845,text,,,TRUE,,,,
+copyright,copyright holder,The Ottawa Hosptial,text,,,TRUE,,,,
+licence,licence, ,text,,,TRUE,,,,
+outcome,primary outcome,all-cause mortality,text,,,TRUE,,,,
+dateCreated,date created,01-Jan-19,text,,,TRUE,,,,
+startData,data used to develop the algorithm,"cchs_share_2001, cchs_share_2003, cchs_share_2005, cchs_share_2007, cchs_share_2009 ",text,,,TRUE,,,,
+variable,"(target variable) name of the final transformed variable; allowable variable name in SAS, R, JS, TS, Python, Stata",age,text,"<xs:element name=""var"" type=""name""/>", ,,TRUE,TRUE,TRUE,TRUE
+label,"(targert variable) short variable label, less than 15 characters",Age (years),text,,,,TRUE,,,
+labelLong,(target variable) descriptive variable label,Age in years,text,"<xs:element name=""var"" type=""qstnLit""/>", ,,TRUE,,,
+section,major heading,Demographics,text,"<xs:element name=""varGrp"" type=""section""/>", ,,TRUE,,,
+subject,section sub-heading,Age,text,"<xs:element name=""varGrp"" type=""subject""/>", ,,TRUE,,,
+typeEnd,"(target variable) allowable types: cat (categorical), cont (continuous)",cat,text,,,,TRUE,TRUE,,
+units,unit of variable,years,text,,,,TRUE,TRUE,,
+role,"variable's role in the algorithm development, validation, deployment, KTE process",predictor,text,,,,TRUE,,,
+recStart,"the range of values in the original data to be mapped to the target category ('recTo'). The mapping can be one to one (e.g., recFrom = 1 and recTo = 1) or many to one( recFrom = [1,4] and rectTo = 1)","[1,4]",value range separated with commas,"<var><universe clusion=""I"">", ,,,TRUE,,
+recEnd,(target variable ) category where Not applicable = `NA::a`;  missing and else categories = `NA::b`. For continuous variables that are not transformed = `copy` (so that the function copies the values without any transformations).,1,integer,,,,,TRUE,,
+databaseStart,"the datasets that contain the variables and categories of interest, separated by commas", , ,"<xs:element name=""IDNo""/>", ,,,TRUE,,
+numValidCat,(target variable) number of valid categories for the variable,3,integer,,,,,TRUE,,
+variableStart,"the original names of the variables (as they are listed in the original datasets, separated by commas) that are used to derive the target variables ('variable')",age,text,"<var><universe clusion=""I"">", ,,,TRUE,,
+typeStart,"(start variable) allowable types: cat (categoricial), cont (continuous).",cont,text,<var><varFormat><type>, ,,,TRUE,,
+variableStartLabel,the original variable labels (as they are listed in the original datasets), ,text,,,,,TRUE,,
+catLabel,"(target variable) short category label, less than 15 characters", ,text,,,,,TRUE,,
+catLabelLong,(target variable) descriptive category label. If categories do not change from original data this lable should be the same as 'catStartLabel', ,text,,,,,TRUE,,
+catStartLabel,"label, from the original variable dataset, describing each category. ", ,text,,,,,TRUE,,
+notes,"Notes give important details  on changes in wording, missing/changes in categories, and changes in variable type that may impact the variable harmonization process across data sets.", ,text,,,,,TRUE,,
+reference,"reference group (level). Value: TRUE, FALSE, N/A. For 'variables' sheet = reference value.","TRUE for female, if females are the reference group.",boleen,,,,, ,,
+rcsVariable,"names for the restricted cubic spline variables, separated by semi-colons; allowable variable name in SAS, R, JS, TS, Python, Stata",age_rcs1;age_rcs2;age_rcs3,text,,,,,,TRUE,
+knots,"values for knot locations, separated by semi-colons",-27;-12;-1;12;29,,,,,,,TRUE,
+centerVariable,"name for the centred variable; allowable variable name in SAS, R, JS, TS, Python, Stata","age_c	",,,,,,,,TRUE
+centerValue,value for centered variable,50.74155,,,,,,,,TRUE
+interaction,"indicates variable transformation to interaction variable; value, indicated by interactionIndex column, interation1, interaction2, etc. (label is variables separated by _X_ e.g.,variable1_X_variable2)",text, ,,,,,,,
+interactionIndex,"indicates index value (e.g., 1,2,3...) of interaction variable (i.e., interation1, interaction2, interaction3...)", , ,,,,,,,
+high,low value for categorical or continuous level.,"30, for continuous age group 20-30 years.",number,"<xs:element name=""var"" type=""valrng""><range min=""1"" max=""2""/>", ,,, ,,
+low,low value for categorical or continuous level.,"20, for continuous age group 20-30 years.",number,"<xs:element name=""var"" type=""valrng""><range min=""1"" max=""2""/>", ,,, ,,
+center,"indicates variable transformation of center to mean. TRUE, FALSE (missing treated as false),",boolean, ,,,,,,,
+dummy,"indicates log transformation. Value: True, False, NA",Boolean, ,,,,,,,
+impute,indicates variable data cleaning from missing imputed values. value is imputed method. e.g. Hmisc-impute,text,"<xs:element name=""imputation"" type=""simpleTextType""/>", ,,,,,,
+invalid,, , ,,,,,,,
+log,"indicates log transformation. Value: True, False, NA",Boolean, ,,,,,,,
+max,maximum value for algorithm development,real,"<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>", ,,,,,,
+min,"minimum value for algorithm development. If different values for males and females, then algorithm name should be different",real,"<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>", ,,,,,,
+missing,, , ,,,,,,,
+outlierMax,"method used with `max`. Value: delete, NA (missing), N/A (not applicable), number (real number).","age min=20, outlier_min = NA","<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>", ,,,,,,
+outlierMin,"method used with `min`. Value: delete, NA (missing), N/A (not applicable), number (real number).","age max=80, outlier_max = NA","<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>", ,,,,,,
+rcs,"indicates variable transformation to restricted cubic spline, wehere {num} equals the number of knots. value is rcs_{num}, where {num} indicates number of knots. e.g. rcs_3 for 3-knot restricted cubic spline.",text, ,,,,,,,
+spline,"indicates spline transformation. Value: True, False, NA",Boolean, ,,,,,,,
+recommended,variable that is recommended user input (versus a variable that is derived from input variables),EDUDR04 (education) versus derived packYears, ,,,,,,,
+required,"mandatory variable required for scoring the algorithm (i.e, can not be missing and replaced with centered value)",For most algorithms: age and sex, ,,,,,,,
