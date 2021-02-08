@@ -128,7 +128,7 @@ bllflow_config_combine_data <- function(bllflow_object, config_env_name = NULL) 
       tmp_working_data <- dplyr::bind_rows(tmp_working_data, tmp_mod_data)
     }
   }
-  tmp_working_data <- bllflow::set_data_labels(
+  tmp_working_data <- recodeflow::set_data_labels(
     tmp_working_data,
     bllflow_object$variable_details,
     bllflow_object$variables)
