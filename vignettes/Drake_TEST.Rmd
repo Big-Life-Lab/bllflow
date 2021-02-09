@@ -1,0 +1,90 @@
+---
+title: "Drake_TEST.Rmd"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Create the sub functions used in the plan
+```{r}
+create_depression_score_imputation_dataset_function <- function(data,
+                                                                variables,
+                                                                survey_cycle_variable,
+                                                                survey_cycle_lower_limit,
+                                                                survey_cycle_upper_limit) {
+  
+  # Code for this step/submodule
+  
+}
+impute_depression_score_function <- function(data, outcome, predictors, num_multiple_imputations, method){
+  # Code for this step/submodule
+}
+
+merge_depression_score_imputed_dataset_function <- function(depression_score_imputed_data, study_dataset, merge_by){
+  # Code for this step/submodule
+}
+
+create_mood_disorder_imputation_dataset_function <- function(data,
+    variables,
+    survey_cycle_variable,
+    survey_cycle_lower_limit,
+    survey_cycle_upper_limit){
+  # Code for this step/submodule
+}
+
+impute_mood_disorder_function <- function(data, outcome, predictors, num_multiple_imputations, method){
+  # Code for this step/submodule
+}
+
+merge_imputed_mood_disorder_data_function <- function(mood_disorder_imputed_data, study_dataset, merge_by){
+  # Code for this step/submodule
+}
+
+```
+
+## Create the main module plan
+
+```{r}
+depression_imputation <- drake::drake_plan(
+  create_depression_score_imputation_dataset = create_depression_score_imputation_dataset_function(
+    data,
+    variables,
+    survey_cycle_variable,
+    survey_cycle_lower_limit,
+    survey_cycle_upper_limit
+  ),
+  impute_depression_score = impute_depression_score_function(data, outcome, predictors, num_multiple_imputations, method),
+  merge_depression_score_imputed_dataset = merge_depression_score_imputed_dataset_function(depression_score_imputed_data, study_dataset, merge_by),
+  create_mood_disorder_imputation_dataset = create_mood_disorder_imputation_dataset_function(
+    data,
+    variables,
+    survey_cycle_variable,
+    survey_cycle_lower_limit,
+    survey_cycle_upper_limit
+  ),
+  impute_mood_disorder = impute_mood_disorder_function(data, outcome, predictors, num_multiple_imputations, method),
+  merge_imputed_mood_disorder_data = merge_imputed_mood_disorder_data_function(mood_disorder_imputed_data, study_dataset, merge_by)
+)
+```
+
+## Create your bllflow object
+
+```{r}
+
+# This requires modification of the current config setup to allow for multiple modules
+depression_object <- bllflow_config_init(config_env_name = "depression")
+```
+
+## Verify the match between the drake plan and module sheet as well as populate the parameters based on argumentValue column
+
+```{r}
+depression_imputation_plan <- bllflow_plan(bllflow_object = depression_object, module_name = "depression_imputation", plan_list = depression_imputation)
+```
+
+
+## Run the make process
+```{r}
+depression_imputation_plan <- bllflow_make(depression_imputation_plan)
+```
