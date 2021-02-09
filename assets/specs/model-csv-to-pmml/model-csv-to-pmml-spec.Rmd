@@ -48,6 +48,7 @@ An example is given below
 ```{r}
 eg_model_steps <- data.frame(
   "step" = c("dummy", "center"),
+  "fileType" = c("N/A", "N/A"),
   "filePath" = c("dummy-data.csv", "../center-data.csv")
 )
 
@@ -59,6 +60,8 @@ The above example model steps file has two steps, dummy and center, defined in t
 The file which describes the dummy step is called `dummy-data.csv` and is in the same folder as the model steps file. 
 
 The file which describes the center step is called `center-data.csv` and is in the folder above the model steps file.
+
+Notice how the `fileType` columns for both these steps is `N/A` or `Not Applicable`. Since the dummy and center steps require only one file to describe them, we do not need to provide a value for the `fileType` columns for those rows. The fine and gray model step described in this document required multiple files to describe it, hence requiring the use of the `fileType` column.
 
 #### Variable Details File
 
