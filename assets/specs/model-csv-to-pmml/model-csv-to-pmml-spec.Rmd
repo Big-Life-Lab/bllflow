@@ -90,7 +90,7 @@ An example is given below
 
 ```{r}
 eg_dummy_step <- data.frame(
-  "origVariable" = c("smoker_type", "smoker_type", "smoker_type", "drinker_type", "drinker_type", "drinker_type"),
+  "origVariable" = c("smoker_type", "smoker_type", "smoker_type", "drinker_type", "drinker_type", "drinker_type", "drinker_type"),
   "catValue" = c(0,1,2, 0,1,2,3),
   "dummyVariable" = c("non_smoker", "current_smoker", "former_smoker", "non_drinker", "current_light_drinker", "current_heavy_drinker", "former_drinker")
 )
