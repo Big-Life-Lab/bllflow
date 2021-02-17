@@ -286,3 +286,153 @@ The model steps file has 2 rows, both of which are a fine and gray step. The typ
 The beta coefficients file says that the model has two covariates, `Age` and `Sex` and specifies the beta coefficients for each one which are `0.01` and `2` respectively.
 
 The baseline hazards has 5 rows and describes the baseline hazards for each year in the model. Notice how the lowest time value is `1` and the highest value is `5`. This is because of the time variable we specified earlier which goes from 1 to 5.
+
+### Business Logic
+
+This section will go through the logic for transforming a set of model CSV files into PMML. The flowchart below broadly outlines the steps. The next few section will go through each step in the flow chart in detail.
+
+![](./model-csv-to-pmml-flow-chart.png)
+
+#### Step 1
+
+This step creates an empty PMML document to which we will add the relevant nodes in the subsequent steps. The empty PMML document has the following XML,
+
+```{xml}
+<?xml version="1.0"?>
+<PMML version="4.4"
+  xmlns="http://www.dmg.org/PMML-4_4" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Application name="bllflow" version="0.1.0"/>
+  </Header>
+</PMML>
+```
+
+Things to note:
+
+* The `version` attribute for the `Application` element is set to the version of the bllflow package creating this document
+
+#### Step 2
+
+#### Step 3
+
+#### Step 4
+
+Go through the rows in the model steps file until we have processed all of them. The next step will go through how to add the data for each model step into the PMML document.
+
+#### Step 5
+
+Add the data for each model step into the PMML document. The child sections below will go through the nodes to add for each model step.
+
+##### Dummy Step
+
+We will be using the example we provided when explaining the data model for this step.
+
+For each set of new dummy variables created for an original variable, we need to add a number of `DerivedField` nodes to the `LocalTransformations` node within the `PMML` node. Using the example dummy step CSV file above, the PMML document would look like,
+
+```{xml}
+<?xml version="1.0"?>
+<PMML version="4.4"
+  xmlns="http://www.dmg.org/PMML-4_4" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Application name="bllflow" version="0.1.0"/>
+  </Header>
+  <TransformationDictionary>
+    
+    <!--These are the derived field nodes added for each dummy variable for the
+    non-smoker variable-->
+      
+    <DerivedField name="non_smoker" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="smoker_type" />
+        <Constant dataType="float">0</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <DerivedField name="current_smoker" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="smoker_type" />
+        <Constant dataType="float">1</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <DerivedField name="former_smoker" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="smoker_type" />
+        <Constant dataType="float">2</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <!--These are the derived field nodes added for each dummy variable for the
+    drinker-type variable-->
+      
+    <DerivedField name="non_drinker" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="drinker_type" />
+        <Constant dataType="float">0</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <DerivedField name="current_light_drinker" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="drinker_type" />
+        <Constant dataType="float">1</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <DerivedField name="drinker_type" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="current_heavy_drinker" />
+        <Constant dataType="float">2</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+    <DerivedField name="drinker_type" optype="categorical" dataType="integer">
+      <Apply function="if">
+        <FieldRef field="former_drinker" />
+        <Constant dataType="float">3</Constant>
+      </Apply>
+      <Constant dataType="float">1</Constant>
+      <Constant dataType="float">0</Constant>
+    </DerivedField>
+      
+  </TransformationDictionary>
+</PMML>
+```
+
+Things to note:
+
+* The number of `DerivedField` nodes should equal the number of rows in the dummy step file
+* The value of each attribute in the `DerivedField` node are:
+    * The `name` attribute should be set to the value of the `dummyVariable` column for that row
+    * The `optype` attribute should be set to `categorical`
+    * The `dataType` attribute should be set to `integer`
+* The nodes within each `DerivedField` nodes describes how to convert each original variable to the dummy variable for that row. For example, the nodes for the `non_smoker` dummy variable are set to represent the code,
+
+```{r, eval = FALSE}
+if(smoker_type == 0) { # The value of 0 comes from the catValue column for the non_smoker row
+  non_smoker <- 1 # If the original variable value (smoker_type) is equal to the catValue column (1)
+                  # then set the dummy variable (non_smoker) to 1
+} else {
+  non_smoker <- 0 # Otherwise set the dummy variable value to 0
+}
+```
+
+* The above code is replicated for each row in the dummy step file
+
+
+
+
