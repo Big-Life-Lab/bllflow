@@ -234,6 +234,11 @@ The beta coefficients file has the following columns:
       1. Each variable should be defined either in the variables or variables details sheet, or in a previous step file
 2. **coefficient**: The value of the beta coefficient for the covariate
     **type**: number
+3. **type**: Whether the covariate is categorical or continuous
+    * **type** enum
+    * **allowable values**:
+      * **cat**: For categorical covariates
+      * **cont**: For continuous covariates
     
 The baseline hazards file has the following columns:
 
@@ -312,9 +317,14 @@ Things to note:
 
 * The `version` attribute for the `Application` element is set to the version of the bllflow package creating this document
 
-#### Step 2
+#### Steps 2 and 3
 
-#### Step 3
+Use the `recodeflow::recode_to_pmml` function to do this. The arguments for this function are as follows:
+
+* `var_details_sheet`: Pass in the sheet passed into this function
+* `vars_sheet`: Pass in the sheet passed into this function
+* `db_name`: Pass in the value passed into this function
+* `vars_to_convert`: NULL
 
 #### Step 4
 
@@ -433,6 +443,217 @@ if(smoker_type == 0) { # The value of 0 comes from the catValue column for the n
 
 * The above code is replicated for each row in the dummy step file
 
+##### Centering Step
 
+We will be using the example used to describe this CSV file here.
 
+For each new centered variable defined in the CSV file, we have to add a `DerivedField` node to the `LocalTransformations` node within the `PMML` node. 
 
+The nodes within the `DerivedField` node should represent the R code shown below,
+
+```{r}
+# The R code for the row with the age_C variable
+age_C <- age - 40
+
+# The R code for the row with the diet_score_C variable
+diet_score_C <- diet_score - 4
+```
+
+And finally the XML nodes that needs to be added to the `LocalTransformations` node looks like,
+
+```{xml}
+<!-- The XML for the age_C variable-->
+<DerivedField name="age_C">
+  <Apply function="-">
+    <FieldRef field="age" />
+    <Constant dataType="float">40</Constant>
+  </Apply>
+</DerivedField>
+
+<!-- The XML for the diet_score_C variable-->  
+<DerivedField name="diet_score_C">
+  <Apply function="-">
+    <FieldRef field="diet_score" />
+    <Constant dataType="float">4</Constant>
+  </Apply>
+</DerivedField>
+```
+
+Things to note:
+
+1. For each new centered variable defined in the CSV file (i.e. for each new row), a `DerivedField` field node needs to be added to the `LocalTransformations` node within the `PMML` node
+2. The `name` attribute for the `DerivedField` node should be the value of the `centeredVariable` column for that row
+3. The value of the `field` attribute for the `FieldRef` should be the value of the `origVariabvle` column for that row
+4. The value within the `Constant` node should the the value of the `centerValue` column for that row
+
+##### RCS Step
+
+Converting an RCS step file to PMML involves adding `DerivedField` nodes to the `LocalTransformations` node within the `PMML` node. Things to note:
+
+1. For each new RCS variable creates in each row of the file, we need to add a new `DerivedField` node
+2. The `name` attribute for the `DerivedField` node is the name of the RCS variable it's for
+3. For the first RCS variable in each row, the contents of the `DerivedField` node should just set it to the variable in the `variable` column
+4. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
+
+```{r}
+# previous_rcs_variable: The value in the previous rcs variable
+# knot_number: Which rcs variable this is
+# knots: The array of knots
+rcs <- function(previous_rcs_variable, knot_number, knots) {
+  
+}
+```
+
+The example CSV file used to describe this step above would be converted to the following nodes
+
+```{xml}
+<!-- The new derived field nodes for the first row -->
+<DerivedField name="AgeC_rcs1">
+  <Apply function="equal">
+    <FieldRef field="Age_c" />
+  </Apply>
+</DerivedField>
+  
+<DerivedField name="AgeC_rcs2">
+  <Apply function="rcs">
+    <FieldRef field="AgeC_rcs1" />
+    <Constant dataType="float">2</Constant>
+    <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
+  </Apply>
+</DerivedField>
+  
+<DerivedField name="AgeC_rcs3">
+  <Apply function="rcs">
+    <FieldRef field="AgeC_rcs2" />
+    <Constant dataType="float">3</Constant>
+    <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
+  </Apply>
+</DerivedField>
+  
+<DerivedField name="AgeC_rcs4">
+  <Apply function="rcs">
+    <FieldRef field="AgeC_rcs3" />
+    <Constant dataType="float">4</Constant>
+    <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
+  </Apply>
+</DerivedField>
+
+<!-- The new derived field nodes for the second row -->
+<DerivedField name="PackYearsC_rcs1">
+  <Apply function="equal">
+    <FieldRef field="PackYears_c" />
+  </Apply>
+</DerivedField>
+  
+<DerivedField name="PackYearsC_rcs2">
+  <Apply function="rcs">
+    <FieldRef field="PackYearsC_rcs1" />
+    <Constant dataType="float">2</Constant>
+    <Array n="5" type="float">-21.2 -10.35 34.8</Array>
+  </Apply>
+</DerivedField>
+```
+
+##### Interaction Step
+
+Converting an interaction step file to PMML involves adding a `DerivedField` field for each new interaction variable (each row in the CSV file) to the `LocalTransformations` node within the `PMML` node. Things to note:
+
+1. Add a `DerivedField` node for each new interaction variable 
+2. The `name` attribute for the `DerivedField` field is the name of the interaction variable it's for
+3. The nodes with each `DerivedField` represents the following R code
+
+```{r}
+new_interaction_var <- orig_var_one * orig_var_two
+```
+
+The example CSV file used to describe this step above would be converted to the following set of `DerivedField` nodes
+
+```{xml}
+<!-- Node added for the first row in the file -->
+<DerivedField name="AgeXCancer">
+  <Apply function="*">
+    <FieldRef field="Age" />
+    <FieldRef field="Cancer" />
+  </Apply>
+</DerivedField>
+
+<!-- Node added for the second row in the file -->
+<DerivedField name="AgeXHypertension">
+  <Apply function="*">
+    <FieldRef field="Age" />
+    <FieldRef field="Hypertension" />
+  </Apply>
+</DerivedField>
+```
+
+##### Fine and gray step
+
+This involves converting multiple files into the XML nodes to add to the document. The steps for this part are:
+
+![](./fine-and-gray-step.png)
+Things to note:
+
+1. The following attributes need to be added to the `GeneralRegressionNode`
+    * `modeType` set to `CoxRegression`
+    * `functionName` set to `regression`
+    * `endTimeVariable` set to `time`
+2. The following attributes need to be set for each `MiningField` nodes
+    * `name`: Set to the name of the starting variable. For the extra node added for the predicted risk, the value would be `risk`
+    * `usageType`: Set to `active`. For the extra node added for the predicted risk, the value would be `target`
+3. The following attributes need to be set to the `Parameter` node
+    * `name` set to `p<index>` where index is the row number of the variable in the file. For the extra node added for the intercept, this value would be `p0`
+    * `label` set to the value of the variable column. For the extra node added for the intervept, this value would be `Intercept`
+4. The following attributes need to be set for each `Predictor` node
+    * `name` set to the value of the variable column
+5. The following attributes need to be set for each `PPCell` node
+    * `value` set to `1`
+    * `predictorName` set to the value in the variable column
+    * `parameterName` set to the value of the name attribute for the Parameter node for this variable
+6. The following attributes need to be set for each `PCell` node
+    * `parameterName`: Set to the name attribute of the Parameter node for this variable. Remember that for the intercept term, this would be `p0`
+    * `beta`: Set to the value of the coefficient column
+7. The following attributes need to be set for the `BaseCumHazardTables` node
+    * `maxTime`: Set to the largest value of the `recTo` column for the `time` variable in the variable details sheet
+8. The following attributed need to be set for each `BaselineCell` node
+    * `time`: Set to the `time` column
+    * `cumHazard`: Set to the `baselineHazard` column
+
+For the example CSV file used to introduce this step, the converted PMML file would be,
+
+```{xml}
+<GeneralRegressionModel
+	modelType="CoxRegression"
+	functionName="regression"
+	endTimeVariable="time">
+	<MiningSchema>
+		<MiningField name="risk" usageType="target" />
+	</MiningSchema>
+	<ParameterList>
+		<Paramater name="p0" label="Intercept" />
+		<Parameter name="p1" label="Age" />
+		<Parameter name="p1" label="Sex" />
+	</ParameterList>
+	<FactorList>
+		<Predictor name="Sex" />
+	</FactorList>
+	<CovariateList>
+		<Predictor name="Age" />
+	</CovariateList>
+	<PPMatrix>
+		<PPCell value="1" predictorName="Sex" parameterName="p1" />
+		<PPCell value="1" predictorName="Age" parameterName="p2" />
+	</PPMatrix>
+	<ParamMatrix>
+		<PCell parameterName="p0" beta="0" />
+		<PCell parameterName="p1" beta="0.01" />
+		<PCell parameterName="p1" beta="2" />
+	</ParamMatrix>
+	<BaseCumHazardTables maxTime="5">
+		<BaselineCell time="1" cumHazard="0.1" />
+		<BaselineCell time="2" cumHazard="0.2" />
+		<BaselineCell time="3" cumHazard="0.3" />
+		<BaselineCell time="4" cumHazard="0.4" />
+		<BaselineCell time="5" cumHazard="0.5" />
+	</BaseCumHazardTable>
+</GeneralRegressionModel>
+```
