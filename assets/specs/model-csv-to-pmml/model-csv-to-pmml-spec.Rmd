@@ -508,7 +508,7 @@ The baseline hazards has 5 rows and describes the baseline hazards for each year
 
 This section will go through the logic for transforming a set of model CSV files into PMML. The flowchart below broadly outlines the steps. The next few section will go through each step in the flow chart in detail.
 
-![](./model-csv-to-pmml-flow-chart.png)
+![](./images/model-csv-to-pmml-flow-chart.png)
 
 ## Step 1
 
@@ -807,7 +807,7 @@ The example CSV file used to describe this step above would be converted to the 
 
 This involves converting multiple files into the XML nodes to add to the document. The steps for this part are:
 
-![](./fine-and-gray-step.png)
+![](./images/fine-and-gray-step.png)
 Things to note:
 
 1. The following attributes need to be added to the `GeneralRegressionNode`
