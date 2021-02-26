@@ -13,15 +13,45 @@ This document provides the specifications for a new function `model_csv_to_pmml`
 
 ## Glossary
 
-# Solutions
-
-## Design
+# User Files
 
 This section will go over the different CSV files that that can be inputted into the function and the logic for converting each of them to a section in the final PMML XML file.
 
-### Data Model
+## Model Export File
 
-#### Model Steps File
+One of the four mandatory files that the user has to provide. Each row in this CSV file gives the location of a file needed for implementation. The columns for this file are defined below:
+
+* **fileType**: Used to identify what file this row is referring to
+    * **type**: enum
+    * **allowable values**
+        * **variables**: Value for the variables sheet. There has to be an entry in this file with this value.
+        * **variable-details**: Value for the variable details sheet. There has to be an entry in this file with this value.
+        * **model-steps**: Value for the model steps sheet. There has to be an entry in this file with this value.
+    * **restrictions**
+        **mandatory**
+* **filePath**: The relative path to this file. The path should be relative to the model export file
+    * **type**: string
+    * **restrictions**
+        **mandatory**
+        
+An example is provided below
+
+```{r}
+model_export_file <- data.frame(
+  fileType = c("variables", "variable-details", "model-steps"),
+  filePath = c("./variables.csv", "../../variable-details.csv", "./model-steps.csv")
+)
+
+DT::datatable(model_export_file)
+```
+
+Going into more details,
+
+* The first row gives the location of the variables file. It's located in the same folder as the model export file and is called `variables.csv`
+* The second row gives the location of the variable details file. It's located two folders above the model export file and is called `variable-details.csv`
+* The third row gives the location of the model steps file. It's located in the same folder as the model export fiel and is called `model-steps.csv`
+
+## Model Steps File
 
 One of three mandatory files for this function, the other two are the variable details file and the variables file. This file specifies the steps for calculating the outcome of the model as well as their order. It does not specify the data for each step which will be defined in other files defined below. The columns for this file are defined below:
 
@@ -63,15 +93,15 @@ The file which describes the center step is called `center-data.csv` and is in t
 
 Notice how the `fileType` columns for both these steps is `N/A` or `Not Applicable`. Since the dummy and center steps require only one file to describe them, we do not need to provide a value for the `fileType` columns for those rows. The fine and gray model step described in this document required multiple files to describe it, hence requiring the use of the `fileType` column.
 
-#### Variable Details File
+## Variable Details File
 
 One of the mandatory files. Its structure is defined here https://big-life-lab.github.io/cchsflow/articles/variable_details.html.
 
-#### Variables File
+## Variables File
 
 One of the mandatory files that defines the starting variables in the model. Its columns have been defined here https://big-life-lab.github.io/cchsflow/articles/variables_sheet.html.
 
-#### Dummy Step File
+## Dummy Step File
 
 Dummying is a transformation where a categorical variable with greater than n > 2 categories, is converted to a set of n dicotomous variables. Information about how this transformation is done can be seen [here](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)).
 
@@ -116,7 +146,7 @@ The `drinker_type` variable has four dummy variables:
 * `current_heavy_drinker`: Represents category 2 in the `drinker_type` variable
 * `former_drinker`: Represents category 3 in the `drinker_type` variable
 
-#### Centering Step File
+## Centering Step File
 
 Centering is a transformation where the original variable is subtracted by a value, usually it's mean or median. The centering step file consists of the following columns:
 
@@ -128,6 +158,11 @@ Centering is a transformation where the original variable is subtracted by a val
     * **type**: number
 3. **centeredVariable**: The name of the new centered variable
     * **type**: string
+4. **centeredVariableType**: Type of the new centered variable
+    * **type**: enum
+    * **allowable values**
+        **cat**: Categorical
+        **cont**: Continuous
     
 An example is given below,
 
@@ -135,7 +170,8 @@ An example is given below,
 eg_centering_step <- data.frame(
   "origVariable" = c("age", "diet_score"),
   "centerValue" = c(40, 4),
-  "centeredVariable" = c("age_C", "diet_score_C")
+  "centeredVariable" = c("age_C", "diet_score_C"),
+  "centeredVariableType" = c("cont", "cont")
 )
 
 DT::datatable(eg_centering_step)
@@ -145,9 +181,9 @@ The example above describes the data for centering two variables, `age` and `die
 
 The values used to center the two variables are `40` and `4` respectively
 
-The names of the new centered variables are `age_C` and `diet_score_C`
+The names of the new centered variables are `age_C` and `diet_score_C` and they are both continuous
 
-#### Restricted Cubic Spline (RCS) Step File
+## Restricted Cubic Spline (RCS) Step File
 
 An RCS step file has the following columns:
 
@@ -193,7 +229,7 @@ Notice how in the CSV, each knot is seperated by a ";" and each new variable nam
 
 Similarly, for `PackYears_c`, we define a 3 knot spline where the knots are `-21.2`, `-10.35` and `34.8`. The new spline variables are `PackYearsC_rcs1` and `PackYearsC_rcs2`.
 
-#### Interaction Step File
+## Interaction Step File
 
 Theoretically, an interaction variable is created to model effect modification. Effect modification takes place when a risk factor modifies the effect that another risk factor has on a condition. An example is age, cancer and their effect on mortality, where as you get older the effect that cancer has on your risk of mortality increases. Here, age is said to modify the effect that cancer has on mortality. Mathematically, an effect modification is modeled by creating a new variable whose value is the product of the two "interacting" variables, for eg, age and cancer.
 
@@ -205,21 +241,27 @@ An interaction step file has the following columns:
       1. Each interacting variable should be defined either in the variables or variables details sheet, or in a previous step file
 2. **interactionVariable**: The name of the new interaction variable
     * **type**: string
+3. **interactionVariableType**: The type of the new interaction variable
+    * **type**: enum
+    * **allowableValues**
+        * **cat**: For categorical variables
+        * **cont**: For continuous variables
     
 An example is given below,
 
 ```{r}
 eg_interaction_step <- data.frame(
   "interactionVariable" = c("AgeXCancer", "AgeXHypertension"),
-  "interactingVariables" = c("Age;Cancer", "Age;Hypertension")
+  "interactingVariables" = c("Age;Cancer", "Age;Hypertension"),
+  "interactionVariableType" = c("cont", "cont")
 )
 
 DT::datatable(eg_interaction_step)
 ```
 
-The example above creates two new interaction variables, `AgeXCancer` and `AgeXHypertension`. `AgeXCancer` is created using the `Age` and `Cancer` variables while `AgeXHypertension` is created using the `Age` and `Hypertension` variables. Notice how the interacting variables are seperated by a semi-colon in the example.
+The example above creates two new interaction variables, `AgeXCancer` and `AgeXHypertension`. `AgeXCancer` is created using the `Age` and `Cancer` variables while `AgeXHypertension` is created using the `Age` and `Hypertension` variables. Both new interaction variables are continuous. Notice how the interacting variables are seperated by a semi-colon in the example.
 
-#### Fine and Gray Model Step Files
+## Fine and Gray Model Step Files
 
 Similar to a cox regression model, a fine and gray model estimates the risk of an event occuring at some time in the future, the difference being that it takes competing risks into account. Specifying this step requires two files,
 
@@ -292,13 +334,17 @@ The beta coefficients file says that the model has two covariates, `Age` and `Se
 
 The baseline hazards has 5 rows and describes the baseline hazards for each year in the model. Notice how the lowest time value is `1` and the highest value is `5`. This is because of the time variable we specified earlier which goes from 1 to 5.
 
-### Business Logic
+# Business Logic
 
 This section will go through the logic for transforming a set of model CSV files into PMML. The flowchart below broadly outlines the steps. The next few section will go through each step in the flow chart in detail.
 
 ![](./model-csv-to-pmml-flow-chart.png)
 
-#### Step 1
+## Step 1
+
+This step will parse the rows in the model export CSV file
+
+## Step 2
 
 This step creates an empty PMML document to which we will add the relevant nodes in the subsequent steps. The empty PMML document has the following XML,
 
@@ -317,7 +363,7 @@ Things to note:
 
 * The `version` attribute for the `Application` element is set to the version of the bllflow package creating this document
 
-#### Steps 2 and 3
+## Steps 3 and 4
 
 Use the `recodeflow::recode_to_pmml` function to do this. The arguments for this function are as follows:
 
@@ -326,15 +372,15 @@ Use the `recodeflow::recode_to_pmml` function to do this. The arguments for this
 * `db_name`: Pass in the value passed into this function
 * `vars_to_convert`: NULL
 
-#### Step 4
+## Step 5
 
 Go through the rows in the model steps file until we have processed all of them. The next step will go through how to add the data for each model step into the PMML document.
 
-#### Step 5
+## Step 6
 
 Add the data for each model step into the PMML document. The child sections below will go through the nodes to add for each model step.
 
-##### Dummy Step
+### Dummy Step
 
 We will be using the example we provided when explaining the data model for this step.
 
@@ -353,7 +399,7 @@ For each set of new dummy variables created for an original variable, we need to
     <!--These are the derived field nodes added for each dummy variable for the
     non-smoker variable-->
       
-    <DerivedField name="non_smoker" optype="categorical" dataType="integer">
+    <DerivedField name="non_smoker" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="smoker_type" />
         <Constant dataType="float">0</Constant>
@@ -362,7 +408,7 @@ For each set of new dummy variables created for an original variable, we need to
       <Constant dataType="float">0</Constant>
     </DerivedField>
       
-    <DerivedField name="current_smoker" optype="categorical" dataType="integer">
+    <DerivedField name="current_smoker" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="smoker_type" />
         <Constant dataType="float">1</Constant>
@@ -371,7 +417,7 @@ For each set of new dummy variables created for an original variable, we need to
       <Constant dataType="float">0</Constant>
     </DerivedField>
       
-    <DerivedField name="former_smoker" optype="categorical" dataType="integer">
+    <DerivedField name="former_smoker" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="smoker_type" />
         <Constant dataType="float">2</Constant>
@@ -383,7 +429,7 @@ For each set of new dummy variables created for an original variable, we need to
     <!--These are the derived field nodes added for each dummy variable for the
     drinker-type variable-->
       
-    <DerivedField name="non_drinker" optype="categorical" dataType="integer">
+    <DerivedField name="non_drinker" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="drinker_type" />
         <Constant dataType="float">0</Constant>
@@ -392,7 +438,7 @@ For each set of new dummy variables created for an original variable, we need to
       <Constant dataType="float">0</Constant>
     </DerivedField>
       
-    <DerivedField name="current_light_drinker" optype="categorical" dataType="integer">
+    <DerivedField name="current_light_drinker" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="drinker_type" />
         <Constant dataType="float">1</Constant>
@@ -401,7 +447,7 @@ For each set of new dummy variables created for an original variable, we need to
       <Constant dataType="float">0</Constant>
     </DerivedField>
       
-    <DerivedField name="drinker_type" optype="categorical" dataType="integer">
+    <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="current_heavy_drinker" />
         <Constant dataType="float">2</Constant>
@@ -410,7 +456,7 @@ For each set of new dummy variables created for an original variable, we need to
       <Constant dataType="float">0</Constant>
     </DerivedField>
       
-    <DerivedField name="drinker_type" optype="categorical" dataType="integer">
+    <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
         <FieldRef field="former_drinker" />
         <Constant dataType="float">3</Constant>
@@ -443,7 +489,7 @@ if(smoker_type == 0) { # The value of 0 comes from the catValue column for the n
 
 * The above code is replicated for each row in the dummy step file
 
-##### Centering Step
+### Centering Step
 
 We will be using the example used to describe this CSV file here.
 
@@ -486,14 +532,15 @@ Things to note:
 3. The value of the `field` attribute for the `FieldRef` should be the value of the `origVariabvle` column for that row
 4. The value within the `Constant` node should the the value of the `centerValue` column for that row
 
-##### RCS Step
+### RCS Step
 
 Converting an RCS step file to PMML involves adding `DerivedField` nodes to the `LocalTransformations` node within the `PMML` node. Things to note:
 
 1. For each new RCS variable creates in each row of the file, we need to add a new `DerivedField` node
 2. The `name` attribute for the `DerivedField` node is the name of the RCS variable it's for
-3. For the first RCS variable in each row, the contents of the `DerivedField` node should just set it to the variable in the `variable` column
-4. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
+3. The `optype` attribute for the `DerivedField` node should be set to `continuous`
+4. For the first RCS variable in each row, the contents of the `DerivedField` node should just set it to the variable in the `variable` column
+5. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
 
 ```{r}
 # previous_rcs_variable: The value in the previous rcs variable
@@ -508,13 +555,13 @@ The example CSV file used to describe this step above would be converted to the 
 
 ```{xml}
 <!-- The new derived field nodes for the first row -->
-<DerivedField name="AgeC_rcs1">
+<DerivedField name="AgeC_rcs1" optype="continuous">
   <Apply function="equal">
     <FieldRef field="Age_c" />
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs2">
+<DerivedField name="AgeC_rcs2" optype="continuous">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">2</Constant>
@@ -522,7 +569,7 @@ The example CSV file used to describe this step above would be converted to the 
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs3">
+<DerivedField name="AgeC_rcs3" optype="continuous">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs2" />
     <Constant dataType="float">3</Constant>
@@ -530,7 +577,7 @@ The example CSV file used to describe this step above would be converted to the 
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs4">
+<DerivedField name="AgeC_rcs4" optype="continuous">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs3" />
     <Constant dataType="float">4</Constant>
@@ -539,13 +586,13 @@ The example CSV file used to describe this step above would be converted to the 
 </DerivedField>
 
 <!-- The new derived field nodes for the second row -->
-<DerivedField name="PackYearsC_rcs1">
+<DerivedField name="PackYearsC_rcs1" optype="continuous">
   <Apply function="equal">
     <FieldRef field="PackYears_c" />
   </Apply>
 </DerivedField>
   
-<DerivedField name="PackYearsC_rcs2">
+<DerivedField name="PackYearsC_rcs2" optype="continuous">
   <Apply function="rcs">
     <FieldRef field="PackYearsC_rcs1" />
     <Constant dataType="float">2</Constant>
@@ -554,7 +601,7 @@ The example CSV file used to describe this step above would be converted to the 
 </DerivedField>
 ```
 
-##### Interaction Step
+### Interaction Step
 
 Converting an interaction step file to PMML involves adding a `DerivedField` field for each new interaction variable (each row in the CSV file) to the `LocalTransformations` node within the `PMML` node. Things to note:
 
@@ -586,7 +633,7 @@ The example CSV file used to describe this step above would be converted to the 
 </DerivedField>
 ```
 
-##### Fine and gray step
+### Fine and gray step
 
 This involves converting multiple files into the XML nodes to add to the document. The steps for this part are:
 
@@ -598,8 +645,8 @@ Things to note:
     * `functionName` set to `regression`
     * `endTimeVariable` set to `time`
 2. The following attributes need to be set for each `MiningField` nodes
-    * `name`: Set to the name of the starting variable. For the extra node added for the predicted risk, the value would be `risk`
-    * `usageType`: Set to `active`. For the extra node added for the predicted risk, the value would be `target`
+    * `name`: Set to the name of the starting variable. For the extra node added for the predicted risk, the value would be `risk` and for the extra node added for the `time` variable the value would be `time`
+    * `usageType`: Set to `active`. For the extra node added for the predicted risk, the value would be `target` and for the extra node added for the `time` variable, the value would be `input`
 3. The following attributes need to be set to the `Parameter` node
     * `name` set to `p<index>` where index is the row number of the variable in the file. For the extra node added for the intercept, this value would be `p0`
     * `label` set to the value of the variable column. For the extra node added for the intervept, this value would be `Intercept`
@@ -627,11 +674,14 @@ For the example CSV file used to introduce this step, the converted PMML file wo
 	endTimeVariable="time">
 	<MiningSchema>
 		<MiningField name="risk" usageType="target" />
+	  <MiningField name="time" usageType="time" />
+	  <!-- Add additional MinineField nodes equal to the starting variables for 
+	  the selected database in variable details-->
 	</MiningSchema>
 	<ParameterList>
 		<Paramater name="p0" label="Intercept" />
 		<Parameter name="p1" label="Age" />
-		<Parameter name="p1" label="Sex" />
+		<Parameter name="p2" label="Sex" />
 	</ParameterList>
 	<FactorList>
 		<Predictor name="Sex" />
@@ -646,7 +696,7 @@ For the example CSV file used to introduce this step, the converted PMML file wo
 	<ParamMatrix>
 		<PCell parameterName="p0" beta="0" />
 		<PCell parameterName="p1" beta="0.01" />
-		<PCell parameterName="p1" beta="2" />
+		<PCell parameterName="p2" beta="2" />
 	</ParamMatrix>
 	<BaseCumHazardTables maxTime="5">
 		<BaselineCell time="1" cumHazard="0.1" />
@@ -657,3 +707,44 @@ For the example CSV file used to introduce this step, the converted PMML file wo
 	</BaseCumHazardTable>
 </GeneralRegressionModel>
 ```
+
+# Implementation
+
+The skeleton for the exported function to implement the above business logic is given below,
+
+```{r}
+#' Converts the CSv files that are part of a model export into PMML
+#'
+#' @param model_export_file_path string The absolute or relative path to the 
+#' model export file. If relative, the path should relative to the working 
+#' directory of the project
+#' @param database string The database from which to take the starting variables
+#' for the model
+#'
+#' @return An object created by the XML::xmlNode function that represents the 
+#' PMML XML
+#' 
+#' @export
+#'
+#' @examples
+convert_model_export_to_pmml <- function(model_export_file_path, database) {
+  
+}
+```
+
+
+# Testing
+
+Each child section describes a test the implemented functions need to pass to ensure everything has been implemented correctly
+
+## 1. Correctly converts the variables and variable details files into PMML
+
+## 2. Correctly converts a dummy step file into PMML
+
+## 3. Correctly converts a centering step file into PMML
+
+## 4. Correctly converts a RCS step file into PMML
+
+## 5. Correctly converts an interactions step file into PMML
+
+## 6. Correctly converts a fine and gray step file into PMML

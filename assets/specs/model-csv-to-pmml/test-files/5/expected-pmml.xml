@@ -1,0 +1,404 @@
+<?xml version="1.0"?>
+<PMML version="4.4"
+  xmlns="http://www.dmg.org/PMML-4_4" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Application name="bllflow" version="0.1.0"/>
+  </Header>
+  <DataDictionary numberOfFields="2">
+    <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
+      <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?"/>
+      <Value value="1" displayValue="Yes" property="valid"/>
+      <Value value="2" displayValue="No" property="valid"/>
+      <Value value="6" displayValue="not applicable" property="invalid"/>
+      <Value value="7" displayValue="don&apos;t know (7)" property="missing"/>
+      <Value value="8" displayValue="refusal (8)" property="missing"/>
+      <Value value="9" displayValue="not stated (9)" property="missing"/>
+    </DataField>
+    <DataField name="ALCA_5A1" displayName="DailyConsumptionSunday" optype="continuous" dataType="float">
+      <Extension name="variableStartLabel" value="Number of drinks on Sunday"/>
+      <Interval closure="closedClosed" leftMargin="1" rightMargin="10" property="valid"/>
+      <Interval closure="closedOpen" leftMargin="10" rightMargin="20" property="valid"/>
+      <Interval closure="openOpen" leftMargin="20" rightMargin="30" property="valid"/>
+      <Interval closure="openClosed" leftMargin="30" rightMargin="40" property="valid"/>
+      <Value value="996" displayValue="not applicable" property="invalid"/>
+      <Value value="997" displayValue="don&apos;t know (997)" property="missing"/>
+      <Value value="998" displayValue="refusal (998)" property="missing"/>
+      <Value value="999" displayValue="not stated (999)" property="missing"/>
+    </DataField>
+    <DataField name="DHHAGAGE" displayName="Age" optype="categorical" dataType="string">
+      <Extension name="variableStartLabel" value="Age - (G)"/>
+      <Value value="1" displayValue="12 to 14 years" property="valid"/>
+      <Value value="2" displayValue="15 to 19 years" property="valid"/>
+      <Value value="3" displayValue="20 To 24 Years" property="valid"/>
+      <Value value="96" displayValue="not applicable" property="invalid"/>
+      <Value value="97" displayValue="don&apos;t know (97)" property="missing"/>
+      <Value value="98" displayValue="refusal (98)" property="missing"/>
+      <Value value="99" displayValue="not stated (99)" property="missing"/>
+    </DataField>
+    <DataField name="DPS_04_1" displayName="Sad/depressed - frequency - 2 wk" optype="categorical" dataType="string">
+      <Extension name="variableStartLabel" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
+      <Value value="1" displayValue="Every day" property="valid" />
+      <Value value="2" displayValue="Almost every day" property="valid" />
+      <Value value="3" displayValue="Less often" property="valid" />
+      <Value value="6" displayValue="not applicable" property="invalid" />
+      <Value value="7" displayValue="don't know (7)" property="missing" />
+      <Value value="8" displayValue="refusal (8)" property="missing" />
+      <Value value="9" displayValue="not stated (9)" property="missing" />
+    </DataField>
+  </DataDictionary>
+  <TransformationDictionary>
+    <DerivedField name="ADL_01" displayName="Help preparing meals" optype="categorical" dataType="string">
+      <Extension name="labelLong" value="Needs help - preparing meals" />
+      <Extension name="units" value="N/A" />
+      <Apply function="if">
+        <Apply function="equals">
+          <FieldRef field="RACA_6A" />
+          <Constant dataType="integer">1</Constant>
+        </Apply>
+        <Constant dataType="integer">1</Constant>
+        <Apply function="if">
+          <Apply function="equals">
+            <FieldRef field="RACA_6A" />
+            <Constant dataType="integer">2</Constant>
+          </Apply>
+          <Constant dataType="integer">2</Constant>
+          <Apply function="if">
+            <Apply function="equals">
+              <FieldRef field="RACA_6A" />
+              <Constant dataType="integer">6</Constant>
+            </Apply>
+            <Constant dataType="string">NA::a</Constant>
+            <Apply function="if">
+              <Apply function="and">
+                <Apply function="or">
+                  <Apply function="greaterThan">
+                    <FieldRef field="RACA_6A" />
+                    <Constant dataType="integer">7</Constant>
+                  </Apply>
+                  <Apply function="equals">
+                    <FieldRef field="RACA_6A" />
+                    <Constant dataType="integer">7</Constant>
+                  </Apply>
+                </Apply>
+                <Apply function="or">
+                  <Apply function="lessThan">
+                    <FieldRef field="RACA_6A" />
+                    <Constant dataType="integer">9</Constant>
+                  </Apply>
+                  <Apply function="equals">
+                    <FieldRef field="RACA_6A" />
+                    <Constant dataType="integer">9</Constant>
+                  </Apply>
+                </Apply>
+              </Apply>
+              <Constant dataType="string">NA::b</Constant>
+              <Constant dataType="string">NA::b</Constant>
+            </Apply>
+          </Apply>
+        </Apply>
+      </Apply>
+      <Value value="1" displayValue="Yes">
+        <Extension name="catLabelLong" value="Yes" />
+      </Value>
+      <Value value="2" displayValue="No">
+        <Extension name="catLabelLong" value="No" />
+      </Value>
+      <Value value="NA::a" displayValue="not applicable">
+        <Extension name="catLabelLong" value="not applicable" />
+      </Value>
+      <Value value="NA::b" displayValue="missing">
+        <Extension name="catLabelLong" value="missing" />
+      </Value>
+    </DerivedField>
+    <DerivedField name="DPS_04" displayName="Sad/depressed - frequency - 2 wk" optype="categorical" dataType="string">
+      <Extension name="labelLong" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
+      <Extension name="units" value="N/A" />
+      <Apply function="if">
+        <Apply function="equals">
+          <FieldRef field="DPS_04_1" />
+          <Constant dataType="integer">1</Constant>
+        </Apply>
+        <Constant dataType="integer">1</Constant>
+        <Apply function="if">
+          <Apply function="equals">
+            <FieldRef field="DPS_04_1" />
+            <Constant dataType="integer">2</Constant>
+          </Apply>
+          <Constant dataType="integer">2</Constant>
+          <Apply function="if">
+            <Apply function="equals">
+              <FieldRef field="DPS_04_1" />
+              <Constant dataType="integer">3</Constant>
+            </Apply>
+            <Constant dataType="integer">3</Constant>
+            <Apply function="if">
+              <Apply function="equals">
+                <FieldRef field="RACA_6A" />
+                <Constant dataType="integer">6</Constant>
+              </Apply>
+              <Constant dataType="string">NA::a</Constant>
+              <Apply function="if">
+                <Apply function="and">
+                  <Apply function="or">
+                    <Apply function="greaterThan">
+                      <FieldRef field="RACA_6A" />
+                      <Constant dataType="integer">7</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="RACA_6A" />
+                      <Constant dataType="integer">7</Constant>
+                    </Apply>
+                  </Apply>
+                  <Apply function="or">
+                    <Apply function="lessThan">
+                      <FieldRef field="RACA_6A" />
+                      <Constant dataType="integer">9</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="RACA_6A" />
+                      <Constant dataType="integer">9</Constant>
+                    </Apply>
+                  </Apply>
+                </Apply>
+                <Constant dataType="string">NA::b</Constant>
+                <Constant dataType="string">NA::b</Constant>
+              </Apply>
+            </Apply>
+          </Apply>
+        </Apply>
+      </Apply>
+      <Value value="1" displayValue="Every day">
+        <Extension name="catLabelLong" value="Every day" />
+      </Value>
+      <Value value="2" displayValue="Almost every day">
+        <Extension name="catLabelLong" value="Almost every day" />
+      </Value>
+      <Value value="3" displayValue="Less often">
+        <Extension name="catLabelLong" value="Less often" />
+      </Value>
+      <Value value="NA::a" displayValue="not applicable">
+        <Extension name="catLabelLong" value="not applicable" />
+      </Value>
+      <Value value="NA::b" displayValue="missing">
+        <Extension name="catLabelLong" value="missing" />
+      </Value>
+    </DerivedField>
+    <DerivedField name="ALW_2A1" displayName="# of drinks - Sunday" optype="continuous" dataType="float">
+      <Extension name="labelLong" value="Number of drinks on Sunday" />
+      <Extension name="units" value="drinks" />
+      <Apply function="if">
+        <Apply function="and">
+          <Apply function="or">
+            <Apply function="greaterThan">
+              <FieldRef field="ALCA_5A1" />
+              <Constant dataType="integer">1</Constant>
+            </Apply>
+            <Apply function="equals">
+              <FieldRef field="ALCA_5A1" />
+              <Constant dataType="integer">1</Constant>
+            </Apply>
+          </Apply>
+          <Apply function="or">
+            <Apply function="lessThan">
+              <FieldRef field="ALCA_5A1" />
+              <Constant dataType="integer">10</Constant>
+            </Apply>
+            <Apply function="equals">
+              <FieldRef field="ALCA_5A1" />
+              <Constant dataType="integer">10</Constant>
+            </Apply>
+          </Apply>
+        </Apply>
+        <Constant dataType="integer">1</Constant>
+        <Apply function="if">
+          <Apply function="and">
+            <Apply function="or">
+              <Apply function="greaterThan">
+                <FieldRef field="ALCA_5A1" />
+                <Constant dataType="integer">10</Constant>
+              </Apply>
+              <Apply function="equals">
+                <FieldRef field="ALCA_5A1" />
+                <Constant dataType="integer">10</Constant>
+              </Apply>
+            </Apply>
+            <Apply function="lessThan">
+              <FieldRef field="ALCA_5A1" />
+              <Constant dataType="integer">20</Constant>
+            </Apply>
+          </Apply>
+          <Constant dataType="integer">2</Constant>
+          <Apply function="if">
+            <Apply function="and">
+              <Apply function="greaterThan">
+                <FieldRef field="ALCA_5A1" />
+                <Constant dataType="integer">20</Constant>
+              </Apply>
+              <Apply function="lessThan">
+                <FieldRef field="ALCA_5A1" />
+                <Constant dataType="integer">30</Constant>
+              </Apply>
+            </Apply>
+            <Constant dataType="integer">3</Constant>
+            <Apply function="if">
+              <Apply function="and">
+                <Apply function="greaterThan">
+                  <FieldRef field="ALCA_5A1" />
+                  <Constant dataType="integer">30</Constant>
+                </Apply>
+                <Apply function="or">
+                  <Apply function="lessThan">
+                    <FieldRef field="ALCA_5A1" />
+                    <Constant dataType="integer">40</Constant>
+                  </Apply>
+                  <Apply function="equals">
+                    <FieldRef field="ALCA_5A1" />
+                    <Constant dataType="integer">40</Constant>
+                  </Apply>
+                </Apply>
+              </Apply>
+              <Constant dataType="integer">4</Constant>
+              <Apply function="if">
+                <Apply function="equals">
+                  <FieldRef field="ALCA_5A1" />
+                  <Constant dataType="integer">996</Constant>
+                </Apply>
+                <Constant dataType="string">NA::a</Constant>
+                <Apply function="if">
+                  <Apply function="and">
+                    <Apply function="or">
+                      <Apply function="greaterThan">
+                        <FieldRef field="ALCA_5A1" />
+                        <Constant dataType="integer">997</Constant>
+                      </Apply>
+                      <Apply function="equals">
+                        <FieldRef field="ALCA_5A1" />
+                        <Constant dataType="integer">997</Constant>
+                      </Apply>
+                    </Apply>
+                    <Apply function="or">
+                      <Apply function="lessThan">
+                        <FieldRef field="ALCA_5A1" />
+                        <Constant dataType="integer">999</Constant>
+                      </Apply>
+                      <Apply function="equals">
+                        <FieldRef field="ALCA_5A1" />
+                        <Constant dataType="integer">999</Constant>
+                      </Apply>
+                    </Apply>
+                  </Apply>
+                  <Constant dataType="string">NA::b</Constant>
+                  <Constant dataType="string">NA::b</Constant>
+                </Apply>
+              </Apply>
+            </Apply>
+          </Apply>
+        </Apply>
+      </Apply>
+      <Value value="1" displayValue="Between 1 and 10 drinks on Sunday">
+        <Extension name="catLabelLong" value="Between 1 and 10 drinks on Sunday" />
+      </Value>
+      <Value value="2" displayValue="Between 10 and 20 (not included) on Sunday">
+        <Extension name="catLabelLong" value="Between 10 and 20 (not included) on Sunday" />
+      </Value>
+      <Value value="3" displayValue="Between 20 and 30 drinks (not including both ends) on Sunday">
+        <Extension name="catLabelLong" value="Between 20 and 30 drinks (not including both ends) on Sunday" />
+      </Value>
+      <Value value="4" displayValue="Between 30 (not included) and 40 drinks on Sunday">
+        <Extension name="catLabelLong" value="Between 30 (not included) and 40 drinks on Sunday" />
+      </Value>
+      <Value value="NA::a" displayValue="not applicable">
+        <Extension name="catLabelLong" value="not applicable" />
+      </Value>
+      <Value value="NA::b" displayValue="missing">
+        <Extension name="catLabelLong" value="missing" />
+      </Value>
+    </DerivedField>
+    <DerivedField name="DHHGAGE_cont" displayName="Age" optype="continuous" dataType="float">
+      <Extension name="labelLong" value="Converted categorical age" />
+      <Extension name="units" value="Years" />
+      <Apply function="if">
+        <Apply function="equals">
+          <FieldRef field="DHHAGAGE" />
+          <Constant dataType="integer">1</Constant>
+        </Apply>
+        <Constant dataType="integer">13</Constant>
+        <Apply function="if">
+          <Apply function="equals">
+            <FieldRef field="DHHAGAGE" />
+            <Constant dataType="integer">2</Constant>
+          </Apply>
+          <Constant dataType="integer">17</Constant>
+          <Apply function="if">
+            <Apply function="equals">
+              <FieldRef field="DHHAGAGE" />
+              <Constant dataType="integer">3</Constant>
+            </Apply>
+            <Constant dataType="integer">22</Constant>
+            <Apply function="if">
+              <Apply function="equals">
+                <FieldRef field="DHHAGAGE" />
+                <Constant dataType="integer">96</Constant>
+              </Apply>
+              <Constant dataType="string">NA::a</Constant>
+              <Apply function="if">
+                <Apply function="and">
+                  <Apply function="or">
+                    <Apply function="greaterThan">
+                      <FieldRef field="DHHAGAGE" />
+                      <Constant dataType="integer">97</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="DHHAGAGE" />
+                      <Constant dataType="integer">97</Constant>
+                    </Apply>
+                  </Apply>
+                  <Apply function="or">
+                    <Apply function="lessThan">
+                      <FieldRef field="DHHAGAGE" />
+                      <Constant dataType="integer">99</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="DHHAGAGE" />
+                      <Constant dataType="integer">99</Constant>
+                    </Apply>
+                  </Apply>
+                </Apply>
+                <Constant dataType="string">NA::b</Constant>
+                <Constant dataType="string">NA::b</Constant>
+              </Apply>
+            </Apply>
+          </Apply>
+        </Apply>
+      </Apply>
+      <Value value="13" displayValue="Age">
+        <Extension name="catLabelLong" value="converted categorical age (12 to 14)" />
+      </Value>
+      <Value value="17" displayValue="Age">
+        <Extension name="catLabelLong" value="converted categorical age (15 to 19)" />
+      </Value>
+      <Value value="22" displayValue="Age">
+        <Extension name="catLabelLong" value="converted categorical age (20 to 24)" />
+      </Value>
+      <Value value="NA::a" displayValue="not applicable">
+        <Extension name="catLabelLong" value="not applicable" />
+      </Value>
+      <Value value="NA::b" displayValue="missing">
+        <Extension name="catLabelLong" value="missing" />
+      </Value>
+    </DerivedField>
+    <DerivedField name="interaction1" optype="continuous" dataType="float">
+      <Apply function="*">
+        <FieldRef field="ALW_2A1" />
+        <FieldRef field="DHHGAGE_cont" />
+      </Apply>
+    </DerivedField>
+    <DerivedField name="interaction2" optype="categorical" dataType="float">
+      <Apply function="*">
+        <FieldRef field="DPS_04" />
+        <FieldRef field="ADL_01" />
+      </Apply>
+    </DerivedField>
+  </TransformationDictionary>
+</PMML>

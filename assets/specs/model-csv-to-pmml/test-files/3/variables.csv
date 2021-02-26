@@ -1,0 +1,3 @@
+variable,label,labelLong,section,subject,variableType,units,databaseStart,variableStart
+ADL_01,Help preparing meals,Needs help - preparing meals,Health status,ADL,Categorical,N/A,"cchs2001_p, cchs2003_p, cchs2005_p, cchs2007_2008_p, cchs2009_2010_p, cchs2010_p, cchs2011_2012_p, cchs2012_p, cchs2013_2014_p, cchs2014_p","cchs2001_p::RACA_6A, cchs2003_p::RACC_6A, cchs2005_p::RACE_6A, cchs2007_2008_p::RAC_6A, [ADL_01]"
+ALW_2A1,# of drinks - Sunday,Number of drinks on Sunday,Health behaviour,Alcohol,Continuous,drinks,"cchs2001_p, cchs2003_p, cchs2005_p, cchs2007_2008_p, cchs2009_2010_p, cchs2010_p, cchs2011_2012_p, cchs2012_p, cchs2013_2014_p, cchs2014_p","cchs2001_p::ALCA_5A1, cchs2003_p::ALCC_5A1, cchs2005_p::ALCE_5A1, [ALW_2A1]"
