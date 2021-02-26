@@ -15,24 +15,41 @@ This document provides the specifications for a new function `model_csv_to_pmml`
 
 # User Files
 
-This section will go over the different CSV files that that can be inputted into the function and the logic for converting each of them to a section in the final PMML XML file.
+This section will go over the different CSV files that that the user needs to provide.
 
 ## Model Export File
 
-One of the four mandatory files that the user has to provide. Each row in this CSV file gives the location of a file needed for implementation. The columns for this file are defined below:
+One of the four mandatory files that the user has to provide. Each row in this CSV file gives the location of a file needed for implementation. The metadata for this file is given below:
 
-* **fileType**: Used to identify what file this row is referring to
-    * **type**: enum
-    * **allowable values**
-        * **variables**: Value for the variables sheet. There has to be an entry in this file with this value.
-        * **variable-details**: Value for the variable details sheet. There has to be an entry in this file with this value.
-        * **model-steps**: Value for the model steps sheet. There has to be an entry in this file with this value.
-    * **restrictions**
-        **mandatory**
-* **filePath**: The relative path to this file. The path should be relative to the model export file
-    * **type**: string
-    * **restrictions**
-        **mandatory**
+```{r}
+model_exports_file_metadata <- data.frame(
+  fileType = c("model exports", "model exports"),
+  columnName = c("fileType", "filePath"),
+  columnType = c("enum", "string"),
+  description = c(
+    "Used to identify what file this row is referring to",
+    "The relative path to this file. The path should be relative to the location of the model export file"
+  ),
+  enumValues = c(
+    "variables;<br/>
+    variable-details;<br/>
+    model-steps", 
+    "N/A"
+  ),
+  enumLabels = c(
+    "Value for the variables sheet. There has to be an entry in this file with this value; <br/> 
+    Value for the variable details sheet. There has to be an entry in this file with this value; <br/> 
+    Value for the model steps sheet. There has to be an entry in this file with this value",
+    ""
+  ),
+  restrictions = c(
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(model_exports_file_metadata, escape = FALSE)
+```
         
 An example is provided below
 
@@ -53,25 +70,46 @@ Going into more details,
 
 ## Model Steps File
 
-One of three mandatory files for this function, the other two are the variable details file and the variables file. This file specifies the steps for calculating the outcome of the model as well as their order. It does not specify the data for each step which will be defined in other files defined below. The columns for this file are defined below:
+One of three mandatory files for this function, the other two are the variable details file and the variables file. This file specifies the steps for calculating the outcome of the model as well as their order. It does not specify the data for each step which will be defined in other files defined below. The metadata for this file is provided below:
 
-1. **step**: Used to identify what step the file referenced in this row is meant for
-    * **type**: enum
-    * **allowable values**:
-      * **dummy**: Create dummy variables
-      * **center**: Center a set of variables
-      * **interaction**: Create interaction terms
-      * **rcs**: Create restricted cubic spline terms
-      * **fine-and-gray**: Calculate the outcome of a fine and gray model
-2. **fileType**: Used to identify the type of file specified in the `filePath` column. 
-    * **type**: enum
-    * **allowable values**:
-      * **beta-coefficients**: Used to specify the beta coefficients file for a fine and gray model
-      * **baseline-hazards**: Used to specify the baseline hazards file for a fine and gray model
-3. **filePath**: Relative path to the file with the data for this step. The path is relative to the location of this model steps file.
-    * **type**: string
-4. **notes**: Used for metadata purposes
-    * **type**: string
+```{r}
+model_steps_file_metadata <- data.frame(
+  fileType = c("model steps", "model steps", "model steps", "model steps"),
+  columnName = c("step", "fileType", "filePath", "notes"),
+  columnType = c("enum", "enum", "string", "string"),
+  description = c(
+    "Used to identify what step the file referenced in this row is meant for",
+    "Used to identify the type of file specified in the `filePath` column",
+    "Relative path to the file with the data for this step. The path is relative to the location of this model steps file",
+    "Used for metadata purposes"
+  ),
+  enumValues = c(
+    "dummy; <br/>
+    center; <br/>
+    interaction; <br/>
+    rcs; <br/>
+    fine-and-gray <br/>",
+    "beta-coefficients; <br/>
+    baseline-hazards; <br/>",
+    "N/A",
+    "N/A"
+  ),
+  enumLabels = c(
+    "Create dummy variables; <br/>
+    Center a set of variables; <br/>
+    Create interaction terms; <br/>
+    Create restricted cubic spline terms; <br/>
+    Calculate the outcome of a fine and gray model <br/>",
+    "Used to specify the beta coefficients file for a fine and gray step; <br/>
+    Used to specify the baseline hazards file for a fine and gray step",
+    "N/A",
+    "N/A"
+  ),
+  restrictions = c("mandatory", "", "mandatory", "")
+)
+
+DT::datatable(model_steps_file_metadata, escape = FALSE)
+```
     
 An example is given below
 
@@ -105,16 +143,37 @@ One of the mandatory files that defines the starting variables in the model. Its
 
 Dummying is a transformation where a categorical variable with greater than n > 2 categories, is converted to a set of n dicotomous variables. Information about how this transformation is done can be seen [here](https://en.wikiversity.org/wiki/Dummy_variable_(statistics)).
 
-A dummy step file has the following columns:
+The metadata for this file is provided below:
 
-1. **origVariable**: The name of the variable to be dummied
-    * **type**: string
-    * **restrictions**
-      1. Each variable should be defined either in the variables or variables details sheet, or in a previous step file
-2. **catValue**: The value of the category that this dummy variable will represent
-    * **type**: string | number
-3. **dummyVariable**: The name of the dummy variable for the category of the original variable in this row
-    * **type**: string
+```{r}
+dummy_step_file_metadata <- data.frame(
+  fileType = c("dummy step", "dummy step", "dummy step"),
+  columnName = c("origVariable", "catValue", "dummyVariable"),
+  columnType = c("string", "string | number", "string"),
+  description = c(
+    "The name of the variable to be dummied",
+    "The value of the category that this dummy variable will represent",
+    "The name of the dummy variable for the category of the original variable in this row"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  restrictions = c(
+    "Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(dummy_step_file_metadata, escape = FALSE)
+```
     
 An example is given below
 
@@ -148,21 +207,43 @@ The `drinker_type` variable has four dummy variables:
 
 ## Centering Step File
 
-Centering is a transformation where the original variable is subtracted by a value, usually it's mean or median. The centering step file consists of the following columns:
+Centering is a transformation where the original variable is subtracted by a value, usually it's mean or median. The metadata for this file is given below:
 
-1. **origVariable**: The name of the variable being centered
-    * **type**: string
-    * **restrictions**
-      1. Each variable should be defined either in the variables or variables details sheet, or in a previous step file
-2. **centerValue**: The value to center the variable with
-    * **type**: number
-3. **centeredVariable**: The name of the new centered variable
-    * **type**: string
-4. **centeredVariableType**: Type of the new centered variable
-    * **type**: enum
-    * **allowable values**
-        **cat**: Categorical
-        **cont**: Continuous
+```{r}
+center_step_file_metadata <- data.frame(
+  fileType = c("center step", "center step", "center step", "center step"),
+  columnName = c("origVariable", "centerValue", "centeredVariable", "centeredVariableType"),
+  columnType = c("string", "number", "string", "enum"),
+  description = c(
+    "The name of the variable being centered",
+    "The value to center the variable with",
+    "The name of the new centered variable",
+    "Type of the new centered variable"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "N/A",
+    "cat; <br/>
+    cont"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "N/A",
+    "Categorical; <br/>
+    Continuous"
+  ),
+  restrictions = c(
+    "Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory",
+    "mandatory"
+  )
+)
+
+DT::datatable(center_step_file_metadata, escape = FALSE)
+```
     
 An example is given below,
 
@@ -185,16 +266,37 @@ The names of the new centered variables are `age_C` and `diet_score_C` and they 
 
 ## Restricted Cubic Spline (RCS) Step File
 
-An RCS step file has the following columns:
+The metadata for this file is given below:
 
-1. **variable**: The name of the variable that should be splined
-    * **type**: string
-    * **restrictions**
-      1. Each variable should be defined either in the variables or variables details sheet, or in a previous step file
-2. **rcsVariables**: The names of the new spline variables. The name of each variable should be seperated by a semi-colon (;)
-    * **type**: string
-3. **knots**: The knots for this spline. Each know should be seperated by a semi-colon (;)
-    * **type**: string
+```{r}
+rcs_step_file_metadata <- data.frame(
+  fileType = c("rcs step", "rcs step", "rcs step"),
+  columnName = c("variable", "rcsVariable", "knots"),
+  columnType = c("string", "string", "string"),
+  description = c(
+    "The name of the variable that should be splined",
+    "The names of the new spline variables. The name of each variable should be seperated by a semi-colon (;)",
+    "The knots for this spline. Each know should be seperated by a semi-colon (;)",
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  restrictions = c(
+    "Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(center_step_file_metadata, escape = FALSE)
+```
     
 An example is given below,
 
@@ -233,19 +335,38 @@ Similarly, for `PackYears_c`, we define a 3 knot spline where the knots are `-21
 
 Theoretically, an interaction variable is created to model effect modification. Effect modification takes place when a risk factor modifies the effect that another risk factor has on a condition. An example is age, cancer and their effect on mortality, where as you get older the effect that cancer has on your risk of mortality increases. Here, age is said to modify the effect that cancer has on mortality. Mathematically, an effect modification is modeled by creating a new variable whose value is the product of the two "interacting" variables, for eg, age and cancer.
 
-An interaction step file has the following columns:
+The metadata for this file is given below:
 
-1. **interactingVariables**: The names of the interacting variables seperated by a semi-colon (;)
-    * **type**: string
-    * **restrictions**
-      1. Each interacting variable should be defined either in the variables or variables details sheet, or in a previous step file
-2. **interactionVariable**: The name of the new interaction variable
-    * **type**: string
-3. **interactionVariableType**: The type of the new interaction variable
-    * **type**: enum
-    * **allowableValues**
-        * **cat**: For categorical variables
-        * **cont**: For continuous variables
+```{r}
+interaction_step_file_metadata <- data.frame(
+  fileType = c("interaction step", "interaction step", "interaction step"),
+  columnName = c("interactingVariables", "interactionVariable", "interactionVariableType"),
+  columnType = c("string", "string", "string"),
+  description = c(
+    "The names of the interacting variables seperated by a semi-colon (;)",
+    "The name of the new interaction variable",
+    "The type of the new interaction variable"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "N/A"
+  ),
+  restrictions = c(
+    "mandatory; <br/>
+    Each interacting variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(interaction_step_file_metadata, escape = FALSE)
+```
     
 An example is given below,
 
@@ -268,23 +389,72 @@ Similar to a cox regression model, a fine and gray model estimates the risk of a
 1. A beta coefficients file which specifies the names of the covariates in the model and their beta coefficient
 2. A baseline hazards file which specifies a time value and the baseline hazard value associated with it
 
-The beta coefficients file has the following columns:
+The metadata for the beta coefficients file is given below:
 
-1. **variable**: The name of a covariate in the model
-    **type**: string
-    * **restrictions**
-      1. Each variable should be defined either in the variables or variables details sheet, or in a previous step file
-2. **coefficient**: The value of the beta coefficient for the covariate
-    **type**: number
-3. **type**: Whether the covariate is categorical or continuous
-    * **type** enum
-    * **allowable values**:
-      * **cat**: For categorical covariates
-      * **cont**: For continuous covariates
+```{r}
+beta_coefficients_step_file_metadata <- data.frame(
+  fileType = c("beta coefficients step", "beta coefficients step", "beta coefficients step"),
+  columnName = c("variable", "coefficient", "type"),
+  columnType = c("string", "number", "enum"),
+  description = c(
+    "The name of a covariate in the model",
+    "The value of the beta coefficient for the covariate",
+    "The type of the covariate"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "cat; <br/>
+    cont"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "Categorical; <br/>
+    Continuous;"
+  ),
+  restrictions = c(
+    "mandatory; <br/>
+    Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(beta_coefficients_step_file_metadata, escape = FALSE)
+```
     
+The metadata for the baseline hazards file is given below:
+
+```{r}
+baseline_hazards_step_file_metadata <- data.frame(
+  fileType = c("baseline hazards step", "baseline hazards step"),
+  columnName = c("time", "baselineHazard"),
+  columnType = c("string", "number"),
+  description = c(
+    "The time upto which this baseline hazard should be used",
+    "The baseline hazard value for this time"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A"
+  ),
+  restrictions = c(
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(baseline_hazards_step_file_metadata, escape = FALSE)
+```
+
 The baseline hazards file has the following columns:
 
-1. **time**: The time value 
+1. **time**: The time upto which this baseline hazard should be used
     **type**: number
 2. **baselineHazard**: The baseline hazard value for this time
     **type**: number
