@@ -9,15 +9,15 @@ output: html_document
 
 ## Overview
 
-This document provides the specifications for a new function `model_csv_to_pmml` that converts a set of CSV files that represents the steps to calculate the outcome of a model into PMML. 
+This document provides the specifications for a new function `model_csv_to_pmml` that converts a set of CSV files (that represent the steps to calculate the outcome of a model) into PMML. 
 
 ## Glossary
 
 # User Files
 
-This section will go over the different CSV files that that the user needs to provide.
+This section will go over the different CSV files that the user needs to provide.
 
-## Model Export File
+## Model Exports File
 
 One of the four mandatory files that the user has to provide. Each row in this CSV file gives the location of a file needed for implementation. The metadata for this file is given below:
 
@@ -66,11 +66,11 @@ Going into more details,
 
 * The first row gives the location of the variables file. It's located in the same folder as the model export file and is called `variables.csv`
 * The second row gives the location of the variable details file. It's located two folders above the model export file and is called `variable-details.csv`
-* The third row gives the location of the model steps file. It's located in the same folder as the model export fiel and is called `model-steps.csv`
+* The third row gives the location of the model steps file. It's located in the same folder as the model export file and is called `model-steps.csv`
 
 ## Model Steps File
 
-One of three mandatory files for this function, the other two are the variable details file and the variables file. This file specifies the steps for calculating the outcome of the model as well as their order. It does not specify the data for each step which will be defined in other files defined below. The metadata for this file is provided below:
+One of three mandatory files for this function, the other two are the variable details file and the variables file. This file specifies the steps for calculating the outcome of the model as well as their order. It does not specify the data for each step which will be defined in other files below. The metadata for this file is:
 
 ```{r}
 model_steps_file_metadata <- data.frame(
@@ -276,7 +276,7 @@ rcs_step_file_metadata <- data.frame(
   description = c(
     "The name of the variable that should be splined",
     "The names of the new spline variables. The name of each variable should be seperated by a semi-colon (;)",
-    "The knots for this spline. Each know should be seperated by a semi-colon (;)",
+    "The knots for this spline. Each knot should be seperated by a semi-colon (;)",
   ),
   enumValues = c(
     "N/A",
@@ -333,7 +333,7 @@ Similarly, for `PackYears_c`, we define a 3 knot spline where the knots are `-21
 
 ## Interaction Step File
 
-Theoretically, an interaction variable is created to model effect modification. Effect modification takes place when a risk factor modifies the effect that another risk factor has on a condition. An example is age, cancer and their effect on mortality, where as you get older the effect that cancer has on your risk of mortality increases. Here, age is said to modify the effect that cancer has on mortality. Mathematically, an effect modification is modeled by creating a new variable whose value is the product of the two "interacting" variables, for eg, age and cancer.
+Theoretically, an interaction variable is created to model effect modification. Effect modification occurs when the magnitude of the effect of a risk factor on a outcome differs depending on another risk factor. An example is age, cancer and their effect on mortality, where as you get older the effect that cancer has on your risk of mortality increases. Here, age is said to modify the effect that cancer has on mortality. Mathematically, an effect modification is modeled by creating a new variable whose value is the product of the two "interacting" variables, e.g., age and cancer.
 
 The metadata for this file is given below:
 
@@ -359,7 +359,7 @@ interaction_step_file_metadata <- data.frame(
   ),
   restrictions = c(
     "mandatory; <br/>
-    Each interacting variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    Each interacting variable should be defined either in the variables or variable details sheet, or in a previous step file", 
     "mandatory", 
     "mandatory"
   )
