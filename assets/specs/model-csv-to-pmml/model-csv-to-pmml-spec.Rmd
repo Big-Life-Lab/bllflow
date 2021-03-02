@@ -268,7 +268,7 @@ The names of the new centered variables are `age_C` and `diet_score_C` and they 
 
 The metadata for this file is given below:
 
-```{r}
+```{r eval=FALSE}
 rcs_step_file_metadata <- data.frame(
   fileType = c("rcs step", "rcs step", "rcs step"),
   columnName = c("variable", "rcsVariable", "knots"),
@@ -667,7 +667,7 @@ For each new centered variable defined in the CSV file, we have to add a `Derive
 
 The nodes within the `DerivedField` node should represent the R code shown below,
 
-```{r}
+```{r eval=FALSE}
 # The R code for the row with the age_C variable
 age_C <- age - 40
 
@@ -779,7 +779,7 @@ Converting an interaction step file to PMML involves adding a `DerivedField` fie
 2. The `name` attribute for the `DerivedField` field is the name of the interaction variable it's for
 3. The nodes with each `DerivedField` represents the following R code
 
-```{r}
+```{r eval=FALSE}
 new_interaction_var <- orig_var_one * orig_var_two
 ```
 
