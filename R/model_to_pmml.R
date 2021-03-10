@@ -9,7 +9,8 @@
 #'
 #' @return PMML of the model specified in the model_export csv
 #'
-model_csv_to_pmml <- function(model_export, export_path = FALSE) {
+model_csv_to_pmml <- function(model_export, data_name, export_path = FALSE) {
+  # Read in variables sheet and variable details pass the rest of the rows to chain read
   # Create a list of read in csv files needed to create the PMML
   # list format of:model_specification_list = list(name_of_file = list(fileType = fileType, table = readFile))
   model_specification_list <-
@@ -17,6 +18,16 @@ model_csv_to_pmml <- function(model_export, export_path = FALSE) {
   
   # Create PMML
   working_PMML <- PMML_template_creation_code_chunc()
+  
+  # use variables sheet to obtain list of variables used
+  # Using the variables list trim variable details to only contain rows relavant to variables
+  # Loop over the new variable details one variable at a time working with all rows that contain that one variable
+  # Build the DataField and DerivedField node using the variable details rows for a single variable
+  # Loop over the rest of the rows creating the full DataDictionary and TransformationDictionary for this database
+  
+  # Pass the remaining model_specs alongside variables list and PMML to convert_file_to_PMML
+  
+  
   
   while(length(model_specification_list)>0){
     PMML_nodes <- convert_file_to_PMML(model_specification_list[[1]])
@@ -87,16 +98,51 @@ chain_read_files <- function(file_path, file_type) {
 #' Converts passed file list element into PMML nodes
 #' 
 #' @param file_list_element an element from the file_list
+#' @param PMML the pmml to append to
 #' 
 #' @return pmml nodes
-convert_file_to_PMML <- function(file_list_element){
-  working_file <- file_list_element[[file]]
+convert_file_to_PMML <- function(file_list_element, PMML){
+  # For dummy step files
+  # Loop over each row adding a seperate DerivedField node per row
+  # Attach the newly made nodes to the TransformationDictionary of the passed PMML
   
-  # Loop over every row of the file converting it to a node then adding them together
-  working_PMML <- codeChunkToCreateTheBase
-  for (row_index in nrow(working_file)) {
-    
-  }
+  # For center steps
+  # Loop over each row adding new DerivedFields based on the centeredVariable column
+  # Attach the newly made nodes to the TransformationDictionary of the passed PMML
   
-  return(working_PMML)
+  # For rcs steps
+  # Loop over each row of the file
+  # For each element in the rcsVariables column create a new DerivedFields node
+  # The first node is set to equal
+  # Loop over the remaing values creating seperate nodes
+  # Append the new nodes to TransformationDictionary
+  
+  # For interaction steps
+  # Loop over the rows of the file
+  # For each row create a new node with a name from the interactionVariable 
+  # Append the nodes
+  
+  # For beta-coefficients fileType steps
+  # Add the time DataField node to the DataDictionary
+  # Read in every column to their respective vectors
+  # Create a MiningSchema and add MiningField nodes for risk and time
+  # Append additional MiningField nodes for each variable
+  # Create ParameterList with a starting node of p0 with label Intercept
+  # Append additional Parameter nodes following the p<n> structure for the remaining variables
+  # Create FactorList using any variables that have a cat value in the type column as Predictor nodes
+  # Repeat above step to create CovariateList for any variables of cont type
+  # Create the PPMatrix with a PPCell node for each variable and a matching parameterName to that in ParameterList
+  # Create ParamMatrix with initial PCell node of p0 and beta 0
+  # Create additional nodes for the remaining variables following the p<n> pattern and matching them to the coefficient column
+  # Check for existence of GeneralRegressionModel in the PMML if present append the newly created nodes inside it if its not present
+  # Create new GeneralRegressionModel using the specified template
+  
+  # For baseline-hazards fileType steps
+  # Create a BaseCumHazardTables node with maxTime set to nrow
+  # Create a BaselineCell node for each row using the time and baselineHazard columns
+  # Check for existence of GeneralRegressionModel in the PMML if present append the newly created nodes inside it if its not present
+  # Create new GeneralRegressionModel using the specified template
+  
+  
+  
 }
