@@ -389,18 +389,6 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
-    <DerivedField name="interaction1" optype="continuous" dataType="float">
-      <Apply function="*">
-        <FieldRef field="ALW_2A1" />
-        <FieldRef field="DHHGAGE_cont" />
-      </Apply>
-    </DerivedField>
-    <DerivedField name="interaction2" optype="categorical" dataType="float">
-      <Apply function="*">
-        <FieldRef field="DPS_04" />
-        <FieldRef field="ADL_01" />
-      </Apply>
-    </DerivedField>
   </TransformationDictionary>
   <GeneralRegressionModel 	
     modelType="CoxRegression"
