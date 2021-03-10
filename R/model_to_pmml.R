@@ -25,7 +25,7 @@ model_csv_to_pmml <- function(model_export, data_name, export_path = FALSE) {
   # Build the DataField and DerivedField node using the variable details rows for a single variable
   # Loop over the rest of the rows creating the full DataDictionary and TransformationDictionary for this database
   
-  # Pass the remaining model_specs alongside variables list and PMML to convert_file_to_PMML
+  # Pass the remaining model_specs and PMML to convert_file_to_PMML
   
   
   
