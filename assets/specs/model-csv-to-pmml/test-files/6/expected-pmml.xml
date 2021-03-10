@@ -46,7 +46,9 @@
       <Value value="8" displayValue="refusal (8)" property="missing" />
       <Value value="9" displayValue="not stated (9)" property="missing" />
     </DataField>
-    <DataField name="time" displayName="time of predicted probability" optype="continuous" dataType="float"></DataField>
+    <DataField name="time" displayName="time of predicted probability" optype="continuous" dataType="float">
+      <Interval closure="closedClosed" leftMargin="1" rightMargin="2" property="valid"></Interval>
+    </DataField>
   </DataDictionary>
   <TransformationDictionary>
     <DerivedField name="ADL_01" displayName="Help preparing meals" optype="categorical" dataType="string">
