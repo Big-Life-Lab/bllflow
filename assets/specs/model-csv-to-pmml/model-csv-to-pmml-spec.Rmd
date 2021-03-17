@@ -675,7 +675,7 @@ age_C <- age - 40
 diet_score_C <- diet_score - 4
 ```
 
-And finally the XML nodes that needs to be added to the `LocalTransformations` node looks like,
+And finally the XML nodes that needs to be added to the `TransformationDictionary` node looks like,
 
 ```{xml}
 <!-- The XML for the age_C variable-->
