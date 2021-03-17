@@ -554,7 +554,7 @@ Add the data for each model step into the PMML document. The child sections belo
 
 We will be using the example we provided when explaining the data model for this step.
 
-For each set of new dummy variables created for an original variable, we need to add a number of `DerivedField` nodes to the `LocalTransformations` node within the `PMML` node. Using the example dummy step CSV file above, the PMML document would look like,
+For each set of new dummy variables created for an original variable, we need to add a number of `DerivedField` nodes to the `TransformationDictionary` node within the `PMML` node. Using the example dummy step CSV file above, the PMML document would look like,
 
 ```{xml}
 <?xml version="1.0"?>
@@ -663,7 +663,7 @@ if(smoker_type == 0) { # The value of 0 comes from the catValue column for the n
 
 We will be using the example used to describe this CSV file here.
 
-For each new centered variable defined in the CSV file, we have to add a `DerivedField` node to the `LocalTransformations` node within the `PMML` node. 
+For each new centered variable defined in the CSV file, we have to add a `DerivedField` node to the `TransformationDictionary` node within the `PMML` node. 
 
 The nodes within the `DerivedField` node should represent the R code shown below,
 
@@ -704,7 +704,7 @@ Things to note:
 
 ### RCS Step
 
-Converting an RCS step file to PMML involves adding `DerivedField` nodes to the `LocalTransformations` node within the `PMML` node. Things to note:
+Converting an RCS step file to PMML involves adding `DerivedField` nodes to the `TransformationDictionary` node within the `PMML` node. Things to note:
 
 1. For each new RCS variable creates in each row of the file, we need to add a new `DerivedField` node
 2. The `name` attribute for the `DerivedField` node is the name of the RCS variable it's for
@@ -773,7 +773,7 @@ The example CSV file used to describe this step above would be converted to the 
 
 ### Interaction Step
 
-Converting an interaction step file to PMML involves adding a `DerivedField` field for each new interaction variable (each row in the CSV file) to the `LocalTransformations` node within the `PMML` node. Things to note:
+Converting an interaction step file to PMML involves adding a `DerivedField` field for each new interaction variable (each row in the CSV file) to the `TransformationDictionary` node within the `PMML` node. Things to note:
 
 1. Add a `DerivedField` node for each new interaction variable 
 2. The `name` attribute for the `DerivedField` field is the name of the interaction variable it's for
