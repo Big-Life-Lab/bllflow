@@ -711,8 +711,9 @@ Converting an RCS step file to PMML involves adding `DerivedField` nodes to the 
 1. For each new RCS variable creates in each row of the file, we need to add a new `DerivedField` node
 2. The `name` attribute for the `DerivedField` node is the name of the RCS variable it's for
 3. The `optype` attribute for the `DerivedField` node should be set to `continuous`
-4. For the first RCS variable in each row, the contents of the `DerivedField` node should just set it to the variable in the `variable` column
-5. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
+4. The `dataType` attribute for `DerivedField` should be set to `float`
+5. For the first RCS variable in each row, the contents of the `DerivedField` node should just set it to the variable in the `variable` column
+6. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
 
 ```{r eval=FALSE}
 # previous_rcs_variable: The value in the previous rcs variable
@@ -727,13 +728,13 @@ The example CSV file used to describe this step above would be converted to the 
 
 ```{xml}
 <!-- The new derived field nodes for the first row -->
-<DerivedField name="AgeC_rcs1" optype="continuous">
+<DerivedField name="AgeC_rcs1" optype="continuous" dataType="float">
   <Apply function="equal">
     <FieldRef field="Age_c" />
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs2" optype="continuous">
+<DerivedField name="AgeC_rcs2" optype="continuous" dataType="float">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">2</Constant>
@@ -741,7 +742,7 @@ The example CSV file used to describe this step above would be converted to the 
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs3" optype="continuous">
+<DerivedField name="AgeC_rcs3" optype="continuous" dataType="float">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs2" />
     <Constant dataType="float">3</Constant>
@@ -749,7 +750,7 @@ The example CSV file used to describe this step above would be converted to the 
   </Apply>
 </DerivedField>
   
-<DerivedField name="AgeC_rcs4" optype="continuous">
+<DerivedField name="AgeC_rcs4" optype="continuous" dataType="float">
   <Apply function="rcs">
     <FieldRef field="AgeC_rcs3" />
     <Constant dataType="float">4</Constant>
@@ -758,13 +759,13 @@ The example CSV file used to describe this step above would be converted to the 
 </DerivedField>
 
 <!-- The new derived field nodes for the second row -->
-<DerivedField name="PackYearsC_rcs1" optype="continuous">
+<DerivedField name="PackYearsC_rcs1" optype="continuous" dataType="float">
   <Apply function="equal">
     <FieldRef field="PackYears_c" />
   </Apply>
 </DerivedField>
   
-<DerivedField name="PackYearsC_rcs2" optype="continuous">
+<DerivedField name="PackYearsC_rcs2" optype="continuous" dataType="float">
   <Apply function="rcs">
     <FieldRef field="PackYearsC_rcs1" />
     <Constant dataType="float">2</Constant>

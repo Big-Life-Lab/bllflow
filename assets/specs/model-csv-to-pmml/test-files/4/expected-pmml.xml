@@ -233,38 +233,38 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
-    <DerivedField name="ALW_2A1_rcs1" optype="continuous">
+    <DerivedField name="ALW_2A1_rcs1" optype="continuous" dataType="float">
       <Apply function="equal">
         <FieldRef field="ALW_2A1" />
       </Apply>
     </DerivedField>
-    <DerivedField name="ALW_2A1_rcs2" optype="continuous">
+    <DerivedField name="ALW_2A1_rcs2" optype="continuous" dataType="float">
       <Apply function="rcs">
         <FieldRef field="ALW_2A1_rcs1" />
         <Constant dataType="float">2</Constant>
         <Array n="5" type="float">-21.2 -10.35 34.8</Array>
       </Apply>
     </DerivedField>
-    <DerivedField name="DHHGAGE_cont_rcs1" optype="continuous">
+    <DerivedField name="DHHGAGE_cont_rcs1" optype="continuous" dataType="float">
       <Apply function="equal">
         <FieldRef field="DHHGAGE_cont" />
       </Apply>
     </DerivedField>
-    <DerivedField name="DHHGAGE_cont_rcs2" optype="continuous">
+    <DerivedField name="DHHGAGE_cont_rcs2" optype="continuous" dataType="float">
       <Apply function="rcs">
         <FieldRef field="DHHGAGE_cont_rcs1" />
         <Constant dataType="float">2</Constant>
         <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
       </Apply>
     </DerivedField>
-    <DerivedField name="DHHGAGE_cont_rcs3" optype="continuous">
+    <DerivedField name="DHHGAGE_cont_rcs3" optype="continuous" dataType="float">
       <Apply function="rcs">
         <FieldRef field="DHHGAGE_cont_rcs2" />
         <Constant dataType="float">3</Constant>
         <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
       </Apply>
     </DerivedField>
-    <DerivedField name="DHHGAGE_cont_rcs4" optype="continuous">
+    <DerivedField name="DHHGAGE_cont_rcs4" optype="continuous" dataType="float">
       <Apply function="rcs">
         <FieldRef field="DHHGAGE_cont_rcs3" />
         <Constant dataType="float">4</Constant>
