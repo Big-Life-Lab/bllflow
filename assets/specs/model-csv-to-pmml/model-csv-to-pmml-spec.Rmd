@@ -778,7 +778,10 @@ The example CSV file used to describe this step above would be converted to the 
 Converting an interaction step file to PMML involves adding a `DerivedField` field for each new interaction variable (each row in the CSV file) to the `TransformationDictionary` node within the `PMML` node. Things to note:
 
 1. Add a `DerivedField` node for each new interaction variable 
-2. The `name` attribute for the `DerivedField` field is the name of the interaction variable it's for
+2. The attributes for each `DerivedField` node are set as follows
+    * `name`: Set to the value of the `interactionVariable` column
+    * `optype`: Set to `categorical` if the `interactionVariableType` column is `cat`. Set to `continuous` if the `interactionVariableType` column is `cont`.
+    * `dataType`: Set to `string` if the `interactionVariableType` column is `cat`. Set to `float` if the `interactionVariableType` column is `cont`.
 3. The nodes with each `DerivedField` represents the following R code
 
 ```{r eval=FALSE}
@@ -789,7 +792,7 @@ The example CSV file used to describe this step above would be converted to the 
 
 ```{xml}
 <!-- Node added for the first row in the file -->
-<DerivedField name="AgeXCancer">
+<DerivedField name="AgeXCancer" optype="categorical" dataType="string">
   <Apply function="*">
     <FieldRef field="Age" />
     <FieldRef field="Cancer" />
@@ -797,7 +800,7 @@ The example CSV file used to describe this step above would be converted to the 
 </DerivedField>
 
 <!-- Node added for the second row in the file -->
-<DerivedField name="AgeXHypertension">
+<DerivedField name="AgeXHypertension" optype="categorical" dataType="string">
   <Apply function="*">
     <FieldRef field="Age" />
     <FieldRef field="Hypertension" />
