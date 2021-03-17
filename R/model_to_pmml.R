@@ -1,155 +1,39 @@
-#' Model csv to PMML
+#' Converts the CSv files that are part of a model export into PMML
 #'
-#' Using the passed model_export csv, files needed to build the model are read in.
-#' Then, the model instructions are converted to PMML and if export_path is passed
-#' it is then saved to that path.
+#' @param model_export_file_path string The absolute or relative path to the 
+#' model export file. If relative, the path should relative to the working 
+#' directory of the project
+#' @param database_name string The database from which to take the starting variables
+#' for the model
 #'
-#' @param model_export csv file containing the files needed for the model
-#' @param export_path path and file name to export the PMML to
+#' @return An object created by the XML::xmlNode function that represents the 
+#' PMML XML
+#' 
+#' @export
 #'
-#' @return PMML of the model specified in the model_export csv
-#'
-model_csv_to_pmml <-
-  function(model_export, data_name, export_path = FALSE) {
-    # Read in variables sheet and variable details pass the rest of the rows to chain read
-    # Create a list of read in csv files needed to create the PMML
-    # list format of:model_specification_list = list(name_of_file = list(fileType = fileType, table = readFile))
-    model_specification_list <-
-      chain_read_files(model_export, "initial_spec")
-    
-    # Create PMML
-    working_PMML <- PMML_template_creation_code_chunc()
-    
-    # use variables sheet to obtain list of variables used
-    # Using the variables list trim variable details to only contain rows relavant to variables
-    # Loop over the new variable details one variable at a time working with all rows that contain that one variable
-    # Build the DataField and DerivedField node using the variable details rows for a single variable
-    # Loop over the rest of the rows creating the full DataDictionary and TransformationDictionary for this database
-    
-    # Pass the remaining model_specs and PMML to convert_file_to_PMML
-    
-    
-    
-    while (length(model_specification_list) > 0) {
-      PMML_nodes <- convert_file_to_PMML(model_specification_list[[1]])
-      
-      # Not sure if insert_nodes will be a function or a code chunc but the code would reflect the name
-      working_PMML <-
-        insert_nodes(working_PMML, PMML_nodes, model_specification_list[[1]][["file_name"]])
-      
-      model_specification_list <- model_specification_list[[-1]]
-    }
-    
-    return(working_PMML)
-    
-  }
-
-#' Chain Read Files
-#'
-#' Recursive function tasked with reading in n number of files needed for the model
-#'
-#' @param file_path|file path or the file itself
-#' @param file_type type of file being read. Needed for list creation
-#'
-#' @return list object containing the name of the file, the file_type and the file itself
-#'
-chain_read_files <- function(file_path, file_type) {
-  # Scoping declaration
-  working_file <- NULL
-  file_list <- list()
+#' @examples
+convert_model_export_to_pmml <- function(model_export_file_path, database_name) {
+  # Read in variables and variable-details saving them to appropriate variables
+  # Read in model-steps and creating a list for each row of model-steps
+  # Loop over above list and read in each file specified saving it in a list containing the step name and fileType as well as the content of the file
   
-  # Checking for file rather then path
-  if (is.character(file_path)) {
-    # Read in the file
-    working_file <- read.csv2(file_path)
-  } else{
-    working_file <- file_path
-  }
+  # Create empty PMML doc using variables from strings.R to fill in name and version of the package
   
-  # Check if file contains other files to read
-  if ("filePath" %in% colnames(working_file)) {
-    # Loop over every row and call chain_read on those files
-    for (row_index in nrow(working_file)) {
-      working_row <- working_file[row_index,]
-      
-      new_file_path <- working_row[["filePath"]]
-      new_file_type <- working_row[["fileType"]]
-      # Not sure if will be needed also will not be function
-      file_name <- extractNameFromFilePath(new_file_path)
-      tmp_list_element <-
-        chain_read_files(new_file_path, new_file_type)
-      tmp_list_element[["file_name"]] <- file_name
-      
-      file_list <- append(file_list, tmp_list_element)
-    }
-  } else{
-    file_list <-
-      append(
-        file_list,
-        list(
-          file = working_file,
-          file_path = file_path,
-          file_type = file_type,
-          file_name = file_name
-        )
-      )
-  }
+  # Using recodeflow::recode_to_pmml append the empty PMML with DataDictionary and TransformationDictionary
+  # Calculate max_time from variable_details recTo column
   
-  # Structure the list for proper output
-  if (file_type == "initial_spec") {
-    
-  }
+  # Loop over the list elements from model-steps
+  # Convert the read in file into seperate vectors for each column
+  # For columns containing multiple elements in 1 cell check for existence of ;
+  # Convert the above detected columns into nested vectors 
+  # Use the fileType attribute to decide which function is called to process the newly created vectors
+  # Add the produced PMML to the current PMML and move on to the next iteration of the loop
   
-  
-  return(file_list)
-}
-
-#' Convert file to PMML
-#'
-#' Converts passed file list element into PMML nodes
-#'
-#' @param file_list_element an element from the file_list
-#' @param PMML the pmml to append to
-#'
-#' @return pmml nodes
-convert_file_to_PMML <- function(file_list_element, PMML) {
+  # Return the PMML
   
 }
 
-#' Create generic node
-#'
-#' Responsible for creating generic nodes
-#'
-#' @param node_name the name of the node being made
-#' @param node_attributes a named list containing node attributes
-#' @param end_contains_name a boolean FALSE = end type of "/>", TRUE = "</node_name>"
-#' @param additional_body optional param containing content to insert between opening and closing tags
-#'
-#' @return a string containing the assembled node
-create_generic_node <-
-  function(node_name,
-           node_attributes,
-           end_contains_name,
-           additional_body = "") {
-    node_start <- paste0("<", node_name)
-    node_end <- "/>"
-    if (end_contains_name) {
-      node_start <- paste0(node_start, "/>")
-      node_end <- paste0("</", node_name, ">")
-    }
-    node_body <- ""
-    for (attribute_name in names(node_attributes)) {
-      node_body <-
-        paste0(node_body,
-               " ",
-               attribute_name,
-               "=\"",
-               node_attributes[[attribute_name]],
-               "\"")
-    }
-    
-    return(paste0(node_start, node_body, additional_body, node_end))
-  }
+
 
 #' Create Dummy Nodes
 #'
@@ -158,7 +42,7 @@ create_generic_node <-
 #' @param orig_variable a vector representing the original variable name
 #' @param cat_value a vector representing the original variable cat value
 #' @param dummy_variable a vector representing the new dummy variable name
-#' @param PMML the pmml that is appended to
+#' @param PMML to append to
 #'
 #' @return PMML containing the newly added DerivedFields
 create_dummy_nodes <-
@@ -166,47 +50,20 @@ create_dummy_nodes <-
            cat_value,
            dummy_variable,
            PMML) {
-    # Verify matching length
-    if (!(
-      length(orig_variable) == length(cat_value) &&
-      length(orig_variable) == length(dummy_variable)
-    )) {
-      stop(paste0(
-        "The length of orig_variable, cat_valuem, dummy_variable are not all equal"
-      ))
-    }
-    new_nodes <- "\n"
-    for (row_index in length(orig_variable)) {
-      const_vector <- c()
-      const_vector[[cat_value[[row_index]]]] <-
-        create_generic_node("Constant", list(dataType = "float"), TRUE, cat_value[[row_index]])
-      for (float_value in 0:1) {
-        const_vector[[float_value]] <-
-          create_generic_node("Constant", list(dataType = "float"), TRUE, float_value)
-      }
-      field_ref <-
-        create_generic_node("FieldRef", list(field = orig_variable[[row_index]]), FALSE)
-      apply_sub_node <-
-        create_generic_node("Apply",
-                            list(func = "if"),
-                            TRUE,
-                            paste(field_ref, const_vector[[cat_value[[row_index]]]], sep = "\n"))
-      tmp_node <-
-        create_generic_node(
-          "DerivedField",
-          list(
-            name = dummy_variable[[row_index]],
-            optype = "categorical",
-            dataType = "float"
-          ),
-          TRUE,
-          paste(apply_sub_node, const_vector[[1]], const_vector[[0]], sep = "\n")
-        )
-      tmp_node <- stringr::str_replace(tmp_node, "func", "function")
-      new_nodes <- paste(new_nodes, tmp_node, sep = "\n")
-    }
-    
-    # Attach the newly made nodes to the TransformationDictionary of the passed PMML
+    # Verify matching length of all passed vectors
+    # Loop over the length of the vectors
+    # For each iteration of the loop create a DerivedField node 
+    # The name attribute is set using dummy_variable value
+    # the optype attribute is set to categorical
+    # The dataType attribute is set to integer
+    # Create an Apply node with function attribute set to if
+    # To the Apply node add children nodes of FieldRef and Constant
+    # The FieldRef field attibute is populated using orig_variable
+    # The Constant dataType attibute is set to float and the value is populated from cat_value
+    # Add the Apply node and two constant Constant nodes as children to the DerivedField node
+    # The 2 constant Constant nodes have dataType of float and values of 0 and 1 
+    # Add the DerivedField to the return PMML
+    # At the end of the loop return the PMML
   }
 
 #' Create Center Nodes
@@ -226,51 +83,18 @@ create_center_nodes <-
            centered_variable,
            centered_variable_type,
            PMML) {
-    # Verify matching length  @RUSTY Consider exporting to function
-    if (!(
-      length(orig_variable) == length(center_value) &&
-      length(orig_variable) == length(centered_variable) &&
-      length(orig_variable) == length(centered_variable_type)
-    )) {
-      stop(paste0(
-        "The length of orig_variable, cat_valuem, dummy_variable are not all equal"
-      ))
-    }
+    # Verify matching length of vectors
+    # Loop over the lenght of the vectors
+    # For each iteration create a DerivedField node 
+    # The name attribute comes from centered_variable
+    # the optype is determined by centered_variable_type cont = continues, cat = categorical
+    # The dataType is determined by centered_variable_type cont = float, cat = string
+    # Create a child Apply node with function attribute set to -
+    # Create a child FieldRef node for Apply node with the field attribute populated by orig_variable
+    # Create a child Constant node for Apply node with dataType attribute set to float and its value set by center_value
+    # Add the DerivedField node to the TransformationDictionary of the passed PMML
     
-    new_nodes <- "\n"
-    for (row_index in length(orig_variable)) {
-      field_ref <-
-        create_generic_node("FieldRef", list(field = orig_variable[[row_index]]), FALSE)
-      const <-
-        create_generic_node("Constant", list(dataType = "float"), TRUE, center_value[[row_index]])
-      apply_sub_node <-
-        create_generic_node("Apply",
-                            list(func = "-"),
-                            TRUE,
-                            paste(field_ref, const, sep = "\n"))
-      
-      if (centered_variable_type[[row_index]] == "cat") {
-        centered_variable_type[[row_index]] <- "categorical"
-      } else if (centered_variable_type[[row_index]] == "cat") {
-        centered_variable_type[[row_index]] <- "continuous"
-      }
-      
-      tmp_node <-
-        create_generic_node(
-          "DerivedField",
-          list(
-            name = centered_variable[[row_index]],
-            optype = centered_variable_type[[row_index]],
-            dataType = "float"
-          ),
-          TRUE,
-          apply_sub_node
-        )
-      
-      tmp_node <- stringr::str_replace(tmp_node, "func", "function")
-      new_nodes <- paste(new_nodes, tmp_node, sep = "\n")
-    }
-    # Attach the newly made nodes to the TransformationDictionary of the passed PMML
+    # Return the PMML at the end of the loop
   }
 
 #' Create RCS nodes
@@ -285,79 +109,36 @@ create_center_nodes <-
 #' @return returns PMML with attached rcs nodes
 create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
   # Verify matching length
-  if (!(length(variable) == length(rcs_variables) &&
-        length(variable) == length(knots))) {
-    stop(paste0(
-      "The length of orig_variable, cat_valuem, dummy_variable are not all equal"
-    ))
-  }
-  new_nodes <- "\n"
-  for (row_index in length(variable)) {
-    rcs_constant_array_node <-
-      create_generic_node("Array", list(n = "5", type = "float"), FALSE, knots[[row_index]])
-    
-    first_rcs_node_field_ref <-
-      create_generic_node("FieldRef", list(field = variable[[row_index]]), FALSE)
-    first_rcs_node_apply <-
-      create_generic_node("Apply",
-                          list(func = "equal"),
-                          TRUE,
-                          first_rcs_node_field_ref)
-    first_rcs_node <-
-      create_generic_node(
-        "DerivedField",
-        list(name = rcs_variables[[row_index]][[1]], optype = "continuous"),
-        TRUE,
-        first_rcs_node_apply
-      )
-    
-    new_nodes <- paste(new_nodes, first_rcs_node, sep = "\n")
-    for (rcs_previous_variable_index in 1:(length(rcs_variables[[row_index]]) -
-                                           1)) {
-      rcs_variable_index <- rcs_previous_variable_index + 1
-      rcs_variable_node_field_ref <-
-        create_generic_node("FieldRef", list(field = rcs_variables[[row_index]][[rcs_previous_variable_index]]), FALSE)
-      rcs_variable_node_constant <-
-        create_generic_node("Constant",
-                            list(dataType = "float"),
-                            TRUE,
-                            rcs_variable_index)
-      
-      rcs_variable_node_apply <-
-        create_generic_node(
-          "Apply",
-          list(func = "rcs"),
-          TRUE,
-          paste(
-            rcs_variable_node_field_ref,
-            rcs_variable_node_constant,
-            rcs_constant_array_node,
-            sep = "\n"
-          )
-        )
-      
-      rcs_variable_node <-
-        create_generic_node(
-          "DerivedField",
-          list(name = rcs_variables[[row_index]][[rcs_variable_index]], optype = "continuous"),
-          TRUE,
-          rcs_variable_node_apply
-        )
-      new_nodes <- paste(new_nodes, rcs_variable_node, sep = "\n")
-    }
-  }
-  # Append the new nodes to TransformationDictionary
+  # Loop over the length of the passed vectors
+  # Create the first rcs DerivedField node
+  # Create a temporary Constant Array Node with n set to 5, type set to float, and values from knots
+  # The name attribute is set to the first element of the current index of rcs_variables
+  # optype attribute is set to continuous and dataType attribute is set to float
+  # Create a child Apply node set its attribute function to equal
+  # Add child FieldRef node to Apply with attribute field set to variable
+  # Add the DerivedField as a child node to TransformationDictionary
+  # Create nested loop of rcs_variables current index nested list starting at +1 from start of length
+  # Create DerivedField node with attribute name set to rcs_loop_index inside the nested rcs_variables list
+  # optype is set to continues and dataType is set to float
+  # Add child Apply node with function node of rcs
+  # To the Apply node add fieldRef child node with field set to rcs_loop_index-1 inside the nested rcs_variables list
+  # To the Apply node add Constant child node with datatType set to float and value of rcs_loop_index
+  # To the Apply node add the temporary constant Array node created in the parent loop
+  # Add the DerivedField as a child node to TransformationDictionary
+  
+  # Return the PMML
+ 
 }
 
 #' Create Interaction Nodes
-#' 
+#'
 #' Creates interaction nodes in the TransformationDictionary
-#' 
+#'
 #' @param interaction_variable list of interaction_variable names
 #' @param interaction_variable_type list of interaction_variable types
 #' @param interacting_variables list of interacting variable names
 #' @param PMML the pmml that is appended to
-#' 
+#'
 #' @return returns PMML with attached interaction nodes
 create_interaction_nodes <-
   function(interaction_variable,
@@ -365,88 +146,71 @@ create_interaction_nodes <-
            interacting_variables,
            PMML) {
     # Verify matching length
-    if (!(
-      length(interaction_variable) == length(interaction_variable_type) &&
-      length(interaction_variable) == length(interacting_variables)
-    )) {
-      stop(paste0(
-        "The length of orig_variable, cat_valuem, dummy_variable are not all equal"
-      ))
-    }
-    new_nodes <- "\n"
-    for (row_index in length(interaction_variable)) {
-      interacting_node_list <- list()
-      for (single_interacting_variable in interacting_variables[[row_index]]) {
-        interacting_node_list[[single_interacting_variable]] <-
-          create_generic_node("FieldRef",
-                              list(field = single_interacting_variable),
-                              FALSE)
-      }
-      interaction_node_apply <-
-        create_generic_node(
-          "Apply",
-          list(func = "*"),
-          TRUE,
-          paste(interacting_node_list[[1]], interacting_node_list[[2]], sep = "\n")
-        )
-      
-      interaction_node <-
-        create_generic_node(
-          "DerivedField",
-          list(
-            name = interaction_variable[[row_index]],
-            optype = interaction_variable_type[[row_index]],
-            dataType = "float"
-          ),
-          TRUE,
-          interaction_node_apply
-        )
-      
-      new_nodes <- paste(new_nodes, interaction_node, sep = "\n")
-    }
+    # Loop over passed vectors
+    # Create DerivedField node with name attribute set by interaction_variable column
+    # optype attribute is determined based on interaction_variable_type cont= continues, cat = categorical
+    # dataType attribute is determined based on interaction_variable_type cont= float, cat = string
+    # Create Apply child node with function attribute set to *
+    # Add length(interacting_variables nested lins) FieldRef child nodes to Apply node with field attribute set by the nested interacting_variables list 
+    # Add the DerivedField as a child node to the PMML TransformationDictionary
     
-    # Append the new nodes to TransformationDictionary
+    # Return PMML
+    
   }
 
 #' Create Beta Coefficient Nodes
-#' 
+#'
 #' Creates nodes correlating to the beta_coefficient parameters
-#' 
+#'
 #' @param variable name of the original variable
 #' @param coefficient the coefficient used for the transformation
 #' @param type type of the variable
+
 #' @param PMML the pmml that is appended to
-#' 
+#'
 #' @return returns PMML with attached nodes correlating to the beta_coefficient
 create_beta_coefficient_nodes <-
   function(variable, coefficient, type, PMML) {
-    # Add the time DataField node to the DataDictionary
-    # Read in every column to their respective vectors
-    # Create a MiningSchema and add MiningField nodes for risk and time
-    # Append additional MiningField nodes for each variable
-    # Create ParameterList with a starting node of p0 with label Intercept
-    # Append additional Parameter nodes following the p<n> structure for the remaining variables
-    # Create FactorList using any variables that have a cat value in the type column as Predictor nodes
-    # Repeat above step to create CovariateList for any variables of cont type
-    # Create the PPMatrix with a PPCell node for each variable and a matching parameterName to that in ParameterList
-    # Create ParamMatrix with initial PCell node of p0 and beta 0
-    # Create additional nodes for the remaining variables following the p<n> pattern and matching them to the coefficient column
-    # Check for existence of GeneralRegressionModel in the PMML if present append the newly created nodes inside it if its not present
-    # Create new GeneralRegressionModel using the specified template
+    # Verify equal length of passed vectors
+    # Check for existence of GeneralRegressionModel node inside the PMML
+    # If no node is found create GeneralRegressionModel node with modelType set to CoxRegression
+    # functionName set to regression and the endTimeVariable set to time
+    # Create MiningSchema, ParameterList, FactorList, CovariateList, ParamMatrix child nodes for GeneralRegressionModel
+    # Create a MiningSchema child node MiningField with name set to risk and usageType set to target
+    # Repeat above step with name set to time and usageType to active
+    # Create a ParameterList child node Paramater with name set to p0 and label to Intercept
+    # Create a ParamMatrix child node PCell with parameterName set to p0 and beta set to 0
+    # Loop over the passed vectors
+    # Create a MiningSchema child node MiningField with name set to variable and usageType to active
+    # Create a ParameterList child node Paramater with name set to p<loopIterator> and label set to variable
+    # Check the type for cat variables create a FactorList child node Predictor with name set to variable
+    # For cont variables create a CovariateList child node Predictor with name set to variable
+    # Create a PPMatrix child node PPCell with value set to 1, predictorName to variable and parameterName to p<loopIterator>
+    # Create a ParamMatrix child node PCell with parameterName set to p<loopIterator> and beta set to coefficient
+    
+    # Return PMML
   }
 
 #' Create Baseline Hazards Nodes
-#' 
+#'
 #' Creates nodes correlating to the baseline_hazards parameters
-#' 
+#'
 #' @param time value of the corresponding time
 #' @param baseline_hazard value of the baseline_hazard
+#' @param max_time largest time recTo value in variable_details
 #' @param PMML the pmml that is appended to
-#' 
+#'
 #' @return returns PMML with attached nodes correlating to the baseline_hazards
-create_baseline_hazards_nodes <- function(time, baseline_hazard, PMML){
-# Create a BaseCumHazardTables node with maxTime set to nrow
-# Create a BaselineCell node for each row using the time and baselineHazard columns
-# Check for existence of GeneralRegressionModel in the PMML if present append the newly created nodes inside it if its not present
-# Create new GeneralRegressionModel using the specified template
+create_baseline_hazards_nodes <- function(time, baseline_hazard, max_time, PMML){
+  # Verify equal length of passed vectors
+  # Check for existence of GeneralRegressionModel node inside the PMML
+  # If no node is found create GeneralRegressionModel node with modelType set to CoxRegression
+  # functionName set to regression and the endTimeVariable set to time
+  # Create BaseCumHazardTables as child node to GeneralRegressionModel
+  # set the maxTime param to max_time
+  # Loop over passed vectors
+  # Create BaseCumHazardTables child node BaselineCell with time set to time and cumHazard to baseiline_hazard
+  
+  # Return PMML
+  
 }
