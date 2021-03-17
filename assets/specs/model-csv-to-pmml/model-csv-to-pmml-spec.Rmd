@@ -679,7 +679,7 @@ And finally the XML nodes that needs to be added to the `TransformationDictionar
 
 ```{xml}
 <!-- The XML for the age_C variable-->
-<DerivedField name="age_C">
+<DerivedField name="age_C" optype="continuous" dataType="float">
   <Apply function="-">
     <FieldRef field="age" />
     <Constant dataType="float">40</Constant>
@@ -687,7 +687,7 @@ And finally the XML nodes that needs to be added to the `TransformationDictionar
 </DerivedField>
 
 <!-- The XML for the diet_score_C variable-->  
-<DerivedField name="diet_score_C">
+<DerivedField name="diet_score_C" optype="continuous" dataType="float">
   <Apply function="-">
     <FieldRef field="diet_score" />
     <Constant dataType="float">4</Constant>
@@ -697,10 +697,12 @@ And finally the XML nodes that needs to be added to the `TransformationDictionar
 
 Things to note:
 
-1. For each new centered variable defined in the CSV file (i.e. for each new row), a `DerivedField` field node needs to be added to the `LocalTransformations` node within the `PMML` node
+1. For each new centered variable defined in the CSV file (i.e. for each new row), a `DerivedField` field node needs to be added to the `TransformationDictionary` node within the `PMML` node
 2. The `name` attribute for the `DerivedField` node should be the value of the `centeredVariable` column for that row
-3. The value of the `field` attribute for the `FieldRef` should be the value of the `origVariabvle` column for that row
-4. The value within the `Constant` node should the the value of the `centerValue` column for that row
+3. The `optype` attribute for the `DerivedField` node should be `continuous` if the `centeredVariableType` column value is `cont` or `categorical` if the value is `cat`
+4. The `dataType` attribute for the `DerivedField` node should be `string` if the `centeredVariableType` column value is `cat` and `float` if the value is `cont`
+5. The value of the `field` attribute for the `FieldRef` should be the value of the `origVariabvle` column for that row
+6. The value within the `Constant` node should the the value of the `centerValue` column for that row
 
 ### RCS Step
 
