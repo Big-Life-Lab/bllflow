@@ -821,7 +821,7 @@ Things to note:
     * `endTimeVariable` set to `time`
 2. The following attributes need to be set for each `MiningField` nodes
     * `name`: Set to the name of the starting variable. For the extra node added for the predicted risk, the value would be `risk` and for the extra node added for the `time` variable the value would be `time`
-    * `usageType`: Set to `active`. For the extra node added for the predicted risk, the value would be `target` and for the extra node added for the `time` variable, the value would be `input`
+    * `usageType`: Set to `active`. For the extra node added for the predicted risk, the value would be `target` and for the extra node added for the `time` variable, the value would be `active`
 3. The following attributes need to be set to the `Parameter` node
     * `name` set to `p<index>` where index is the row number of the variable in the file. For the extra node added for the intercept, this value would be `p0`
     * `label` set to the value of the variable column. For the extra node added for the intervept, this value would be `Intercept`
@@ -849,7 +849,7 @@ For the example CSV file used to introduce this step, the converted PMML file wo
 	endTimeVariable="time">
 	<MiningSchema>
 		<MiningField name="risk" usageType="target" />
-	  <MiningField name="time" usageType="time" />
+	  <MiningField name="time" usageType="active" />
 	  <!-- Add additional MinineField nodes equal to the starting variables for 
 	  the selected database in variable details-->
 	</MiningSchema>
