@@ -816,7 +816,7 @@ This involves converting multiple files into the XML nodes to add to the documen
 ![](./images/fine-and-gray-step.png)
 Things to note:
 
-1. The following attributes need to be added to the `GeneralRegressionNode`
+1. The following attributes need to be added to the `GeneralRegressionModel`
     * `modeType` set to `CoxRegression`
     * `functionName` set to `regression`
     * `endTimeVariable` set to `time`
