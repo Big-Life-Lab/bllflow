@@ -21,6 +21,7 @@ convert_model_export_to_pmml <- function(model_export_file_path, database_name) 
   
   # Using recodeflow::recode_to_pmml append the empty PMML with DataDictionary and TransformationDictionary
   # Calculate max_time from variable_details recTo column
+  # Create a vector containing all variables from variableStart matching database name
   
   # Loop over the list elements from model-steps
   # Convert the read in file into seperate vectors for each column
@@ -165,28 +166,32 @@ create_interaction_nodes <-
 #' @param variable name of the original variable
 #' @param coefficient the coefficient used for the transformation
 #' @param type type of the variable
+#' @param start_variables
 
 #' @param PMML the pmml that is appended to
 #'
 #' @return returns PMML with attached nodes correlating to the beta_coefficient
 create_beta_coefficient_nodes <-
-  function(variable, coefficient, type, PMML) {
+  function(variable, coefficient, type, start_variables, PMML) {
     # Verify equal length of passed vectors
     # Check for existence of GeneralRegressionModel node inside the PMML
     # If no node is found create GeneralRegressionModel node with modelType set to CoxRegression
     # functionName set to regression and the endTimeVariable set to time
-    # Create MiningSchema, ParameterList, FactorList, CovariateList, ParamMatrix child nodes for GeneralRegressionModel
-    # Create a MiningSchema child node MiningField with name set to risk and usageType set to target
+    # Create ParameterList, FactorList, CovariateList, ParamMatrix child nodes for GeneralRegressionModel
     # Repeat above step with name set to time and usageType to active
     # Create a ParameterList child node Paramater with name set to p0 and label to Intercept
     # Create a ParamMatrix child node PCell with parameterName set to p0 and beta set to 0
     # Loop over the passed vectors
-    # Create a MiningSchema child node MiningField with name set to variable and usageType to active
     # Create a ParameterList child node Paramater with name set to p<loopIterator> and label set to variable
     # Check the type for cat variables create a FactorList child node Predictor with name set to variable
     # For cont variables create a CovariateList child node Predictor with name set to variable
     # Create a PPMatrix child node PPCell with value set to 1, predictorName to variable and parameterName to p<loopIterator>
     # Create a ParamMatrix child node PCell with parameterName set to p<loopIterator> and beta set to coefficient
+    
+    # Create MiningSchema child node for GeneralRegressionModel
+    # Add MiningField child nodes to MiningSchema for risk and time with usageType target and active
+    # Loop over start_variables
+    # Add MiningField child nodes to MiningSchema wiht name set to start_variables and usageType to active
     
     # Return PMML
   }
