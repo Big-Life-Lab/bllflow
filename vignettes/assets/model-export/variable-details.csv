@@ -1,0 +1,7 @@
+﻿variable,typeEnd,databaseStart,variableStart,typeStart,recEnd,numValidCat,catLabel,catLabelLong,units,recStart,catStartLabel,variableStartLabel,notes
+age,cont,"tester1, tester3",[age],cont,copy,NA,NA,NA,years,else,NA,age,
+sex,cat,"tester1, tester2",[sex],cat,1,2,sex m,sex m,NA,1,sex m,sex,
+sex,cat,"tester1, tester1",[sex],cat,2,2,sex f,sex f,NA,2,sex f,sex,
+trt,cat,"tester1, tester0",[trt],cat,1,2,D-penicillmain,Received D-penicillmain,NA,1,Received D-penicillmain,trt,
+trt,cat,"tester1, tester1",[trt],cat,2,2,Placebo,Received placebo,NA,2,Received placebo,trt,
+time,cont,"tester1, tester2",[time],cont,copy,NA,NA,NA,NA,else,NA,time,
