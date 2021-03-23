@@ -1,23 +1,22 @@
-variable,labelLong,recommended,required,min,max,outlierTreatment,missingTreatment
-DHH_SEX,Sex,1,1,1,2,NA,NA
-DHHGAGE_cont,Age,1,1,20,102,NA,NA
-smokeSimp,Smoking Status (4 categories) (categorical form of SmokeFormer5Plus_cat; SmokeFormer0to5_cat; SmokeCurrent_cat),1,0,1,4,NA,centre
-packYears,Smoking pack-years,1,0,0,78,max,centre
-formerDrinker,Former drinker status (yes/no),0,0,1,2,NA,centre
-ALWDWKY,Weekly consumption of alcohol,1,0,0,24,max,centre
-dietScore2,Simplified diet score (z-transformed),1,0,-18.9,20.7,"min, max",centre
-PACDEE,Daily energy expenditure - (D),1,0,0,12.4,max,centre
-HWTGBMI,BMI/self-report - (D G),1,0,8.9,47.2,"min, max",centre
-depInd,Neighbourhood social and material deprivation,0,0,1,3,NA,centre
-EDUDR04,Highest level/education - respondent 4 levels - (D),1,0,1,4,NA,centre
-CCC_131,Do you have cancer,1,0,0,1,NA,centre
-CCC_101,Do you have diabetes,1,0,0,1,NA,centre
-CCC_121,Do you have heart disease,1,0,0,1,NA,centre
-CCC_151,Do you suffer from effects of stroke,1,0,0,1,NA,centre
-CCC_071,Do you have high blood pressure,1,0,0,1,NA,centre
-CCC_280,Do you have a mood disorder,1,0,0,1,NA,centre
-dementia,Do you have dementia,1,0,0,1,NA,centre
-CCC_091,Do you have COPD (eg. bronchitis emphysema),1,0,0,1,NA,centre
-immigPct,Fraction of lifetime lived in Canada,1,0,0,1,"min, max",centre
-SDCGCGT,Cultural or racial origin - (D G),1,0,1,2,NA,centre
-WTS_M,Weights - Master,1,1,1.07,13166.31,WTS_M,WTS_M
+variable,fileName,outlierTreatment,missingTreatment
+DHH_SEX,variables.csv,NA,NA
+DHHGAGE_cont,variables.csv,NA,NA
+smokeSimp,variables.csv,NA,centre
+packYears,variables.csv,max,centre
+formerDrinker,variables.csv,NA,centre
+ALWDWKY,variables.csv,max,centre
+dietScore2,variables.csv,"min, max",centre
+PACDEE,variables.csv,max,centre
+HWTGBMI,variables.csv,"min, max",centre
+depInd,variables.csv,NA,centre
+EDUDR04,variables.csv,NA,centre
+CCC_131,variables.csv,NA,centre
+CCC_101,variables.csv,NA,centre
+CCC_121,variables.csv,NA,centre
+CCC_151,variables.csv,NA,centre
+CCC_071,variables.csv,NA,centre
+CCC_280,variables.csv,NA,centre
+dementia,variables.csv,NA,centre
+CCC_091,variables.csv,NA,centre
+immigPct,variables.csv,"min, max",centre
+SDCGCGT,variables.csv,NA,centre
