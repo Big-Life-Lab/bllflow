@@ -224,13 +224,13 @@
     </DerivedField>
     <DerivedField name="ADL_01_C" optype="categorical" dataType="float">
       <Apply function="-">
-        <FieldRef="ADL_01" />
+        <FieldRef field="ADL_01"/>
         <Constant dataType="float">1.5</Constant>
       </Apply>
     </DerivedField>
     <DerivedField name="ALW_2A1_C" optype="continuous" dataType="float">
       <Apply function="-">
-        <FieldRef="ADL_2A1"/>
+        <FieldRef field="ADL_2A1"/>
         <Constant dataType="float">40</Constant>
       </Apply>
     </DerivedField>

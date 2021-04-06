@@ -213,7 +213,7 @@ create_dummy_nodes <-
           attrs = c(
             name = dummyVariable[[vector_index]],
             optype = "categorical",
-            dataType = "integer"
+            dataType = "float"
           )
         )
       # Create an Apply node with function attribute set to if
@@ -273,13 +273,13 @@ create_center_nodes <-
     for (vector_index in 1:length(origVariable)) {
       # For each iteration create a DerivedField node
       # The name attribute comes from centered_variable
-      # the optype is determined by centered_variable_type cont = continues, cat = categorical
+      # the optype is determined by centered_variable_type cont = continuous, cat = categorical
       # The dataType is determined by centered_variable_type cont = float, cat = string
       optype <- ""
       data_type <- ""
       switch (centeredVariableType[[vector_index]],
               "cont" = {
-                optype <- "continues"
+                optype <- "continuous"
                 data_type <- "float"
               },
               "cat" = {
@@ -349,7 +349,7 @@ create_rcs_nodes <- function(variable, rcsVariables, knots, PMML) {
         "DerivedField",
         attrs = c(
           name = variable_list[[1]],
-          optype = "continues",
+          optype = "continuous",
           dataType = "float"
         )
       )
@@ -366,13 +366,13 @@ create_rcs_nodes <- function(variable, rcsVariables, knots, PMML) {
     # Create nested loop of rcs_variables current index nested list starting at +1 from start of length
     for (rcs_variable_index in 2:length(variable_list)) {
       # Create DerivedField node with attribute name set to rcs_loop_index inside the nested rcs_variables list
-      # optype is set to continues and dataType is set to float
+      # optype is set to continuous and dataType is set to float
       tmp_node <-
         XML::xmlNode(
           "DerivedField",
           attrs = c(
             name = variable_list[[rcs_variable_index]],
-            optype = "continues",
+            optype = "continuous",
             dataType = "float"
           )
         )
@@ -431,13 +431,13 @@ create_interaction_nodes <-
     for (vector_index in 1:length(interactionVariable)) {
       variable_list <- strsplit(interactingVariables[[vector_index]], ";")[[1]]
       # Create DerivedField node with name attribute set by interaction_variable column
-      # optype attribute is determined based on interaction_variable_type cont= continues, cat = categorical
+      # optype attribute is determined based on interaction_variable_type cont= continuous, cat = categorical
       # dataType attribute is determined based on interaction_variable_type cont= float, cat = string
       optype <- ""
       data_type <- ""
       switch (interactionVariableType[[vector_index]],
               "cont" = {
-                optype <- "continues"
+                optype <- "continuous"
                 data_type <- "float"
               },
               "cat" = {
