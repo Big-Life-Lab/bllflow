@@ -510,7 +510,7 @@ create_beta_coefficient_nodes <-
       XML::addChildren(tmp_param_list_node, XML::xmlNode("Parameter", attrs = c(name = "p0", label = "Intercept")))
     # Create a ParamMatrix child node PCell with parameterName set to p0 and beta set to 0
     tmp_param_matrix_node <-
-      XML::addChildren(tmp_pp_matrix_node, XML::xmlNode("PCell", attrs = c(
+      XML::addChildren(tmp_param_matrix_node, XML::xmlNode("PCell", attrs = c(
         parameterName = "p0", beta = "0"
       )))
     
@@ -524,7 +524,7 @@ create_beta_coefficient_nodes <-
       # Check the type for cat variables create a FactorList child node Predictor with name set to variable
       # For cont variables create a CovariateList child node Predictor with name set to variable
       tmp_predictor <-
-        XML::xmlNode("Predictor", attrs = variable[[variable_index]])
+        XML::xmlNode("Predictor", attrs = c(name = variable[[variable_index]]))
       switch (type[[variable_index]],
               "cont" = {
                 tmp_covariate_list_node <-
@@ -583,7 +583,7 @@ create_beta_coefficient_nodes <-
         XML::addChildren(PMML, XML::xmlNode(
           "GeneralRegressionModel",
           attrs = c(
-            modelType = "coxRegression",
+            modelType = "CoxRegression",
             functionName = "regression",
             endTimeVariable = "time"
           )
@@ -643,7 +643,7 @@ create_baseline_hazards_nodes <-
         XML::addChildren(PMML, XML::xmlNode(
           "GeneralRegressionModel",
           attrs = c(
-            modelType = "coxRegression",
+            modelType = "CoxRegression",
             functionName = "regression",
             endTimeVariable = "time"
           )
