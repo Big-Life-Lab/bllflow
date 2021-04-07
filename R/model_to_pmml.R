@@ -15,7 +15,9 @@
 convert_model_export_to_pmml <-
   function(model_export_file_path, database_name) {
     model_export <-
-      read.csv(model_export_file_path, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
+      read.csv(model_export_file_path,
+               fileEncoding = "UTF-8-BOM",
+               stringsAsFactors = FALSE)
     
     variables_path <-
       model_export[model_export$fileType == "variables", "filePath"]
@@ -34,14 +36,20 @@ convert_model_export_to_pmml <-
     
     # Read in variables and variable-details saving them to appropriate variables
     variables <-
-      read.csv(variables_path, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
+      read.csv(variables_path,
+               fileEncoding = "UTF-8-BOM",
+               stringsAsFactors = FALSE)
     variable_details <-
-      read.csv(variable_details_path, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
+      read.csv(variable_details_path,
+               fileEncoding = "UTF-8-BOM",
+               stringsAsFactors = FALSE)
     
     
     # Read in model-steps and creating a list for each row of model-steps
     model_steps <-
-      read.csv(model_steps_path, fileEncoding = "UTF-8-BOM",  stringsAsFactors = FALSE)
+      read.csv(model_steps_path,
+               fileEncoding = "UTF-8-BOM",
+               stringsAsFactors = FALSE)
     detected_steps <- unique(model_steps[["step"]])
     step_list <- list()
     
@@ -61,14 +69,19 @@ convert_model_export_to_pmml <-
             tmp_file_path <-
               file.path(dirname(model_export_file_path), step_list[[single_step]][["filePath"]][[sub_step]])
             tmp_file <-
-              read.csv(tmp_file_path, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
-            step_list[[single_step]][["file"]][[sub_step]] <- tmp_file
+              read.csv(tmp_file_path,
+                       fileEncoding = "UTF-8-BOM",
+                       stringsAsFactors = FALSE)
+            step_list[[single_step]][["file"]][[sub_step]] <-
+              tmp_file
           }
         } else{
           tmp_file_path <-
             file.path(dirname(model_export_file_path), step_list[[single_step]][["filePath"]])
           tmp_file <-
-            read.csv(tmp_file_path, fileEncoding = "UTF-8-BOM", stringsAsFactors = FALSE)
+            read.csv(tmp_file_path,
+                     fileEncoding = "UTF-8-BOM",
+                     stringsAsFactors = FALSE)
           step_list[[single_step]][["file"]] <- tmp_file
         }
         
@@ -93,16 +106,54 @@ convert_model_export_to_pmml <-
         vars_sheet = variables,
         db_name = database_name
       )
-    doc <- XML::addChildren(doc, header, recodeflow_pmml[["DataDictionary"]], recodeflow_pmml[["TransformationDictionary"]])
+    doc <-
+      XML::addChildren(doc, header, recodeflow_pmml[["DataDictionary"]], recodeflow_pmml[["TransformationDictionary"]])
     working_pmml <- doc
     
     # Calculate max_time from variable_details recTo column
-    max_time <-
-      max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
-                                          "time", pkg.globals$argument.CatValue]))
-    # Create a vector containing all variables from variableStart matching database name
-    all_start_vars <-
-      unique(variable_details[grepl(database_name, variable_details[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.Variables])
+    max_time <- 0
+    all_start_vars <- c()
+    if ("time" %in% variable_details[[pkg.globals$argument.Variables]]) {
+      max_time <-
+        max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
+                                            "time", pkg.globals$argument.CatValue]))
+      min_time <-
+        max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
+                                            "time", pkg.globals$argument.CatValue]))
+      working_pmml[["DataDictionary"]] <-
+        XML::addChildren(working_pmml[["DataDictionary"]],
+                         XML::xmlNode(
+                           "DataField",
+                           attrs = c(
+                             name = "time",
+                             displayName = "time of predicted probability",
+                             optype = "continuous",
+                             dataType = "float"
+                           ),
+                           XML::xmlNode(
+                             "Interval",
+                             attrs = c(
+                               closure = "closedClosed",
+                               leftMargin = min_time,
+                               rightMargin = max_time,
+                               property = "valid"
+                             )
+                           )
+                         ))
+      # Create a vector containing all variables from variableStart matching database name
+      all_unique_vars <-
+        unique(variable_details[grepl(database_name, variable_details[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.Variables])
+      for (end_variable in all_unique_vars) {
+        working_row <-
+          variable_details[variable_details[[pkg.globals$argument.Variables]] == end_variable,]
+        working_row <- working_row[1, ]
+        all_start_vars <-
+          append(
+            all_start_vars,
+            recodeflow:::get_start_var_name(working_row, database_name)
+          )
+      }
+    }
     
     # Loop over the list elements from model-steps
     for (step_name in names(step_list)) {
@@ -337,8 +388,10 @@ create_rcs_nodes <- function(variable, rcsVariables, knots, PMML) {
     variable_list <- strsplit(rcsVariables[[vector_index]], ";")[[1]]
     # Create the first rcs DerivedField node
     # Create a temporary Constant Array Node with n set to 5, type set to float, and values from knots
+    tmp_knots <- strsplit(knots[[vector_index]], ";")[[1]]
+    tmp_knots <- paste(tmp_knots, collapse = " ")
     tmp_array_node <-
-      XML::xmlNode("Array", attrs = c(n = 5, type = "float"), knots[[vector_index]])
+      XML::xmlNode("Array", attrs = c(n = 5, type = "float"), tmp_knots)
     # The name attribute is set to the first element of the current index of rcs_variables
     # optype attribute is set to continuous and dataType attribute is set to float
     # Create a child Apply node set its attribute function to equal
@@ -429,7 +482,8 @@ create_interaction_nodes <-
     }
     # Loop over passed vectors
     for (vector_index in 1:length(interactionVariable)) {
-      variable_list <- strsplit(interactingVariables[[vector_index]], ";")[[1]]
+      variable_list <-
+        strsplit(interactingVariables[[vector_index]], ";")[[1]]
       # Create DerivedField node with name attribute set by interaction_variable column
       # optype attribute is determined based on interaction_variable_type cont= continuous, cat = categorical
       # dataType attribute is determined based on interaction_variable_type cont= float, cat = string

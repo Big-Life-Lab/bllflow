@@ -435,6 +435,6 @@
 	<BaseCumHazardTables maxTime="2">
 		<BaselineCell time="1" cumHazard="0.2" />
 		<BaselineCell time="2" cumHazard="0.3" />
-	</BaseCumHazardTable>
+	</BaseCumHazardTables>
   </GeneralRegressionModel>
 </PMML>
