@@ -5,7 +5,7 @@
   <Header>
     <Application name="bllflow" version="0.1.0"/>
   </Header>
-  <DataDictionary numberOfFields="3">
+  <DataDictionary numberOfFields="2">
     <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
       <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?"/>
       <Value value="1" displayValue="Yes" property="valid"/>
@@ -222,7 +222,7 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
-    <DerivedField name="ADL_01_C" optype="categorical" dataType="float">
+    <DerivedField name="ADL_01_C" optype="categorical" dataType="string">
       <Apply function="-">
         <FieldRef field="ADL_01"/>
         <Constant dataType="float">1.5</Constant>
@@ -230,7 +230,7 @@
     </DerivedField>
     <DerivedField name="ALW_2A1_C" optype="continuous" dataType="float">
       <Apply function="-">
-        <FieldRef field="ADL_2A1"/>
+        <FieldRef field="ALW_2A1"/>
         <Constant dataType="float">40</Constant>
       </Apply>
     </DerivedField>
