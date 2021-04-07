@@ -295,7 +295,7 @@ rcs_step_file_metadata <- data.frame(
   )
 )
 
-DT::datatable(center_step_file_metadata, escape = FALSE)
+DT::datatable(rcs_step_file_metadata, escape = FALSE)
 ```
     
 An example is given below,
