@@ -118,7 +118,7 @@ convert_model_export_to_pmml <-
         max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
                                             "time", pkg.globals$argument.CatValue]))
       min_time <-
-        max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
+        min(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
                                             "time", pkg.globals$argument.CatValue]))
       working_pmml[["DataDictionary"]] <-
         XML::addChildren(working_pmml[["DataDictionary"]],
