@@ -27,6 +27,15 @@
       <Value value="98" displayValue="refusal (98)" property="missing"/>
       <Value value="99" displayValue="not stated (99)" property="missing"/>
     </DataField>
+    <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
+      <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?"/>
+      <Value value="1" displayValue="Yes" property="valid"/>
+      <Value value="2" displayValue="No" property="valid"/>
+      <Value value="6" displayValue="not applicable" property="invalid"/>
+      <Value value="7" displayValue="don&apos;t know (7)" property="missing"/>
+      <Value value="8" displayValue="refusal (8)" property="missing"/>
+      <Value value="9" displayValue="not stated (9)" property="missing"/>
+    </DataField>
     <DataField name="DPS_04_1" displayName="Sad/depressed - frequency - 2 wk" optype="categorical" dataType="string">
       <Extension name="variableStartLabel" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
       <Value value="1" displayValue="Every day" property="valid" />
@@ -37,93 +46,11 @@
       <Value value="8" displayValue="refusal (8)" property="missing" />
       <Value value="9" displayValue="not stated (9)" property="missing" />
     </DataField>
-    <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
-      <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?"/>
-      <Value value="1" displayValue="Yes" property="valid"/>
-      <Value value="2" displayValue="No" property="valid"/>
-      <Value value="6" displayValue="not applicable" property="invalid"/>
-      <Value value="7" displayValue="don&apos;t know (7)" property="missing"/>
-      <Value value="8" displayValue="refusal (8)" property="missing"/>
-      <Value value="9" displayValue="not stated (9)" property="missing"/>
-    </DataField>
     <DataField name="time" displayName="time of predicted probability" optype="continuous" dataType="float">
       <Interval closure="closedClosed" leftMargin="1" rightMargin="2" property="valid"></Interval>
     </DataField>
   </DataDictionary>
   <TransformationDictionary>
-    <DerivedField name="DPS_04" displayName="Sad/depressed - frequency - 2 wk" optype="categorical" dataType="string">
-      <Extension name="labelLong" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
-      <Extension name="units" value="N/A" />
-      <Apply function="if">
-        <Apply function="equals">
-          <FieldRef field="DPS_04_1" />
-          <Constant dataType="integer">1</Constant>
-        </Apply>
-        <Constant dataType="integer">1</Constant>
-        <Apply function="if">
-          <Apply function="equals">
-            <FieldRef field="DPS_04_1" />
-            <Constant dataType="integer">2</Constant>
-          </Apply>
-          <Constant dataType="integer">2</Constant>
-          <Apply function="if">
-            <Apply function="equals">
-              <FieldRef field="DPS_04_1" />
-              <Constant dataType="integer">3</Constant>
-            </Apply>
-            <Constant dataType="integer">3</Constant>
-            <Apply function="if">
-              <Apply function="equals">
-                <FieldRef field="DPS_04_1" />
-                <Constant dataType="integer">6</Constant>
-              </Apply>
-              <Constant dataType="string">NA::a</Constant>
-              <Apply function="if">
-                <Apply function="and">
-                  <Apply function="or">
-                    <Apply function="greaterThan">
-                      <FieldRef field="DPS_04_1" />
-                      <Constant dataType="integer">7</Constant>
-                    </Apply>
-                    <Apply function="equals">
-                      <FieldRef field="DPS_04_1" />
-                      <Constant dataType="integer">7</Constant>
-                    </Apply>
-                  </Apply>
-                  <Apply function="or">
-                    <Apply function="lessThan">
-                      <FieldRef field="DPS_04_1" />
-                      <Constant dataType="integer">9</Constant>
-                    </Apply>
-                    <Apply function="equals">
-                      <FieldRef field="DPS_04_1" />
-                      <Constant dataType="integer">9</Constant>
-                    </Apply>
-                  </Apply>
-                </Apply>
-                <Constant dataType="string">NA::b</Constant>
-                <Constant dataType="string">NA::b</Constant>
-              </Apply>
-            </Apply>
-          </Apply>
-        </Apply>
-      </Apply>
-      <Value value="1" displayValue="Every day">
-        <Extension name="catLabelLong" value="Every day" />
-      </Value>
-      <Value value="2" displayValue="Almost every day">
-        <Extension name="catLabelLong" value="Almost every day" />
-      </Value>
-      <Value value="3" displayValue="Less often">
-        <Extension name="catLabelLong" value="Less often" />
-      </Value>
-      <Value value="NA::a" displayValue="not applicable">
-        <Extension name="catLabelLong" value="not applicable" />
-      </Value>
-      <Value value="NA::b" displayValue="missing">
-        <Extension name="catLabelLong" value="missing" />
-      </Value>
-    </DerivedField>
     <DerivedField name="ALW_2A1" displayName="# of drinks - Sunday" optype="continuous" dataType="float">
       <Extension name="labelLong" value="Number of drinks on Sunday" />
       <Extension name="units" value="drinks" />
@@ -391,6 +318,79 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
+    <DerivedField name="DPS_04" displayName="Sad/depressed - frequency - 2 wk" optype="categorical" dataType="string">
+      <Extension name="labelLong" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
+      <Extension name="units" value="N/A" />
+      <Apply function="if">
+        <Apply function="equals">
+          <FieldRef field="DPS_04_1" />
+          <Constant dataType="integer">1</Constant>
+        </Apply>
+        <Constant dataType="integer">1</Constant>
+        <Apply function="if">
+          <Apply function="equals">
+            <FieldRef field="DPS_04_1" />
+            <Constant dataType="integer">2</Constant>
+          </Apply>
+          <Constant dataType="integer">2</Constant>
+          <Apply function="if">
+            <Apply function="equals">
+              <FieldRef field="DPS_04_1" />
+              <Constant dataType="integer">3</Constant>
+            </Apply>
+            <Constant dataType="integer">3</Constant>
+            <Apply function="if">
+              <Apply function="equals">
+                <FieldRef field="DPS_04_1" />
+                <Constant dataType="integer">6</Constant>
+              </Apply>
+              <Constant dataType="string">NA::a</Constant>
+              <Apply function="if">
+                <Apply function="and">
+                  <Apply function="or">
+                    <Apply function="greaterThan">
+                      <FieldRef field="DPS_04_1" />
+                      <Constant dataType="integer">7</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="DPS_04_1" />
+                      <Constant dataType="integer">7</Constant>
+                    </Apply>
+                  </Apply>
+                  <Apply function="or">
+                    <Apply function="lessThan">
+                      <FieldRef field="DPS_04_1" />
+                      <Constant dataType="integer">9</Constant>
+                    </Apply>
+                    <Apply function="equals">
+                      <FieldRef field="DPS_04_1" />
+                      <Constant dataType="integer">9</Constant>
+                    </Apply>
+                  </Apply>
+                </Apply>
+                <Constant dataType="string">NA::b</Constant>
+                <Constant dataType="string">NA::b</Constant>
+              </Apply>
+            </Apply>
+          </Apply>
+        </Apply>
+      </Apply>
+      <Value value="1" displayValue="Every day">
+        <Extension name="catLabelLong" value="Every day" />
+      </Value>
+      <Value value="2" displayValue="Almost every day">
+        <Extension name="catLabelLong" value="Almost every day" />
+      </Value>
+      <Value value="3" displayValue="Less often">
+        <Extension name="catLabelLong" value="Less often" />
+      </Value>
+      <Value value="NA::a" displayValue="not applicable">
+        <Extension name="catLabelLong" value="not applicable" />
+      </Value>
+      <Value value="NA::b" displayValue="missing">
+        <Extension name="catLabelLong" value="missing" />
+      </Value>
+    </DerivedField>
   </TransformationDictionary>
   <GeneralRegressionModel 	
     modelType="CoxRegression"
@@ -399,10 +399,10 @@
   	<MiningSchema>
 		  <MiningField name="risk" usageType="target" />
 		  <MiningField name="time" usageType="active" />
-		  <MiningField name="ALW_2A1" usageType="active" />
+		  <MiningField name="ALCA_5A1" usageType="active" />
 	    <MiningField name="DHHGAGE" usageType="active" />
-      <MiningField name="ADL_01" usageType="active" />
-      <MiningField name="DPS_04" usageType="active" />
+      <MiningField name="RACA_6A" usageType="active" />
+      <MiningField name="DPS_04_1" usageType="active" />
 	  </MiningSchema>
   	<ParameterList>
 		  <Parameter name="p0" label="Intercept" />
@@ -435,6 +435,6 @@
 	<BaseCumHazardTables maxTime="2">
 		<BaselineCell time="1" cumHazard="0.2" />
 		<BaselineCell time="2" cumHazard="0.3" />
-	</BaseCumHazardTable>
+	</BaseCumHazardTables>
   </GeneralRegressionModel>
 </PMML>
