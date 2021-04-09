@@ -38,7 +38,7 @@ test_that("Correctly converts a dummy step file into PMML", {
 })
 
 test_that("Correctly converts a centering step file into PMML", {
-  test_dir <- "assets/specs/model-csv-to-pmml/test-files/3/"
+  test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/3/"
   
   actual_pmml <-
     convert_model_export_to_pmml(paste(test_dir, "model-export.csv", sep = ""),

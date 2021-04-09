@@ -3,7 +3,7 @@ pkg.globals <- new.env()
 pkg.globals$columnNames.Min <- "min"
 pkg.globals$columnNames.Max <- "max"
 pkg.globals$columnNames.Outlier <- "outlier"
-pkg.globals$columnNames.Operations <- "operations"
+pkg.globals$columnNames.Operations <- "ModuleOperations"
 pkg.globals$columnNames.Variable <- "variable"
 
 # Variable Details Sheet Column Names
@@ -18,11 +18,11 @@ pkg.globals$argument.VariableStartLow <- "low"
 pkg.globals$argument.CatStartValue <- "value"
 pkg.globals$argument.CatStartLabel <- "valueLabelStart"
 pkg.globals$argument.VariableStartLabel <- "label"
-pkg.globals$argument.From <- "recFrom"
+pkg.globals$argument.From <- "recStart"
 pkg.globals$argument.Interval <- "interval"
-pkg.globals$argument.CatValue <- "recTo"
+pkg.globals$argument.CatValue <- "recEnd"
 pkg.globals$argument.Notes <- "notes"
-pkg.globals$argument.ToType <- "toType"
+pkg.globals$argument.ToType <- "typeEnd"
 pkg.globals$argument.Units <- "units"
 pkg.globals$argument.VariableLabel <- "labelLong"
 pkg.globals$argument.VariableLabelShort <- "label"
@@ -31,7 +31,7 @@ pkg.globals$argument.CatLabel <- "catLabel"
 pkg.globals$argument.CatType <- "cat"
 pkg.globals$argument.VariableStartHighLow <- "from"
 pkg.globals$argument.Role <- "role"
-pkg.globals$argument.FromType <- "fromType"
+pkg.globals$argument.FromType <- "typeStart"
 
 # DDI object names
 pkg.globals$ddiValue.Min <- "min"
@@ -105,7 +105,7 @@ pkg.globals$ModuleTypes.Function <- "function"
 
 # WorkingData contents
 pkg.globals$WorkingData.ModuleSequenceNumber <- "moduleSequenceNumber"
-pkg.globals$WorkingData.ModuleOperations <- "ModuleOperations"
+
 
 # FunctionList contents
 pkg.globals$FunctionList.Arguments <- "arguments"
