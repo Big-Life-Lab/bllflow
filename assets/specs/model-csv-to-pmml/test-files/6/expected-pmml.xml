@@ -17,7 +17,7 @@
       <Value value="998" displayValue="refusal (998)" property="missing"/>
       <Value value="999" displayValue="not stated (999)" property="missing"/>
     </DataField>
-    <DataField name="DHHAGAGE" displayName="Age" optype="categorical" dataType="string">
+    <DataField name="DHHGAGE" displayName="Age" optype="categorical" dataType="string">
       <Extension name="variableStartLabel" value="Age - (G)"/>
       <Value value="1" displayValue="12 to 14 years" property="valid"/>
       <Value value="2" displayValue="15 to 19 years" property="valid"/>
@@ -187,25 +187,25 @@
       <Extension name="units" value="Years" />
       <Apply function="if">
         <Apply function="equals">
-          <FieldRef field="DHHAGAGE" />
+          <FieldRef field="DHHGAGE" />
           <Constant dataType="integer">1</Constant>
         </Apply>
         <Constant dataType="integer">13</Constant>
         <Apply function="if">
           <Apply function="equals">
-            <FieldRef field="DHHAGAGE" />
+            <FieldRef field="DHHGAGE" />
             <Constant dataType="integer">2</Constant>
           </Apply>
           <Constant dataType="integer">17</Constant>
           <Apply function="if">
             <Apply function="equals">
-              <FieldRef field="DHHAGAGE" />
+              <FieldRef field="DHHGAGE" />
               <Constant dataType="integer">3</Constant>
             </Apply>
             <Constant dataType="integer">22</Constant>
             <Apply function="if">
               <Apply function="equals">
-                <FieldRef field="DHHAGAGE" />
+                <FieldRef field="DHHGAGE" />
                 <Constant dataType="integer">96</Constant>
               </Apply>
               <Constant dataType="string">NA::a</Constant>
@@ -213,21 +213,21 @@
                 <Apply function="and">
                   <Apply function="or">
                     <Apply function="greaterThan">
-                      <FieldRef field="DHHAGAGE" />
+                      <FieldRef field="DHHGAGE" />
                       <Constant dataType="integer">97</Constant>
                     </Apply>
                     <Apply function="equals">
-                      <FieldRef field="DHHAGAGE" />
+                      <FieldRef field="DHHGAGE" />
                       <Constant dataType="integer">97</Constant>
                     </Apply>
                   </Apply>
                   <Apply function="or">
                     <Apply function="lessThan">
-                      <FieldRef field="DHHAGAGE" />
+                      <FieldRef field="DHHGAGE" />
                       <Constant dataType="integer">99</Constant>
                     </Apply>
                     <Apply function="equals">
-                      <FieldRef field="DHHAGAGE" />
+                      <FieldRef field="DHHGAGE" />
                       <Constant dataType="integer">99</Constant>
                     </Apply>
                   </Apply>
