@@ -111,7 +111,7 @@
             <Constant dataType="integer">3</Constant>
             <Apply function="if">
               <Apply function="equals">
-                <FieldRef field="RACA_6A" />
+                <FieldRef field="DPS_04_1" />
                 <Constant dataType="integer">6</Constant>
               </Apply>
               <Constant dataType="string">NA::a</Constant>
@@ -119,21 +119,21 @@
                 <Apply function="and">
                   <Apply function="or">
                     <Apply function="greaterThan">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">7</Constant>
                     </Apply>
                     <Apply function="equals">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">7</Constant>
                     </Apply>
                   </Apply>
                   <Apply function="or">
                     <Apply function="lessThan">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">9</Constant>
                     </Apply>
                     <Apply function="equals">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">9</Constant>
                     </Apply>
                   </Apply>
