@@ -571,8 +571,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="non_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
-        <Constant dataType="float">0</Constant>
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">0</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -580,8 +582,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="current_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
-        <Constant dataType="float">1</Constant>
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -589,8 +593,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="former_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -601,8 +607,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="non_drinker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="drinker_type" />
-        <Constant dataType="float">0</Constant>
+        <Apply function="equals">
+          <FieldRef field="drinker_type" />
+          <Constant dataType="float">0</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -610,8 +618,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="current_light_drinker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="drinker_type" />
-        <Constant dataType="float">1</Constant>
+        <Apply function="equals">
+          <FieldRef field="drinker_type" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -619,8 +629,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="current_heavy_drinker" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equals">
+          <FieldRef field="current_heavy_drinker" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
@@ -628,8 +640,10 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="former_drinker" />
-        <Constant dataType="float">3</Constant>
+        <Apply function="equals">
+          <FieldRef field="former_drinker" />
+          <Constant dataType="float">3</Constant>
+        </Apply>
       </Apply>
       <Constant dataType="float">1</Constant>
       <Constant dataType="float">0</Constant>
