@@ -10,63 +10,72 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Main Export Functions
+
 ### Verify Targets
+
 The purpose of this function would be to verify the correct order names and arguments in the passed targets.
-This is done by comparing it agains the modules.csv
+This is done by comparing it against the modules.csv.
 
 The function would contain 2 arguments **targets_source** and **modules_path**.
 The **targets_source** would either be the tar_target list or in most cases the path to the _targets.R
 The **modules_path** would be the file path to the modules.csv
 
 This function would not make any changes to the _targets.R file or the list itself
-and would simply output warnings and a boolean representing the valitity of the targets with the module.
+and would simply output warnings and a boolean representing the validity of the targets with the module.
 
 ### Run bllflow Targets
+
 This function would be responsible for running the targets with arguments filled in by the bllflow object.
 
 Things to consider:
-  Do we wish to support multiple _targets.R if yes i suggest not calling them that and having a 3rd argument for this function that would be the selector for which targets file to run.
-  Do we want this to work without a bllflow object in that case we would need to pass a modules.csv and a variables.csv.
+- Do we wish to support multiple _targets.R? If yes, I suggest not calling them that and having a 3rd argument for this function that would be the selector for which targets file to run.
+  Do we want this to work without a bllflow object? In that case we would need to pass a modules.csv and a variables.csv.
 
-Excluding the arguments mentioned above this function would contain 2 arguments **targets_source** and **bllflow_object**
-The **targets_source** would be identical to the one in verify targets
+Excluding the arguments mentioned above this function would contain 2 arguments **targets_source** and **bllflow_object**.
+The **targets_source** would be identical to the one to verify targets.
 The **bllflow_object** would be the bllflow object created upon config initialization with mandatory checks for modules.csv and variables.csv as well as a present working_data.
 
-The function would first run verify targets to confirm correct order and presense of steps. Then it would modify the tar_targets arguments to reflect their true value rather then the shorthand(roles).
-Once the tar_targets were modifed accordingly the _targets.R file is written and tar_make() is ran letting targets handle the returns and the pipeline
+The function would first run verify targets to confirm correct order and presence of steps. Then it would modify the tar_targets arguments to reflect their true value rather then the shorthand (roles).
+Once the tar_targets were modified accordingly the _targets.R file is written and tar_make() is executed, letting targets handle the returns and the pipeline
 
 ### Create _targets tepmlate
+
 This function would be responsible for creating the basic bllflow_targets.R file which would only be populated by the steps in modules.csv
 
 The function would once again contain only 2 arguments **target_path** and **modules.csv**
 
 The function would utilize the shorthand(roles) notation when writing the functions for ease of use for the analyst
 
-# Contents of the modules.csv
+# Contents of modules.csv
 
 ### Step_id
-The step_id column must contain a unique identifier for the step being performed
 
-*Note* If we wish to have multiple modules.csv being present for 1 targets execution these names must be unique accross all csv as long as they belong to the same targets execution **I dont reccoment this approach**
+The step_id column must contain a unique identifier for the step being performed.
+
+*Note* If we wish to have multiple modules.csv being present for 1 targets execution these names must be unique across all csv as long as they belong to the same targets execution **I don't recommend this approach**
 
 ### Step_function
+
 The step_function column contains the name of the function being performed in this step. This must match a function name present in the environment during execution.
 
-*Note* If we wish to support being able to pipe functions within a step this could be done by listing the functions name in the same cell with a seperator, same with the function args further down the line. However I do not see a clean way of implementing piping order therefore if we do include piping it must be written in the order it is ran
+*Note* If we wish to support being able to pipe functions within a step this could be done by listing the functions name in the same cell with a separator, same with the function arguments further down the line. However I do not see a clean way of implementing piping order therefore if we do include piping it must be written in the order it is ran
 
 ### Step_arguments
-The step_arguments column would contain the arguments for the function including our shorthand(roles). I belive we should bring back the roles() and formula notations from previous implementation to avoid any confusion later
 
-*Note* For piping the arguments would be wrapped in () and then seperated with the same seperator as step_function
+The step_arguments column would contain the arguments for the function including our shorthand (roles). I believe we should bring back the roles() and formula notations from previous implementation to avoid any confusion later.
 
-###Step_description
-This column contains the step description this is used to populate comments in template creation function. It should contain a helpful description of what this step is responsible for
+*Note* For piping the arguments would be wrapped in () and then separated with the same separator as step_function.
 
-# Potentially optional columns
+### Step_description
+
+This column contains the step description this is used to populate comments in template creation function. It should contain a helpful description of what this step is responsible for.
+
+# Potential optional columns
 
 ### Study name
-Purely for documentation purposes to distinguish the modules.csv appart if the file name is not enough
+
+Solely for documentation purposes to distinguish the modules.csv apart if the file name is not enough
 
 ### Start Databases
-List of started databases in case variables and variable details is lost can be used to match. Alternatively this can be used to improve performance during the reading/initializing bllflow by disregarding databases present in the config in case the user loaded the wrong config or did not fill out their profile data fully.
 
+List of start databases in case variables.csv and variable_details.csv is lost and can be used to match. Alternatively this can be used to improve performance during the reading/initializing bllflow by disregarding databases present in the config in case the user loaded the wrong config or did not fill out their profile data fully.
