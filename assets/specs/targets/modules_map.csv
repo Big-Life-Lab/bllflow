@@ -1,0 +1,2 @@
+Module_Name,Module_Path,Module_Description,ModuleOrder
+depression_imputation,./depression_imputation_module.csv,This module is responsible for imputing the depression score and mood disorder variables within the CCHS-PUMF from cycles 2001 to 2014.,1

@@ -1,0 +1,115 @@
+---
+title: "Targets_implementation"
+author: "Rostyslav Vyuha"
+date: "April 14, 2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Main Export Functions
+
+### Verify Targets
+
+The purpose of this function would be to verify the correct order names and arguments in the passed targets.
+This is done by comparing it against the read in modules
+
+  The function would contain 2 arguments **targets_source** and **modules_path**.
+The **targets_source** would either be the tar_target list or in most cases the path to the _targets.R
+The **modules_path** would be the file path to the modules_map.csv
+
+This function would not make any changes to the _targets.R file or the list itself
+and would simply output warnings and a boolean representing the validity of the targets with the module.
+
+### Run bllflow Targets
+
+This function would be responsible for running the targets with arguments filled in by the bllflow object.
+
+Excluding the arguments mentioned above this function would contain 2 arguments **targets_source** and **bllflow_object**.
+The **targets_source** would be identical to the one to verify targets.
+The **bllflow_object** would be the bllflow object created upon config initialization with mandatory checks for modules.csv and variables.csv as well as a present working_data.
+
+The function would first run verify targets to confirm correct order and presence of steps. Then it would modify the tar_targets arguments to reflect their true value rather then the shorthand (roles).
+Once the tar_targets were modified accordingly the _targets.R file is written and tar_make() is executed, letting targets handle the returns and the pipeline
+
+### Create _targets tepmlate
+
+This function would be responsible for creating the basic bllflow_targets.R file which would only be populated by the steps in modules.csv
+
+The function would once again contain only 2 arguments **target_path** and **modules_path**
+
+The function would utilize the shorthand(roles) notation when writing the functions for ease of use for the analyst
+
+# Contents of modules.csv
+
+### Step_id
+
+The step_id column must contain a unique identifier for the step being performed.
+
+### Step_function
+
+The step_function column contains the name of the function being performed in this step. This must match a function name present in the environment during execution.
+
+### Step_arguments
+
+The step_arguments column would contain the arguments for the function including our shorthand (roles). I believe we should bring back the roles() and formula notations from previous implementation to avoid any confusion later.
+
+#### Special Arguments
+
+*role* This would search for variables matching the role in variables.csv and be replaced with vecor of var names during run time.
+*data* This would pass the object attached to the bllflow object inside the data list ie: bllflow$data[[<whats inside data>]]
+*formula* This would create a left side = right side formula ie: formula[role["outcome"], role["predictor"], sep = "+"] would result in "outcome1 + outcome2 + outcome3 ~ predictor1 + predictor2 + predictor3"
+
+### Step_description
+
+This column contains the step description this is used to populate comments in template creation function. It should contain a helpful description of what this step is responsible for.
+
+### Step_order
+
+This column contains the order in which steps should be executed
+
+# Contents of modules_map
+
+### Module_Name
+
+The name of the module being included
+
+### Module_Path
+
+The relative path to the module being loaded
+
+### Module_description
+
+The module being ran
+
+### Module_order
+
+The order in which modules are ran
+
+# Example function usage
+
+## Verify_targets
+```{r, echo=FALSE}
+verify_targets(targets_source = "/assets/specs/targets/depression_targets.R", modules_path = "/assets/specs/targets/modules_map.csv")
+```
+This returns TRUE if depression_targets.R contains everything inside modules_map and in correct order with correct arguments
+
+## run_bllflow_targets
+```{r, echo=FALSE}
+run_bllflow_targets(targets_source = "/assets/specs/targets/depression_targets.R", bllflow_object = hui_object)
+```
+
+This would create a _targets.R in base package directory using the targets found at targets_source.
+It would essentially be a copy and paste except for the Special Arguments which would be populated using the bllflow_object
+
+## create_targets_tepmlate
+```{r, echo=FALSE}
+create_targets_tepmlate(target_path = "/assets/specs/targets/depression_targets.R", modules_path = "/assets/specs/targets/modules_map.csv")
+```
+
+This would create a barebones depression_targets.R with only things found in the passed modules
+
+
+
