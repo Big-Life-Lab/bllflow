@@ -51,10 +51,10 @@ build_bllflow <-
           pkg.globals$argument.DatabaseStart,
           pkg.globals$argument.VariableStart,
           pkg.globals$argument.FromType,
-          pkg.globals$argument.CatValue,
+          pkg.globals$argument.recEnd,
           pkg.globals$argument.CatLabel,
           pkg.globals$argument.CatLabelLong,
-          pkg.globals$argument.From,
+          pkg.globals$argument.recStart,
           pkg.globals$argument.Units
         ),
         variable_details,
