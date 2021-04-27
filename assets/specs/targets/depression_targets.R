@@ -1,5 +1,7 @@
 library(targets)
 library(huiport) # The package containing functions found in depression_imputation_module
+Hui_impute <- create_targets_tepmlate()
+
 list(
   # Create the dataset with which we will impute the depression score variable. Only include the survey cycles from 2003 to 2014 since mood disorder is one of the strongest predictors of depression score and it was only available during these cycles in the PUMF
   tar_target(
@@ -7,7 +9,7 @@ list(
     create_depression_score_imputation_dataset_function(
       data = data["study_dataset"],
       variables = role["create_depression_score_imputation_dataset"],
-      survey_cycle_variable = role["survey_cycle"],
+      survey_cycle_variable = role["survey_cycle"], 
       survey_cycle_lower_limit = 2003,
       survey_cycle_upper_limit = 2014
     ),
@@ -15,7 +17,7 @@ list(
     tar_target(
       impute_depression_score,
       impute_depression_score_function(
-        data = data["create_depression_score_imputation_dataset"],
+        data = create_depression_score_imputation_dataset,
         outcome = role["impute_depression_score_outcome"],
         predictors = role["impute_depression_score_predictors"],
         num_multiple_imputations = 5,
