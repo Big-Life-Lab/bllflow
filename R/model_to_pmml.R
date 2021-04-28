@@ -20,17 +20,17 @@ convert_model_export_to_pmml <-
                stringsAsFactors = FALSE)
     
     variables_path <-
-      model_export[model_export$fileType == pkg.globals$PMML.variables, pkg.globals$PMML.filePath]
+      model_export[model_export$fileType == pkg.globals$ModelExportCSV.variables, pkg.globals$ModelStepsCSV.filePath]
     variables_path <-
       file.path(dirname(model_export_file_path), variables_path)
     
     variable_details_path <-
-      model_export[model_export$fileType == pkg.globals$PMML.variable_details, pkg.globals$PMML.filePath]
+      model_export[model_export$fileType == pkg.globals$ModelExportCSV.variable_details, pkg.globals$ModelStepsCSV.filePath]
     variable_details_path <-
       file.path(dirname(model_export_file_path), variable_details_path)
     
     model_steps_path <-
-      model_export[model_export$fileType == pkg.globals$PMML.model_steps, pkg.globals$PMML.filePath]
+      model_export[model_export$fileType == pkg.globals$ModelExportCSV.model_steps, pkg.globals$ModelStepsCSV.filePath]
     model_steps_path <-
       file.path(dirname(model_export_file_path), model_steps_path)
     
@@ -50,14 +50,16 @@ convert_model_export_to_pmml <-
       read.csv(model_steps_path,
                fileEncoding = "UTF-8-BOM",
                stringsAsFactors = FALSE)
-    detected_steps <- unique(model_steps[[pkg.globals$PMML.step]])
+    detected_steps <-
+      unique(model_steps[[pkg.globals$ModelStepsCSV.step]])
     step_list <- list()
     
     for (working_step in detected_steps) {
       current_rows <-
-        model_steps[model_steps[[pkg.globals$PMML.step]] == working_step, c(pkg.globals$PMML.fileType, pkg.globals$PMML.filePath)]
+        model_steps[model_steps[[pkg.globals$ModelStepsCSV.step]] == working_step, c(pkg.globals$ModelStepsCSV.fileType,
+                                                                                     pkg.globals$ModelStepsCSV.filePath)]
       step_list[[working_step]] <-
-        list(fileType = current_rows[[pkg.globals$PMML.fileType]], filePath = current_rows[[pkg.globals$PMML.filePath]])
+        list(fileType = current_rows[[pkg.globals$ModelStepsCSV.fileType]], filePath = current_rows[[pkg.globals$ModelStepsCSV.filePath]])
     }
     
     # Loop over above list and read in each file specified saving it in a list containing the step name and fileType as well as the content of the file
@@ -66,34 +68,24 @@ convert_model_export_to_pmml <-
         # Check for sub steps
         if (length(step_list[[single_step]][[1]]) > 1) {
           for (sub_step in 1:length(step_list[[single_step]][[1]])) {
-            current_file_path <-
-              file.path(dirname(model_export_file_path), step_list[[single_step]][[pkg.globals$PMML.filePath]][[sub_step]])
-            current_file <-
-              read.csv(
-                current_file_path,
-                fileEncoding = "UTF-8-BOM",
-                stringsAsFactors = FALSE
-              )
-            step_list[[single_step]][["file"]][[sub_step]] <-
-              current_file
+            step_list[[single_step]][[pkg.globals$ModelInternal.file]][[sub_step]] <-
+              read_step_file(model_export_file_path, step_list[[single_step]][[pkg.globals$ModelStepsCSV.filePath]][[sub_step]])
           }
         } else{
-          current_file_path <-
-            file.path(dirname(model_export_file_path), step_list[[single_step]][[pkg.globals$PMML.filePath]])
-          current_file <-
-            read.csv(current_file_path,
-                     fileEncoding = "UTF-8-BOM",
-                     stringsAsFactors = FALSE)
-          step_list[[single_step]][["file"]] <- current_file
+          step_list[[single_step]][[pkg.globals$ModelInternal.file]] <-
+            read_step_file(model_export_file_path, step_list[[single_step]][[pkg.globals$ModelStepsCSV.filePath]])
         }
       }
     }
     # Create empty PMML doc using variables from strings.R to fill in name and version of the package
     doc <-
       XML::xmlNode(
-        "PMML",
-        namespaceDefinitions = c("http://www.dmg.org/PMML-4_4", xsi = "http://www.w3.org/2001/XMLSchema-instance"),
-        attrs = c(version = "4.4")
+        pkg.globals$PMML.Node.PMML,
+        namespaceDefinitions = c(
+          pkg.globals$PMML.Node.Attributes.Value.xmlns,
+          xsi = pkg.globals$PMML.Node.Attributes.Value.xsi
+        ),
+        attrs = c(version = pkg.globals$PMML.Node.Attributes.Value.PMML.Version)
       )
     header <- XML::xmlNode(pkg.globals$PMML.Node.Header)
     header <-
@@ -119,23 +111,23 @@ convert_model_export_to_pmml <-
     max_time <- 0
     # Vector containing all matching variable start variables based on database name
     all_start_vars <- c()
-    if ("time" %in% variable_details[[pkg.globals$argument.Variables]]) {
+    if (pkg.globals$variables.Time %in% variable_details[[pkg.globals$argument.Variables]]) {
       max_time <-
         max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
-                                            "time", pkg.globals$argument.recEnd]))
+                                            pkg.globals$variables.Time, pkg.globals$argument.recEnd]))
       min_time <-
         min(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
-                                            "time", pkg.globals$argument.recEnd]))
+                                            pkg.globals$variables.Time, pkg.globals$argument.recEnd]))
       working_pmml[[pkg.globals$PMML.Node.DataDictionary]] <-
         XML::addChildren(
           working_pmml[[pkg.globals$PMML.Node.DataDictionary]],
           XML::xmlNode(
             pkg.globals$PMML.Node.DataField,
             attrs = c(
-              name = "time",
+              name = pkg.globals$variables.Time,
               displayName = "time of predicted probability",
-              optype = "continuous",
-              dataType = "float"
+              optype = pkg.globals$PMML.Node.Attributes.Value.optype.cont,
+              dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
             ),
             XML::xmlNode(
               pkg.globals$PMML.Node.Interval,
@@ -153,8 +145,8 @@ convert_model_export_to_pmml <-
         unique(variable_details[grepl(database_name, variable_details[[pkg.globals$argument.DatabaseStart]]), pkg.globals$argument.Variables])
       for (end_variable in all_unique_vars) {
         working_row <-
-          variable_details[variable_details[[pkg.globals$argument.Variables]] == end_variable, ]
-        working_row <- working_row[1,]
+          variable_details[variable_details[[pkg.globals$argument.Variables]] == end_variable,]
+        working_row <- working_row[1, ]
         all_start_vars <-
           append(
             all_start_vars,
@@ -166,36 +158,27 @@ convert_model_export_to_pmml <-
     # Loop over the list elements from model-steps
     for (step_name in names(step_list)) {
       working_step <- step_list[[step_name]]
-      if (length(working_step[[pkg.globals$PMML.fileType]]) > 1) {
-        for (sub_step_index in 1:length(working_step[[pkg.globals$PMML.fileType]])) {
-          current_file_type <-
-            working_step[[pkg.globals$PMML.fileType]][[sub_step_index]]
-          if (is.na(current_file_type)) {
-            current_file_type <- step_name
-          }
-          current_file <- working_step[["file"]][[sub_step_index]]
+      if (length(working_step[[pkg.globals$ModelStepsCSV.fileType]]) > 1) {
+        for (sub_step_index in 1:length(working_step[[pkg.globals$ModelStepsCSV.fileType]])) {
           working_pmml <-
-            node_creation_switch(
-              current_file_type = current_file_type,
-              current_file = current_file,
-              working_pmml = working_pmml,
-              all_start_vars = all_start_vars,
-              max_time = max_time
+            convert_step(
+              current_file_type = working_step[[pkg.globals$ModelStepsCSV.fileType]][[sub_step_index]],
+              step_name,
+              current_file = working_step[[pkg.globals$ModelInternal.file]][[sub_step_index]],
+              all_start_vars,
+              max_time,
+              working_pmml
             )
         }
       } else{
-        current_file_type <- working_step[[pkg.globals$PMML.fileType]]
-        if (is.na(current_file_type)) {
-          current_file_type <- step_name
-        }
-        current_file <- working_step[["file"]]
         working_pmml <-
-          node_creation_switch(
-            current_file_type = current_file_type,
-            current_file = current_file,
-            working_pmml = working_pmml,
-            all_start_vars = all_start_vars,
-            max_time = max_time
+          convert_step(
+            current_file_type = working_step[[pkg.globals$ModelStepsCSV.fileType]],
+            step_name,
+            current_file = working_step[[pkg.globals$ModelInternal.file]],
+            all_start_vars,
+            max_time,
+            working_pmml
           )
       }
     }
@@ -236,15 +219,21 @@ create_dummy_nodes <-
           pkg.globals$PMML.Node.DerivedField,
           attrs = c(
             name = dummy_variable[[vector_index]],
-            optype = "categorical",
-            dataType = "float"
+            optype = pkg.globals$PMML.Node.Attributes.Value.optype.cat,
+            dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
           )
         )
       # Create an Apply node with function attribute set to if
       current_apply_node_parent <-
-        XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "if"))
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Apply,
+          attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.if)
+        )
       current_apply_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "equals"))
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Apply,
+          attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.equal)
+        )
       # To the Apply node add children nodes of FieldRef and Constant
       # The FieldRef field attibute is populated using orig_variable
       # The Constant dataType attibute is set to float and the value is populated from cat_value
@@ -252,9 +241,11 @@ create_dummy_nodes <-
         XML::xmlNode(pkg.globals$PMML.Node.FieldRef,
                      attrs = c(field = orig_variable[[vector_index]]))
       current_const_apply_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Constant,
-                     attrs = c(dataType = "float"),
-                     cat_value[[vector_index]])
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Constant,
+          attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
+          cat_value[[vector_index]]
+        )
       # Add the Apply node and two constant Constant nodes as children to the DerivedField node
       current_apply_node <-
         XML::addChildren(current_apply_node,
@@ -263,19 +254,25 @@ create_dummy_nodes <-
       current_apply_node_parent <-
         XML::addChildren(current_apply_node_parent, current_apply_node)
       current_const_0 <-
-        XML::xmlNode(pkg.globals$PMML.Node.Constant,
-                     attrs = c(dataType = "float"),
-                     0)
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Constant,
+          attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
+          0
+        )
       current_const_1 <-
-        XML::xmlNode(pkg.globals$PMML.Node.Constant,
-                     attrs = c(dataType = "float"),
-                     1)
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Constant,
+          attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
+          1
+        )
       # The 2 constant Constant nodes have dataType of float and values of 0 and 1
       current_main_node <-
-        XML::addChildren(current_main_node,
-                         current_apply_node_parent,
-                         current_const_1,
-                         current_const_0)
+        XML::addChildren(
+          current_main_node,
+          current_apply_node_parent,
+          current_const_1,
+          current_const_0
+        )
       # Add the DerivedField to the return PMML
       PMML[[pkg.globals$PMML.Node.TransformationDictionary]] <-
         XML::addChildren(PMML[[pkg.globals$PMML.Node.TransformationDictionary]], current_main_node)
@@ -317,7 +314,8 @@ create_center_nodes <-
       # The dataType is determined by centered_variable_type cont = float, cat = string
       optype <- ""
       data_type <- ""
-      cat_cont_conversion <- cont_and_cat_converter(centered_variable_type[[vector_index]])
+      cat_cont_conversion <-
+        cont_and_cat_converter(centered_variable_type[[vector_index]])
       optype <- cat_cont_conversion$optype
       data_type <- cat_cont_conversion$data_type
       
@@ -334,14 +332,19 @@ create_center_nodes <-
       # Create a child FieldRef node for Apply node with the field attribute populated by orig_variable
       # Create a child Constant node for Apply node with dataType attribute set to float and its value set by center_value
       current_apply_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "-"))
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Apply,
+          attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.minus)
+        )
       current_field_node <-
         XML::xmlNode(pkg.globals$PMML.Node.FieldRef,
                      attrs = c(field = orig_variable[[vector_index]]))
       current_constant_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Constant,
-                     attrs = c(dataType = "float"),
-                     center_value[[vector_index]])
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Constant,
+          attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
+          center_value[[vector_index]]
+        )
       current_apply_node <-
         XML::addChildren(current_apply_node,
                          current_field_node,
@@ -375,15 +378,22 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
   }
   # Loop over the length of the passed vectors
   for (vector_index in 1:length(variable)) {
-    variable_list <- strsplit(rcs_variables[[vector_index]], ";")[[1]]
+    variable_list <-
+      strsplit(rcs_variables[[vector_index]], pkg.globals$variables.splitValue)[[1]]
     # Create the first rcs DerivedField node
     # Create a temporary Constant Array Node with n set to 5, type set to float, and values from knots
-    current_knots_raw <- strsplit(knots[[vector_index]], ";")[[1]]
+    current_knots_raw <-
+      strsplit(knots[[vector_index]], pkg.globals$variables.splitValue)[[1]]
     current_knots <- paste(current_knots_raw, collapse = " ")
     current_array_node <-
-      XML::xmlNode(pkg.globals$PMML.Node.Array,
-                   attrs = c(n = length(current_knots_raw), type = "float"),
-                   current_knots)
+      XML::xmlNode(
+        pkg.globals$PMML.Node.Array,
+        attrs = c(
+          n = length(current_knots_raw),
+          type = pkg.globals$PMML.Node.Attributes.Value.Type.float
+        ),
+        current_knots
+      )
     # The name attribute is set to the first element of the current index of rcs_variables
     # optype attribute is set to continuous and dataType attribute is set to float
     # Create a child Apply node set its attribute function to equal
@@ -394,12 +404,15 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
         pkg.globals$PMML.Node.DerivedField,
         attrs = c(
           name = variable_list[[1]],
-          optype = "continuous",
-          dataType = "float"
+          optype = pkg.globals$PMML.Node.Attributes.Value.optype.cont,
+          dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
         )
       )
     current_first_apply_node <-
-      XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "equal"))
+      XML::xmlNode(
+        pkg.globals$PMML.Node.Apply,
+        attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.equal)
+      )
     current_first_field_node <-
       XML::xmlNode(pkg.globals$PMML.Node.FieldRef, attrs = c(field = variable[[vector_index]]))
     current_first_node <-
@@ -419,15 +432,18 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
           pkg.globals$PMML.Node.DerivedField,
           attrs = c(
             name = variable_list[[rcs_variable_index]],
-            optype = "continuous",
-            dataType = "float"
+            optype = pkg.globals$PMML.Node.Attributes.Value.optype.cont,
+            dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
           )
         )
       # Add child Apply node with function node of rcs
       # To the Apply node add fieldRef child node with field set to rcs_loop_index-1 inside the nested rcs_variables list
       # To the Apply node add Constant child node with datatType set to float and value of rcs_loop_index
       current_apply_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "rcs"))
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Apply,
+          attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.rcs)
+        )
       current_field_node <-
         XML::xmlNode(pkg.globals$PMML.Node.FieldRef,
                      attrs = c(field = variable_list[[rcs_variable_index -
@@ -435,7 +451,7 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
       current_const <-
         XML::xmlNode(
           pkg.globals$PMML.Node.Constant,
-          attrs = c(dataType = "float"),
+          attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
           rcs_variable_index
         )
       # To the Apply node add the temporary constant Array node created in the parent loop
@@ -481,16 +497,18 @@ create_interaction_nodes <-
     # Loop over passed vectors
     for (vector_index in 1:length(interaction_variable)) {
       variable_list <-
-        strsplit(interacting_variables[[vector_index]], ";")[[1]]
+        strsplit(interacting_variables[[vector_index]],
+                 pkg.globals$variables.splitValue)[[1]]
       # Create DerivedField node with name attribute set by interaction_variable column
       # optype attribute is determined based on interaction_variable_type cont= continuous, cat = categorical
       # dataType attribute is determined based on interaction_variable_type cont= float, cat = string
       optype <- ""
       data_type <- ""
-      cat_cont_conversion <- cont_and_cat_converter(interaction_variable_type[[vector_index]])
+      cat_cont_conversion <-
+        cont_and_cat_converter(interaction_variable_type[[vector_index]])
       optype <- cat_cont_conversion$optype
       data_type <- cat_cont_conversion$data_type
-  
+      
       current_node <-
         XML::xmlNode(
           pkg.globals$PMML.Node.DerivedField,
@@ -502,7 +520,12 @@ create_interaction_nodes <-
         )
       # Create Apply child node with function attribute set to *
       current_apply_node <-
-        XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "*"))
+        XML::xmlNode(
+          pkg.globals$PMML.Node.Apply,
+          attrs = c(
+            'function' = pkg.globals$PMML.Node.Attributes.Value.function.multiplication
+          )
+        )
       
       # Add length(interacting_variables nested lins) FieldRef child nodes to Apply node with field attribute set by the nested interacting_variables list
       for (interacting_variable in variable_list) {
@@ -560,7 +583,10 @@ create_beta_coefficient_nodes <-
         current_param_list_node,
         XML::xmlNode(
           pkg.globals$PMML.Node.Parameter,
-          attrs = c(name = "p0", label = "Intercept")
+          attrs = c(
+            name = pkg.globals$PMML.Node.Attributes.Value.startVar,
+            label = pkg.globals$PMML.Node.Attributes.Value.label.Intercept
+          )
         )
       )
     current_param_matrix_node <-
@@ -570,7 +596,10 @@ create_beta_coefficient_nodes <-
       XML::addChildren(current_param_matrix_node,
                        XML::xmlNode(
                          pkg.globals$PMML.Node.PCell,
-                         attrs = c(parameterName = "p0", beta = "0")
+                         attrs = c(
+                           parameterName = pkg.globals$PMML.Node.Attributes.Value.startVar,
+                           beta = "0"
+                         )
                        ))
     current_factor_list_node <-
       XML::xmlNode(pkg.globals$PMML.Node.FactorList)
@@ -578,7 +607,7 @@ create_beta_coefficient_nodes <-
       XML::xmlNode(pkg.globals$PMML.Node.CovariateList)
     current_pp_matrix_node <-
       XML::xmlNode(pkg.globals$PMML.Node.PPMatrix)
-
+    
     
     # Loop over the passed vectors
     for (variable_index in 1:length(variable)) {
@@ -588,22 +617,32 @@ create_beta_coefficient_nodes <-
           current_param_list_node,
           XML::xmlNode(
             pkg.globals$PMML.Node.Parameter,
-            attrs = c(name = paste0("p", variable_index), label = variable[[variable_index]])
+            attrs = c(
+              name = paste0(
+                pkg.globals$PMML.Node.Attributes.Value.Var.incrementVar,
+                variable_index
+              ),
+              label = variable[[variable_index]]
+            )
           )
         )
       # Check the type for cat variables create a FactorList child node Predictor with name set to variable
       # For cont variables create a CovariateList child node Predictor with name set to variable
       current_predictor <-
         XML::xmlNode(pkg.globals$PMML.Node.Predictor, attrs = c(name = variable[[variable_index]]))
-      switch (type[[variable_index]],
-              "cont" = {
-                current_covariate_list_node <-
-                  XML::addChildren(current_covariate_list_node, current_predictor)
-              },
-              "cat" = {
-                current_factor_list_node <-
-                  XML::addChildren(current_factor_list_node, current_predictor)
-              })
+      # cont and cat cannot be assigned to variables as switch uses them as case names
+      # Bypass is a #TODO
+      switch (
+        type[[variable_index]],
+        "cont" = {
+          current_covariate_list_node <-
+            XML::addChildren(current_covariate_list_node, current_predictor)
+        },
+        "cat" = {
+          current_factor_list_node <-
+            XML::addChildren(current_factor_list_node, current_predictor)
+        }
+      )
       
       # Create a PPMatrix child node PPCell with value set to 1, predictorName to variable and parameterName to p<loopIterator>
       current_pp_matrix_node <-
@@ -613,7 +652,10 @@ create_beta_coefficient_nodes <-
                            attrs = c(
                              value = "1",
                              predictorName = variable[[variable_index]],
-                             parameterName = paste0("p", variable_index)
+                             parameterName = paste0(
+                               pkg.globals$PMML.Node.Attributes.Value.Var.incrementVar,
+                               variable_index
+                             )
                            )
                          ))
       # Create a ParamMatrix child node PCell with parameterName set to p<loopIterator> and beta set to coefficient
@@ -623,7 +665,10 @@ create_beta_coefficient_nodes <-
           XML::xmlNode(
             pkg.globals$PMML.Node.PCell,
             attrs = c(
-              parameterName = paste0("p", variable_index),
+              parameterName = paste0(
+                pkg.globals$PMML.Node.Attributes.Value.Var.incrementVar,
+                variable_index
+              ),
               beta = coefficient[[variable_index]]
             )
           )
@@ -638,7 +683,10 @@ create_beta_coefficient_nodes <-
         current_mining_schema_node,
         XML::xmlNode(
           pkg.globals$PMML.Node.MiningField,
-          attrs = c(name = "risk", usageType = "target")
+          attrs = c(
+            name = "risk",
+            usageType = pkg.globals$PMML.Node.Attributes.Value.usageType.target
+          )
         )
       )
     current_mining_schema_node <-
@@ -646,7 +694,10 @@ create_beta_coefficient_nodes <-
         current_mining_schema_node,
         XML::xmlNode(
           pkg.globals$PMML.Node.MiningField,
-          attrs = c(name = "time", usageType = "active")
+          attrs = c(
+            name = pkg.globals$variables.Time,
+            usageType = pkg.globals$PMML.Node.Attributes.Value.usageType.active
+          )
         )
       )
     # Loop over mining_fields
@@ -657,7 +708,10 @@ create_beta_coefficient_nodes <-
           current_mining_schema_node,
           XML::xmlNode(
             pkg.globals$PMML.Node.MiningField,
-            attrs = c(name = mining_fields[[start_variable_index]], usageType = "active")
+            attrs = c(
+              name = mining_fields[[start_variable_index]],
+              usageType = pkg.globals$PMML.Node.Attributes.Value.usageType.active
+            )
           )
         )
     }
@@ -671,9 +725,9 @@ create_beta_coefficient_nodes <-
                          XML::xmlNode(
                            pkg.globals$PMML.Node.GeneralRegressionModel,
                            attrs = c(
-                             modelType = "CoxRegression",
-                             functionName = "regression",
-                             endTimeVariable = "time"
+                             modelType = pkg.globals$PMML.Node.Attributes.Value.modelType.CoxRegression,
+                             functionName = pkg.globals$PMML.Node.Attributes.Value.modelFunction.regression,
+                             endTimeVariable = pkg.globals$variables.Time
                            )
                          ))
     }
@@ -735,9 +789,9 @@ create_baseline_hazards_nodes <-
                          XML::xmlNode(
                            pkg.globals$PMML.Node.GeneralRegressionModel,
                            attrs = c(
-                             modelType = "CoxRegression",
-                             functionName = "regression",
-                             endTimeVariable = "time"
+                             modelType = pkg.globals$PMML.Node.Attributes.Value.modelType.CoxRegression,
+                             functionName = pkg.globals$PMML.Node.Attributes.Value.modelFunction.regression,
+                             endTimeVariable = pkg.globals$variables.Time
                            )
                          ))
     }
@@ -847,18 +901,57 @@ node_creation_switch <-
     return(working_pmml)
   }
 
-cont_and_cat_converter <- function(switch_value){
+cont_and_cat_converter <- function(switch_value) {
   optype <- ""
   data_type <- ""
-  switch (switch_value,
-          "cont" = {
-            optype <- "continuous"
-            data_type <- "float"
-          },
-          "cat" = {
-            optype = "categorical"
-            data_type <- "string"
-          })
+  # cont and cat cannot be assigned to variables as switch uses them as case names
+  # Bypass is a #TODO
+  switch (
+    switch_value,
+    "cont" = {
+      optype <- pkg.globals$PMML.Node.Attributes.Value.optype.cont
+      data_type <-
+        pkg.globals$PMML.Node.Attributes.Value.dataType.float
+    },
+    "cat" = {
+      optype = pkg.globals$PMML.Node.Attributes.Value.optype.cat
+      data_type <-
+        pkg.globals$PMML.Node.Attributes.Value.dataType.string
+    }
+  )
   
   return(list(optype = optype, data_type = data_type))
+}
+
+read_step_file <- function(model_export_file_path, step_path) {
+  current_file_path <-
+    file.path(dirname(model_export_file_path), step_path)
+  current_file <-
+    read.csv(current_file_path,
+             fileEncoding = "UTF-8-BOM",
+             stringsAsFactors = FALSE)
+  
+  return(current_file)
+}
+
+convert_step <-
+  function(current_file_type,
+           step_name,
+           current_file,
+           all_start_vars,
+           max_time,
+           working_pmml) {
+    if (is.na(current_file_type)) {
+      current_file_type <- step_name
+    }
+    working_pmml <-
+      node_creation_switch(
+        current_file_type = current_file_type,
+        current_file = current_file,
+        working_pmml = working_pmml,
+        all_start_vars = all_start_vars,
+        max_time = max_time
+      )
+    
+    return(working_pmml)
   }
