@@ -39,7 +39,7 @@
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">1</Constant>
             </Apply>
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">1</Constant>
             </Apply>
@@ -49,7 +49,7 @@
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">10</Constant>
             </Apply>
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">10</Constant>
             </Apply>
@@ -63,7 +63,7 @@
                 <FieldRef field="ALCA_5A1" />
                 <Constant dataType="integer">10</Constant>
               </Apply>
-              <Apply function="equals">
+              <Apply function="equal">
                 <FieldRef field="ALCA_5A1" />
                 <Constant dataType="integer">10</Constant>
               </Apply>
@@ -97,7 +97,7 @@
                     <FieldRef field="ALCA_5A1" />
                     <Constant dataType="integer">40</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="ALCA_5A1" />
                     <Constant dataType="integer">40</Constant>
                   </Apply>
@@ -105,7 +105,7 @@
               </Apply>
               <Constant dataType="integer">4</Constant>
               <Apply function="if">
-                <Apply function="equals">
+                <Apply function="equal">
                   <FieldRef field="ALCA_5A1" />
                   <Constant dataType="integer">996</Constant>
                 </Apply>
@@ -117,7 +117,7 @@
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">997</Constant>
                       </Apply>
-                      <Apply function="equals">
+                      <Apply function="equal">
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">997</Constant>
                       </Apply>
@@ -127,7 +127,7 @@
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">999</Constant>
                       </Apply>
-                      <Apply function="equals">
+                      <Apply function="equal">
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">999</Constant>
                       </Apply>
@@ -164,25 +164,25 @@
       <Extension name="labelLong" value="Converted categorical age" />
       <Extension name="units" value="Years" />
       <Apply function="if">
-        <Apply function="equals">
+        <Apply function="equal">
           <FieldRef field="DHHAGAGE" />
           <Constant dataType="integer">1</Constant>
         </Apply>
         <Constant dataType="integer">13</Constant>
         <Apply function="if">
-          <Apply function="equals">
+          <Apply function="equal">
             <FieldRef field="DHHAGAGE" />
             <Constant dataType="integer">2</Constant>
           </Apply>
           <Constant dataType="integer">17</Constant>
           <Apply function="if">
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="DHHAGAGE" />
               <Constant dataType="integer">3</Constant>
             </Apply>
             <Constant dataType="integer">22</Constant>
             <Apply function="if">
-              <Apply function="equals">
+              <Apply function="equal">
                 <FieldRef field="DHHAGAGE" />
                 <Constant dataType="integer">96</Constant>
               </Apply>
@@ -194,7 +194,7 @@
                       <FieldRef field="DHHAGAGE" />
                       <Constant dataType="integer">97</Constant>
                     </Apply>
-                    <Apply function="equals">
+                    <Apply function="equal">
                       <FieldRef field="DHHAGAGE" />
                       <Constant dataType="integer">97</Constant>
                     </Apply>
@@ -204,7 +204,7 @@
                       <FieldRef field="DHHAGAGE" />
                       <Constant dataType="integer">99</Constant>
                     </Apply>
-                    <Apply function="equals">
+                    <Apply function="equal">
                       <FieldRef field="DHHAGAGE" />
                       <Constant dataType="integer">99</Constant>
                     </Apply>
