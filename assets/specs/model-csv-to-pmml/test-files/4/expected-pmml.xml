@@ -259,14 +259,14 @@
     </DerivedField>
     <DerivedField name="DHHGAGE_cont_rcs3" optype="continuous" dataType="float">
       <Apply function="rcs">
-        <FieldRef field="DHHGAGE_cont_rcs2" />
+        <FieldRef field="DHHGAGE_cont_rcs1" />
         <Constant dataType="float">3</Constant>
         <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
       </Apply>
     </DerivedField>
     <DerivedField name="DHHGAGE_cont_rcs4" optype="continuous" dataType="float">
       <Apply function="rcs">
-        <FieldRef field="DHHGAGE_cont_rcs3" />
+        <FieldRef field="DHHGAGE_cont_rcs1" />
         <Constant dataType="float">4</Constant>
         <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
       </Apply>

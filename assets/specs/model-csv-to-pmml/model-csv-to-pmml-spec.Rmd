@@ -730,7 +730,7 @@ Converting an RCS step file to PMML involves adding `DerivedField` nodes to the 
 6. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
 
 ```{r eval=FALSE}
-# previous_rcs_variable: The value in the previous rcs variable
+# first_rcs_variable: The value in the first rcs variable
 # knot_number: Which rcs variable this is
 # knots: The array of knots
 rcs <- function(previous_rcs_variable, knot_number, knots) {
@@ -758,7 +758,7 @@ The example CSV file used to describe this step above would be converted to the 
   
 <DerivedField name="AgeC_rcs3" optype="continuous" dataType="float">
   <Apply function="rcs">
-    <FieldRef field="AgeC_rcs2" />
+    <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">3</Constant>
     <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
   </Apply>
@@ -766,7 +766,7 @@ The example CSV file used to describe this step above would be converted to the 
   
 <DerivedField name="AgeC_rcs4" optype="continuous" dataType="float">
   <Apply function="rcs">
-    <FieldRef field="AgeC_rcs3" />
+    <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">4</Constant>
     <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
   </Apply>

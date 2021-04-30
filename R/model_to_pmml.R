@@ -423,15 +423,16 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
             dataType = "float"
           )
         )
+
       # Add child Apply node with function node of rcs
-      # To the Apply node add fieldRef child node with field set to rcs_loop_index-1 inside the nested rcs_variables list
+      # To the Apply node add fieldRef child node with field set to the first rcs
+      # variable name for the current row
       # To the Apply node add Constant child node with datatType set to float and value of rcs_loop_index
       current_apply_node <-
         XML::xmlNode(pkg.globals$PMML.Node.Apply, attrs = c('function' = "rcs"))
       current_field_node <-
         XML::xmlNode(pkg.globals$PMML.Node.FieldRef,
-                     attrs = c(field = variable_list[[rcs_variable_index -
-                                                        1]]))
+                     attrs = c(field = variable_list[[1]]))
       current_const <-
         XML::xmlNode(
           pkg.globals$PMML.Node.Constant,
