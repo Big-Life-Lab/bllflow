@@ -5,7 +5,9 @@
 #' directory of the project
 #' @param database_name string The database from which to take the starting variables
 #' for the model
-#'
+#' @param custom_function_files string vector An optional list of paths to R files 
+#' that have functions referenced by the variable details sheet. Each of these
+#' will be converted to PMML and added
 #' @return An object created by the XML::xmlNode function that represents the
 #' PMML XML
 #'
@@ -13,7 +15,7 @@
 #'
 #' @examples
 convert_model_export_to_pmml <-
-  function(model_export_file_path, database_name) {
+  function(model_export_file_path, database_name, custom_function_files = NULL) {
     model_export <-
       read.csv(model_export_file_path,
                fileEncoding = "UTF-8-BOM",
@@ -101,7 +103,8 @@ convert_model_export_to_pmml <-
       recodeflow::recode_to_pmml(
         var_details_sheet = variable_details,
         vars_sheet = variables,
-        db_name = database_name
+        db_name = database_name,
+        custom_function_files = custom_function_files
       )
     doc <-
       XML::addChildren(doc, header, recodeflow_pmml[[pkg.globals$PMML.Node.DataDictionary]], recodeflow_pmml[[pkg.globals$PMML.Node.TransformationDictionary]])

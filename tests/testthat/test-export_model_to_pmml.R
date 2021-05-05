@@ -1,7 +1,8 @@
-expect_xml_equal <- function(test_dir, db_name) {
+expect_xml_equal <- function(test_dir, db_name, custom_function_files = NULL) {
   actual_pmml <-
     convert_model_export_to_pmml(paste(test_dir, "model-export.csv", sep = ""),
-                                 database_name = db_name)
+                                 database_name = db_name,
+                                 custom_function_files = custom_function_files)
   
   expected_pmml_file_path <-
     paste(test_dir, "expected-pmml.xml", sep = "")
@@ -18,8 +19,11 @@ expect_xml_equal <- function(test_dir, db_name) {
 test_that("Correctly converts the variables and variable details files into PMML",
           {
             test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/1/"
+            custom_function_files <- c(
+              file.path(normalizePath(test_dir), "custom-function-file.R")
+            )
             
-            expect_xml_equal(test_dir, "cchs2001_p")
+            expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
             
           })
 

@@ -929,6 +929,8 @@ Each child section describes a test the implemented functions need to pass to en
 
 ## 1. Correctly converts the variables and variable details files into PMML
 
+* Also tests if custom function files are correctly converted
+
 ## 2. Correctly converts a dummy step file into PMML
 
 ## 3. Correctly converts a centering step file into PMML

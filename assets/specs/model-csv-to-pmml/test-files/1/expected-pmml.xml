@@ -305,5 +305,9 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
+    <DefineFunction name="function_one">
+     <ParameterField name="a" dataType="double"/>
+     <FieldRef field="a"/>
+    </DefineFunction>
   </TransformationDictionary>
 </PMML>
