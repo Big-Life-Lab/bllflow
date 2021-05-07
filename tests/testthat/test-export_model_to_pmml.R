@@ -13,6 +13,7 @@ expect_xml_equal <- function(test_dir, db_name, custom_function_files = NULL) {
   actual_pmml_string <- XML::toString.XMLNode(actual_pmml)
   suppressWarnings(expected_pmml_string <-
                      XML::toString.XMLNode(expected_pmml[[1]]$children$PMML))
+
   expect_equal(actual_pmml_string, expected_pmml_string)
 }
 
@@ -53,6 +54,9 @@ test_that("Correctly converts an interactions step file into PMML", {
 
 test_that("Correctly converts a fine and gray step file into PMML", {
   test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/6/"
+  custom_function_files <- c(
+    file.path(normalizePath(test_dir), "custom-functions.R")
+  )
   
-  expect_xml_equal(test_dir, "cchs2001_p")
+  expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
 })

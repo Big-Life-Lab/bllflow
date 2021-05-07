@@ -23,5 +23,7 @@ DPS_04,DPS_04_cat3_3,cat,"cchs2001_p,cchs2007_2008_p, cchs2009_2010_p, cchs2010_
 DPS_04,DPS_04_cat3_NA::a,cat,"cchs2001_p, cchs2007_2008_p, cchs2009_2010_p, cchs2010_p, cchs2011_2012_p, cchs2012_p",[DPS_04_1],cat,NA::a,3,not applicable,not applicable,N/A,6,not applicable,Sad/depressed - frequency - 2 wk,"How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?",
 DPS_04,DPS_04_cat3_NA::b,cat,"cchs2001_p, cchs2007_2008_p, cchs2009_2010_p, cchs2010_p, cchs2011_2012_p, cchs2012_p",[DPS_04_1],cat,NA::b,3,missing,missing,N/A,"[7,9]",don't know (7); refusal (8); not stated (9),Sad/depressed - frequency - 2 wk,"How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?",
 DPS_04,DPS_04_cat3_NA::b,cat,"cchs2001_p, cchs2007_2008_p, cchs2009_2010_p, cchs2010_p, cchs2011_2012_p, cchs2012_p",[DPS_04_1],cat,NA::b,3,missing,missing,N/A,else,else,Sad/depressed - frequency - 2 wk,"How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?",
+variable_five,N/A,cat,cchs2001_p,"DerivedVar::[ADL_01, DPS_04]",N/A,Func::variable_five.fun,1,Category one,Category one,N/A,N/A,N/A,N/A,N/A,
+variable_five,N/A,cat,cchs2001_p,"DerivedVar::[ADL_01, DPS_04]",N/A,Func::variable_five.fun,1,Category one,Category one,N/A,N/A,N/A,N/A,N/A,
 time,N/A,cont,N/A,N/A,N/A,1,N/A,N/A,N/A,years,N/A,N/A,N/A,N/A,
 time,N/A,cont,N/A,N/A,N/A,2,N/A,N/A,N/A,years,N/A,N/A,N/A,N/A,

@@ -940,3 +940,5 @@ Each child section describes a test the implemented functions need to pass to en
 ## 5. Correctly converts an interactions step file into PMML
 
 ## 6. Correctly converts a fine and gray step file into PMML
+
+* Makes sure that derived variables (those with a DerivedVar:: in the variableStart column) are correctly handled

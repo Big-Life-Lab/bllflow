@@ -391,6 +391,22 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
+    <DerivedField name="variable_five" displayName="Variable five" optype="categorical" dataType="string">   
+      <Extension name="labelLong" value="Variable five"/>
+      <Extension name="units" value="N/A"/>
+      <Apply function="variable_five.fun">   
+          <FieldRef field="ADL_01"/>
+          <FieldRef field="DPS_04"/>   
+      </Apply>
+    </DerivedField>
+    <DefineFunction name="variable_five.fun">
+     <ParameterField name="a" dataType="double"/>
+     <ParameterField name="b" dataType="double"/>
+     <Apply function="+">
+       <FieldRef field="a" />
+       <FieldRef field="b" />
+     </Apply>
+    </DefineFunction>
   </TransformationDictionary>
   <GeneralRegressionModel 	
     modelType="CoxRegression"
@@ -410,10 +426,12 @@
 		  <Parameter name="p2" label="DHHGAGE_cont" />
 	    <Parameter name="p3" label="ADL_01" />
       <Parameter name="p4" label="DPS_04" />
+      <Parameter name="p5" label="variable_five" />
 	  </ParameterList>
 	  <FactorList>
 		  <Predictor name="ADL_01" />
 		  <Predictor name="DPS_04"/>
+		  <Predictor name="variable_five" />
 	  </FactorList>
 	  <CovariateList>
 		  <Predictor name="ALW_2A1" />
@@ -424,6 +442,7 @@
 		  <PPCell value="1" predictorName="DHHGAGE_cont" parameterName="p2" />
 	    <PPCell value="1" predictorName="ADL_01" parameterName="p3" />
       <PPCell value="1" predictorName="DPS_04" parameterName="p4" />
+      <PPCell value="1" predictorName="variable_five" parameterName="p5" />
 	  </PPMatrix>
 	<ParamMatrix>
 		<PCell parameterName="p0" beta="0" />
@@ -431,6 +450,7 @@
 		<PCell parameterName="p2" beta="0.69" />
 	  <PCell parameterName="p3" beta="0.56" />
     <PCell parameterName="p4" beta="1.54" />
+    <PCell parameterName="p5" beta="2" />
 	</ParamMatrix>
 	<BaseCumHazardTables maxTime="2">
 		<BaselineCell time="1" cumHazard="0.2" />

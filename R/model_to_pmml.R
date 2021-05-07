@@ -150,11 +150,17 @@ convert_model_export_to_pmml <-
         working_row <-
           variable_details[variable_details[[pkg.globals$argument.Variables]] == end_variable,]
         working_row <- working_row[1, ]
-        all_start_vars <-
-          append(
-            all_start_vars,
-            recodeflow:::get_start_var_name(working_row, database_name)
-          )
+        
+        # If this row is for a derived variable then don't get the start variable
+        # for it. This is because the start variables for derived variables
+        # are variables from the Variable column.
+        if(!recodeflow:::is_derived_var(working_row)) {
+          all_start_vars <-
+            append(
+              all_start_vars,
+              recodeflow:::get_start_var_name(working_row, database_name)
+            )
+        }
       }
     }
     
