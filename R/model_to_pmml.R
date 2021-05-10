@@ -155,11 +155,17 @@ convert_model_export_to_pmml <-
         # for it. This is because the start variables for derived variables
         # are variables from the Variable column.
         if(!recodeflow:::is_derived_var(working_row)) {
-          all_start_vars <-
-            append(
-              all_start_vars,
-              recodeflow:::get_start_var_name(working_row, database_name)
-            )
+          # Check whether the start variable for this variable is a leaf
+          # in the dependency tree. If it isn't then don't add it to the 
+          # list of variables which should be MiningFields
+          start_var_name <- recodeflow:::get_start_var_name(working_row, database_name)
+          if(start_var_name %in% variable_details[[pkg.globals$argument.Variables]] == FALSE) {
+            all_start_vars <-
+              append(
+                all_start_vars,
+                start_var_name
+              )
+          }
         }
       }
     }
@@ -167,6 +173,7 @@ convert_model_export_to_pmml <-
     # Loop over the list elements from model-steps
     for (step_name in names(step_list)) {
       working_step <- step_list[[step_name]]
+      
       if (length(working_step[[pkg.globals$ModelStepsCSV.fileType]]) > 1) {
         for (sub_step_index in 1:length(working_step[[pkg.globals$ModelStepsCSV.fileType]])) {
           working_pmml <-
