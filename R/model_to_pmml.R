@@ -958,9 +958,10 @@ convert_step <-
            all_start_vars,
            max_time,
            working_pmml) {
-    if (is.na(current_file_type)) {
+    if (is.na(current_file_type) | current_file_type == "") {
       current_file_type <- step_name
     }
+    
     working_pmml <-
       node_creation_switch(
         current_file_type = current_file_type,
@@ -972,3 +973,4 @@ convert_step <-
     
     return(working_pmml)
   }
+
