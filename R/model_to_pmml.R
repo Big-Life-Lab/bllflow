@@ -115,12 +115,12 @@ convert_model_export_to_pmml <-
     # Vector containing all matching variable start variables based on database name
     all_start_vars <- c()
     if (pkg.globals$variables.Time %in% variable_details[[pkg.globals$argument.Variables]]) {
+      variable_details_time_rows <- variable_details[variable_details[[pkg.globals$argument.Variables]] == pkg.globals$variables.Time, ]
+      
       max_time <-
-        max(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
-                                            pkg.globals$variables.Time, pkg.globals$argument.recEnd]))
+        max(as.character(variable_details_time_rows[[pkg.globals$argument.recEnd]]))
       min_time <-
-        min(as.character(variable_details[variable_details[[pkg.globals$argument.Variables]] ==
-                                            pkg.globals$variables.Time, pkg.globals$argument.recEnd]))
+        min(as.character(variable_details_time_rows[[pkg.globals$argument.recEnd]]))
       working_pmml[[pkg.globals$PMML.Node.DataDictionary]] <-
         XML::addChildren(
           working_pmml[[pkg.globals$PMML.Node.DataDictionary]],
@@ -131,6 +131,20 @@ convert_model_export_to_pmml <-
               displayName = "time of predicted probability",
               optype = pkg.globals$PMML.Node.Attributes.Value.optype.cont,
               dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
+            ),
+            XML::xmlNode(
+              pkg.globals$PMML.Node.Extension,
+              attrs = c(
+                name = pkg.globals$PMML.Extension.names.units,
+                value = variable_details_time_rows[1, ][[pkg.globals$argument.Units]]
+              )
+            ),
+            XML::xmlNode(
+              pkg.globals$PMML.Node.Extension,
+              attrs = c(
+                name = pkg.globals$PMML.Extension.names.variableStartLabel,
+                value = ""
+              )
             ),
             XML::xmlNode(
               pkg.globals$PMML.Node.Interval,

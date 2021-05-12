@@ -149,6 +149,13 @@ pkg.globals$PMML.Node.GeneralRegressionModel <- "GeneralRegressionModel"
 pkg.globals$PMML.Node.BaseCumHazardTables <- "BaseCumHazardTables"
 pkg.globals$PMML.Node.BaselineCell <- "BaselineCell"
 pkg.globals$PMML.Node.PMML <- "PMML"
+pkg.globals$PMML.Node.Extension <- "Extension"
+
+pkg.globals$PMML.Extension.attrs.name <- 'name'
+pkg.globals$PMML.Extension.attrs.value <- 'value'
+
+pkg.globals$PMML.Extension.names.units <- 'units'
+pkg.globals$PMML.Extension.names.variableStartLabel <- 'variableStartLabel'
 
 pkg.globals$variables.Time <- "time"
 pkg.globals$variables.splitValue <- ";"
