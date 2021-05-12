@@ -234,9 +234,7 @@
       </Value>
     </DerivedField>
     <DerivedField name="ALW_2A1_rcs1" optype="continuous" dataType="float">
-      <Apply function="equal">
-        <FieldRef field="ALW_2A1" />
-      </Apply>
+      <FieldRef field="ALW_2A1" />
     </DerivedField>
     <DerivedField name="ALW_2A1_rcs2" optype="continuous" dataType="float">
       <Apply function="rcs">
@@ -246,9 +244,7 @@
       </Apply>
     </DerivedField>
     <DerivedField name="DHHGAGE_cont_rcs1" optype="continuous" dataType="float">
-      <Apply function="equal">
-        <FieldRef field="DHHGAGE_cont" />
-      </Apply>
+      <FieldRef field="DHHGAGE_cont" />
     </DerivedField>
     <DerivedField name="DHHGAGE_cont_rcs2" optype="continuous" dataType="float">
       <Apply function="rcs">

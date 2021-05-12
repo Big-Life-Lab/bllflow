@@ -743,9 +743,7 @@ The example CSV file used to describe this step above would be converted to the 
 ```{xml}
 <!-- The new derived field nodes for the first row -->
 <DerivedField name="AgeC_rcs1" optype="continuous" dataType="float">
-  <Apply function="equal">
-    <FieldRef field="Age_c" />
-  </Apply>
+  <FieldRef field="Age_c" />
 </DerivedField>
   
 <DerivedField name="AgeC_rcs2" optype="continuous" dataType="float">
@@ -774,9 +772,7 @@ The example CSV file used to describe this step above would be converted to the 
 
 <!-- The new derived field nodes for the second row -->
 <DerivedField name="PackYearsC_rcs1" optype="continuous" dataType="float">
-  <Apply function="equal">
-    <FieldRef field="PackYears_c" />
-  </Apply>
+  <FieldRef field="PackYears_c" />
 </DerivedField>
   
 <DerivedField name="PackYearsC_rcs2" optype="continuous" dataType="float">

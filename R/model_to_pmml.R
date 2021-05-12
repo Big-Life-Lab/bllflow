@@ -428,17 +428,12 @@ create_rcs_nodes <- function(variable, rcs_variables, knots, PMML) {
           dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float
         )
       )
-    current_first_apply_node <-
-      XML::xmlNode(
-        pkg.globals$PMML.Node.Apply,
-        attrs = c('function' = pkg.globals$PMML.Node.Attributes.Value.function.equal)
-      )
     current_first_field_node <-
       XML::xmlNode(pkg.globals$PMML.Node.FieldRef, attrs = c(field = variable[[vector_index]]))
     current_first_node <-
       XML::addChildren(
         current_first_node,
-        XML::addChildren(current_first_apply_node, current_first_field_node)
+        current_first_field_node
       )
     PMML[[pkg.globals$PMML.Node.TransformationDictionary]] <-
       XML::addChildren(PMML[[pkg.globals$PMML.Node.TransformationDictionary]], current_first_node)
