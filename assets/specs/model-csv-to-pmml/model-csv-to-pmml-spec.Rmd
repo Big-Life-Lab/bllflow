@@ -575,9 +575,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="smoker_type" />
           <Constant dataType="float">0</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="current_smoker" optype="categorical" dataType="float">
@@ -586,9 +586,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="smoker_type" />
           <Constant dataType="float">1</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="former_smoker" optype="categorical" dataType="float">
@@ -597,9 +597,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="smoker_type" />
           <Constant dataType="float">2</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <!--These are the derived field nodes added for each dummy variable for the
@@ -611,9 +611,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="drinker_type" />
           <Constant dataType="float">0</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="current_light_drinker" optype="categorical" dataType="float">
@@ -622,9 +622,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="drinker_type" />
           <Constant dataType="float">1</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
@@ -633,9 +633,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="current_heavy_drinker" />
           <Constant dataType="float">2</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
@@ -644,9 +644,9 @@ For each set of new dummy variables created for an original variable, we need to
           <FieldRef field="former_drinker" />
           <Constant dataType="float">3</Constant>
         </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
   </TransformationDictionary>

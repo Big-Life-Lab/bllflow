@@ -262,13 +262,14 @@ create_dummy_nodes <-
           attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
           cat_value[[vector_index]]
         )
-      # Add the Apply node and two constant Constant nodes as children to the DerivedField node
       current_apply_node <-
         XML::addChildren(current_apply_node,
                          current_field_node,
                          current_const_apply_node)
+      
       current_apply_node_parent <-
         XML::addChildren(current_apply_node_parent, current_apply_node)
+      
       current_const_0 <-
         XML::xmlNode(
           pkg.globals$PMML.Node.Constant,
@@ -281,13 +282,16 @@ create_dummy_nodes <-
           attrs = c(dataType = pkg.globals$PMML.Node.Attributes.Value.dataType.float),
           1
         )
+      current_apply_node_parent <- XML::addChildren(
+        current_apply_node_parent,
+        current_const_1,
+        current_const_0
+      )
       # The 2 constant Constant nodes have dataType of float and values of 0 and 1
       current_main_node <-
         XML::addChildren(
           current_main_node,
-          current_apply_node_parent,
-          current_const_1,
-          current_const_0
+          current_apply_node_parent
         )
       # Add the DerivedField to the return PMML
       PMML[[pkg.globals$PMML.Node.TransformationDictionary]] <-
