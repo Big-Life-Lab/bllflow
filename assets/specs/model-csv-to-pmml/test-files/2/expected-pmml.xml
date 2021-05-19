@@ -29,19 +29,19 @@
       <Extension name="labelLong" value="Needs help - preparing meals" />
       <Extension name="units" value="N/A" />
       <Apply function="if">
-        <Apply function="equals">
+        <Apply function="equal">
           <FieldRef field="RACA_6A" />
           <Constant dataType="integer">1</Constant>
         </Apply>
         <Constant dataType="integer">1</Constant>
         <Apply function="if">
-          <Apply function="equals">
+          <Apply function="equal">
             <FieldRef field="RACA_6A" />
             <Constant dataType="integer">2</Constant>
           </Apply>
           <Constant dataType="integer">2</Constant>
           <Apply function="if">
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="RACA_6A" />
               <Constant dataType="integer">6</Constant>
             </Apply>
@@ -53,7 +53,7 @@
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">7</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">7</Constant>
                   </Apply>
@@ -63,7 +63,7 @@
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">9</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">9</Constant>
                   </Apply>
@@ -92,26 +92,26 @@
       <Extension name="labelLong" value="How often did you feel this way during those 2 weeks: (every day, almost every day, or less often)?" />
       <Extension name="units" value="N/A" />
       <Apply function="if">
-        <Apply function="equals">
+        <Apply function="equal">
           <FieldRef field="DPS_04_1" />
           <Constant dataType="integer">1</Constant>
         </Apply>
         <Constant dataType="integer">1</Constant>
         <Apply function="if">
-          <Apply function="equals">
+          <Apply function="equal">
             <FieldRef field="DPS_04_1" />
             <Constant dataType="integer">2</Constant>
           </Apply>
           <Constant dataType="integer">2</Constant>
           <Apply function="if">
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="DPS_04_1" />
               <Constant dataType="integer">3</Constant>
             </Apply>
             <Constant dataType="integer">3</Constant>
             <Apply function="if">
-              <Apply function="equals">
-                <FieldRef field="RACA_6A" />
+              <Apply function="equal">
+                <FieldRef field="DPS_04_1" />
                 <Constant dataType="integer">6</Constant>
               </Apply>
               <Constant dataType="string">NA::a</Constant>
@@ -119,21 +119,21 @@
                 <Apply function="and">
                   <Apply function="or">
                     <Apply function="greaterThan">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">7</Constant>
                     </Apply>
-                    <Apply function="equals">
-                      <FieldRef field="RACA_6A" />
+                    <Apply function="equal">
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">7</Constant>
                     </Apply>
                   </Apply>
                   <Apply function="or">
                     <Apply function="lessThan">
-                      <FieldRef field="RACA_6A" />
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">9</Constant>
                     </Apply>
-                    <Apply function="equals">
-                      <FieldRef field="RACA_6A" />
+                    <Apply function="equal">
+                      <FieldRef field="DPS_04_1" />
                       <Constant dataType="integer">9</Constant>
                     </Apply>
                   </Apply>
@@ -163,43 +163,53 @@
     </DerivedField>
     <DerivedField name="ADL_01_cat_1" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="ADL_01" />
+        <Apply function="equal">
+          <FieldRef field="ADL_01" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
         <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
     <DerivedField name="ADL_01_cat_2" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="ADL_01" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equal">
+          <FieldRef field="ADL_01" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
     <DerivedField name="DPS_04_cat_1" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="DPS_04" />
+        <Apply function="equal">
+          <FieldRef field="DPS_04" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
         <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
     <DerivedField name="DPS_04_cat_2" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="DPS_04" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equal">
+          <FieldRef field="DPS_04" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
     <DerivedField name="DPS_04_cat_3" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="DPS_04" />
-        <Constant dataType="float">3</Constant>
+        <Apply function="equal">
+          <FieldRef field="DPS_04" />
+          <Constant dataType="float">3</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
   </TransformationDictionary>
 </PMML>

@@ -295,7 +295,7 @@ rcs_step_file_metadata <- data.frame(
   )
 )
 
-DT::datatable(center_step_file_metadata, escape = FALSE)
+DT::datatable(rcs_step_file_metadata, escape = FALSE)
 ```
     
 An example is given below,
@@ -571,29 +571,35 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="non_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">0</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
         <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="current_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
         <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="former_smoker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="smoker_type" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equals">
+          <FieldRef field="smoker_type" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <!--These are the derived field nodes added for each dummy variable for the
@@ -601,38 +607,46 @@ For each set of new dummy variables created for an original variable, we need to
       
     <DerivedField name="non_drinker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="drinker_type" />
+        <Apply function="equals">
+          <FieldRef field="drinker_type" />
+          <Constant dataType="float">0</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
         <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="current_light_drinker" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="drinker_type" />
+        <Apply function="equals">
+          <FieldRef field="drinker_type" />
+          <Constant dataType="float">1</Constant>
+        </Apply>
         <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="current_heavy_drinker" />
-        <Constant dataType="float">2</Constant>
+        <Apply function="equals">
+          <FieldRef field="current_heavy_drinker" />
+          <Constant dataType="float">2</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
     <DerivedField name="drinker_type" optype="categorical" dataType="float">
       <Apply function="if">
-        <FieldRef field="former_drinker" />
-        <Constant dataType="float">3</Constant>
+        <Apply function="equals">
+          <FieldRef field="former_drinker" />
+          <Constant dataType="float">3</Constant>
+        </Apply>
+        <Constant dataType="float">1</Constant>
+        <Constant dataType="float">0</Constant>
       </Apply>
-      <Constant dataType="float">1</Constant>
-      <Constant dataType="float">0</Constant>
     </DerivedField>
       
   </TransformationDictionary>
@@ -716,7 +730,7 @@ Converting an RCS step file to PMML involves adding `DerivedField` nodes to the 
 6. For the other RCS variables, the contents of each `DerivedField` node should call a function called `rcs` whose signature looks like,
 
 ```{r eval=FALSE}
-# previous_rcs_variable: The value in the previous rcs variable
+# first_rcs_variable: The value in the first rcs variable
 # knot_number: Which rcs variable this is
 # knots: The array of knots
 rcs <- function(previous_rcs_variable, knot_number, knots) {
@@ -729,9 +743,7 @@ The example CSV file used to describe this step above would be converted to the 
 ```{xml}
 <!-- The new derived field nodes for the first row -->
 <DerivedField name="AgeC_rcs1" optype="continuous" dataType="float">
-  <Apply function="equal">
-    <FieldRef field="Age_c" />
-  </Apply>
+  <FieldRef field="Age_c" />
 </DerivedField>
   
 <DerivedField name="AgeC_rcs2" optype="continuous" dataType="float">
@@ -744,7 +756,7 @@ The example CSV file used to describe this step above would be converted to the 
   
 <DerivedField name="AgeC_rcs3" optype="continuous" dataType="float">
   <Apply function="rcs">
-    <FieldRef field="AgeC_rcs2" />
+    <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">3</Constant>
     <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
   </Apply>
@@ -752,7 +764,7 @@ The example CSV file used to describe this step above would be converted to the 
   
 <DerivedField name="AgeC_rcs4" optype="continuous" dataType="float">
   <Apply function="rcs">
-    <FieldRef field="AgeC_rcs3" />
+    <FieldRef field="AgeC_rcs1" />
     <Constant dataType="float">4</Constant>
     <Array n="5" type="float">-11.5 -6.5 -1.5 5.5 16.5</Array>
   </Apply>
@@ -760,9 +772,7 @@ The example CSV file used to describe this step above would be converted to the 
 
 <!-- The new derived field nodes for the second row -->
 <DerivedField name="PackYearsC_rcs1" optype="continuous" dataType="float">
-  <Apply function="equal">
-    <FieldRef field="PackYears_c" />
-  </Apply>
+  <FieldRef field="PackYears_c" />
 </DerivedField>
   
 <DerivedField name="PackYearsC_rcs2" optype="continuous" dataType="float">
@@ -915,6 +925,8 @@ Each child section describes a test the implemented functions need to pass to en
 
 ## 1. Correctly converts the variables and variable details files into PMML
 
+* Also tests if custom function files are correctly converted
+
 ## 2. Correctly converts a dummy step file into PMML
 
 ## 3. Correctly converts a centering step file into PMML
@@ -924,3 +936,5 @@ Each child section describes a test the implemented functions need to pass to en
 ## 5. Correctly converts an interactions step file into PMML
 
 ## 6. Correctly converts a fine and gray step file into PMML
+
+* Makes sure that derived variables (those with a DerivedVar:: in the variableStart column) are correctly handled

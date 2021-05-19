@@ -5,7 +5,7 @@
   <Header>
     <Application name="bllflow" version="0.1.0"/>
   </Header>
-  <DataDictionary numberOfFields="3">
+  <DataDictionary numberOfFields="2">
     <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
       <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?"/>
       <Value value="1" displayValue="Yes" property="valid"/>
@@ -32,19 +32,19 @@
       <Extension name="labelLong" value="Needs help - preparing meals" />
       <Extension name="units" value="N/A" />
       <Apply function="if">
-        <Apply function="equals">
+        <Apply function="equal">
           <FieldRef field="RACA_6A" />
           <Constant dataType="integer">1</Constant>
         </Apply>
         <Constant dataType="integer">1</Constant>
         <Apply function="if">
-          <Apply function="equals">
+          <Apply function="equal">
             <FieldRef field="RACA_6A" />
             <Constant dataType="integer">2</Constant>
           </Apply>
           <Constant dataType="integer">2</Constant>
           <Apply function="if">
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="RACA_6A" />
               <Constant dataType="integer">6</Constant>
             </Apply>
@@ -56,7 +56,7 @@
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">7</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">7</Constant>
                   </Apply>
@@ -66,7 +66,7 @@
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">9</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="RACA_6A" />
                     <Constant dataType="integer">9</Constant>
                   </Apply>
@@ -101,7 +101,7 @@
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">1</Constant>
             </Apply>
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">1</Constant>
             </Apply>
@@ -111,7 +111,7 @@
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">10</Constant>
             </Apply>
-            <Apply function="equals">
+            <Apply function="equal">
               <FieldRef field="ALCA_5A1" />
               <Constant dataType="integer">10</Constant>
             </Apply>
@@ -125,7 +125,7 @@
                 <FieldRef field="ALCA_5A1" />
                 <Constant dataType="integer">10</Constant>
               </Apply>
-              <Apply function="equals">
+              <Apply function="equal">
                 <FieldRef field="ALCA_5A1" />
                 <Constant dataType="integer">10</Constant>
               </Apply>
@@ -159,7 +159,7 @@
                     <FieldRef field="ALCA_5A1" />
                     <Constant dataType="integer">40</Constant>
                   </Apply>
-                  <Apply function="equals">
+                  <Apply function="equal">
                     <FieldRef field="ALCA_5A1" />
                     <Constant dataType="integer">40</Constant>
                   </Apply>
@@ -167,7 +167,7 @@
               </Apply>
               <Constant dataType="integer">4</Constant>
               <Apply function="if">
-                <Apply function="equals">
+                <Apply function="equal">
                   <FieldRef field="ALCA_5A1" />
                   <Constant dataType="integer">996</Constant>
                 </Apply>
@@ -179,7 +179,7 @@
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">997</Constant>
                       </Apply>
-                      <Apply function="equals">
+                      <Apply function="equal">
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">997</Constant>
                       </Apply>
@@ -189,7 +189,7 @@
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">999</Constant>
                       </Apply>
-                      <Apply function="equals">
+                      <Apply function="equal">
                         <FieldRef field="ALCA_5A1" />
                         <Constant dataType="integer">999</Constant>
                       </Apply>
@@ -222,15 +222,15 @@
         <Extension name="catLabelLong" value="missing" />
       </Value>
     </DerivedField>
-    <DerivedField name="ADL_01_C" optype="categorical" dataType="float">
+    <DerivedField name="ADL_01_C" optype="categorical" dataType="string">
       <Apply function="-">
-        <FieldRef="ADL_01" />
+        <FieldRef field="ADL_01"/>
         <Constant dataType="float">1.5</Constant>
       </Apply>
     </DerivedField>
     <DerivedField name="ALW_2A1_C" optype="continuous" dataType="float">
       <Apply function="-">
-        <FieldRef="ADL_2A1"/>
+        <FieldRef field="ALW_2A1"/>
         <Constant dataType="float">40</Constant>
       </Apply>
     </DerivedField>

@@ -97,7 +97,7 @@ set_data_labels.default <-
           pkg.globals$argument.VariableLabelShort,
           pkg.globals$argument.VariableLabel,
           pkg.globals$argument.Units,
-          pkg.globals$argument.CatValue
+          pkg.globals$argument.recEnd
         )
       if (nrow(catch_up_vars) > 0) {
         # Setting any missing columns to NA to allow for rbind
@@ -198,7 +198,7 @@ create_label_list_element <- function(variable_rows) {
         )
       }
       value_being_labeled <-
-        as.character(single_row[[pkg.globals$argument.CatValue]])
+        as.character(single_row[[pkg.globals$argument.recEnd]])
       value_being_labeled <-
         recode_variable_NA_formating(value_being_labeled, ret_list$type)
       ret_list$values[[as.character(single_row[[
