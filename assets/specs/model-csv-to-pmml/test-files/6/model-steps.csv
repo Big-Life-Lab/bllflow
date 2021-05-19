@@ -1,0 +1,3 @@
+﻿step,fileType,filePath
+fine-and-gray,beta-coefficients,./beta-coefficients.csv
+fine-and-gray,baseline-hazards,./baseline-hazards.csv

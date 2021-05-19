@@ -395,15 +395,15 @@ recode_columns <-
     # Split variables to process into recode map and func
     map_variables_to_process <-
       variables_to_process[grepl("map::", variables_to_process[[
-        pkg.globals$argument.CatValue]]), ]
+        pkg.globals$argument.recEnd]]), ]
 
     func_variables_to_process <-
       variables_to_process[grepl("Func::", variables_to_process[[
-        pkg.globals$argument.CatValue]]), ]
+        pkg.globals$argument.recEnd]]), ]
 
     rec_variables_to_process <-
       variables_to_process[(!grepl("Func::|map::", variables_to_process[[
-        pkg.globals$argument.CatValue]])) & (!grepl("DerivedVar::",
+        pkg.globals$argument.recEnd]])) & (!grepl("DerivedVar::",
                                                     variables_to_process[[
           pkg.globals$argument.VariableStart]])), ]
 
@@ -449,7 +449,7 @@ recode_columns <-
       } else {
         # Check for From column duplicates
         all_from_values_for_variable <-
-          rows_being_checked[[pkg.globals$argument.From]]
+          rows_being_checked[[pkg.globals$argument.recStart]]
         if (length(unique(
           all_from_values_for_variable)) != length(
             all_from_values_for_variable)) {
@@ -473,8 +473,8 @@ recode_columns <-
           create_label_list_element(rows_being_checked)
         else_value <-
           as.character(rows_being_checked[rows_being_checked[[
-            pkg.globals$argument.From]] == "else",
-            pkg.globals$argument.CatValue])
+            pkg.globals$argument.recStart]] == "else",
+            pkg.globals$argument.recEnd])
         if (length(else_value) == 1 &&
             !is_equal(else_value, "character(0)")) {
           else_value <-
@@ -502,7 +502,7 @@ recode_columns <-
         }
         rows_being_checked <-
           rows_being_checked[!rows_being_checked[[
-            pkg.globals$argument.From]] == "else", ]
+            pkg.globals$argument.recStart]] == "else", ]
         if (nrow(rows_being_checked) > 0) {
           log_table <- rows_being_checked[, 0]
           log_table$value_to <- NA
@@ -510,7 +510,7 @@ recode_columns <-
           log_table$rows_recoded <- NA
           levels(recoded_data[[variable_being_checked]]) <-
             c(levels(recoded_data[[variable_being_checked]]),
-              levels(rows_being_checked[[pkg.globals$argument.CatValue]]))
+              levels(rows_being_checked[[pkg.globals$argument.recEnd]]))
 
           for (row in seq_len(nrow(rows_being_checked))) {
             row_being_checked <- rows_being_checked[row, ]
@@ -530,18 +530,18 @@ recode_columns <-
             # Recode the variable
             from_values <- list()
             if (grepl(":", as.character(row_being_checked[[
-              pkg.globals$argument.From]]))) {
+              pkg.globals$argument.recStart]]))) {
               from_values <-
                 strsplit(as.character(row_being_checked[[
-                  pkg.globals$argument.From]]), ":")[[1]]
+                  pkg.globals$argument.recStart]]), ":")[[1]]
             } else {
               temp_from <-
-                as.character(row_being_checked[[pkg.globals$argument.From]])
+                as.character(row_being_checked[[pkg.globals$argument.recStart]])
               from_values[[1]] <- temp_from
               from_values[[2]] <- from_values[[1]]
             }
             value_recorded <-
-              as.character(row_being_checked[[pkg.globals$argument.CatValue]])
+              as.character(row_being_checked[[pkg.globals$argument.recEnd]])
             if (interval_present) {
               interval <- as.character(row_being_checked[[
                 pkg.globals$argument.Interval]])
@@ -575,7 +575,7 @@ recode_columns <-
             # Start construction of dataframe for log
             log_table[row, "value_to"] <- value_recorded
             log_table[row, "From"] <-
-              as.character(row_being_checked[[pkg.globals$argument.From]])
+              as.character(row_being_checked[[pkg.globals$argument.recStart]])
             log_table[row, "rows_recoded"] <-
               sum(valid_row_index, na.rm = TRUE)
 
@@ -874,7 +874,7 @@ recode_derived_variables <-
 
       row_being_checked <- variable_rows[row_num, ]
       func_cell <-
-        as.character(row_being_checked[[pkg.globals$argument.CatValue]])
+        as.character(row_being_checked[[pkg.globals$argument.recEnd]])
       function_being_used <-
         as.list(strsplit(func_cell, "::"))[[1]][[2]]
 

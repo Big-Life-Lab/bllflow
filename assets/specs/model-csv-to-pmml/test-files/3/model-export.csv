@@ -1,0 +1,4 @@
+﻿fileType,filePath
+variables,./variables.csv
+variable-details,./variable-details.csv
+model-steps,./model-steps.csv
