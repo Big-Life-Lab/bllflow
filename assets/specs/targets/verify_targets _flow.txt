@@ -1,0 +1,31 @@
+@startuml
+!pragma useVerticalIf on
+start
+:Read in modules_map;
+repeat :Read in module;
+    :Create step list;
+    :Add step list to module_list;
+repeat while (Remaining modules) is (yes)
+->no;
+:Read in passed targets;
+if (passed targets is a list) then(no)
+    :Read in the targets file;
+    :convert targets file into tar_targets list;
+endif
+repeat :Compare targets_list against module list;
+    if(module step is missing) then
+        #pink:Missing step <name of step>;
+        detach
+    elseif(module steps are out of order) then
+        #pink:Wrong order of steps;
+        detach
+    elseif(module step contains wrong arguments) then
+        #pink:<name of step> contains invalid 
+        step arguments: <list of arguments>;
+        detach
+    endif
+repeat while (Remaining modules) is (yes)
+->no;
+
+#palegreen:matching;
+@enduml
