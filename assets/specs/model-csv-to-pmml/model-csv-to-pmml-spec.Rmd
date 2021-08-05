@@ -88,10 +88,14 @@ model_steps_file_metadata <- data.frame(
     center; <br/>
     interaction; <br/>
     rcs; <br/>
-    fine-and-gray <br/>",
+    fine-and-gray; <br/>
+    linear-regression;",
+    
     "beta-coefficients; <br/>
     baseline-hazards; <br/>",
+    
     "N/A",
+    
     "N/A"
   ),
   enumLabels = c(
@@ -99,10 +103,14 @@ model_steps_file_metadata <- data.frame(
     Center a set of variables; <br/>
     Create interaction terms; <br/>
     Create restricted cubic spline terms; <br/>
-    Calculate the outcome of a fine and gray model <br/>",
+    Calculate the outcome of a fine and gray model; <br/>
+    Calculate the outcome of a linear regression model; <br />",
+    
     "Used to specify the beta coefficients file for a fine and gray step; <br/>
-    Used to specify the baseline hazards file for a fine and gray step",
+    Used to specify the baseline hazards file for a fine and gray step; <br />",
+    
     "N/A",
+    
     "N/A"
   ),
   restrictions = c("mandatory", "", "mandatory", "")
@@ -504,6 +512,64 @@ The beta coefficients file says that the model has two covariates, `Age` and `Se
 
 The baseline hazards has 5 rows and describes the baseline hazards for each year in the model. Notice how the lowest time value is `1` and the highest value is `5`. This is because of the time variable we specified earlier which goes from 1 to 5.
 
+## Linear Regression Model
+
+A linear regression model is used to predict a continuous outcome from a set of covariates. Adding this step requires a beta coefficients file which specifies the names of the covariates in the model and their beta coefficient value. The metadata for the beta coefficients file is given below:
+
+```{r echo=FALSE}
+beta_coefficients_step_file_metadata <- data.frame(
+  fileType = c("beta coefficients step", "beta coefficients step", "beta coefficients step"),
+  columnName = c("variable", "coefficient", "type"),
+  columnType = c("string", "number", "enum"),
+  description = c(
+    "The name of a covariate in the model",
+    "The value of the beta coefficient for the covariate",
+    "The type of the covariate"
+  ),
+  enumValues = c(
+    "N/A",
+    "N/A",
+    "cat; <br/>
+    cont"
+  ),
+  enumLabels = c(
+    "N/A",
+    "N/A",
+    "Categorical; <br/>
+    Continuous;"
+  ),
+  restrictions = c(
+    "mandatory; <br/>
+    Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
+    "mandatory", 
+    "mandatory"
+  )
+)
+
+DT::datatable(beta_coefficients_step_file_metadata, escape = FALSE)
+```
+
+An example model steps file with a linear regression step are shown below are shown below.
+
+```{r echo=FALSE}
+eg_linear_regression_model_steps_file <- data.frame(
+  "step" = c("linear-regression"),
+  "fileType" = c("N/A"),
+  "filePath" = c("beta-coefficients.csv")
+)
+DT::datatable(eg_linear_regression_model_steps_file)
+
+eg_beta_coefficients_csv <- data.frame(
+  "variable" = c("Age", "Sex"),
+  "coefficient" = c(0.01, 2)
+)
+DT::datatable(eg_beta_coefficients_csv)
+```
+
+The model steps file has a single row for a step to calculate the outcome of a linear regression model. Since this step requires only one file to fully specify it, we can enter in a value of `N/A` in the `fileType` column. The `filePath` column has the path to the file with the covariates and the beta coefficients for the model. Once again the paths should be relative to the model steps file that described them.
+
+The beta coefficients file says that the model has two covariates, `Age` and `Sex` and specifies the beta coefficients for each one which are `0.01` and `2` respectively.
+
 # Business Logic
 
 This section will go through the logic for transforming a set of model CSV files into PMML. The flowchart below broadly outlines the steps. The next few section will go through each step in the flow chart in detail.
@@ -891,6 +957,66 @@ For the example CSV file used to introduce this step, the converted PMML file wo
 		<BaselineCell time="4" cumHazard="0.4" />
 		<BaselineCell time="5" cumHazard="0.5" />
 	</BaseCumHazardTable>
+</GeneralRegressionModel>
+```
+
+### Linear Regression Step
+
+This involves converting the beta coefficients file into the XML nodes to add to the document. The steps for this part are:
+
+![](./images/linear-regression-step.png)
+Things to note:
+
+1. The following attributes need to be added to the `GeneralRegressionModel`
+    * `modeType` set to `generalLinear`
+    * `functionName` set to `regression`
+2. The following attributes need to be set for each `MiningField` nodes
+    * `name`: Set to the name of the starting variable. For the extra node added for the predicted outcome, the value would be `linear_regression_outcome`.
+    * `usageType`: Set to `active`. For the extra node added for the predicted outcome, the value would be `target`.
+3. The following attributes need to be set to the `Parameter` node
+    * `name` set to `p<index>` where index is the row number of the variable in the file. For the extra node added for the intercept, this value would be `p0`
+    * `label` set to the value of the variable column. For the extra node added for the intercept, this value would be `Intercept`
+4. The following attributes need to be set for each `Predictor` node
+    * `name` set to the value of the variable column
+5. The following attributes need to be set for each `PPCell` node
+    * `value` set to `1`
+    * `predictorName` set to the value in the variable column
+    * `parameterName` set to the value of the name attribute for the Parameter node for this variable
+6. The following attributes need to be set for each `PCell` node
+    * `parameterName`: Set to the name attribute of the Parameter node for this variable. Remember that for the intercept term, this would be `p0`
+    * `beta`: Set to the value of the coefficient column
+
+For the example CSV file used to introduce this step, the converted PMML file would be,
+
+```{xml}
+<GeneralRegressionModel
+	modelType="generalLinear"
+	functionName="regression">
+	<MiningSchema>
+		<MiningField name="linear_regression_outcome" usageType="target" />
+	  <!-- Add additional MinineField nodes equal to the starting variables for 
+	  the selected database in variable details-->
+	</MiningSchema>
+	<ParameterList>
+		<Paramater name="p0" label="Intercept" />
+		<Parameter name="p1" label="Age" />
+		<Parameter name="p2" label="Sex" />
+	</ParameterList>
+	<FactorList>
+		<Predictor name="Sex" />
+	</FactorList>
+	<CovariateList>
+		<Predictor name="Age" />
+	</CovariateList>
+	<PPMatrix>
+		<PPCell value="1" predictorName="Sex" parameterName="p1" />
+		<PPCell value="1" predictorName="Age" parameterName="p2" />
+	</PPMatrix>
+	<ParamMatrix>
+		<PCell parameterName="p0" beta="0" />
+		<PCell parameterName="p1" beta="0.01" />
+		<PCell parameterName="p2" beta="2" />
+	</ParamMatrix>
 </GeneralRegressionModel>
 ```
 
