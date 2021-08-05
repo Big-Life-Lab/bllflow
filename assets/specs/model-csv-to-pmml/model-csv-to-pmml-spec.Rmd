@@ -390,16 +390,7 @@ DT::datatable(eg_interaction_step)
 
 The example above creates two new interaction variables, `AgeXCancer` and `AgeXHypertension`. `AgeXCancer` is created using the `Age` and `Cancer` variables while `AgeXHypertension` is created using the `Age` and `Hypertension` variables. Both new interaction variables are continuous. Notice how the interacting variables are seperated by a semi-colon in the example.
 
-## Fine and Gray Model Step Files
-
-Similar to a cox regression model, a fine and gray model estimates the risk of an event occuring at some time in the future, the difference being that it takes competing risks into account. Specifying this step requires two files,
-
-1. A beta coefficients file which specifies the names of the covariates in the model and their beta coefficient
-2. A baseline hazards file which specifies a time value and the baseline hazard value associated with it
-
-The metadata for the beta coefficients file is given below:
-
-```{r echo=FALSE}
+```{r}
 beta_coefficients_step_file_metadata <- data.frame(
   fileType = c("beta coefficients step", "beta coefficients step", "beta coefficients step"),
   columnName = c("variable", "coefficient", "type"),
@@ -428,7 +419,18 @@ beta_coefficients_step_file_metadata <- data.frame(
     "mandatory"
   )
 )
+```
 
+## Fine and Gray Model Step Files
+
+Similar to a cox regression model, a fine and gray model estimates the risk of an event occuring at some time in the future, the difference being that it takes competing risks into account. Specifying this step requires two files,
+
+1. A beta coefficients file which specifies the names of the covariates in the model and their beta coefficient
+2. A baseline hazards file which specifies a time value and the baseline hazard value associated with it
+
+The metadata for the beta coefficients file is given below:
+
+```{r echo=FALSE}
 DT::datatable(beta_coefficients_step_file_metadata, escape = FALSE)
 ```
     
@@ -517,35 +519,6 @@ The baseline hazards has 5 rows and describes the baseline hazards for each year
 A linear regression model is used to predict a continuous outcome from a set of covariates. Adding this step requires a beta coefficients file which specifies the names of the covariates in the model and their beta coefficient value. The metadata for the beta coefficients file is given below:
 
 ```{r echo=FALSE}
-beta_coefficients_step_file_metadata <- data.frame(
-  fileType = c("beta coefficients step", "beta coefficients step", "beta coefficients step"),
-  columnName = c("variable", "coefficient", "type"),
-  columnType = c("string", "number", "enum"),
-  description = c(
-    "The name of a covariate in the model",
-    "The value of the beta coefficient for the covariate",
-    "The type of the covariate"
-  ),
-  enumValues = c(
-    "N/A",
-    "N/A",
-    "cat; <br/>
-    cont"
-  ),
-  enumLabels = c(
-    "N/A",
-    "N/A",
-    "Categorical; <br/>
-    Continuous;"
-  ),
-  restrictions = c(
-    "mandatory; <br/>
-    Each variable should be defined either in the variables or variables details sheet, or in a previous step file", 
-    "mandatory", 
-    "mandatory"
-  )
-)
-
 DT::datatable(beta_coefficients_step_file_metadata, escape = FALSE)
 ```
 
