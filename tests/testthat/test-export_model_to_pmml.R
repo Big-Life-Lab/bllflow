@@ -60,3 +60,12 @@ test_that("Correctly converts a fine and gray step file into PMML", {
   
   expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
 })
+
+test_that("Correctly converts a linear regression step into PMML", {
+  test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/linear-regression/"
+  custom_function_files <- c(
+    file.path(normalizePath(test_dir), "custom-functions.R")
+  )
+  
+  expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)  
+})
