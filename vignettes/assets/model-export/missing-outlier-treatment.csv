@@ -1,0 +1,22 @@
+variable,fileName,outlierTreatment,missingTreatment
+DHH_SEX,variables.csv,NA,NA
+DHHGAGE_cont,variables.csv,NA,NA
+smokeSimp,variables.csv,NA,centre
+packYears,variables.csv,max,centre
+formerDrinker,variables.csv,NA,centre
+ALWDWKY,variables.csv,max,centre
+dietScore2,variables.csv,"min, max",centre
+PACDEE,variables.csv,max,centre
+HWTGBMI,variables.csv,"min, max",centre
+depInd,variables.csv,NA,centre
+EDUDR04,variables.csv,NA,centre
+CCC_131,variables.csv,NA,centre
+CCC_101,variables.csv,NA,centre
+CCC_121,variables.csv,NA,centre
+CCC_151,variables.csv,NA,centre
+CCC_071,variables.csv,NA,centre
+CCC_280,variables.csv,NA,centre
+dementia,variables.csv,NA,centre
+CCC_091,variables.csv,NA,centre
+immigPct,variables.csv,"min, max",centre
+SDCGCGT,variables.csv,NA,centre

@@ -1,0 +1,67 @@
+fileType,columnName,columnType,description,restrictions
+description.csv,metadata,text,metadata namespace,
+description.csv,modelName,text,algorthm short name,mandatory
+description.csv,modelDescription,text,description of the model,
+description.csv,stratified,text,model stratification ,mandatory
+description.csv,modelType,text,model type,mandatory
+description.csv,maxTime,text,maximium follow-up period,mandatory
+description.csv,timeMetric,text,metric for maxTime,mandatory
+description.csv,author,text,Prinicpal investigator for model,
+description.csv,ocrid,text,orcid for author,
+description.csv,copyright,text,copyright holder,
+description.csv,licence,text,licence,
+description.csv,outcome,text,primary outcome,mandatory
+description.csv,dateCreated,text,date created,mandatory
+description.csv,startData,text,data used to develop the algorithm,mandatory
+variables.csv,variable,text,"(target variable) name of the final transformed variable; allowable variable name in SAS, R, JS, TS, Python, Stata",mandatory
+variables.csv,role,text,"variable's role in the algorithm development, validation, deployment, KTE process",mandatory
+variables.csv,label,text,"(target variable) short variable label, less than 15 characters",mandatory
+variables.csv,labelLong,text,(target variable) descriptive variable label,mandatory
+variables.csv,section,text,major heading,mandatory
+variables.csv,subject,text,section sub-heading,mandatory
+variables.csv,typeEnd,text,"(target variable) allowable types: cat (categorical), cont (continuous)",mandatory
+variables.csv,units,text,unit of variable,mandatory
+variables.csv,reference,boleen,"reference group (level). Value: TRUE, FALSE, na",
+variables.csv,center, ,"indicates variable transformation of center to mean. TRUE, FALSE (missing treated as false),",
+variables.csv,spline, ,"indicates spline transformation. Value: True, False, NA",
+variables.csv,min,"<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>","minimum value for algorithm development. If different values for males and females, then algorithm name should be different",
+variables.csv,max,"<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>",maximum value for algorithm development,
+variables.csv,mean,,,
+variables.csv,stdDev,,,
+variables.csv,median,,,
+variables.csv,q1,,,
+variables.csv,q3,,,
+variables.csv,interaction, ,"indicates variable transformation to interaction variable; value, indicated by interactionIndex column, interation1, interaction2, etc. (label is variables separated by _X_ e.g.,variable1_X_variable2)",
+variables.csv,interactionIndex, ,"indicates index value (e.g., 1,2,3...) of interaction variable (i.e., interation1, interaction2, interaction3...)",
+variables.csv,dummy, ,"indicates log transformation. Value: True, False, NA",
+variables.csv,impute,"<xs:element name=""imputation"" type=""simpleTextType""/>",indicates variable data cleaning from missing imputed values. value is imputed method. e.g. Hmisc-impute,
+variables.csv,invalid, ,indicates method for treating invalid input values,
+variables.csv,log, ,"indicates log transformation. Value: True, False, NA",
+variables.csv,outlierMax,"<xs:complexType name=""RangeType""><xs:element maxOccurs=""0"" ref=""MaximumValue""/>","method used with `max`. Value: delete, NA (missing), N/A (not applicable), number (real number).",
+variables.csv,outlierMin,"<xs:complexType name=""RangeType""><xs:element minOccurs=""0"" ref=""MinimumValue""/>","method used with `min`. Value: delete, NA (missing), N/A (not applicable), number (real number).",
+variables.csv,recommended, ,variable that is recommended user input (versus a variable that is derived from input variables),
+variables.csv,required, ,"mandatory variable required for scoring the algorithm (i.e, can not be missing and replaced with centered value)",
+variable_details.csv,variable,text,"(target variable) name of the final transformed variable; allowable variable name in SAS, R, JS, TS, Python, Stata",mandatory
+variable_details.csv,typeEnd,text,"(target variable) allowable types: cat (categorical), cont (continuous)",mandatory
+variable_details.csv,databaseStart, ,"the datasets that contain the variables and categories of interest, separated by commas",mandatory
+variable_details.csv,variableStart,text,"the original names of the variables (as they are listed in the original datasets, separated by commas) that are used to derive the target variables ('variable')",mandatory
+variable_details.csv,typeStart,text,"(start variable) allowable types: cat (categoricial), cont (continuous).",mandatory
+variable_details.csv,recEnd,integer,(target variable ) category where Not applicable = `NA::a`;  missing and else categories = `NA::b`. For continuous variables that are not transformed = `copy` (so that the function copies the values without any transformations).,mandatory
+variable_details.csv,numValidCat,integer,(target variable) number of valid categories for the variable,mandatory
+variable_details.csv,catLabel,text,"(target variable) short category label, less than 15 characters",mandatory
+variable_details.csv,catLabelLong,text,(target variable) descriptive category label. If categories do not change from original data this lable should be the same as 'catStartLabel',mandatory
+variable_details.csv,units,text,unit of variable,mandatory
+variable_details.csv,recStart,value range separated with commas,"the range of values in the original data to be mapped to the target category ('recTo'). The mapping can be one to one (e.g., recFrom = 1 and recTo = 1) or many to one( recFrom = [1,4] and rectTo = 1)",mandatory
+variable_details.csv,catStartLabel,text,"label, from the original variable dataset, describing each category. ",mandatory
+variable_details.csv,variableStartLabel,text,the original variable labels (as they are listed in the original datasets),mandatory
+variable_details.csv,notes,text,"Notes give important details  on changes in wording, missing/changes in categories, and changes in variable type that may impact the variable harmonization process across data sets.",mandatory
+rcs.csv,variable,text,"(target variable) name of the final transformed variable; allowable variable name in SAS, R, JS, TS, Python, Stata", 
+rcs.csv,rcsVariable,text,"names for the restricted cubic spline variables, separated by semi-colons; allowable variable name in SAS, R, JS, TS, Python, Stata", 
+rcs.csv,knots,number,"values for knot locations, separated by semi-colons", 
+center.csv,variable,text,"(target variable) name of the final transformed variable; allowable variable name in SAS, R, JS, TS, Python, Stata", 
+center.csv,centerVariable,text,"name for the centred variable; allowable variable name in SAS, R, JS, TS, Python, Stata", 
+center.csv,centerValue,number,value for centered variable, 
+,,,,
+,,,,
+,,,,
+,,, ,
