@@ -85,7 +85,7 @@ bllflow_config_rec_data <- function(bllflow_object, config_env_name = NULL) {
   config <- config::get()
   for (data_name in names(config$data)) {
     load(file.path(config$data_dir, paste0(data_name, ".RData")))
-    tmp_rec_data <- cchsflow::rec_with_table(
+    tmp_rec_data <- recodeflow::rec_with_table(
       base::get(data_name),
       variables = bllflow_object$variables,
       variable_details = bllflow_object$variable_details,
