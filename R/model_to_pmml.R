@@ -15,7 +15,7 @@
 #'
 #' @examples
 convert_model_export_to_pmml <-
-  function(model_export_file_path, database_name, custom_function_files = NULL) {
+  function(model_parameters_folder_path, model_export_file_path, database_name, custom_function_files = NULL) {
     model_export <-
       read.csv(model_export_file_path,
                fileEncoding = "UTF-8-BOM",
@@ -197,7 +197,8 @@ convert_model_export_to_pmml <-
               current_file = working_step[[pkg.globals$ModelInternal.file]][[sub_step_index]],
               all_start_vars,
               max_time,
-              working_pmml
+              working_pmml,
+              model_parameters_folder_path
             )
         }
       } else{
@@ -208,7 +209,8 @@ convert_model_export_to_pmml <-
             current_file = working_step[[pkg.globals$ModelInternal.file]],
             all_start_vars,
             max_time,
-            working_pmml
+            working_pmml,
+            model_parameters_folder_path
           )
       }
     }
@@ -873,7 +875,8 @@ node_creation_switch <-
            current_file,
            working_pmml,
            all_start_vars,
-           max_time) {
+           max_time,
+           model_parameters_folder_path) {
     working_pmml <-  switch(
       current_file_type,
       'dummy' = {
@@ -885,9 +888,48 @@ node_creation_switch <-
         )
       },
       'center' = {
+        # Make the environment in which we will evaluate any expression strings
+        # in the centering file. The environment will consist of all the model
+        # parameters files in the folder as data frames. The name of each file 
+        # in the folder will be its name in the environment
+        model_parameter_file_paths <- list.files(
+          model_parameters_folder_path,
+          pattern = ".csv",
+          full.names = TRUE
+        )
+        parsed_model_parameter_files <- list()
+        for(model_parameter_file_path in model_parameter_file_paths) {
+          model_parameter_file_name <- gsub(
+            ".csv",
+            "",
+            basename(model_parameter_file_path)
+          )
+          parsed_model_parameter_files[[model_parameter_file_name]] <- read.csv(
+            model_parameter_file_path,
+            fileEncoding = "UTF-8-BOM"
+          )
+        }
+        
+        # Replace any expression strings in the centerValue column with its
+        # evaluated value
+        new_center_value <- current_file$centerValue
+        expression_regex <- "^(.{1,})\\[(.{1,}), {0,}\\] {0,}\\$(.{1,})$"
+        for(center_value_index in seq_len(length(current_file$centerValue))) {
+          if(grepl(expression_regex, current_file$centerValue[center_value_index])) {
+            expression_value <- eval(
+              str2lang(current_file$centerValue[center_value_index]),
+              envir = parsed_model_parameter_files
+            )
+            if(typeof(expression_value) != "double") {
+              stop(paste("Error interpolating", current_file$centerValue[center_value_index], ". Value should be a number but is", expression_value))
+            }
+            new_center_value[center_value_index] <- expression_value
+          }
+        }
+        
         create_center_nodes(
           orig_variable = current_file$origVariable,
-          center_value = current_file$centerValue,
+          center_value = new_center_value,
           centered_variable = current_file$centeredVariable,
           centered_variable_type = current_file$centeredVariableType,
           PMML = working_pmml
@@ -970,7 +1012,8 @@ convert_step <-
            current_file,
            all_start_vars,
            max_time,
-           working_pmml) {
+           working_pmml,
+           model_parameters_folder_path) {
     if (is.na(current_file_type) | current_file_type == "") {
       current_file_type <- step_name
     }
@@ -981,7 +1024,8 @@ convert_step <-
         current_file = current_file,
         working_pmml = working_pmml,
         all_start_vars = all_start_vars,
-        max_time = max_time
+        max_time = max_time,
+        model_parameters_folder_path = model_parameters_folder_path
       )
     
     return(working_pmml)
