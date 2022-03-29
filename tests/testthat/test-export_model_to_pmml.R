@@ -87,4 +87,20 @@ describe("Interpolating values in the centerValue column", {
       fixed = TRUE
     )
   })
+  
+  it("7.3: It stops with an error if no row was found in the reference file for the expression", {
+    test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/7/7.3/"
+    custom_function_files <- c()
+    
+    expect_error(
+      convert_model_export_to_pmml(
+        test_dir,
+        paste(test_dir, "model-export.csv", sep = ""),
+        database_name = "database_one",
+        custom_function_files = c()
+      ),
+      "Error interpolating reference[reference$columnOne == 1, ]$value. No row found in reference file for expression.",
+      fixed = TRUE
+    )
+  })
 })

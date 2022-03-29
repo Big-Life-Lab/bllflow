@@ -925,6 +925,11 @@ node_creation_switch <-
             suppressWarnings(
               coerced_expression_value <- as.numeric(expression_value)
             )
+            # Check whether there was a row found in a model parameter file for
+            # the expression
+            if(identical(coerced_expression_value, numeric(0))) {
+              stop(paste("Error interpolating ", current_file$centerValue[center_value_index], ". No row found in reference file for expression.", sep = ""))  
+            }
             if(is.na(coerced_expression_value)) {
               stop(paste("Error interpolating ", current_file$centerValue[center_value_index], ". Value ", expression_value, " should be a number but is ", typeof(expression_value), " and could not be coerced to a number", sep = ""))
             }
