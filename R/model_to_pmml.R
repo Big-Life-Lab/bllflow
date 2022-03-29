@@ -46,7 +46,6 @@ convert_model_export_to_pmml <-
                fileEncoding = "UTF-8-BOM",
                stringsAsFactors = FALSE)
     
-    
     # Read in model-steps and creating a list for each row of model-steps
     model_steps <-
       read.csv(model_steps_path,
@@ -897,6 +896,7 @@ node_creation_switch <-
           pattern = ".csv",
           full.names = TRUE
         )
+
         parsed_model_parameter_files <- list()
         for(model_parameter_file_path in model_parameter_file_paths) {
           model_parameter_file_name <- gsub(
@@ -913,17 +913,22 @@ node_creation_switch <-
         # Replace any expression strings in the centerValue column with its
         # evaluated value
         new_center_value <- current_file$centerValue
+        # The regex to check whether the center value is a regex string
         expression_regex <- "^(.{1,})\\[(.{1,}), {0,}\\] {0,}\\$(.{1,})$"
         for(center_value_index in seq_len(length(current_file$centerValue))) {
+          # If it is a regex string
           if(grepl(expression_regex, current_file$centerValue[center_value_index])) {
             expression_value <- eval(
               str2lang(current_file$centerValue[center_value_index]),
               envir = parsed_model_parameter_files
             )
-            if(typeof(expression_value) != "double") {
-              stop(paste("Error interpolating", current_file$centerValue[center_value_index], ". Value should be a number but is", expression_value))
+            suppressWarnings(
+              coerced_expression_value <- as.numeric(expression_value)
+            )
+            if(is.na(coerced_expression_value)) {
+              stop(paste("Error interpolating ", current_file$centerValue[center_value_index], ". Value ", expression_value, " should be a number but is ", typeof(expression_value), " and could not be coerced to a number", sep = ""))
             }
-            new_center_value[center_value_index] <- expression_value
+            new_center_value[center_value_index] <- coerced_expression_value
           }
         }
         
