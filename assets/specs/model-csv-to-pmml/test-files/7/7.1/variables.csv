@@ -1,0 +1,2 @@
+variable,label,labelLong,section,subject,variableType,units,databaseStart,variableStart
+variable_one,Variable one,Variable one,,,cont,N/A,database_one,database_one::variable_one_start

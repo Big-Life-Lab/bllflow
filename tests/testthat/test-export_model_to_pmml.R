@@ -1,8 +1,10 @@
 expect_xml_equal <- function(test_dir, db_name, custom_function_files = NULL) {
-  actual_pmml <-
-    convert_model_export_to_pmml(paste(test_dir, "model-export.csv", sep = ""),
-                                 database_name = db_name,
-                                 custom_function_files = custom_function_files)
+  actual_pmml <- convert_model_export_to_pmml(
+    test_dir,
+    paste(test_dir, "model-export.csv", sep = ""),
+    database_name = db_name,
+    custom_function_files = custom_function_files
+  )
   
   expected_pmml_file_path <-
     paste(test_dir, "expected-pmml.xml", sep = "")
@@ -11,6 +13,7 @@ expect_xml_equal <- function(test_dir, db_name, custom_function_files = NULL) {
   actual_pmml <- XML::asXMLNode(actual_pmml)
   
   actual_pmml_string <- XML::toString.XMLNode(actual_pmml)
+
   suppressWarnings(expected_pmml_string <-
                      XML::toString.XMLNode(expected_pmml[[1]]$children$PMML))
 
@@ -59,4 +62,29 @@ test_that("Correctly converts a fine and gray step file into PMML", {
   )
   
   expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
+})
+
+describe("Interpolating values in the centerValue column", {
+  it("7.1: It correctly interpolates values for the centerValue column in the centering step file", {
+    test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/7/7.1/"
+    custom_function_files <- c()
+    
+    expect_xml_equal(test_dir, "database_one", custom_function_files)  
+  })
+  
+  it("7.2: It stops with an error if the interpolated value is not a nunber", {
+    test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/7/7.2/"
+    custom_function_files <- c()
+    
+    expect_error(
+      convert_model_export_to_pmml(
+        test_dir,
+        paste(test_dir, "model-export.csv", sep = ""),
+        database_name = "database_one",
+        custom_function_files = c()
+      ),
+      "Error interpolating reference[reference$columnOne == 1, ]$value. Value a should be a number but is character and could not be coerced to a number",
+      fixed = TRUE
+    )
+  })
 })

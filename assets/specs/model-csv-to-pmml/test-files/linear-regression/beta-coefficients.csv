@@ -1,0 +1,6 @@
+﻿variable,coefficient,type
+ALW_2A1,0.1,cont
+DHHGAGE_cont,0.69,cont
+ADL_01,0.56,cat
+DPS_04,1.54,cat
+variable_five,2,cat
