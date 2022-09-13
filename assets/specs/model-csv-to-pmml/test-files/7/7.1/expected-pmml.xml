@@ -1,9 +1,6 @@
 <PMML version="4.4"
     xmlns="http://www.dmg.org/PMML-4_4"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"> 
-    <Header>  
-        <Application name="bllflow" version="0.1.0"/> 
-    </Header> 
     <DataDictionary numberOfFields="1">  
         <DataField name="variable_start_one" displayName="Variable one start" optype="continuous" dataType="float">   
             <Extension name="variableStartLabel" value="Variable one start"/>  
@@ -22,4 +19,7 @@
             </Apply>  
         </DerivedField> 
     </TransformationDictionary>
+    <Header>  
+        <Application name="bllflow" version="0.1.0"/> 
+    </Header> 
 </PMML>

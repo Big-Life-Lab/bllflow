@@ -16,20 +16,20 @@ expect_xml_equal <- function(test_dir, db_name, custom_function_files = NULL) {
 
   suppressWarnings(expected_pmml_string <-
                      XML::toString.XMLNode(expected_pmml[[1]]$children$PMML))
-
+  
   expect_equal(actual_pmml_string, expected_pmml_string)
 }
 
 test_that("Correctly converts the variables and variable details files into PMML",
-          {
-            test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/1/"
-            custom_function_files <- c(
-              file.path(normalizePath(test_dir), "custom-function-file.R")
-            )
-            
-            expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
-            
-          })
+{
+  test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/1/"
+  custom_function_files <- c(
+    file.path(normalizePath(test_dir), "custom-function-file.R")
+  )
+  
+  expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
+  
+})
 
 test_that("Correctly converts a dummy step file into PMML", {
   test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/2/"
@@ -62,6 +62,20 @@ test_that("Correctly converts a fine and gray step file into PMML", {
   )
   
   expect_xml_equal(test_dir, "cchs2001_p", custom_function_files)
+})
+
+test_that("Converting simple models", {
+  test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/8/"
+  custom_function_files <- c()
+  
+  expect_xml_equal(test_dir, "database_one", custom_function_files)
+})
+
+test_that("It correectly converts tables", {
+  test_dir <- "../../assets/specs/model-csv-to-pmml/test-files/9/"
+  custom_function_files <- c()
+  
+  expect_xml_equal(test_dir, "database_one", custom_function_files)
 })
 
 describe("Interpolating values in the centerValue column", {
