@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PMML xmlns="http://www.dmg.org/PMML-4_4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.4">
-  <Header>
-    <Application name="bllflow" version="0.1.0" />
-  </Header>
   <DataDictionary numberOfFields="2">
     <DataField name="RACA_6A" displayName="Needs help - preparing meals" optype="categorical" dataType="string">
       <Extension name="variableStartLabel" value="Because of any condition or health problem, do you need the help of another person in preparing meals?" />
@@ -212,4 +209,7 @@
       </Apply>
     </DerivedField>
   </TransformationDictionary>
+  <Header>
+    <Application name="bllflow" version="0.1.0" />
+  </Header>
 </PMML>

@@ -2,9 +2,6 @@
 <PMML version="4.4"
   xmlns="http://www.dmg.org/PMML-4_4" 
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Header>
-    <Application name="bllflow" version="0.1.0"/>
-  </Header>
   <DataDictionary numberOfFields="4">
     <DataField name="ALCA_5A1" displayName="DailyConsumptionSunday" optype="continuous" dataType="float">
       <Extension name="variableStartLabel" value="Number of drinks on Sunday"/>
@@ -410,6 +407,9 @@
      </Apply>
     </DefineFunction>
   </TransformationDictionary>
+  <Header>
+    <Application name="bllflow" version="0.1.0"/>
+  </Header>
   <GeneralRegressionModel 	
     modelType="CoxRegression"
 	  functionName="regression"

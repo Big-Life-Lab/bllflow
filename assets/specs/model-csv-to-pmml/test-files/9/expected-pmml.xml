@@ -1,0 +1,26 @@
+<PMML version="4.4" xmlns="http://www.dmg.org/PMML-4_4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+ <Taxonomy name="table-one">
+  <InlineTable>
+   <row>
+    <index>1</index>
+    <a>1</a>
+    <b>1</b>
+   </row>
+  </InlineTable>
+ </Taxonomy>
+ <DataDictionary numberOfFields="1">
+  <DataField name="variable_start_one" displayName="Variable one start" optype="continuous" dataType="float">
+   <Extension name="variableStartLabel" value="Variable one start"/>
+  </DataField>
+ </DataDictionary>
+ <TransformationDictionary>
+  <DerivedField name="variable_one" displayName="Variable one" optype="cont" dataType="float">
+   <Extension name="labelLong" value="Variable one"/>
+   <Extension name="units" value="N/A"/>
+   <FieldRef field="variable_start_one"/>
+  </DerivedField>
+ </TransformationDictionary>
+ <Header>
+  <Application name="bllflow" version="0.1.0"/>
+ </Header>
+</PMML>

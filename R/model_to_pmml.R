@@ -78,16 +78,41 @@ convert_model_export_to_pmml <-
         }
       }
     }
-    # Create empty PMML doc using variables from strings.R to fill in name and version of the package
+    
+    # Creates the table_paths argument for the recodeflow function call
+    # The argument requires a named list where the name contains the name of
+    # the table and the value is a data frame containing the table
+    # Uses the tables entry in the model export file 
+    tables_entry <- model_export[model_export$fileType == "tables", ]
+    tables_paths <- list()
+    if(nrow(tables_entry) != 0) {
+      tables_path <-
+        file.path(dirname(model_export_file_path), tables_entry[1, "filePath"])
+      tables_file <- read.csv(tables_path, fileEncoding = "UTF-8-BOM")
+      for(tables_file_row_index in 1:nrow(tables_file)) {
+        tables_paths[[tables_file[tables_file_row_index, "tableName"]]] <- file.path(
+          dirname(tables_path), tables_file[tables_file_row_index, "tablePath"]
+        )
+      }
+    }
+
+    # Using recodeflow::recode_to_pmml append the empty PMML with DataDictionary and TransformationDictionary
     doc <-
-      XML::xmlNode(
-        pkg.globals$PMML.Node.PMML,
-        namespaceDefinitions = c(
-          pkg.globals$PMML.Node.Attributes.Value.xmlns,
-          xsi = pkg.globals$PMML.Node.Attributes.Value.xsi
-        ),
-        attrs = c(version = pkg.globals$PMML.Node.Attributes.Value.PMML.Version)
+      recodeflow::recode_to_pmml(
+        var_details_sheet = variable_details,
+        vars_sheet = variables,
+        db_name = database_name,
+        custom_function_files = custom_function_files,
+        table_paths = tables_paths
       )
+    
+    # Create empty PMML doc using variables from strings.R to fill in name and version of the package
+    doc$namespaceDefinitions <- c(
+      pkg.globals$PMML.Node.Attributes.Value.xmlns,
+      xsi = pkg.globals$PMML.Node.Attributes.Value.xsi
+    )
+    doc$attrs <- c(version = pkg.globals$PMML.Node.Attributes.Value.PMML.Version)
+    
     header <- XML::xmlNode(pkg.globals$PMML.Node.Header)
     header <-
       XML::addChildren(header,
@@ -95,18 +120,7 @@ convert_model_export_to_pmml <-
                          pkg.globals$PMML.Node.Application,
                          attrs = c(name = "bllflow", version = as.character(packageVersion("bllflow")))
                        ))
-    
-    
-    # Using recodeflow::recode_to_pmml append the empty PMML with DataDictionary and TransformationDictionary
-    recodeflow_pmml <-
-      recodeflow::recode_to_pmml(
-        var_details_sheet = variable_details,
-        vars_sheet = variables,
-        db_name = database_name,
-        custom_function_files = custom_function_files
-      )
-    doc <-
-      XML::addChildren(doc, header, recodeflow_pmml[[pkg.globals$PMML.Node.DataDictionary]], recodeflow_pmml[[pkg.globals$PMML.Node.TransformationDictionary]])
+    doc <- XML::addChildren(doc, header)
     working_pmml <- doc
     
     # Calculate max_time from variable_details recTo column
@@ -833,6 +847,25 @@ create_baseline_hazards_nodes <-
     return(PMML)
   }
 
+create_simple_model_nodes <- 
+  function(simple_model, PMML) {
+    output_variable_name <- simple_model[simple_model[[pkg.globals$simple_model_name_column]] == pkg.globals$simple_model_output_variable_entry, ][[pkg.globals$simple_model_value_column]]
+    output_node <- XML::xmlNode(pkg.globals$PMML.OutputNode)
+    
+    output_field_attrs <- c()
+    output_field_attrs[[pkg.globals$PMML.OutputFieldNode.attrs.name]] <- 
+      output_variable_name
+    output_field <- XML::xmlNode(
+      pkg.globals$PMML.OutputFieldNode, 
+      attrs = output_field_attrs
+    )
+    output_node <- XML::append.xmlNode(output_node, output_field)
+    PMML <- XML::append.xmlNode(PMML, output_node)
+    PMML <- XML::append.xmlNode(PMML, XML::xmlNode(pkg.globals$PMML.SimpleModelNode))
+    
+    return(PMML)
+  }
+
 #' Create list for each column of data
 #'
 #' Utility function for creating list with elements for each column of data
@@ -976,6 +1009,12 @@ node_creation_switch <-
           baseline_hazard = current_file$baselineHazard,
           max_time = max_time,
           PMML = working_pmml
+        )
+      },
+      'simple-model' = {
+        create_simple_model_nodes(
+          current_file,
+          working_pmml
         )
       }
     )
