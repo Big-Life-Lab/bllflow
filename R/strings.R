@@ -187,6 +187,6 @@ pkg.globals$PMML.OutputFieldNode <- "OutputField"
 pkg.globals$PMML.OutputFieldNode.attrs.name <- "name"
 pkg.globals$PMML.SimpleModelNode <- "SimpleModel" 
 
-pkg.globals$simple_model_name_column <- "name"
+pkg.globals$simple_model_name_column <- "columnName"
 pkg.globals$simple_model_output_variable_entry <- "outputVariable"
-pkg.globals$simple_model_value_column <- "value"
+pkg.globals$simple_model_value_column <- "columnValue"
