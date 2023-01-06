@@ -1063,7 +1063,7 @@ convert_step <-
            max_time,
            working_pmml,
            model_parameters_folder_path) {
-    if (is.na(current_file_type) | current_file_type == "") {
+    if (is.na(current_file_type) | current_file_type == "" | current_file_type == "N/A") {
       current_file_type <- step_name
     }
     
