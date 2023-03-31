@@ -1,0 +1,555 @@
+---
+title: "BLL Workflow"
+author: "Yulric Sequeira"
+date: '2022-04-29'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+install.packages("dplyr")
+install.packages("magrittr")
+install.packages("targets")
+install.packages("devtools")
+devtools::install_github("Big-Life-Lab/recodeflow", auth_token = "")
+```
+
+The aim of the Big Life Lab (BLL) workflow is to improve the development of predictive algorithms by making their analysis more **transparent**, **reproducible**, and **reusable**. A transparent analysis is one where an individual external to the study knows what was done in each step of the analysis. A reproducible analysis is one where an individual external to the study can easily reproduce/run it using their own dataset. A reusable analysis is one where the majority of analysis methods can be easily applied to other studies thus saving time and increasing efficiency. Even within the study team these objectives are important to have if there's even a small chance of needing to look back at the analysis. 
+
+The BLL workflow aims to meet these objectives by using the following components:
+
+1. **variables and variable details sheets:** Throughout the life cycle of a study there's usually a little disconnect between the investigators and the analysts about what variables to use in each step of the study as well as how to create these variables. The variables and variable details sheets aims to solve this disconnect. The variables sheet documents all the variables that are used in the study as well as where they're used. The variable details sheet includes all the rules needed to create these variables. More details for each can be seen [here](https://big-life-lab.github.io/cchsflow/articles/variables_sheet.html) and [here](https://big-life-lab.github.io/cchsflow/articles/variable_details.html). By including this information in a machine actionable format that is easily editable by an investigator, analysts no longer need to hardcode variable names for most of their analysis code and instead can directly use the variables sheet in their analysis. In addition, the variable details sheet along with the `recodeflow` library does the same for the process of variable creation. These sheets can also act as a reference for external individuals.
+* **targets:** The [targets](https://books.ropensci.org/targets/) R library aims to make analysis more transparent and reproducible by providing an API to explicitly name each step in the analysis and the code required to implement it. It comes at the cost of being opinionated about the way code should be written but improves said code by using function and making analysis run faster.
+* **R Functions**: Functions are a programming construct whose primary purpose is to provide an alternative to copy-pasting code within/across projects. Within the context of the BLL workflow, most target steps will require calling a function, either a user-defined one or one from a library or base R. By creating function for each step we have done most of the work to creating code that is reusable across studies.
+
+Let's see how these different components interact with each other by conducting an example study.
+
+The aim of this study will be to develop a predictive algorithm for diabetes. We will be using data from the public use version of the Canadian Community Health Survey (CCHS). The CCHS is run in cycles and we will be using cycles 2001, 2003 and 2005 for this study,
+
+The first step in the workflow is to create the variables and variable details sheet for the study. The authors of the `cchsflow` library have done a lot of the leg work for this step for the CCHS and we can start by copying their sheets into the project. Once done, we can filter the variables sheet so that we only keep the rows that are relevant for our study. We will keep the row for the diabetes variable which is our outcome and the age and sex variables which are our covariates for the model. The targets code for this set of steps can be seen below.
+
+```{r Create workflow sheets}
+# Limitations with code chunks in Rmarkdown files means that we will need to
+# use the tar_script command to write our targets code. In an
+# actual project, all the code in the first argument to this function call
+# would be in a _targets.R file in the project root.
+targets::tar_script({
+  list(
+    # The code below tells targets to watch the variable details file for changes,
+    # making sure to run it if we've updated it
+    targets::tar_target(
+      variable_details_sheet_file,
+      "../inst/extdata/bll-workflow/variable_details.csv",
+      format = "file"
+    ),
+    # Read and store the variable details file into an R data frame
+    targets::tar_target(
+      variable_details_sheet,
+      read.csv(variable_details_sheet_file, fileEncoding = "UTF-8-BOM")
+    ),
+    # The code below tells targets to watch the variables sheet for changes,
+    # making sure to run it if we've updated it
+    targets::tar_target(
+      variables_sheet_file,
+      "../inst/extdata/bll-workflow/variables.csv",
+      format = "file"
+    ),
+    # Read and store the variables file into an R data frame
+    targets::tar_target(
+      variables_sheet,
+      read.csv(variables_sheet_file, fileEncoding = "UTF-8-BOM")
+    )
+  )},
+  ask = FALSE
+)
+
+# Run the workflow
+targets::tar_make()
+```
+
+All our worksheets have now been imported and we can access them using the `targets::tar_read` command. Lets take a look at our variables sheet.
+
+```{r Display variables sheet}
+DT::datatable(targets::tar_read("variables_sheet"))
+```
+
+As mentioned previously, it has three rows, one row with our outcome variable, diabetes, and two rows for our covariates, sex and age. Notice the role column and its value for each row, it makes it very clear why each variable was included in the study. 
+
+Now that we have pre-specified all our variables and have all our sheets set, lets create the dataset for our study. One advantage of having a variables and variable details sheet is that we can use the `recodeflow` library to easily create our dataset.
+
+```{r Create dataset}
+targets::tar_script({
+  # Import all the libraries we will need
+  library(magrittr)
+  library(dplyr)
+  # We try to group steps that are used to do a particular part of the analysis
+  # together. For eg., above we had a group of steps used to import all the worksheets
+  # that the analysis needed. We call such a group of steps a module. We declare
+  # a module as a list of tar_targets and then set them to a variable. At the
+  # end we will combine all the modules to create the master analysis plan
+  # for our study.
+  import_worksheets <- list(
+    targets::tar_target(
+      variable_details_sheet_file,
+      "../inst/extdata/bll-workflow/variable_details.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variable_details_sheet,
+      read.csv(variable_details_sheet_file, fileEncoding = "UTF-8-BOM")
+    ),
+    targets::tar_target(
+      variables_sheet_file,
+      "../inst/extdata/bll-workflow/variables.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variables_sheet,
+      read.csv(variables_sheet_file, fileEncoding = "UTF-8-BOM")
+    )
+  )
+  # This module will be used to create the dataset for the study
+  create_study_dataset <- list(
+    # The next three steps will use the recodeflow library to create the
+    # starting variables from each cycle of the CCHS dataset
+    targets::tar_target(
+      cchs2001_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2001_p.RData")
+        ),
+        database_name = "cchs2001_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2003_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2003_p.RData")
+        ),
+        database_name = "cchs2003_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2005_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2005_p.RData")
+        ),
+        database_name = "cchs2005_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    # Finally we will combine the three datasets into the one for the study
+    # and remove all the missing from the outcome
+    targets::tar_target(
+      study_dataset,
+      dplyr::bind_rows(cchs2001_p_data, cchs2003_p_data, cchs2005_p_data) %>%
+        # This part removes all the missing from the outcome. Notice that we
+        # don't refer to the outcome by its name (CCC_101), we use the "outcome"
+        # role we defined in the variables sheet and the
+        # recodeflow:::select_vars_by_role function to retrieve the variable
+        # tied to that role from the variables sheet.
+        dplyr::filter(
+          dplyr::across(
+            recodeflow:::select_vars_by_role("outcome", variables_sheet),
+            ~ .x != "NA(b)"
+          )
+        )
+    )
+  )
+  list(import_worksheets, create_study_dataset)
+},
+ask = FALSE)
+
+# Run the code
+targets::tar_make()
+```
+
+We can view the study dataset using the code below.
+
+```{r}
+DT::datatable(targets::tar_read("study_dataset"))
+```
+
+Notice how we did not refer to the outcome by its name (CCC_101) but used the combination of roles and the `recodeflow::select_vars_by_role` function to refer to it. By avoiding any hardcoding of variables names in our analysis code we've perhaps reduced its readability but in return have made it more robust to any changes in the study variables. For example, if we want to change our outcome, we can simply update the variables sheet and all those changes are automatically translated downstream to our analysis. Libraries like dplyr make it really easy to implement this concept hence its usage in the code above.
+
+Lets further cement this concept by looking at the descriptive statistics for our covariates. These statistics would normally go into a table 1 in a paper. For the continuous covariates this will be the mean, minimum, and maximum while for the categorical covariates this will be the proportion and number of individuals in each category.
+
+```{r Descriptive data}
+targets::tar_script({
+  library(magrittr)
+  library(dplyr)
+  import_worksheets <- list(
+    targets::tar_target(
+      variable_details_sheet_file,
+      "../inst/extdata/bll-workflow/variable_details.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variable_details_sheet,
+      read.csv(variable_details_sheet_file, fileEncoding = "UTF-8-BOM")
+    ),
+    targets::tar_target(
+      variables_sheet_file,
+      "../inst/extdata/bll-workflow/variables.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variables_sheet,
+      read.csv(variables_sheet_file, fileEncoding = "UTF-8-BOM")
+    )
+  )
+  create_study_dataset <- list(
+    targets::tar_target(
+      cchs2001_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2001_p.RData")
+        ),
+        database_name = "cchs2001_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2003_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2003_p.RData")
+        ),
+        database_name = "cchs2003_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2005_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2005_p.RData")
+        ),
+        database_name = "cchs2005_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      study_dataset,
+      dplyr::bind_rows(cchs2001_p_data, cchs2003_p_data, cchs2005_p_data) %>%
+        dplyr::filter(
+          dplyr::across(
+            recodeflow:::select_vars_by_role("outcome", variables_sheet),
+            ~ .x != "NA(b)"
+          )
+        )
+    )
+  )
+  # This function will create the data frame with the descriptive data for
+  # all the variables in the variables argument
+  get_descriptive_data <- function(
+    # The study dataset
+    data,
+    # The variable names whose descriptive data we need
+    variables,
+    # The variables sheet for the study
+    variables_sheet,
+    # The variable details sheet for the study
+    variable_details_sheet
+  ) {
+    # The data frame that will hold the descriptive data. We will append rows
+    # of descriptive data throughout this function
+    descriptive_data <- data.frame(
+      # The variable name
+      variable = c(),
+      # The mean. Only for continuous variables
+      mean = c(),
+      # The minimum value. Only for continuous variables.
+      min = c(),
+      # The maximum value. Only for continuous variables.
+      max = c(),
+      # The category value for this variable. Only for categorical variables.
+      cat = c(),
+      # The proportion (value between 0 and 1) of individuals in this
+      # category. Only for categorical variables.
+      proportion = c(),
+      # The number of individuals in this category. Only for categorical variables
+      n = c()
+    )
+    # Go through each variable, calculate its descriptive data, and add it to
+    # the above variable
+    for(variable in variables) {
+      variables_sheet_row <- variables_sheet[variables_sheet$variable == variable, ]
+      # If the variable is continuous
+      if(variables_sheet_row$variableType == "Continuous") {
+        # Calculate its descriptive data
+        desc_statistics <- summary(data[[variable]])
+        # Add it to the descriptive data data frame
+        descriptive_data <- rbind(
+          descriptive_data,
+          data.frame(
+            variable = c(variable),
+            mean = c(desc_statistics[4]),
+            min = c(desc_statistics[1]),
+            max = c(desc_statistics[6]),
+            # The next three values are NA since this is a continuous variable
+            cat = c(NA),
+            proportion = c(NA),
+            n = c(NA)
+          )
+        )
+      }
+      # Otherwise its a categorical variable
+      else {
+        # Get the variable details rows for this variable since it will have all
+        # the categories for this categorical variable in this dataset 
+        variable_details_rows <- variable_details_sheet[variable_details_sheet$variable == variable, ]
+        variable_categories <- unique(variable_details_rows$recEnd)
+        # Go through each category and add their descriptive data
+        for(variable_category in variable_categories) {
+          # The rows from the dataset for this variable for the current category
+          variable_category_data <- data[data[[variable]] == variable_category, ]
+          descriptive_data <- rbind(
+            descriptive_data,
+            data.frame(
+              variable = c(variable),
+              # The next three values are NA since this is a categorival variable
+              mean = c(NA),
+              min = c(NA),
+              max = c(NA),
+              cat = c(variable_category),
+              proportion = c(nrow(variable_category_data)/nrow(data)),
+              n = c(nrow(variable_category_data))
+            )
+          )
+        }
+      }
+    }
+    return(descriptive_data)
+  }
+  # The module to create the descriptive data
+  create_descriptive_data <- list(
+    targets::tar_target(
+      descriptive_data,
+      # Call the function declared above to do this
+      get_descriptive_data(
+        study_dataset,
+        # We only want the descriptive data for the covariates, so use the role
+        # covariate
+        recodeflow:::select_vars_by_role("covariate", variables_sheet),
+        variables_sheet,
+        variable_details_sheet
+      )
+    )
+  )
+  list(import_worksheets, create_study_dataset, create_descriptive_data)
+},
+ask = FALSE)
+
+targets::tar_make()
+```
+
+Once again, we did not directly refer to any variables in our code, but used the role `covariate` to select all the variables we want to be part of the descriptive table. We could have also done this by adding a new role to the variables sheet called "table-1" and used that in the code. 
+
+Notice that we also created a function called `get_descriptive_data` which handles all the logic for actually creating the descriptive data, whereas in the targets step we are simply calling that function with the right arguments. This new function can now be easily reused in all studies that use this workflow. Keep in mind, functions like these should be in their own files for the sake of keeping the project organized.
+
+Finally, the data frame returned by the function would not be included in the paper as is but can easily be made publication ready by using a library like `kable` or `flextable`. This allows us to separate the logic for generating the results for our study and the logic for presenting them for example as a table in a paper. Usually, the former does not change much from one study to the next but the latter does. 
+
+The calculated descriptive data can be seen below.
+
+```{r Display descriptive data}
+DT::datatable(targets::tar_read("descriptive_data"))
+```
+
+Finally, lets fit our logistic regression model. We will once again use a function which handles all the fitting logic, and use roles to select our outcome and covariate variables.
+
+```{r Model fit}
+targets::tar_script({
+  library(magrittr)
+  library(dplyr)
+  import_worksheets <- list(
+    targets::tar_target(
+      variable_details_sheet_file,
+      "../inst/extdata/bll-workflow/variable_details.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variable_details_sheet,
+      read.csv(variable_details_sheet_file, fileEncoding = "UTF-8-BOM")
+    ),
+    targets::tar_target(
+      variables_sheet_file,
+      "../inst/extdata/bll-workflow/variables.csv",
+      format = "file"
+    ),
+    targets::tar_target(
+      variables_sheet,
+      read.csv(variables_sheet_file, fileEncoding = "UTF-8-BOM")
+    )
+  )
+  create_study_dataset <- list(
+    targets::tar_target(
+      cchs2001_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2001_p.RData")
+        ),
+        database_name = "cchs2001_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2003_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2003_p.RData")
+        ),
+        database_name = "cchs2003_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      cchs2005_p_data,
+      recodeflow::rec_with_table(
+        data = get(
+          load("../inst/extdata/bll-workflow/data/cchs2005_p.RData")
+        ),
+        database_name = "cchs2005_p",
+        variables = variables_sheet,
+        variable_details = variable_details_sheet
+      )
+    ),
+    targets::tar_target(
+      study_dataset,
+      dplyr::bind_rows(cchs2001_p_data, cchs2003_p_data, cchs2005_p_data) %>%
+        dplyr::filter(
+          dplyr::across(
+            recodeflow:::select_vars_by_role("outcome", variables_sheet),
+            ~ .x != "NA(b)"
+          )
+        )
+    )
+  )
+  get_descriptive_data <- function(
+    data,
+    variables,
+    variables_sheet,
+    variable_details_sheet
+  ) {
+    descriptive_data <- data.frame(
+      variable = c(),
+      mean = c(),
+      min = c(),
+      max = c(),
+      cat = c(),
+      proportion = c(),
+      n = c()
+    )
+    for(variable in variables) {
+      variables_sheet_row <- variables_sheet[variables_sheet$variable == variable, ]
+      if(variables_sheet_row$variableType == "Continuous") {
+        desc_statistics <- summary(data[[variable]])
+        descriptive_data <- rbind(
+          descriptive_data,
+          data.frame(
+            variable = c(variable),
+            mean = c(desc_statistics[4]),
+            min = c(desc_statistics[1]),
+            max = c(desc_statistics[6]),
+            cat = c(NA),
+            proportion = c(NA),
+            n = c(NA)
+          )
+        )
+      }
+      else {
+        variable_details_rows <- variable_details_sheet[variable_details_sheet$variable == variable, ]
+        variable_categories <- unique(variable_details_rows$recEnd)
+        for(variable_category in variable_categories) {
+          variable_category_data <- data[data[[variable]] == variable_category, ]
+          descriptive_data <- rbind(
+            descriptive_data,
+            data.frame(
+              variable = c(variable),
+              mean = c(NA),
+              min = c(NA),
+              max = c(NA),
+              cat = c(variable_category),
+              proportion = c(nrow(variable_category_data)/nrow(data)),
+              n = c(nrow(variable_category_data))
+            )
+          )
+        }
+      }
+    }
+    return(descriptive_data)
+  }
+  create_descriptive_data <- list(
+    targets::tar_target(
+      descriptive_data,
+      get_descriptive_data(
+        study_dataset,
+        recodeflow:::select_vars_by_role("covariate", variables_sheet),
+        variables_sheet,
+        variable_details_sheet
+      )
+    )
+  )
+  # This function will be used to fit the final logistic regression for this
+  # study
+  fit_model <- function(
+    # The study dataset
+    data, 
+    # The name of the outcome variable
+    outcome,
+    # The names of the covariates for the model
+    covariates
+  ) {
+    # Create the formula for the model
+    model_formula <- as.formula(paste(
+      outcome, "~", paste(covariates, collapse = "+")
+    ))
+    # Fit the model
+    model_fit <- glm(
+      model_formula,
+      data = data,
+      family = binomial
+    )
+    return(model_fit)
+  }
+  model_fit <- list(
+    targets::tar_target(
+      model,
+      fit_model(
+        study_dataset,
+        recodeflow:::select_vars_by_role("outcome", variables_sheet),
+        recodeflow:::select_vars_by_role("covariate", variables_sheet)
+      )
+    )
+  )
+  list(import_worksheets, create_study_dataset, create_descriptive_data, model_fit)
+},
+ask = FALSE)
+
+targets::tar_make()
+```
+
+And we can see the results of the model fit below,
+
+```{r View model}
+print(targets::tar_read("model"))
+```
+
+To recap,
+
+* We went through the aims of the BLL workflow and the components that are part of the workflow
+* We saw how we can avoid hardcoding variables names in our analysis by using a combination of roles and the `recodeflow:::select_vars_by_role` function, and the reasons for doing so.
+* We finally saw how we should organize our targets code, by grouping steps into modules which are simply a list of targets and writing functions which are ideally reusable across/within studies.
